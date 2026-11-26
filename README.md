@@ -14,6 +14,7 @@
 - [目录结构](#目录结构)
 - [环境要求](#环境要求)
 - [快速开始](#快速开始)
+- [Docker（可选）](#docker可选)
 - [数据库初始化](#数据库初始化)
 - [开发命令](#开发命令)
 - [开发规范](#开发规范)
@@ -106,6 +107,43 @@ java -jar manager-api/target/manager-api-*.jar     # 默认端口 8887
 ```
 
 后端就绪判断：`GET http://localhost:8887/manager/live/room/page` 返回 401/403 即为已启动。
+
+## Docker（可选）
+
+本地开发**不需要** Docker，直接用本机 MySQL / Redis 即可。若要用容器起中间件：
+
+```bash
+cd docker
+docker compose up -d
+```
+
+> `docker-compose.yml` 里的 Redis 带 `requirepass=lilishop`，与本机无密码 Redis 不同；
+> 启用 Docker Redis 时请同步修改 `backend/config/application-dev.yml`。
+
+### docker-compose 二进制（仓库未包含）
+
+`docker/init/docker-compose/` 预期存放 **docker-compose v2 单文件二进制**（约 52 MB），
+为避免仓库膨胀，该文件**未纳入版本控制**（已在 `.gitignore` 中）。
+
+如果所在环境没有 `docker compose` 插件（老版本 Docker / 离线环境），按需下载：
+
+```bash
+# Linux x86_64
+mkdir -p docker/init/docker-compose
+curl -fsSL -o docker/init/docker-compose/docker-compose-linux-x86_64 \
+  https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64
+chmod +x docker/init/docker-compose/docker-compose-linux-x86_64
+
+# 使用
+./docker/init/docker-compose/docker-compose-linux-x86_64 version
+```
+
+Windows / macOS 建议直接安装 Docker Desktop（自带 compose 插件），无需该二进制。
+
+### MySQL 初始化脚本挂载
+
+`./docker/init/mysql` 会挂载到容器的 `/docker-entrypoint-initdb.d`，
+即 `lilishop.sql` 与 `patches/` 会在容器首次启动时自动执行。
 
 ---
 
@@ -224,3 +262,4 @@ cd backend
 - [Lilishop](https://github.com/lilishop/lilishop) —— 原始商城框架
 - [Element Plus](https://element-plus.org/) · [Vue](https://vuejs.org/) · [Vite](https://vitejs.dev/)
 - [TinyMCE](https://www.tiny.cloud/)
+
