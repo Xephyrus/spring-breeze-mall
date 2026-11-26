@@ -208,3 +208,58 @@ lilishop
 - 🔜 抖店对接
 - 🔜 微信小程序原生重构与体验对齐
 - 🔜 OpenAPI 开放平台与开发者中心
+
+---
+
+## 9. 常见问题（FAQ）
+
+### 9.1 IDE 报 `xxx cannot be resolved`（例如 `cn.lili.common.utils.SettingValues`）
+
+命令行 `./mvnw compile` 能过，但 VS Code / IDEA 一片红。原因：IDE 解析依赖走的是**本地 Maven 仓库的 jar**，
+而不是工作区源码；如果 `framework` 模块加了新类但没重新 `install`，IDE 就会拿旧 jar 解析。
+
+```bash
+cd backend
+./mvnw -o -pl framework -am install -DskipTests     # Windows: mvnw.cmd
+```
+
+然后让 IDE 重新加载：
+
+- **VS Code**：`Ctrl+Shift+P` → `Java: Clean Java Language Server Workspace` → Restart and delete
+- **IDEA**：右侧 Maven → 点刷新（Reload All Maven Projects）
+
+### 9.2 打包报 `Unable to rename ...manager-api-5.0.2.jar to ....jar.original`
+
+后端进程还在跑，占用了 `target` 里的 jar（Windows 会锁文件）。先停掉进程再打包：
+
+```bash
+# 查端口
+netstat -ano | findstr :8887      # Windows
+lsof -i :8887                      # macOS / Linux
+```
+
+### 9.3 MySQL 9 连不上（`mysql_native_password` 相关报错）
+
+MySQL 8.4+ 已移除 `mysql_native_password`，连接串不要带 `useSSL=false&serverTimezone=...&allowPublicKeyRetrieval` 之外的旧参数，
+驱动需使用 `caching_sha2_password`。JDBC URL 参考 `config/application-dev.yml`。
+
+### 9.4 启动正常但某些功能报「服务器繁忙」/ 空指针
+
+多为**设置项缺失**（`li_setting` 没有对应 key）。执行一次默认值补齐脚本（幂等）：
+
+```bash
+mysql -u root -p lilishop < DB/init-setting-defaults.sql
+```
+
+审计与修复背景见 [`SETTING-NPE-AUDIT.md`](SETTING-NPE-AUDIT.md)。
+
+### 9.5 菜单点进去是空白页
+
+菜单表 `li_menu.front_route` 存的是**前端视图文件路径**，前端已统一 kebab-case，
+因此必须执行三个菜单补丁（幂等，可重复执行）：
+
+```bash
+mysql -u root -p lilishop < DB/menu-kebab-routes.sql
+mysql -u root -p lilishop < DB/menu-kebab-names.sql
+mysql -u root -p lilishop < DB/menu-kebab-front-route.sql
+```
