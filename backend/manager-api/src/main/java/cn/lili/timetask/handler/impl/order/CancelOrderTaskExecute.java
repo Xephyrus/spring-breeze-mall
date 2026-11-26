@@ -2,7 +2,6 @@ package cn.lili.timetask.handler.impl.order;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.json.JSONUtil;
 import cn.lili.common.utils.StringUtils;
 import cn.lili.modules.order.order.entity.dos.Order;
 import cn.lili.modules.order.order.entity.enums.OrderStatusEnum;
@@ -14,7 +13,6 @@ import cn.lili.modules.payment.kit.dto.PayParam;
 import cn.lili.modules.payment.kit.dto.PaymentQueryResult;
 import cn.lili.modules.payment.kit.dto.PaymentSuccessParams;
 import cn.lili.modules.payment.service.PaymentService;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.OrderSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.service.SettingService;

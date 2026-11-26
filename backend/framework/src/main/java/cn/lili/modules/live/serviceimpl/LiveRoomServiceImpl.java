@@ -19,7 +19,6 @@ import cn.lili.modules.live.service.LiveUserService;
 import cn.lili.modules.live.util.MqttUtil;
 import cn.lili.modules.live.util.TencentLiveUtil;
 import cn.lili.modules.order.order.service.OrderService;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.LiveSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.service.SettingService;
@@ -211,7 +210,6 @@ public class LiveRoomServiceImpl extends ServiceImpl<LiveRoomMapper, LiveRoom> i
         liveRoomVO.setInteractionRate(rate);
 
         orderService.countLiveOrderData(liveRoomVO);
-
 
         LiveSetting liveSetting = SettingValues.optional(settingService, SettingEnum.LIVE_SETTING, LiveSetting.class);
         if (liveSetting != null) {

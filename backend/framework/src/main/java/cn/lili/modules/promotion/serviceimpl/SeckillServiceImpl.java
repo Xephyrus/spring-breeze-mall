@@ -16,13 +16,11 @@ import cn.lili.modules.promotion.mapper.SeckillMapper;
 import cn.lili.modules.promotion.service.SeckillApplyService;
 import cn.lili.modules.promotion.service.SeckillService;
 import cn.lili.modules.promotion.support.SeckillMetadataSupport;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.SeckillSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.service.SettingService;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.google.gson.Gson;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,7 +47,6 @@ public class SeckillServiceImpl extends AbstractPromotionsServiceImpl<SeckillMap
     private SeckillApplyService seckillApplyService;
     @Autowired
     private SeckillMetadataSupport seckillMetadata;
-
 
     @Override
     public SeckillVO getSeckillDetail(String id) {
@@ -123,7 +120,6 @@ public class SeckillServiceImpl extends AbstractPromotionsServiceImpl<SeckillMap
         seckillApplyService.updateSeckillApplyTime(promotions);
         return result;
     }
-
 
     /**
      * 同步秒杀活动商品范围

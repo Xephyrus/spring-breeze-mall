@@ -1,7 +1,5 @@
 package cn.lili.modules.wallet.serviceimpl;
 
-
-import cn.hutool.json.JSONUtil;
 import cn.lili.common.enums.ResultCode;
 import cn.lili.common.exception.ServiceException;
 import cn.lili.common.properties.RocketmqCustomProperties;
@@ -10,7 +8,6 @@ import cn.lili.common.security.context.UserContext;
 import cn.lili.common.security.enums.UserEnums;
 import cn.lili.common.utils.StringUtils;
 import cn.lili.common.vo.PageVO;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.WithdrawalSetting;
 import cn.lili.modules.system.entity.dto.payment.WechatPaymentSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
@@ -40,7 +37,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import cn.lili.common.utils.SettingValues;
-
 
 /**
  * 客户提现申请业务层实现
@@ -105,7 +101,6 @@ public class MemberWithdrawApplyServiceImpl extends ServiceImpl<MemberWithdrawAp
         liliMessageTemplate.asyncSend(destination, memberWithdrawalMessage, MessageSendCallbackBuilder.commonCallback());
         return true;
     }
-
 
     @Override
     public IPage<MemberWithdrawApply> getMemberWithdrawPage(PageVO pageVO, MemberWithdrawApplyQueryVO memberWithdrawApplyQueryVO) {

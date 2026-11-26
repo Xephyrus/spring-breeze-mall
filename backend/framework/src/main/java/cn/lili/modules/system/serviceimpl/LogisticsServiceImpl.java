@@ -1,6 +1,5 @@
 package cn.lili.modules.system.serviceimpl;
 
-import cn.hutool.json.JSONUtil;
 import cn.lili.common.enums.ResultCode;
 import cn.lili.common.enums.SwitchEnum;
 import cn.lili.common.exception.ServiceException;
@@ -20,7 +19,6 @@ import cn.lili.modules.store.entity.dos.StoreLogistics;
 import cn.lili.modules.store.entity.dto.StoreDeliverGoodsAddressDTO;
 import cn.lili.modules.store.service.StoreDetailService;
 import cn.lili.modules.system.entity.dos.Logistics;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.LogisticsSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.entity.vo.Traces;
@@ -130,7 +128,6 @@ public class LogisticsServiceImpl extends ServiceImpl<LogisticsMapper, Logistics
     public String sfCreateOrder(OrderDetailVO orderDetailVO) {
         return logisticsGateway.sfCreateOrder(orderDetailVO);
     }
-
 
     @Override
     public List<Logistics> getOpenLogistics() {

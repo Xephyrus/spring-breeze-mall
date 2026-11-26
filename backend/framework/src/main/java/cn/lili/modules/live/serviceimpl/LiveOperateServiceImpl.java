@@ -21,7 +21,6 @@ import cn.lili.modules.live.util.GenerateUserSig;
 import cn.lili.modules.live.util.MqttUtil;
 import cn.lili.modules.live.util.TencentLiveUtil;
 import cn.lili.modules.order.order.service.OrderService;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.LiveSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.service.SettingService;
@@ -64,8 +63,6 @@ public class LiveOperateServiceImpl extends ServiceImpl<LiveRoomMapper, LiveRoom
     private SettingService settingService;
 
     private final String MESSAGE = "/message/";
-
-
 
     @Override
     public LiveUser checkLiveUser(String liveRoomId) {
@@ -163,7 +160,6 @@ public class LiveOperateServiceImpl extends ServiceImpl<LiveRoomMapper, LiveRoom
         liveMessageService.updateById(liveMessage);
     }
 
-
     private void increaseCommentUser(String LiveRoomId, String userId) {
         String key = CachePrefix.LIVE_ACTIVITY_COMMENT_USER + LiveRoomId;
         cache.cumulative(key, userId);
@@ -187,7 +183,6 @@ public class LiveOperateServiceImpl extends ServiceImpl<LiveRoomMapper, LiveRoom
         LiveSetting liveSetting = SettingValues.require(settingService, SettingEnum.LIVE_SETTING, LiveSetting.class);
         return GenerateUserSig.genTestUserSig(userId, liveSetting.getImSdkAppid(), liveSetting.getImSdkSecretKey());
     }   
-
 
     private void increaseViewing(String liveRoomId, String userId) {
         String key = CachePrefix.LIVE_ACTIVITY_VIEW.getPrefix() + liveRoomId;

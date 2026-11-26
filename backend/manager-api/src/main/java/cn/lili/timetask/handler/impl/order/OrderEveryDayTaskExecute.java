@@ -2,7 +2,6 @@ package cn.lili.timetask.handler.impl.order;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.json.JSONUtil;
 import cn.lili.common.enums.ResultCode;
 import cn.lili.common.exception.ServiceException;
 import cn.lili.modules.member.entity.dto.MemberEvaluationDTO;
@@ -21,7 +20,6 @@ import cn.lili.modules.order.order.service.StoreFlowService;
 import cn.lili.modules.store.entity.dto.StoreSettlementDay;
 import cn.lili.modules.store.service.BillService;
 import cn.lili.modules.store.service.StoreDetailService;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.OrderSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.service.SettingService;
@@ -112,7 +110,6 @@ public class OrderEveryDayTaskExecute implements EveryDayExecute {
         } catch (Exception e) {
             log.error("生成店铺结算单", e);
         }
-
 
     }
 
@@ -248,7 +245,6 @@ public class OrderEveryDayTaskExecute implements EveryDayExecute {
 
         //关闭售后订单=未售后订单+小于订单关闭售后申请时间
         orderItemService.expiredAfterSaleStatus(receiveTime);
-
 
     }
 

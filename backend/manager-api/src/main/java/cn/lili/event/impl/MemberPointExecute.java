@@ -1,6 +1,5 @@
 package cn.lili.event.impl;
 
-
 import cn.lili.event.GoodsCommentCompleteEvent;
 import cn.lili.event.MemberRegisterEvent;
 import cn.lili.event.OrderStatusChangeEvent;
@@ -12,13 +11,11 @@ import cn.lili.modules.member.service.MemberService;
 import cn.lili.modules.order.order.entity.dos.Order;
 import cn.lili.modules.order.order.entity.dto.OrderMessage;
 import cn.lili.modules.order.order.service.OrderService;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.PointSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.service.SettingService;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.lili.cache.Cache;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +31,6 @@ import cn.lili.common.utils.SettingValues;
 @Slf4j
 @Service
 public class MemberPointExecute implements MemberRegisterEvent, GoodsCommentCompleteEvent, OrderStatusChangeEvent {
-
 
     @Autowired
     private SettingService settingService;
@@ -106,7 +102,6 @@ public class MemberPointExecute implements MemberRegisterEvent, GoodsCommentComp
                 break;
         }
     }
-
 
     /**
      * 获取积分设置

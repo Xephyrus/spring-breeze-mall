@@ -16,7 +16,6 @@ import cn.lili.modules.payment.kit.dto.PayParam;
 import cn.lili.modules.payment.kit.dto.PaymentQueryResult;
 import cn.lili.modules.payment.kit.params.CashierExecute;
 import cn.lili.modules.payment.kit.params.dto.CashierParam;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.OrderSetting;
 import cn.lili.modules.system.entity.dto.payment.PaymentSupportSetting;
 import cn.lili.modules.system.entity.dto.payment.dto.PaymentSupportItem;
@@ -265,7 +264,6 @@ public class CashierSupport {
         log.error("错误的支付请求:{}", payParam.toString());
         throw new ServiceException(ResultCode.PAY_CASHIER_ERROR);
     }
-
 
     /**
      * 支付结果

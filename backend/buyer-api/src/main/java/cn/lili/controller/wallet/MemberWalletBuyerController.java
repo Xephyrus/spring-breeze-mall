@@ -9,7 +9,6 @@ import cn.lili.common.security.context.UserContext;
 import cn.lili.common.vo.ResultMessage;
 import cn.lili.modules.member.entity.dos.Member;
 import cn.lili.modules.member.service.MemberService;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.WithdrawalSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.entity.vo.WithdrawalSettingVO;
@@ -19,7 +18,6 @@ import cn.lili.modules.verification.service.VerificationService;
 import cn.lili.modules.wallet.entity.dos.MemberWallet;
 import cn.lili.modules.wallet.entity.vo.MemberWalletVO;
 import cn.lili.modules.wallet.service.MemberWalletService;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
@@ -116,7 +114,6 @@ public class MemberWalletBuyerController {
 
     }
     
-
     @PostMapping("/update-password/ordinary")
     @Operation(description = "普通方式进行支付密码的修改")
     @Parameter(name = "oldPassword", description = "旧支付密码", required = true)
@@ -141,7 +138,6 @@ public class MemberWalletBuyerController {
             throw new ServiceException(ResultCode.WALLET_NOT_EXIT_ERROR);
         }
     }
-
 
     @GetMapping("/check")
     @Operation(description = "检测客户是否设置过支付密码,客户中心设置或者修改密码时使用")

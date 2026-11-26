@@ -20,7 +20,6 @@ import cn.lili.modules.connect.request.BaseAuthQQRequest;
 import cn.lili.modules.connect.request.BaseAuthWeChatPCRequest;
 import cn.lili.modules.connect.request.BaseAuthWeChatRequest;
 import cn.lili.modules.connect.service.ConnectService;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.connect.ConnectSetting;
 import cn.lili.modules.system.entity.dto.connect.QQConnectSetting;
 import cn.lili.modules.system.entity.dto.connect.WechatConnectSetting;
@@ -247,4 +246,3 @@ public class ConnectUtil {
         }
     }
 }
-

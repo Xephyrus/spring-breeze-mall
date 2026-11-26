@@ -2,9 +2,7 @@ package cn.lili.timetask.handler.impl.order;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
-import cn.hutool.json.JSONUtil;
 import cn.lili.modules.order.order.entity.enums.PayStatusEnum;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.OrderSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.service.SettingService;
@@ -39,7 +37,6 @@ public class RechargeOrderTaskExecute implements EveryMinuteExecute {
      */
     @Autowired
     private SettingService settingService;
-
 
     @Override
     public void execute() {

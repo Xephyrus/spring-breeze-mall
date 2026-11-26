@@ -25,7 +25,6 @@ import cn.lili.modules.member.entity.dos.Member;
 import cn.lili.modules.member.entity.dto.ConnectQueryDTO;
 import cn.lili.modules.member.service.MemberService;
 import cn.lili.modules.member.token.MemberTokenGenerate;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.connect.WechatConnectSetting;
 import cn.lili.modules.system.entity.dto.connect.dto.WechatConnectSettingItem;
 import cn.lili.modules.system.entity.enums.SettingEnum;
@@ -95,7 +94,6 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
         Connect connect = new Connect(authUser.getId(), unionId, type);
         this.save(connect);
 
-
     }
 
     @Override
@@ -119,7 +117,6 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
         connects.forEach(item -> keys.add(item.getUnionType()));
         return keys;
     }
-
 
     @Override
     @Transactional
@@ -173,7 +170,6 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
             String encryptedData = params.getEncryptedData();
             String iv = params.getIv();
             JSONObject userInfo = this.getUserInfo(encryptedData, sessionKey, iv);
-
 
             ConnectAuthUser connectAuthUser = new ConnectAuthUser();
             connectAuthUser.setUuid(openId);
@@ -247,7 +243,6 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
             this.loginBindUser(userId, unionId, type);
         }
     }
-
 
     /**
      * 第三方联合登录
@@ -338,7 +333,6 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
         throw new ServiceException(ResultCode.WECHAT_CONNECT_NOT_EXIST);
     }
 
-
     /**
      * 解密，获取微信信息。仅在密文解码边界恢复 XSS 清洗产生的 HTML 实体，
      * 恢复后立即执行严格 Base64 解码，不将反转义后的内容用于 HTML 展示。
@@ -383,6 +377,5 @@ public class ConnectServiceImpl extends ServiceImpl<ConnectMapper, Connect> impl
         }
         throw new ServiceException(ResultCode.USER_CONNECT_ERROR);
     }
-
 
 }

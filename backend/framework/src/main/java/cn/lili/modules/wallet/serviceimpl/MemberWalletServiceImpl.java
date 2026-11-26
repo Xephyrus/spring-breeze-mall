@@ -1,6 +1,5 @@
 package cn.lili.modules.wallet.serviceimpl;
 
-
 import cn.lili.common.enums.ResultCode;
 import cn.lili.common.exception.ServiceException;
 import cn.lili.common.properties.RocketmqCustomProperties;
@@ -15,7 +14,6 @@ import cn.lili.modules.message.entity.dto.NoticeMessageDTO;
 import cn.lili.modules.message.entity.enums.NoticeMessageNodeEnum;
 import cn.lili.modules.payment.entity.enums.PaymentMethodEnum;
 import cn.lili.modules.payment.kit.PaymentTransferSupport;
-import cn.lili.modules.system.entity.dos.Setting;
 import cn.lili.modules.system.entity.dto.WithdrawalSetting;
 import cn.lili.modules.system.entity.enums.SettingEnum;
 import cn.lili.modules.system.service.SettingService;
@@ -36,7 +34,6 @@ import cn.lili.message.MessageSendCallbackBuilder;
 import cn.lili.rocketmq.tags.MemberTagsEnum;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.gson.Gson;
 import cn.lili.message.LiliMessageTemplate;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +45,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import cn.lili.common.utils.SettingValues;
-
 
 /**
  * 客户余额业务层实现
@@ -133,7 +129,6 @@ public class MemberWalletServiceImpl extends ServiceImpl<MemberWalletMapper, Mem
         return true;
     }
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean reduce(MemberWalletUpdateDTO memberWalletUpdateDTO) {
@@ -150,7 +145,6 @@ public class MemberWalletServiceImpl extends ServiceImpl<MemberWalletMapper, Mem
         this.notifyWalletChange(memberWalletUpdateDTO.getMemberId(), memberWalletUpdateDTO.getMoney(), true);
         return true;
     }
-
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -256,7 +250,6 @@ public class MemberWalletServiceImpl extends ServiceImpl<MemberWalletMapper, Mem
             this.updateById(memberWallet);
         }
     }
-
 
     @Override
     public Boolean checkPassword() {
