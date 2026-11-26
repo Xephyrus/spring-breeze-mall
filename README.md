@@ -1,5 +1,7 @@
 # Spring Breeze Mall
 
+![CI](https://github.com/Xephyrus/spring-breeze-mall/actions/workflows/ci.yml/badge.svg)
+
 基于 [Lilishop](https://github.com/lilishop/lilishop) 深度二次开发的开源商城系统 monorepo：**Java 后端 + Vue 管理/商家/买家/IM 前端 + uni-app 移动端**。
 
 本仓库在原始项目基础上完成了 **Vue 3 全量迁移、TypeScript 类型化、性能优化与命名规范统一**，

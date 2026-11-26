@@ -1,0 +1,72 @@
+name: CI
+
+# 只在「改到了会影响构建/类型/lint 的文件」时触发，避免文档改动也跑一遍
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/manager/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'package.json'
+      - '.github/workflows/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/manager/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'pnpm-workspace.yaml'
+      - 'package.json'
+      - '.github/workflows/**'
+  # 允许手动触发（例如升级依赖后想立刻验一遍）
+  workflow_dispatch:
+
+# 同一分支只保留最新一次，避免排队浪费额度
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  manager:
+    name: manager · typecheck / lint / build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.14.0
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 类型门：严格模式 + strictTemplates，0 错误才算通过
+      - name: Typecheck (vue-tsc)
+        run: pnpm --filter @spring-breeze/manager typecheck
+
+      # Lint 门：--max-warnings 67 写在 package.json 的 lint 脚本里，
+      # 这是「只减不增」的 ratchet，改脚本才能放宽，评审时一眼可见
+      - name: Lint (ratchet)
+        run: pnpm --filter @spring-breeze/manager lint
+
+      # 构建门：产物构建通过（大项目需要抬高 Node 堆，否则 Rolldown 会 OOM）
+      - name: Build
+        run: pnpm --filter @spring-breeze/manager build
+        env:
+          NODE_OPTIONS: --max-old-space-size=3072
