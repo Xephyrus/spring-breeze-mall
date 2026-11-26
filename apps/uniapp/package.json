@@ -1,0 +1,34 @@
+{
+  "name": "@spring-breeze/uniapp",
+  "version": "4.5.3",
+  "private": true,
+  "description": "Uni-app mobile client (Vue 3)",
+  "engines": {
+    "node": ">=24"
+  },
+  "main": "main.js",
+  "scripts": {
+    "postinstall": "patch-package && node scripts/patch-mqtt-abort.js",
+    "test:mqtt-app-runtime": "node scripts/test-mqtt-app-runtime.js",
+    "test:lottery-wheel": "node scripts/test-lottery-wheel.mjs",
+    "test:payment-success": "node scripts/test-payment-success.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/beijing_hongye_huicheng/lilishop-uniapp"
+  },
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@tencentcloud/chat": "^3.5.5",
+    "hls.js": "^1.6.16",
+    "mqtt": "5.15.1",
+    "sass": "^1.89.2",
+    "uview-plus": "3.8.42",
+    "vuex": "^4.1.0"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.4.32",
+    "patch-package": "^8.0.1",
+    "postinstall-postinstall": "^2.1.0"
+  }
+}

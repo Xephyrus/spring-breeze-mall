@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "@spring-breeze/manager",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Platform manager UI",
+  "author": "lili-platform",
+  "scripts": {
+    "dev": "vite",
+    "serve": "vite",
+    "build": "vue-tsc --noEmit -p tsconfig.app.json && vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.app.json --pretty false",
+    "lint": "eslint src --max-warnings 67",
+    "lint:report": "eslint src -f json -o lint-report.json"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
+    "@antv/g2": "^4.2.10",
+    "@element-plus/icons-vue": "catalog:",
+    "@spring-breeze/shared": "workspace:*",
+    "@tencentcloud/chat": "^3.6.6",
+    "axios": "catalog:",
+    "dplayer": "^1.27.1",
+    "element-plus": "catalog:",
+    "hls.js": "^1.7.4",
+    "js-cookie": "^3.0.5",
+    "nprogress": "^0.2.0",
+    "pinia": "catalog:",
+    "sockjs-client": "^1.6.1",
+    "uuid": "^11.1.0",
+    "vue": "catalog:",
+    "vue-i18n": "^9.14.5",
+    "vue-qr": "^5.0.3",
+    "vue-router": "catalog:",
+    "vuedraggable": "^4.1.0",
+    "xss": "^1.0.15"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/js-cookie": "^3.0.6",
+    "@types/nprogress": "^0.2.3",
+    "@vitejs/plugin-vue": "catalog:",
+    "autoprefixer": "^10.4.22",
+    "eslint": "^9.39.1",
+    "eslint-plugin-vue": "^10.5.1",
+    "sass": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "^8.46.4",
+    "unplugin-vue-components": "^32.1.0",
+    "vite": "catalog:",
+    "vite-plugin-compression": "catalog:",
+    "vue-eslint-parser": "^10.2.0",
+    "vue-tsc": "catalog:"
+  }
+}

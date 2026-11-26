@@ -1,0 +1,49 @@
+// 说明：
+// TinyMCE 6 在「非 docked」场景下会把浮层容器（.tox-tinymce-aux）内联成 position: relative，
+// 并且该容器尺寸为 0，导致菜单按文档坐标渲染 + 宽度测量受限（表现为菜单跑到左下角、
+// 或者宽度极窄导致中文字一个个竖着排）。
+//
+// 这里的做法：
+//   1. 把容器强制 fixed 并撑满视口，让菜单的视口坐标有正确的参照、宽度测量也有空间；
+//   2. 容器本身 pointer-events: none（不吃点击），内部子元素再恢复 auto；
+//   3. 菜单项文字禁止换行，避免再出现「字竖向排列」。
+
+.tox.tox-tinymce-aux,
+.tox-silver-sink.tox-tinymce-aux {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 20000 !important;
+  pointer-events: none;
+}
+
+.tox.tox-tinymce-aux > *,
+.tox-silver-sink.tox-tinymce-aux > * {
+  pointer-events: auto;
+}
+
+// 下拉菜单/弹窗层级抬升，避免被 el-dialog 盖住
+.tox .tox-pop,
+.tox .tox-menu,
+.tox .tox-collection,
+.tox .tox-dialog-wrap {
+  z-index: 20001 !important;
+}
+
+// 菜单项文字不换行（中文被逐字换行就是这里缺 nowrap 造成的观感问题）
+.tox .tox-collection__item,
+.tox .tox-collection__item-label,
+.tox .tox-menu .tox-collection__item-label,
+.tox .tox-split-button__chevron + .tox-collection__item-label {
+  white-space: nowrap;
+}
+
+// 菜单本身给一个合理的最小宽度，避免宽度塌成 0
+.tox .tox-menu.tox-collection.tox-collection--list,
+.tox .tox-pop .tox-menu {
+  min-width: 160px !important;
+}

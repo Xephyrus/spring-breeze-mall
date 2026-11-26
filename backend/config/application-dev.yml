@@ -1,0 +1,33 @@
+# ===================================================================
+# manager-api 本地开发覆盖（Profile: dev）
+#
+# 为什么需要这个文件：
+#   spring-boot:run 的 workingDirectory 被设为 backend/（见 manager-api/pom.xml，
+#   为了让 data/uploads 与 local-secrets.yml 相对 backend/ 解析），于是 Spring Boot
+#   会把 backend/config/ 当作「外部配置目录」加载。
+#   外部 config/application.yml 的优先级高于 classpath 的 application-dev.yml，
+#   导致本地启动时 Redis/MySQL 又被打回 192.168.31.100（集群部署地址），
+#   报 "Unable to connect to Redis server: 192.168.31.100:30379"。
+#
+# 本文件是 external config/ 下的 dev 专用覆盖，优先级高于同目录的 application.yml，
+# 把本地运行指回 127.0.0.1。集群/生产部署走 prod profile，不受影响。
+# ===================================================================
+
+spring:
+  config:
+    # 复用 backend/local-secrets.yml 里的数据库密码（gitignored）
+    import: optional:file:./local-secrets.yml
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: ""
+      # 本机 Redis 无需长超时
+      timeout: 3s
+      connect-timeout: 3s
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/lilishop?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: root
+    # password 由 local-secrets.yml 提供

@@ -1,0 +1,35 @@
+.image-mode {
+   width: 100%;
+   height: auto;
+    display: block;
+    padding: 2rpx;
+}
+// 首页楼层模块统一左右边距（轮播图、宫格等 .layout 容器）
+$home-layout-padding: 16rpx;
+
+.layout {
+    padding: $home-layout-padding;
+    margin: 0;
+    background: #fff;
+}
+.layout,
+.view-height-75,
+.view-height-150 {
+    overflow: hidden;
+}
+.view-width-100 {
+    width: 100%;
+}
+.view-height-75 {
+    min-height: 150rpx;
+}
+.view-height-150 {
+    min-height: 300rpx;
+    flex: 1;
+}
+
+.view-height-85 {
+    height: 170rpx;
+    flex: 1;
+}
+

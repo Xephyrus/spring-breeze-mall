@@ -1,0 +1,28 @@
+.flag-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.4;
+  margin-bottom: 8rpx;
+}
+
+.wrapper {
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 20rpx 24rpx 40rpx;
+  background: #f8f8f8;
+}
+
+.column {
+  padding: 32rpx;
+  margin-bottom: 20rpx;
+  background: #fff;
+  border-radius: 20rpx;
+}
+
+.tips {
+  color: #999;
+  font-size: 24rpx;
+  line-height: 1.4;
+  margin-top: 12rpx;
+}

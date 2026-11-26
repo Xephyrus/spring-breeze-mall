@@ -1,0 +1,31 @@
+packages:
+  - 'apps/*'
+  - 'packages/*'
+
+shamefullyHoist: true
+strictPeerDependencies: false
+autoInstallPeers: true
+engineStrict: false
+# Vue CLI / uni-app postinstall scripts (pnpm 12 blocks builds by default)
+dangerouslyAllowAllBuilds: true
+
+catalog:
+  vue: ^3.5.46
+  vue-router: ^4.6.4
+  pinia: ^4.1.0
+  axios: ^1.21.1
+  element-plus: ^2.14.8
+  '@element-plus/icons-vue': ^2.3.2
+  sass: ^1.108.2
+  typescript: ~5.9.3
+  vite: ^8.3.8
+  '@vitejs/plugin-vue': ^6.0.11
+  vue-tsc: ^3.3.14
+  vite-plugin-compression: ^0.5.1
+
+overrides:
+  # vue-tsc / @vue/language-core need minimatch 9; Vue CLI apps remain compatible
+  minimatch: ^9.0.5
+  '@achrinza/node-ipc': 9.2.2
+  webpack: 5.108.4
+  unplugin-vue-components>minimatch: ^9.0.5

@@ -1,0 +1,36 @@
+{
+  // ============================================================================
+  // 语言服务配置（只作用于 VS Code 等编辑器，不参与 HBuilderX / vite 构建）
+  //
+  // 本项目的编译全部交给 HBuilderX：@dcloudio/* 、uni / wx / plus 全局变量
+  // 都由 HBuilderX 内置编译器在编译期注入，项目里并没有这些依赖。
+  // 这里把 @ 别名和类型入口补上，让编辑器不再满屏 2307 / 2304。
+  // ============================================================================
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    // H5 条件编译分支里会用到 document / window
+    "lib": ["esnext", "dom", "dom.iterable"],
+    // 非相对模块的解析基准目录，即项目根目录（与 uni-app 的 @ 别名保持一致）
+    "paths": {
+      "@/*": ["./*"]
+    },
+    "allowJs": true,
+    // 本项目没有 tsc / vue-tsc 环节，关掉隐式 any 的噪音
+    "noImplicitAny": false,
+    "skipLibCheck": true,
+    // uni / plus / getApp / getCurrentPages 的官方类型声明
+    "types": ["@dcloudio/types"]
+  },
+  "include": ["**/*.js", "**/*.ts", "**/*.d.ts", "**/*.vue"],
+  "exclude": [
+    "node_modules",
+    "unpackage",
+    "dist",
+    "hybrid",
+    "uni_modules",
+    "scripts",
+    "**/*.config.js"
+  ]
+}

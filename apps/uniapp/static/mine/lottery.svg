@@ -1,0 +1,7 @@
+<!-- 抽奖活动奖杯图标矢量源；客户端使用同名PNG以兼容小程序。作者 Bulbasaur，2026-11-16。 -->
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <path d="M18 16H8V23C8 32 13 36 22 36M46 16H56V23C56 32 51 36 42 36M32 42V52M22 57H42" stroke="#454545" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M18 10H46V27C46 37 40 43 32 43C24 43 18 37 18 27Z" fill="#FF5626"/>
+  <path d="M32 17L34.5 22.5L40.5 23.3L36.2 27.5L37.2 33.5L32 30.7L26.8 33.5L27.8 27.5L23.5 23.3L29.5 22.5Z" fill="white"/>
+  <path d="M25 52H39" stroke="#454545" stroke-width="4.5" stroke-linecap="round"/>
+</svg>

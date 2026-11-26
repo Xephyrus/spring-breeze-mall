@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/package.json",
+  "name": "spring-breeze-mall",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Spring Breeze Mall monorepo (Lilishop-based)",
+  "packageManager": "pnpm@12.14.0",
+  "engines": {
+    "node": ">=24",
+    "pnpm": ">=12"
+  },
+  "scripts": {
+    "dev:manager": "pnpm --filter @spring-breeze/manager dev",
+    "dev:seller": "pnpm --filter @spring-breeze/seller dev",
+    "dev:buyer": "pnpm --filter @spring-breeze/buyer dev",
+    "dev:im": "pnpm --filter @spring-breeze/im dev",
+    "dev:all-ui": "pnpm -r --parallel --filter @spring-breeze/manager --filter @spring-breeze/seller --filter @spring-breeze/buyer --filter @spring-breeze/im dev",
+    "build:manager": "pnpm --filter @spring-breeze/manager build",
+    "build:seller": "pnpm --filter @spring-breeze/seller build",
+    "build:buyer": "pnpm --filter @spring-breeze/buyer build",
+    "build:im": "pnpm --filter @spring-breeze/im build",
+    "backend:compile": "cd backend && .\\mvnw.cmd -DskipTests compile",
+    "backend:package": "cd backend && .\\mvnw.cmd -DskipTests package"
+  }
+}

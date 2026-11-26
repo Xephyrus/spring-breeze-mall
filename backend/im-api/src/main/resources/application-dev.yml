@@ -1,0 +1,22 @@
+# ===================================================================
+# IM 服务 (im-api) - 本地开发环境配置 (Profile: dev)
+# 直连本机 MySQL 9.7 / Redis 8（无密码）
+# 数据库密码见 gitignore 的 backend/local-secrets.yml（勿提交仓库）
+# ===================================================================
+
+spring:
+  config:
+    import: optional:file:./local-secrets.yml,optional:file:../local-secrets.yml
+
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      # 显式覆盖基础配置中的密码；本机 Redis 无密码时必须为空串
+      password: ""
+
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/lilishop?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai
+    username: root
+    # password 由 local-secrets.yml 覆盖
+    password: ""

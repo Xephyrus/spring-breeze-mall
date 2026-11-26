@@ -1,0 +1,1253 @@
+<template>
+  <view :style="themeStyle">
+    <!-- 订单状态 -->
+    <div class="info-view order-view">
+      <div class="order-status" v-if="displayOrderStatus">
+        <view class="order-status-title">{{ displayOrderStatus.title }}</view>
+        <view class="order-status-desc" v-if="displayOrderStatus.value">{{ displayOrderStatus.value }}</view>
+      </div>
+
+    </div>
+    <!-- 物流/配送信息 / 卡密入口 -->
+    <view class="info-view logistics-view" v-if="showDeliveryInfoBlock">
+      <view class="logistics-List">
+        <view v-if="isAppointmentOrderFlag" class="appointment-entry">
+          <view class="appointment-entry__row">
+            <text class="label">预约时间</text>
+            <text class="value">{{ appointmentSlotText }}</text>
+          </view>
+          <view class="appointment-entry__row" v-if="appointmentDetail.serviceMode">
+            <text class="label">服务方式</text>
+            <text class="value">{{ serviceModeLabel }}</text>
+          </view>
+          <view class="appointment-entry__row" v-if="appointmentDetail.serviceAddressSnapshot">
+            <text class="label">服务地址</text>
+            <text class="value">{{ appointmentDetail.serviceAddressSnapshot }}</text>
+          </view>
+          <template v-for="(row, index) in appointmentFormRows" :key="index">
+            <view v-if="row.type === 'group'" class="appointment-group">{{ row.label }}</view>
+            <view v-else class="appointment-entry__row">
+              <text class="label">{{ row.label }}</text>
+              <text class="value">{{ row.value }}</text>
+            </view>
+          </template>
+          <verification-codes :items="verificationCodeItems" />
+        </view>
+        <view v-else-if="isECouponOrder" class="card-key-entry">
+          <view v-if="ecouponCardKeyDelivered" class="btn" @click="goCardKeyDetail">
+            查看卡密
+          </view>
+          <view v-else-if="order.orderStatus === 'CANCELLED'" class="card-key-entry__tip">
+            订单已关闭
+          </view>
+          <view v-else class="card-key-entry__tip">
+            {{ ecouponPendingMessage || '卡密尚未发放，请稍后刷新' }}
+          </view>
+        </view>
+        <verification-codes v-else-if="verificationCodeItems.length" :items="verificationCodeItems" />
+        <view
+          v-else-if="allowOperation.showLogistics"
+          @click="handleClickDeliver()"
+          class="info-view logi-view"
+        >
+          <view class="verificationCode">{{ deliveryEntryText }}</view>
+          <div>点击此处查看</div>
+        </view>
+        <view v-else-if="order.orderStatus === 'UNDELIVERED'" class="logistics-List-title">
+          等待商家发货
+        </view>
+      </view>
+    </view>
+    <!-- 地址 -->
+    <view class="info-view" v-if="order.deliveryMethod === 'LOGISTICS' && !isNonPhysicalOrder">
+      <view class="address-view">
+        <view>
+          <view class="address-title">
+            <span>{{ order.consigneeName || "未填写昵称" }}</span>
+            <span>{{ order.consigneeMobile ? secrecyMobile(order.consigneeMobile) : '未填写手机号' }}</span>
+          </view>
+          <view class="address">地址：{{ order.consigneeAddressPath }}
+            {{ order.consigneeDetail }}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 提货地址 -->
+    <view class="info-view" v-if="order.deliveryMethod === 'SELF_PICK_UP'">
+      <view class="address-view">
+        <view>
+          <view class="order-info-view">
+            <view class="title">自提点地址:</view>
+            <view class="value address-line-height">{{ order.storeAddressPath }}</view>
+          </view>
+          <view class="order-info-view" @click="handleCallPhone">
+            <view class="title">联系方式:</view>
+            <view class="value contact-phone-value">
+              <text>{{ order.storeAddressMobile }}</text>
+              <view class="phone-icon-wrap">
+                <u-icon name="phone-fill" size="28" :color="lightColor || '#2979ff'"></u-icon>
+              </view>
+            </view>
+          </view>
+         
+        </view>
+      </view>
+    </view>
+
+    <!-- 商品信息 -->
+    <view>
+      <view class="seller-view">
+        <!-- 店铺名称 -->
+        <view class="seller-info u-flex u-row-between">
+          <view class="seller-name" @click="goToShopPage(order)">
+            <view class="name">{{ order.storeName }}</view>
+            <view class="status" v-if="displayOrderStatus"> {{ displayOrderStatus.title }}</view>
+          </view>
+          <view class="order-sn"></view>
+        </view>
+        <view>
+          <view v-for="(sku, skuIndex) in orderGoodsList" :key="skuIndex">
+            <view class="goods-item-view">
+              <view class="goods-img" @click="gotoGoodsDetail(sku)">
+                <u-image border-radius="6" width="131rpx" height="131rpx" :src="sku.image"></u-image>
+              </view>
+              <view class="goods-body">
+                <view class="goods-info" @click="gotoGoodsDetail(sku)">
+                  <view class="goods-title u-line-2">
+                    <text v-if="isGiftItem(sku)" class="gift-badge">赠品</text>
+                    {{ sku.goodsName }}
+                  </view>
+                  <view class="goods-price" v-if="isGiftItem(sku)">
+                    <text class="gift-original-price">￥{{ unitPrice(sku.goodsPrice) }}</text>
+                  </view>
+                  <view class="goods-price" v-else>
+                    ￥{{unitPrice(sku.goodsPrice) }}
+                    <!-- <span v-if="sku.point">+{{ sku.point }}积分</span> -->
+                    <span style="font-size: 24rpx;margin-left: 14rpx;color: #ff9900;" v-if="order.payStatus === 'PAID' && !isECouponOrder && !isAppointmentOrderFlag && sku.isRefund && sku.isRefund !== 'NO_REFUND'">
+                    {{refundPriceList(sku.isRefund)}} ({{unitPrice(resolveRefundPrice(sku), "￥") }})
+                     </span>
+                  </view>
+                </view>
+                <view class="goods-side" :class="{ 'has-action': canShowSkuAfterSale(sku) }">
+                  <view class="goods-num">
+                    <view>x{{ sku.num }}</view>
+                  </view>
+                  <view class="after-sale-btn" v-if="canShowSkuAfterSale(sku)" @click.stop="onSkuAfterSale(sku)">退款/售后</view>
+                  <view class="gift-tip" v-else-if="isGiftItem(sku)">随单赠送</view>
+                </view>
+              </view>
+            </view>
+
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="info-view">
+      <view>
+        <view class="order-info-view">
+          <view class="title">商品总价：</view>
+          <view class="value">￥{{unitPrice(order.goodsPrice) }}</view>
+        </view>
+        <view class="order-info-view" v-if="order.freightPrice && !isECouponOrder && !isAppointmentOrderFlag">
+          <view class="title">运费：</view>
+          <view class="value">￥{{unitPrice(order.freightPrice) }}</view>
+        </view>
+        <view class="order-info-view" v-if="order.priceDetailDTO && Number(order.priceDetailDTO.couponPrice) > 0">
+          <view class="title">优惠券：</view>
+          <view class="value main-color">-￥{{unitPrice(order.priceDetailDTO.couponPrice) }}</view>
+        </view>
+        <view class="order-info-view" v-if="Number(order.discountPrice) > 0">
+          <view class="title">活动优惠：</view>
+          <view class="value main-color">-￥{{unitPrice(order.discountPrice) }}</view>
+        </view>
+        <view class="order-info-view" v-if="order.priceDetailDTO && Number(order.priceDetailDTO.giftCardPrice) > 0">
+          <view class="title">礼品卡抵扣：</view>
+          <view class="value main-color">-￥{{unitPrice(order.priceDetailDTO.giftCardPrice) }}</view>
+        </view>
+        <!-- <view class="order-info-view" v-if="order.use_point">
+					<view class="title">使用积分：</view>
+					<view class="value">{{ order.use_point }}</view>
+				</view> -->
+      </view>
+    </view>
+    <!-- 客户服务， 售后，取消订单，查看物流，投诉等 -->
+    <view class="info-view">
+      <view style="width: 100%">
+        <view class="order-info-view">
+          <view class="title">服务</view>
+        </view>
+        <view class="customer-list">
+          <view class="customer-service"
+            v-if="showCancelBtn"
+            @click="onCancel(order.sn)">取消订单</view>
+          <view class="customer-service" v-if="allowOperation.showLogistics" @click="handleClickDeliver()">查看物流</view>
+          <view class="customer-service" v-if="order.orderStatus != 'UNPAID' && order.orderPromotionType == 'PINTUAN'"
+            @click="ByUserMessage(order)">查看拼团信息</view>
+            <view class="customer-service"
+            @click="contact(order.storeId)">联系客服</view>
+        </view>
+      </view>
+    </view>
+    <view class="info-view">
+      <view style="width: 100%">
+        <view class="order-info-view">
+          <view class="title">订单编号：</view>
+          <view class="value order-sn-value">
+            <text class="order-sn-text">{{ order.sn }}</text>
+            <view class="copy" @tap.stop="onCopy(order.sn)">
+              <view class="copy-icon"></view>
+            </view>
+          </view>
+        </view>
+        <view class="order-info-view">
+          <view class="title">下单时间：</view>
+          <view class="value">{{
+              order.createTime
+          }}</view>
+        </view>
+        <view class="order-info-view">
+          <view class="title">订单备注：</view>
+          <view class="value">{{
+              order.remark || '暂无备注'
+          }}</view>
+        </view>
+        <view class="order-info-view">
+          <view class="title">支付状态：</view>
+          <view class="value">
+            {{
+                order.payStatus == "UNPAID"
+                  ? "未付款"
+                  : order.payStatus == "PAID"
+                    ? "已付款"
+                    : ""
+            }}</view>
+        </view>
+        <view class="order-info-view">
+          <view class="title">支付方式：</view>
+          <view class="value">{{ orderDetail.paymentMethodValue || '暂无'}}</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="info-view" v-if="order.payStatus == 'PAID'">
+      <view>
+        <view class="invoice-info-view">
+          <view class="invoice-title">发票信息：</view>
+          <view v-if="!order.needReceipt" class="value">无需发票</view>
+          <view v-else class="value" @click="onReceipt(orderDetail.receipt)">查看发票</view>
+        </view>
+      </view>
+    </view>
+    <view style="padding-bottom: 150rpx"></view>
+
+    <view class="bottom_view">
+      <view class="btn-view">
+        <view class="description">
+          <text v-if="order.payStatus === 'PAID'">已付金额：</text>
+          <text v-else>应付金额：</text>
+          <text class="price" v-if="order.priceDetailDTO">￥{{unitPrice(order.priceDetailDTO.flowPrice) }}</text>
+        </view>
+        <view class="goods-btn">
+          <view
+            class="pay-btn"
+            v-if="orderDetail.allowOperationVO && orderDetail.allowOperationVO.pay"
+            @click="toPay(order)"
+          >立即付款</view>
+          <view
+            class="pay-btn"
+            v-if="allowOperation.rog"
+            @click="onRog(order.sn)"
+          >确认收货</view>
+          <view
+            class="rebuy-btn"
+            v-if="canEvaluateOrder(order, orderGoodsList)"
+            @click="onComment(order.sn)"
+          >评价商品</view>
+        </view>
+      </view>
+    </view>
+    <u-popup class="cancel-popup" v-model:show="cancelShow" mode="bottom" length="60%">
+      <view class="header">取消订单</view>
+      <view class="body">
+        <view class="title">{{ order.pickupCardId ? '此订单使用提货卡兑换，取消不退还提货权益，无法再次兑换。是否继续？' : '取消订单后，本单享有的优惠可能会一并取消，是否继续？' }}</view>
+        <view>
+          <u-radio-group v-model="reason">
+            <view class="value">
+              <view class="radio-view" v-for="(item, index) in cancelList" :key="index">
+                <u-radio :active-color="lightColor" shape="circle" :name="item.reason"
+                  :label="item.reason" @change="reasonChange"></u-radio>
+              </view>
+            </view>
+          </u-radio-group>
+        </view>
+      </view>
+      <view class="footer">
+        <u-button size="medium" v-if="reason" shape="circle" @click="submitCancel">提交</u-button>
+      </view>
+    </u-popup>
+    <u-toast ref="uToast" />
+    <u-modal v-model:show="rogShow" :show-cancel-button="true" :content="'是否确认收货?'" :confirm-color="lightColor"
+      @confirm="confirmRog"></u-modal>
+
+    <!-- 分享 -->
+    <shares v-if="shareFlag" :thumbnail="orderDetail.orderItems[0].image"
+      :goodsName="orderDetail.orderItems[0].goodsName" @close="shareFlag = false" />
+
+  </view>
+</template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue'
+import { onLoad, onShow } from '@dcloudio/uni-app'
+import { canEvaluateOrder } from '@/utils/orderEvaluation.js'
+import { useStore } from '@/store'
+import { getThemeStyle } from '@/utils/theme'
+import { getExpress, getPackage } from '@/api/trade.js'
+import { cancelOrder, confirmReceipt, getOrderDetail } from '@/api/order.js'
+import shares from '@/components/m-share/index'
+import { getClearReason } from '@/api/after-sale.js'
+import storage from '@/utils/storage'
+import {
+	unitPrice,
+	secrecyMobile,
+	setClipboard,
+	talkIm,
+	callPhone,
+} from '@/utils/filters.js'
+import {
+	shouldLoadDelivery,
+	getDeliveryEntryText,
+	getOrderAllowOperation,
+} from '@/utils/orderDelivery.js'
+import {
+	isECouponOrder as checkECouponOrder,
+	isAppointmentOrder as checkAppointmentOrder,
+	isNonPhysicalOrder as checkNonPhysicalOrder,
+	orderHasCardKeyContent,
+	collectCardKeyFulfillLines,
+	resolveCardKeyFulfillMessage,
+	CARD_KEY_FULFILL_STATUS,
+} from '@/utils/goodsType.js'
+import { getAppointmentOrderDetail } from '@/api/appointment.js'
+import VerificationCodes from './components/verificationCodes.vue'
+import {
+	SERVICE_MODE_LABEL,
+	appointmentOrderStatusText,
+	getAppointmentAllowOperation,
+	formatDate,
+	parseFormAnswerGroups,
+	formatFormAnswerValue,
+} from '@/utils/appointmentGoods.js'
+
+const store = useStore()
+const themeStyle = computed(() => getThemeStyle(store.state.theme))
+const lightColor = computed(() => store.getters.lightColor)
+const mainColor = computed(() => store.getters.mainColor)
+
+const orderStatusMap: Record<string, { title: string; value?: string }> = {
+	UNPAID: { title: '未付款', value: '商品暂未付款' },
+	PAID: { title: '已付款', value: '买家已付款' },
+	UNDELIVERED: { title: '待发货', value: '商品等待发货中' },
+	PARTS_DELIVERED: { title: '部分发货', value: '商品已部分发货。' },
+	DELIVERED: { title: '已发货', value: '商品已发货,请您耐心等待' },
+	CANCELLED: { title: '已取消', value: '订单已取消' },
+	COMPLETED: { title: '已完成', value: '订单已完成,祝您生活愉快' },
+	STAY_PICKED_UP: { title: '待自提', value: '商品正在等待提取' },
+	TAKE: { title: '待核验' },
+}
+
+const shareFlag = ref(false)
+const order = ref<Record<string, any>>({})
+const cancelShow = ref(false)
+const orderSn = ref('')
+const orderGoodsList = ref<any[]>([])
+const orderDetail = ref<Record<string, any>>({})
+const sn = ref('')
+const cancelList = ref<any[]>([])
+const rogShow = ref(false)
+const reason = ref('')
+const orderPackage = ref<any[]>([])
+const legacyTraces = ref<any>(null)
+
+const displayOrderStatus = computed(() => {
+	if (isAppointmentOrderFlag.value) {
+		const status = order.value?.orderStatus
+		const title = appointmentOrderStatusText(status)
+		if (status === 'UNPAID') return { title, value: '请尽快完成支付' }
+		if (status === 'CANCELLED') return { title, value: '订单已取消' }
+		if (status === 'COMPLETED' || status === 'COMPLETE') return { title, value: '服务已完成' }
+		const onSite = appointmentDetail.value?.serviceMode === 'ON_SITE'
+		return {
+			title,
+			value: onSite ? '请等待上门服务' : '请按时到店使用',
+		}
+	}
+	return orderStatusMap[order.value?.orderStatus]
+})
+const isECouponOrder = computed(() => checkECouponOrder(order.value?.orderType))
+const isAppointmentOrderFlag = computed(() => checkAppointmentOrder(order.value?.orderType))
+const isNonPhysicalOrder = computed(() => checkNonPhysicalOrder(order.value?.orderType))
+const appointmentDetail = ref<Record<string, any>>({})
+const appointmentAllow = computed(() =>
+	getAppointmentAllowOperation(order.value) || { cancel: false, afterSale: false }
+)
+const showCancelBtn = computed(() => {
+	if (isAppointmentOrderFlag.value) return appointmentAllow.value.cancel
+	return orderDetail.value.allowOperationVO?.cancel === true
+})
+const appointmentCodes = computed(() => appointmentDetail.value?.codes || [])
+const serviceModeLabel = computed(
+	() => SERVICE_MODE_LABEL[appointmentDetail.value?.serviceMode] || appointmentDetail.value?.serviceMode || ''
+)
+const appointmentSlotText = computed(() => {
+	const d = appointmentDetail.value
+	if (!d?.slotDate) return '—'
+	const date = formatDate(d.slotDate)
+	const slot = d.slotStartTime && d.slotEndTime ? `${d.slotStartTime}-${d.slotEndTime}` : ''
+	return [date, slot].filter(Boolean).join(' ')
+})
+const appointmentFormGroups = computed(() =>
+	parseFormAnswerGroups(appointmentDetail.value?.formAnswerJson)
+)
+const appointmentFormRows = computed(() => {
+	const groups = appointmentFormGroups.value
+	const rows = []
+	if (groups.length) {
+		groups.forEach((group, index) => {
+			if (groups.length > 1) {
+				rows.push({ type: 'group', label: `第${index + 1}位` })
+			}
+			group.forEach((field) => {
+				const value = formatFormAnswerValue(field.value)
+				if (!value) return
+				rows.push({ label: field.fieldLabel || '补充信息', value })
+			})
+		})
+		return rows
+	}
+	if (appointmentDetail.value?.contactName) {
+		rows.push({ label: '联系人', value: appointmentDetail.value.contactName })
+	}
+	if (appointmentDetail.value?.contactPhone) {
+		rows.push({ label: '联系方式', value: appointmentDetail.value.contactPhone })
+	}
+	return rows
+})
+const ecouponCardKeyDelivered = computed(() =>
+	orderHasCardKeyContent(orderGoodsList.value)
+)
+const ecouponPendingMessage = computed(() => {
+	const pending = collectCardKeyFulfillLines(orderGoodsList.value).find(
+		(line) => line.status !== CARD_KEY_FULFILL_STATUS.DELIVERED
+	)
+	return pending ? resolveCardKeyFulfillMessage(pending) : ''
+})
+
+const allowOperation = computed(() =>
+	getOrderAllowOperation(order.value, orderDetail.value)
+)
+
+const showDeliveryInfoBlock = computed(() => {
+	if (isAppointmentOrderFlag.value) return true
+	if (isECouponOrder.value) return true
+	if (order.value.verificationCode) return true
+	if (order.value.orderType === 'VIRTUAL') return false
+	if (order.value.deliveryMethod === 'SELF_PICK_UP') return false
+	if (order.value.deliveryMethod === 'LOGISTICS') return true
+	return false
+})
+
+const verificationCodeItems = computed(() => {
+	if (isAppointmentOrderFlag.value) {
+		const cancelled = order.value.orderStatus === 'CANCELLED'
+		let qrAssigned = false
+		return appointmentCodes.value.map((code, index) => {
+			const pending = !cancelled && code.status === 'UNUSED'
+			const showQr = pending && !qrAssigned
+			if (showQr) qrAssigned = true
+			return {
+				key: code.id || code.code || String(index),
+				canvasId: `verify-code-${index}`,
+				code: code.code,
+				struck: !pending,
+				showQr,
+			}
+		})
+	}
+	const code = order.value.verificationCode
+	if (!code || isECouponOrder.value) return []
+	const status = order.value.orderStatus
+	const pending = status !== 'CANCELLED' && status !== 'COMPLETED'
+	return [{
+		key: code,
+		canvasId: 'verify-code-0',
+		code,
+		struck: !pending,
+		showQr: pending,
+	}]
+})
+
+const deliveryEntryText = computed(() =>
+	getDeliveryEntryText(
+		orderPackage.value,
+		order.value.orderStatus,
+		legacyTraces.value
+	)
+)
+
+function hideLoadingIfNeeded() {
+	if (store.state.isShowToast) uni.hideLoading()
+}
+
+onLoad((options) => {
+	const orderSnParam = options?.sn || ''
+	sn.value = orderSnParam
+})
+
+onShow(() => {
+	// 发表评价后返回详情时重新读取商品评价状态。
+	if (sn.value) loadData(sn.value)
+})
+
+async function loadDelivery(orderData: Record<string, any>) {
+	orderPackage.value = []
+	legacyTraces.value = null
+
+	if (!shouldLoadDelivery(orderData)) {
+		return
+	}
+
+	try {
+		const packageResponse = await getPackage(orderData.sn)
+		const packages = packageResponse?.data?.result || []
+		if (packages.length) {
+			orderPackage.value = packages
+			return
+		}
+
+		const traceResponse = await getExpress(orderData.sn)
+		legacyTraces.value = traceResponse?.data?.result || null
+	} catch {
+		// 配送信息加载失败时不阻断订单详情展示
+	}
+}
+
+function handleClickDeliver() {
+	uni.navigateTo({
+		url: `/pages/order/deliverDetail?order_sn=${order.value.sn}`,
+	})
+}
+
+function goCardKeyDetail() {
+	if (!sn.value) return
+	uni.navigateTo({
+		url: `/pages/order/cardKey/cardKeyDetail?sn=${sn.value}`,
+	})
+}
+
+function refundPriceList(status: string) {
+	switch (status) {
+		case 'ALL_REFUND':
+			return '全部退款'
+		case 'PART_REFUND':
+			return '部分退款'
+		case 'NO_REFUND':
+			return '未退款'
+		case 'REFUNDING':
+			return '退款中'
+		default:
+			return ''
+	}
+}
+
+function resolveRefundPrice(sku: any) {
+	if (sku?.refundPrice && Number(sku.refundPrice) > 0) {
+		return sku.refundPrice
+	}
+	if (sku?.isRefund === 'ALL_REFUND' && sku?.flowPrice) {
+		return sku.flowPrice
+	}
+	return sku?.refundPrice || 0
+}
+
+function handleCallPhone() {
+	if (order.value.storeAddressMobile) {
+		callPhone(order.value.storeAddressMobile)
+	}
+}
+
+function contact(storeId: string) {
+	talkIm(storeId)
+}
+
+function goToShopPage(val: any) {
+	uni.navigateTo({
+		url: '/pages/product/shopPage?id=' + val.storeId,
+	})
+}
+
+function inviteGroup() {
+	shareFlag.value = true
+}
+
+function ByUserMessage(orderItem: any) {
+	uni.navigateTo({
+		url:
+			'/pages/cart/payment/shareOrderGoods?sn=' +
+			orderItem.sn +
+			'&sku=' +
+			orderGoodsList.value[0].skuId +
+			'&goodsId=' +
+			orderGoodsList.value[0].goodsId,
+	})
+}
+
+async function loadAppointmentDetail(orderSnParam: string) {
+	if (!checkAppointmentOrder(order.value?.orderType)) {
+		appointmentDetail.value = {}
+		return
+	}
+	try {
+		const res = await getAppointmentOrderDetail(orderSnParam)
+		appointmentDetail.value = res.data?.result || {}
+	} catch {
+		appointmentDetail.value = {}
+	}
+}
+
+function loadData(orderSnParam: string) {
+	uni.showLoading({ title: '加载中' })
+	getOrderDetail(orderSnParam).then(async (res) => {
+		const result = res.data.result
+		order.value = result.order
+		orderGoodsList.value = result.orderItems
+		orderDetail.value = result
+		if (!order.value.allowOperationVO && result.allowOperationVO) {
+			order.value.allowOperationVO = result.allowOperationVO
+		}
+		await loadAppointmentDetail(orderSnParam)
+		await loadDelivery(order.value)
+		hideLoadingIfNeeded()
+	})
+}
+
+function onReceipt(val: any) {
+	uni.navigateTo({
+		url: '/pages/order/invoice/invoiceDetail?id=' + val.id,
+	})
+}
+
+function gotoGoodsDetail(sku: any) {
+	uni.navigateTo({
+		url: `/pages/product/goods?id=${sku.skuId}&goodsId=${sku.goodsId}`,
+	})
+}
+
+function onCopy(orderSnText: string) {
+	if (!orderSnText) {
+		uni.showToast({ title: '暂无订单编号', icon: 'none' })
+		return
+	}
+	setClipboard(String(orderSnText))
+}
+
+function canApplySkuAfterSale(sku: any) {
+	const status = String(sku?.afterSaleStatus || '')
+	if (status.includes('NOT_APPLIED') || status.includes('PART_AFTER_SALE')) return true
+	if (isAppointmentOrderFlag.value && (!status || status === 'NEW')) return true
+	return false
+}
+
+function isGiftItem(sku: any) {
+	if (!sku) return false
+	return sku.promotionType === 'GIFT' || (Number(sku.flowPrice) === 0 && sku.promotionType === 'GIFT')
+}
+
+function canShowSkuAfterSale(sku: any) {
+	if (order.value?.orderStatus === 'CANCELLED') return false
+	if (isGiftItem(sku)) return false
+	if (isECouponOrder.value) return false
+	if (!order.value?.sn || Number(order.value.flowPrice) === 0) return false
+	if (isAppointmentOrderFlag.value && !appointmentAllow.value.afterSale) return false
+	return canApplySkuAfterSale(sku)
+}
+
+function onSkuAfterSale(sku: any) {
+	if (!canShowSkuAfterSale(sku)) return
+	storage.setAfterSaleData({
+		...order.value,
+		...sku,
+		orderItems: orderGoodsList.value || [],
+		storeName: order.value.storeName,
+		flowPrice: order.value.flowPrice,
+		orderType: order.value.orderType,
+	})
+	uni.navigateTo({
+		url: `./afterSales/afterSalesSelect?sn=${sku.sn}`,
+	})
+}
+
+function onAfterSales(orderSnText: string, sku: any) {
+	uni.navigateTo({
+		url: `./afterSales/afterSalesSelect?sn=${orderSnText}&sku=${encodeURIComponent(
+			JSON.stringify(sku)
+		)}`,
+	})
+}
+
+function toPay(val: any) {
+	if (val.sn) {
+		uni.navigateTo({
+			url: '/pages/cart/payment/payOrder?order_sn=' + val.sn,
+		})
+	}
+}
+
+function onCancel(orderSnText: string) {
+	orderSn.value = orderSnText
+	uni.showLoading({ title: '加载中' })
+	getClearReason().then((res) => {
+		if (res.data.result.length >= 1) {
+			cancelList.value = res.data.result
+		}
+		hideLoadingIfNeeded()
+	})
+	cancelShow.value = true
+}
+
+function submitCancel() {
+	cancelOrder(orderSn.value, { reason: reason.value }).then((res) => {
+		if (res.data.success) {
+			uni.showToast({
+				title: '已取消',
+				duration: 2000,
+				icon: 'none',
+			})
+			cancelShow.value = false
+			setTimeout(() => {
+				uni.reLaunch({
+					url: '/pages/order/myOrder?status=0',
+				})
+			}, 500)
+		} else {
+			uni.showToast({
+				title: res.data.message,
+				duration: 2000,
+				icon: 'none',
+			})
+			cancelShow.value = false
+		}
+	})
+}
+
+function onRog(orderSnText: string) {
+	orderSn.value = orderSnText
+	rogShow.value = true
+}
+
+function confirmRog() {
+	confirmReceipt(orderSn.value).then((res) => {
+		if (res.data.success) {
+			uni.showToast({
+				title: '已确认收货',
+				duration: 2000,
+				icon: 'none',
+			})
+			rogShow.value = false
+			loadData(sn.value)
+		}
+	})
+}
+
+/** 打开当前订单的待评价商品。 */
+function onComment(orderSnText: string) {
+	uni.navigateTo({
+		url: './evaluate/myEvaluate?orderSn=' + encodeURIComponent(orderSnText),
+	})
+}
+
+function reasonChange(val: string) {
+	reason.value = val
+}
+
+function reBuy(orderItem: any) {
+	uni.navigateTo({
+		url: '/pages/product/goods?id=' + orderItem.id + '&goodsId=' + orderItem.goodsId,
+	})
+}
+</script>
+
+<style lang="scss">
+@import "./goods.scss";
+
+.seller-view .goods-item-view {
+  align-items: flex-start;
+
+  .goods-body {
+    flex: 4;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .goods-info {
+    flex: 1;
+    min-width: 0;
+
+    .goods-title {
+      font-size: 24rpx;
+      line-height: 1.4;
+    }
+  }
+
+  .goods-side {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    align-self: stretch;
+    min-height: 131rpx;
+    margin-left: 12rpx;
+  }
+
+  .goods-side.has-action {
+    justify-content: space-between;
+  }
+
+  .goods-num {
+    flex: none;
+    width: auto;
+    text-align: right;
+  }
+}
+
+.after-sale-btn {
+  height: 44rpx;
+  line-height: 44rpx;
+  padding: 0 16rpx;
+  font-size: 22rpx;
+  color: #666;
+  background: #f5f5f5;
+  border-radius: 22rpx;
+  white-space: nowrap;
+}
+
+.empty {
+  width: 100%;
+}
+
+.customer-service {
+  background: #ededed;
+  // padding: 12rpx 40rpx;
+  width: 48%;
+  margin: 0 1%;
+  height: 55rpx;
+  line-height: 55rpx;
+  margin-bottom: 10rpx;
+  text-align: center;
+  font-size: 24rpx;
+  border-radius: 10rpx;
+}
+
+.customer-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.logistics-view {
+  justify-content: space-between;
+  padding: 30rpx !important;
+  margin: 0 !important;
+  transform: translateY(-10px);
+}
+
+.order-status {
+  color: #fff;
+  width: 100%;
+  text-align: center;
+  margin-top: 36rpx;
+
+  .order-status-title {
+    font-size: 44rpx;
+    font-weight: 600;
+  }
+
+  .order-status-desc {
+    font-size: 22rpx;
+    font-weight: normal;
+    margin-top: 8rpx;
+    opacity: 0.95;
+  }
+}
+
+.logistics-List-title {
+  margin-bottom: 10rpx;
+  font-size: 26rpx;
+}
+
+.logistics-List-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.info-detail {
+  margin-right: 30rpx;
+  color: #333;
+}
+
+.order-view {
+  margin: 0 !important;
+  border-radius: 0 !important;
+  width: 100%;
+  height: 200rpx;
+  padding: 0 !important;
+  background-image: linear-gradient(to right,
+      $light-color 0%,
+      $aider-light-color 100%) !important;
+}
+
+page,
+.content {
+  background: #f1f1f1;
+  height: 100%;
+}
+
+.info-line {
+  align-items: center;
+  display: flex;
+  border-radius: 30rpx;
+  flex-direction: row;
+  justify-content: space-between;
+  background-color: #fff;
+  width: 100%;
+  height: 110rpx;
+  color: #333333;
+  font-size: 28rpx;
+  border-bottom: 1rpx solid #eeeeee;
+
+  .info-title {
+    margin: 0 30rpx;
+    padding: 16rpx 0rpx;
+  }
+}
+
+.seller-view {
+  margin: 20rpx 0;
+  padding: 15rpx 0;
+  border-radius: 30rpx;
+}
+
+.address-title {
+  font-size: 26rpx;
+  font-weight: bold;
+
+  >span {
+    margin-right: 20rpx;
+  }
+}
+
+.info-view {
+  display: flex;
+  margin: 0 0 20rpx 0;
+  border-radius: 30rpx;
+  flex-direction: row;
+  padding: 15rpx 30rpx;
+  margin-bottom: 20rpx;
+  background-color: #fff;
+
+  .address-view {
+    display: flex;
+    flex-direction: row;
+    padding: 16rpx 0;
+
+    .address {
+      color: $font-color-light;
+      overflow: hidden;
+      line-height: 1.75;
+      font-size: 22rpx;
+    }
+  }
+
+  .order-info-view {
+    line-height: 60rpx;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 10rpx 0rpx;
+
+    .title {
+      color: #666;
+      width: 140rpx;
+      font-size: 24rpx;
+      font-weight: 600;
+      flex:3;
+      min-width: 160rpx;
+    }
+
+    .value {
+      color: #666;
+      font-size: 24rpx;
+      flex:10;
+    }
+
+    .contact-phone-value {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .phone-icon-wrap {
+        margin-left: 12rpx;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .order-sn-value {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .order-sn-text {
+      word-break: break-all;
+    }
+
+    .copy {
+      margin-left: 16rpx;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40rpx;
+      height: 40rpx;
+    }
+
+    .copy-icon {
+      position: relative;
+      width: 28rpx;
+      height: 28rpx;
+    }
+
+    .copy-icon::before,
+    .copy-icon::after {
+      content: '';
+      position: absolute;
+      width: 16rpx;
+      height: 16rpx;
+      border: 2rpx solid #666;
+      border-radius: 4rpx;
+      background: #fff;
+    }
+
+    .copy-icon::before {
+      left: 0;
+      top: 8rpx;
+    }
+
+    .copy-icon::after {
+      right: 0;
+      top: 0;
+    }
+  }
+
+  .invoice-info-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10rpx 0rpx;
+
+    .invoice-title {
+      width: 550rpx;
+      font-size: 28rpx;
+      color: #333333;
+    }
+
+    .value {
+      color: $font-color-light;
+    }
+  }
+}
+
+.appointment-entry__row {
+  display: flex;
+  align-items: flex-start;
+  font-size: 26rpx;
+  margin-bottom: 16rpx;
+  line-height: 1.5;
+}
+.appointment-entry__row .label {
+  color: #999;
+  width: 140rpx;
+  flex-shrink: 0;
+}
+.appointment-entry__row .value {
+  flex: 1;
+  min-width: 0;
+  color: #333;
+  word-break: break-all;
+}
+.appointment-group {
+  margin: 8rpx 0 12rpx;
+  font-size: 24rpx;
+  color: var(--theme-primary, #ff3c2a);
+  line-height: 1.4;
+}
+
+.verificationCode {
+  font-weight: bold;
+  letter-spacing: 2rpx;
+}
+
+.card-key-entry {
+  width: 100%;
+
+  .btn {
+    width: 100%;
+    height: 80rpx;
+    line-height: 80rpx;
+    border-radius: 40rpx;
+    font-size: 30rpx;
+  }
+}
+
+.card-key-entry__tip {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.bottom_view {
+  width: 100%;
+  height: 100rpx;
+  background-color: #ffffff;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  box-shadow: 0 -2rpx 12rpx rgba(0, 0, 0, 0.06);
+
+  .btn-view {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100rpx;
+    padding: 0 30rpx;
+    font-size: 26rpx;
+
+    .description {
+      display: flex;
+      align-items: center;
+      flex: 1;
+      min-width: 0;
+      color: #909399;
+      font-size: 26rpx;
+
+      .price {
+        color: $main-color;
+        font-weight: 600;
+      }
+    }
+  }
+
+  .goods-btn {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: 20rpx;
+  }
+
+  .pay-btn,
+  .rebuy-btn {
+    text-align: center;
+    font-size: 26rpx;
+    padding: 16rpx 36rpx;
+    border-radius: 8rpx;
+    white-space: nowrap;
+  }
+
+  .pay-btn {
+    background-color: $main-color;
+    color: #ffffff;
+  }
+
+  .rebuy-btn {
+    color: $light-color;
+    border: 1rpx solid $light-color;
+    background-color: #ffffff;
+  }
+
+  .cancel-btn {
+    color: #999999;
+    border-color: #999999;
+    margin-left: 15rpx;
+    height: 60rpx;
+  }
+}
+
+.cancel-popup {
+  .header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin: 15rpx 0rpx;
+  }
+
+  .body {
+    padding: 30rpx;
+
+    .title {
+      font-weight: 600;
+    }
+
+    .value {
+      display: flex;
+      flex-direction: column;
+
+      .radio-view {
+        margin: 10rpx 0rpx;
+      }
+    }
+  }
+
+  .footer {
+    text-align: center;
+  }
+}
+.address-line-height{
+  line-height: 1.75;
+}
+.seller-name{
+  >.name{
+    flex:10 !important;
+  }
+  >.status{
+    flex:2;
+  }
+}
+
+.gift-badge {
+  display: inline-block;
+  background: #ff4d4f;
+  color: #fff;
+  font-size: 20rpx;
+  line-height: 28rpx;
+  padding: 0 10rpx;
+  border-radius: 6rpx;
+  margin-right: 8rpx;
+  vertical-align: middle;
+}
+.gift-original-price {
+  color: #999;
+  font-size: 26rpx;
+  text-decoration: line-through;
+  font-weight: normal;
+}
+.gift-tip {
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+  text-align: right;
+}
+</style>

@@ -1,0 +1,69 @@
+# Local toolchain cache (Maven zip etc.)
+.tools/
+
+# Node / pnpm
+node_modules/
+.pnpm-store/
+dist/
+*.local
+.DS_Store
+
+# Java / Maven
+backend/**/target/
+backend/**/*.iml
+backend/.idea/
+*.class
+*.log
+log/
+logs/
+
+# IDE
+.idea/
+.vscode/
+.cursor/
+*.iws
+*.ipr
+
+# Env / secrets (never commit)
+.env
+.env.*.local
+!.env.example
+backend/local-secrets.yml
+**/local-secrets.yml
+**/application-local.yml
+
+# OS
+Thumbs.db
+
+# Build / coverage
+coverage/
+.nyc_output/
+build/
+
+# Uni-app / HBuilder
+unpackage/
+
+# Local verification captcha images / uploads
+backend/data/
+
+.build-check
+# Vendored docker-compose binary (download on demand, ~52 MB)
+docker/init/docker-compose/docker-compose-*
+
+# Runtime logs / crash dumps
+hs_err_pid*.log
+replay_pid*.log
+**/lili-logs/
+
+# Editor / OS junk
+*.swp
+*.swo
+*~
+.idea/
+.vscode/
+.DS_Store
+
+# TLS / cert materials
+*.pem
+*.p12
+*.jks

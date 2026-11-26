@@ -1,0 +1,26 @@
+# 统一编辑器行为（VS Code / IDEA / Eclipse 都支持 EditorConfig）
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+
+# 前端与配置文件用 2 空格
+[*.{js,ts,mjs,cjs,json,vue,scss,css,yml,yaml,html}]
+indent_size = 2
+
+# Markdown 保留行尾空格（换行语义）
+[*.md]
+trim_trailing_whitespace = false
+
+# Windows 脚本必须 CRLF
+[*.{cmd,bat}]
+end_of_line = crlf
+
+# Maven wrapper 与第三方生成物不做格式约束
+[{mvnw,mvnw.cmd}]
+insert_final_newline = false
