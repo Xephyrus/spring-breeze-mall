@@ -74,6 +74,8 @@ function tipsGetSettings() {
     content: "您已经关闭相机权限,去设置",
     success: function (res) {
       if (res.confirm) {
+        // isIos 原本声明在 scan() 里，这里作用域取不到 —— 就地计算，避免点到就 ReferenceError
+        const isIos = plus.os.name === "iOS";
         if (isIos) {
           plus.runtime.openURL("app-settings:");
         } else {

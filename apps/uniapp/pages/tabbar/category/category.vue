@@ -43,7 +43,7 @@
           </view>
           <!-- 分类详情 -->
           <view class="t-list">
-            <template v-for="(children, cIndex) in item.children" :key="children.id">
+            <template v-for="children in item.children" :key="children.id">
               <view
                 @click="navigateToList(item.id, children.id)"
                 v-if="children.parentId === item.id"

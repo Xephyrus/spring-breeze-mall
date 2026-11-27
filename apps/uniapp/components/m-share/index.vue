@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { getCurrentInstance, ref } from 'vue'
 import configs from "@/config/config"
 import mpShare from "@/utils/mpShare.js"
 import { setClipboard } from "@/utils/filters.js"

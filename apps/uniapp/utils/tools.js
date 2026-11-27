@@ -45,7 +45,7 @@ const getNetworkType = () => {
   });
 };
 
-const throttle = (fn, that, gapTime) => {
+const throttle = function (fn, that, gapTime) {
   // export function throttle(fn, gapTime) {
   if (gapTime == null || gapTime == undefined) {
     gapTime = 1800;
