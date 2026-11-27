@@ -308,16 +308,40 @@ typecheck 0 错误 / lint 58（未增长）/ build 7.09s / dev HTTP 200
 
 触发路径同步加入 `apps/seller/**`。
 
-### M5-3 待办：告警清零
+### M5-3 告警清零（✅ 2026-11-28）
 
-当前 58 条告警的构成：
+| 规则 | 处理前 | 处理后 |
+|---|---:|---:|
+| `@typescript-eslint/no-unused-vars` | 36 | **0** |
+| `@typescript-eslint/no-explicit-any` | 12 | **0** |
+| `@typescript-eslint/no-unused-expressions` | 7 | **0** |
+| `eqeqeq` | 3 | **0** |
+| **合计** | **58** | **0** ✅ |
 
-| 规则 | 数量 | 处理方向 |
-|---|---:|---|
-| `@typescript-eslint/no-unused-vars` | 36 | 删掉未使用的 `ref`/`handleReset` 等，或确认是模板引用后加 `defineExpose` |
-| `@typescript-eslint/no-explicit-any` | 12 | 集中在 `libs/axios.ts` 的 `<T = any>` 默认泛型，可换 `unknown` + 调用处断言 |
-| `@typescript-eslint/no-unused-expressions` | 7 | 三元/短路当语句，改成 `if` 或赋值 |
-| `eqeqeq` | 3 | `== null` 已豁免，其余改 `===` |
+ratchet 同步收紧：`"lint": "eslint src --max-warnings 0"`（从此 CI 是零容忍门禁）。
+
+**几处值得记录的修法**
+
+| 位置 | 原写法 | 改法 |
+|---|---|---|
+| `libs/axios.ts` ×12 | `<T = any>` | `<T = unknown>`（调用方本就未消费 `result`，类型更诚实） |
+| `store-role-manage.vue` | 三层三元 `item.children.length !== 0 ? ... : ""` 当语句 | 改成嵌套 `if` + `forEach` |
+| `floor-list.vue` | `(a = 1), (b = 2);` 逗号表达式 | 拆成两条赋值 |
+| `coupon-publish.vue` / `statistics/*.vue` | `cond ? fn() : ""` 当语句 | `if (cond) fn()` |
+| `util.ts` / `clerk-manage.vue` / `tpl_goods.vue` | `== undefined` | `=== undefined` |
+
+**两个坑（已修复，写在这里备查）**
+
+1. **批量删未使用声明时把 import 块删坏了**：脚本用括号配对删除多行函数体，
+   但遇到 `import { A, B } from "x"` 这种「一行内花括号」时，配对逻辑把整行连同后面的代码吃掉了。
+   受影响 3 个文件（`PanelGoodsGrid.vue`、`BoxModelField.vue`、`shop/wap/index.vue`），
+   已按模板里实际用到的组件恢复 import。教训：**删代码的脚本必须逐文件 review diff**，
+   不能只看 typecheck 通过（模板里未定义的组件不会报编译错误，只会在运行时静默失败）。
+2. **`alignTextRight` 是 eslint-plugin-vue 的误报**：它在嵌套 `<template>` 的
+   `:src="alignTextRight"` 里被使用，但插件没识别出来。已加**带说明**的
+   `eslint-disable-next-line`，而不是放宽整个规则。
+
+**验证**：typecheck 0 错误 / **lint 0 告警** / build 7.63s / dev HTTP 200
 
 ---
 

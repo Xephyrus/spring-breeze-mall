@@ -414,7 +414,7 @@ async function initOrderOverViewList() {
 }
 // 实例化订单图表
 async function initOrderChartList(name) {
-  orderChart.value ? orderChart.value.clear() : "";
+  if (orderChart.value) orderChart.value.clear();
   const res = await API_Goods.getOrderChart(orderParams.value);
   if (res.success) {
     chartList.value = res.result;

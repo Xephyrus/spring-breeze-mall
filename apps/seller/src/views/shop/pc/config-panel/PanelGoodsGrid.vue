@@ -183,8 +183,8 @@
 </template>
 
 <script setup>
+import { Delete, Link, Top, Bottom, Close } from '@element-plus/icons-vue';
 import { ref, inject } from 'vue';
-import { Delete, Link, Picture, Plus, Top, Bottom, Close } from '@element-plus/icons-vue';
 import { ElMessageBox } from 'element-plus';
 import GoodsDialog from '@/views/lili-dialog/goods-dialog.vue';
 

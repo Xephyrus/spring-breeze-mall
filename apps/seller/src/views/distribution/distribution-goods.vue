@@ -259,7 +259,7 @@ const editForm = ref({
 });
 const commissionPattern = /^[1-9]\d{0,3}(\.\d{1,2})?$/;
 
-const { loading, data, total, searchForm, getDataList, handleSearch, resetSearch } = useTable(
+const { loading, data, total, searchForm, getDataList, handleSearch } = useTable(
   getDistributionGoods,
   {
     pageSize: 20,
@@ -320,10 +320,6 @@ function authStatusText(value) {
 function onAuthStatusChange(name) {
   searchForm.authStatus = name === "ALL" ? "" : name;
   handleSearch();
-}
-function handleReset() {
-  currentAuthStatus.value = "ALL";
-  resetSearch();
 }
 
 function add() {

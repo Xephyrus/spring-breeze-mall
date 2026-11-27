@@ -636,7 +636,7 @@ function handleSubmit() {
       if (couponKind.value === "DIRECT_REDUCTION") params.consumeThreshold = 0;
       if (params.couponType === "DISCOUNT") delete params.price;
       else delete params.couponDiscount;
-      params.getType !== "ACTIVITY" ? delete params.effectiveDays : "";
+      if (params.getType !== "ACTIVITY") delete params.effectiveDays;
       if (params.getType === "ACTIVITY") params.couponLimitNum = 0;
 
       if (rangeTimeType.value === 1) {

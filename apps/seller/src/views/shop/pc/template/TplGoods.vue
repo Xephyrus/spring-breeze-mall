@@ -91,9 +91,6 @@ const defaultMockGoods = [
   { id: '12', goodsName: '航空级铝镁合金静音万向轮拉杆登机箱 20英寸防刮耐磨', price: '499.00', originalPrice: '699.00', thumbnail: 'https://lilishop-pc.oss-cn-beijing.aliyuncs.com/static/goods/goods_7.png' }
 ];
 
-const isGoodsCard = computed(() => {
-  return props.component?.type === 'goodsCard' || props.options?.type === 'goodsCard';
-});
 
 const actualColumns = computed(() => {
   // 商品列表整行默认 6 列

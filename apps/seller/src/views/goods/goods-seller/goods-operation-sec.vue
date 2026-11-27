@@ -632,7 +632,6 @@ import {
 import { useRoute, useRouter } from "vue-router";
 import * as API_GOODS from "@/api/goods";
 import * as API_Shop from "@/api/shops";
-import cloneObj from "@/utils/index";
 import { Camera, Delete, InfoFilled, Loading, Plus, Refresh, VideoPlay, ZoomIn } from "@element-plus/icons-vue";
 import vuedraggable from "vuedraggable";
 import editor from "@/views/lili-components/editor/index.vue";
@@ -646,7 +645,7 @@ import {
   defaultSlotDivision,
 } from "@/constants/appointment";
 import { getStore } from "@spring-breeze/shared";
-import { Message, Notice } from "@/utils/message";
+import { Message } from "@/utils/message";
 import { ElMessageBox } from "element-plus";
 
 defineOptions({ name: "goodsOperationSec" });
@@ -678,7 +677,6 @@ const params = {
 };
 
 const openImage = ref(false);
-const needToloadSku = ref(false);
 const total = ref(0);
 const goodsVideo = ref("");
 const showContent = ref(false);
@@ -753,7 +751,6 @@ const baseInfoForm = ref({
 let goodsId;
 // 本次会话中新建成功的商品ID（含复制商品场景），用于保存失败重试时走编辑而不是重复创建
 let createdGoodsId;
-let currentSkuItem = "";
 let scrollParent = null;
 let _onPublishScroll;
 let _scrollTick = false;
@@ -767,17 +764,11 @@ const skuTableColumn = ref([]);
 /** 表格数据 */
 const skuTableData = ref([]);
 // 持久化的sku数据
-const skuTableDataCopy = ref([]);
 // 持久化的sku数据
-const skuInfoCopy = ref([]);
 /** 默认的规格参数 */
-const skuData = ref([]);
 /** 默认的规格值 */
-const skuVals = ref([]);
 // 某一规格名下的规格值
-const skuVal = ref([]);
 // 规格展开的项
-const open_panel = ref(["1", "2"]);
 /** 是否开启多规格模式（默认单规格） */
 const isMultiSpec = ref(false);
 /** 单规格模式下的 SKU 数据 */
@@ -801,7 +792,6 @@ const validatatxt = ref("请输入0~99999999之间的数字值");
 const params_panel = ref([]);
 /** 存储未通过校验的单元格位置  */
 const validateError = ref([]);
-const currentSkuVal = ref("");
 /** 品牌列表 */
 const brandList = ref([]);
 /** 店铺分类列表 */
@@ -810,7 +800,6 @@ const shopCategory = ref([]);
 const goodsUnitList = ref([]);
 const containsSameSkuItem = ref(false);
 const containsSameSkuValue = ref(false);
-const containsSameSkuNewValue = ref(false);
 // 展示商品视频
 const showGoodsVideo = ref(false);
 const ignoreColumn = [
@@ -829,7 +818,6 @@ const ignoreColumn = [
 const picModelFlag = ref(false); // 图片选择器
 const selectedFormBtnName = ref(""); // 点击图片绑定form
 const selectedImage = ref([]);
-const lastEditSkuValue = ref('');
 const appointmentSettings = ref(defaultAppointmentSettings());
 const appointmentDivision = ref(defaultSlotDivision());
 const skuSlotCapacities = ref({});
@@ -852,12 +840,6 @@ const isECouponGoods = computed(() => {
 const isAppointmentGoods = computed(() => {
   return baseInfoForm.value.goodsType === "APPOINTMENT_GOODS";
 });
-const isVirtualGoods = computed(() => {
-  return baseInfoForm.value.goodsType === "VIRTUAL_GOODS";
-});
-const isVirtualLikeGoods = computed(() => {
-  return isVirtualGoods.value || isECouponGoods.value || isAppointmentGoods.value;
-});
 const hideSkuQuantity = computed(() => {
   return isECouponGoods.value || isAppointmentGoods.value;
 });
@@ -866,9 +848,6 @@ const needsLogistics = computed(() => {
   return baseInfoForm.value.goodsType === "PHYSICAL_GOODS";
 });
 /** 预约、卡券固定零售，不展示销售模式切换 */
-const showSalesModel = computed(() => {
-  return !isECouponGoods.value && !isAppointmentGoods.value;
-});
 const priceSectionTitle = computed(() => {
   if (isAppointmentGoods.value) return "规格与可约数量";
   if (isECouponGoods.value) return "规格价格";
@@ -935,10 +914,6 @@ function handleCLickImg(val, index) {
       ossManageRef.value.selectImage = true;
     }
   });
-}
-function handleLoadingSkuData() {
-  needToloadSku.value = false
-  renderTableData(skuTableData.value)
 }
 function changeSkuOpenImage() {
   skuTableData.value.forEach(item => {
@@ -1268,10 +1243,6 @@ function handleView(url) {
   visible.value = true;
 }
 // 移除已选图片
-function handleRemove(item, index) {
-  item.splice(index, 1)
-  previewPicture.value = "";
-}
 // 查看商品大图
 function handleViewGoodsPicture(url) {
   if (invalidGoodsGalleryFiles.value.includes(url)) {
@@ -1303,15 +1274,6 @@ function assignSkuTableIndex() {
   });
 }
 // sku图片上传成功
-function handleSuccess(res, file, images) {
-  if (file.response) {
-    file.url = file.response.result;
-    if (images) {
-      images.push(file.url);
-    }
-    previewPicture.value = file.url;
-  }
-}
 
 function beforeVideoUpload(file) {
   const allowTypes = ["avi", "wmv", "mpeg", "mp4", "mov"];
@@ -1343,22 +1305,7 @@ function handleRemoveGoodsVideo() {
   goodsVideo.value = "";
 }
 // 图片大小不正确
-function handleMaxSize(size = 2) {
-  Notice.warning({
-    title: "超过文件大小限制",
-    desc: `图片大小不能超过${size}MB`,
-  });
-}
 // sku图片上传前钩子
-function handleBeforeUpload(file) {
-  const check =
-    selectedSku.value.images !== undefined &&
-    selectedSku.value.images.length > 5;
-  if (check) {
-    Notice.warning({ title: "图片数量不能大于五张" });
-    return false;
-  }
-}
 
 /** 无品牌时后端用 0，选择器空值用空字符串，避免 el-select 直接显示 0 */
 function normalizeBrandId(id) {
@@ -1878,362 +1825,14 @@ function handleRemoveSpecValue(item, vIndex) {
   item.spec_values.splice(vIndex, 1);
   renderTableData(skuTableData.value);
 }
-function changeSkuItem(val) {
-  currentSkuItem = val;
-}
 // 编辑规格名
-function editSkuItem(val, index, item) {
-  if (skuTableData.value.find((i) => i[val])) {
-    Message.error("已存在相同规格项！");
-    containsSameSkuItem.value = true;
-    return;
-  }
-  containsSameSkuItem.value = false;
-  if (zz(0, val) > 20) {
-    Message.error("规格值最多十个字符长度！");
-    // val = val.toString().slice(0, 4);
-    skuInfo.value[index].name = countCharacters(val, 10);
-    proxy.$forceUpdate();// 调用该方法会触发组件的重新渲染
-    // return;
-  }
-  skuTableData.value = skuTableData.value.map((e) => {
-    e[val] = e[currentSkuItem];
-    delete e[currentSkuItem];
-    return e;
-  });
-
-  skuInfo.value[index].name = val;
-  skuInfo.value[index].spec_values.forEach((e) => {
-    e.name = val;
-  });
-  currentSkuItem = val;
-  renderTableData(skuTableData.value);
-}
 // 正则验证（中文超过10个英文数字超过20个）
-function zz(len, value) {
-  for (let i = 0; i < value.length; i++) {
-    //正则表达式判断中文
-    if (/[\u4e00-\u9fa5]/.test(value[i])) {
-      len += 2;
-    } else {
-      len++;
-    }
-  }
-  return len;
-}
-function countCharacters(defaultStr, defaultNum) {
-  let str = '' + defaultStr || '',
-    num = +defaultNum || 0,
-    res = '',
-    length = 0;
-  if (!str || !num) {
-    return str;
-  }
-  // 循环字符串，判断长度 最少也会返回一个字
-  for (const i in str) {
-    res += str[i];
-    // 测试长度
-    length += /[\u4e00-\u9fa5]/.test(str[i]) ? 2 : 1;
-    // 如果长度大于设置长度 或者 循环到最后则终止循环
-    if (length >= num || +i === str.length - 1) {
-      break;
-    }
-  }
-  return res;
-}
 // 编辑规格值
-function skuValueChange(val, index, item) {
-
-  if (val.value === '') {
-    return;
-  }
-  if (skuTableData.value.find((i) => i[val.name] === val.value)) {
-    Message.error("已存在相同规格值！");
-
-    skuInfo.value = cloneObj(skuInfoCopy.value);
-    skuTableData.value = cloneObj(skuTableDataCopy.value);
-    return;
-  }
-
-  containsSameSkuValue.value = false;
-  if (zz(0, val.value) > 20) {
-    Message.error("规格值最多十个字符长度！");
-    // val.value = val.value.toString().slice(0, 4);
-    // 使用传入的 item 引用，避免对未定义的 $index 访问
-    item.spec_values[index].value = countCharacters(val.value, 10);
-    proxy.$forceUpdate();// 调用该方法会触发组件的重新渲染
-    // return;
-  }
-  lastEditSkuValue.value = val.value;
-  let curVal = currentSkuVal.value;
-  skuTableData.value = skuTableData.value.map((e) => {
-    if (e[val.name] === curVal) {
-      e[val.name] = val.value;
-    }
-    return e;
-  });
-  currentSkuVal.value = val.value;
-  skuTableDataCopy.value = cloneObj(skuTableData.value);
-  skuInfoCopy.value = cloneObj(skuInfo.value);
-  renderTableData(skuTableData.value);
-}
 // 获取焦点时，取得规格名对应的规格值
-function changeSkuVals(val, name) {
-  currentSkuVal.value = val.value;
-  if (name) {
-    skuData.value.forEach((e, index) => {
-      if (e === name) {
-        if (skuVal.value.length !== skuVals.value[index].length) {
-          skuVal.value = skuVals.value[index];
-        }
-      }
-    });
-  }
-}
-function checkSkuVal(val, groupIndex, spec) {
-  if (val.value === "") {
-    // 内联错误提示，不使用弹窗
-    val._error = '规格值不能为空！';
-
-    // 如果规格项和规格名称存在，从表格数据中移除包含该空规格值的行
-    if (spec && spec.name && skuInfo.value[groupIndex]) {
-      // 从表格数据中过滤掉包含该空规格值的行
-      skuTableData.value = skuTableData.value.filter(item => {
-        return item[spec.name] !== val.value && item[spec.name] !== "";
-      });
-
-      // 重新渲染表格数据
-      renderTableData(skuTableData.value);
-    }
-  } else if (val._error) {
-    // 清除错误
-    delete val._error;
-    if (skuInfo.value[groupIndex]) {
-      skuInfo.value[groupIndex].spec_values = skuInfo.value[groupIndex].spec_values.filter((i) => i.value !== "");
-    }
-    // skuTableData.value = skuTableData.value.filter(
-    //   (e) => e[spec && spec.name] !== lastEditSkuValue.value
-    // );
-  }
-
-  // 判断是否存在重复规格值
-  if (!skuTableData.value.find((i) => i[val.name] === val.value)) {
-    skuTableDataCopy.value = cloneObj(skuTableData.value);
-    skuInfoCopy.value = cloneObj(skuInfo.value);
-  }
-}
 /** 移除当前规格项 进行数据变化*/
-function handleCloseSkuItem($index, item) {
-  if ($index === 0 && skuInfo.value.length === 1) {
-    skuInfo.value = [];
-    skuTableData.value = [];
-  } else {
-    // 获取当前操作的规格项，在规格项数组中的位置（下标）
-    let itemIndex = 0;
-    skuInfo.value.forEach((i, _index) => {
-      if (i.name === item.name) {
-        itemIndex = _index;
-      }
-    });
-    if (itemIndex === skuInfo.value.length - 1) {
-      // 如果当前为最后一个规格项，则按照下标按照最后一个规格项生成规则删除
-      // 最后一个规格项生成规格数据规则： 如为最后一个规格项，则在规格列表每隔1个中删除n(n为最后一个规格项的规格值列表数量 - 1)个规格数据，生成一个规格数据
-
-      // 除了当前操作的规格项的规格项列表，用于获取所有规格项的规格值列表总数
-      let filterSkuInfo = skuInfo.value.filter((i) => i.name !== item.name);
-      let index = 1;
-      let totalLength = 1;
-      filterSkuInfo.forEach((skuInfo) => {
-        totalLength *= skuInfo.spec_values.length;
-      });
-      // 去除第一个，因为第一个不需要生成新的规格数据
-      item.spec_values.splice(0, 1);
-      for (let i = 0; i < totalLength; i++) {
-        // 移除对应的规格数据
-        skuTableData.value.splice(index, item.spec_values.length);
-        index++;
-      }
-    } else {
-      // 当前规格项生成规格数据的时候，每次应该生成的条数
-      let currentNum =
-        skuInfo.value[skuInfo.value.length - 1].spec_values.length;
-      for (let i = skuInfo.value.length - 2; i > itemIndex; i--) {
-        // 计算每次删除规格数据后移动的位置（计算规则为，以最后的规格项的规格值数量为基础，乘以其他规格项的规格值总数）
-        currentNum *= skuInfo.value[i].spec_values.length;
-      }
-      // 移除对应规格数据的起始索引，起始位置为每次生成条数的下一位
-      let beginIndex = currentNum + 1;
-
-      let filterSkuInfo = skuInfo.value.filter((i) => i.name !== item.name);
-      let totalLength = 1;
-      filterSkuInfo.forEach((skuInfo) => {
-        totalLength *= skuInfo.spec_values.length;
-      });
-      for (let i = 0; i < totalLength; i++) {
-        // 移除对应的规格数据，删除数量为 每次生成条数 * （当前规格项的规格值总数 - 1）
-        skuTableData.value.splice(
-          beginIndex,
-          currentNum * (item.spec_values.length - 1)
-        );
-        beginIndex += currentNum;
-      }
-    }
-    skuInfo.value.splice($index, 1);
-
-    skuTableData.value = skuTableData.value.map((e) => {
-      delete e[item.name];
-      return e;
-    });
-  }
-  /**
-   * 渲染规格详细表格
-   */
-  renderTableData(skuTableData.value);
-}
 // 添加规格值的验证
-function validateEmpty(params) {
-  let flag = true;
-  params.forEach((item) => {
-    for (const key in item) {
-      if (item[key] !== "0" && !item.value) {
-        Message.error("请必填规格项");
-        flag = false;
-        return false; // 终止程序
-      }
-    }
-  });
-
-  return flag;
-}
 /** 添加当前规格项的规格值*/
-function addSpec($index, item) {
-  if (!newSkuValues.value[$index]) {
-    Message.error("请输入规格值");
-    return;
-  }
-
-  if (containsSameSkuItem.value) {
-    Message.error("存在重复规格项！");
-    return;
-  }
-
-  if (item.spec_values.find((i) => i.value === newSkuValues.value[$index])) {
-    newSkuValues.value[$index] = "";
-    skuInfo.value = cloneObj(skuInfoCopy.value);
-    skuTableData.value = cloneObj(skuTableDataCopy.value);
-    Message.error("存在重复规格值！");
-    containsSameSkuNewValue.value = true;
-    return;
-  }
-
-  if (validateEmpty(item.spec_values)) {
-    if (item.spec_values.length >= 10) {
-      Message.error("规格值不能大于10个！");
-      return;
-    }
-    let itemValue = {
-      name: item.name,
-      value: newSkuValues.value[$index],
-    };
-    if (openImage.value) {
-      itemValue.images = []
-    } else {
-      itemValue.images = baseInfoForm.value.goodsGalleryFiles
-    }
-    item.spec_values.push(itemValue);
-
-    // 生成新的规格组合
-    const newCombinations = generateSkuCombinations(skuInfo.value);
-
-    // 保留原有组合的属性值
-    skuTableData.value = newCombinations.map(combination => {
-      // 查找匹配的原有组合
-      const existingCombination = skuTableData.value.find(item => {
-        // 检查所有规格项是否匹配
-        return skuInfo.value.every(info => {
-          return item[info.name] === combination[info.name];
-        });
-      });
-
-      if (existingCombination) {
-        // 保留原有组合的属性值
-        return {
-          ...combination,
-          id: existingCombination.id || "",
-          sn: existingCombination.sn || generateSkuCode(),
-          quantity: hideSkuQuantity.value
-            ? (existingCombination.quantity ?? 0)
-            : (existingCombination.quantity || ""),
-          cost: existingCombination.cost || "",
-          price: existingCombination.price || "",
-          weight: existingCombination.weight || ""
-        };
-      } else {
-        // 新组合使用默认值
-        return {
-          ...combination,
-          quantity: defaultSkuQuantity(),
-        };
-      }
-    });
-    baseInfoForm.value.regeneratorSkuFlag = true;
-    newSkuValues.value[$index] = "";
-
-    skuTableDataCopy.value = cloneObj(skuTableData.value);
-    skuInfoCopy.value = cloneObj(skuInfo.value);
-  }
-}
 /** 移除当前规格值 */
-function handleCloseSkuValue(item, index, spec) {
-  if (spec.spec_values.length <= 1) {
-    Message.error("至少保留一个规格值！");
-    return;
-  }
-
-  // 从规格项中移除规格值
-  skuInfo.value.forEach((i) => {
-    if (i.name === spec.name) {
-      i.spec_values.splice(index, 1);
-    }
-  });
-
-  // 生成新的规格组合
-  const newCombinations = generateSkuCombinations(skuInfo.value);
-
-  // 保留原有组合的属性值
-  skuTableData.value = newCombinations.map(combination => {
-    // 查找匹配的原有组合
-    const existingCombination = skuTableData.value.find(item => {
-      // 检查所有规格项是否匹配
-      return skuInfo.value.every(info => {
-        return item[info.name] === combination[info.name];
-      });
-    });
-
-    if (existingCombination) {
-      // 保留原有组合的属性值
-      return {
-        ...combination,
-        id: existingCombination.id || "",
-        sn: existingCombination.sn || generateSkuCode(),
-        quantity: hideSkuQuantity.value
-          ? (existingCombination.quantity ?? 0)
-          : (existingCombination.quantity || ""),
-        cost: existingCombination.cost || "",
-        price: existingCombination.price || "",
-        weight: existingCombination.weight || ""
-      };
-    } else {
-      // 新组合使用默认值
-      return {
-        ...combination,
-        quantity: defaultSkuQuantity(),
-      };
-    }
-  });
-
-  baseInfoForm.value.regeneratorSkuFlag = true;
-}
 
 /**
  * 渲染table所需要的column 和 data

@@ -171,7 +171,7 @@ function confirmGoodsType() {
 function handleSelectCategory(row, index, level) {
   if (level === 1) {
     category.value.forEach((cate) => {
-      (cate.name = ""), (cate.id = "");
+      cate.name = "";
     });
     category.value[0].name = row.name;
     category.value[0].id = row.id;

@@ -373,17 +373,17 @@ function delAll() {
   });
 }
 async function editPerm(v) {
-  permData.value.map((item) => {
-    item.children.length !== 0
-      ? item.children.map((child) => {
-          child.children.length !== 0
-            ? child.children.map((kid) => {
-                delete kid.isSuper;
-              })
-            : "";
-          delete child.isSuper;
-        })
-      : "";
+  permData.value.forEach((item) => {
+    if (item.children.length !== 0) {
+      item.children.forEach((child) => {
+        if (child.children.length !== 0) {
+          child.children.forEach((kid) => {
+            delete kid.isSuper;
+          });
+        }
+        delete child.isSuper;
+      });
+    }
     delete item.isSuper;
   });
 

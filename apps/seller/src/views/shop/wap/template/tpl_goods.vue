@@ -247,7 +247,7 @@ export default {
       if (!item) {
         return false;
       }
-      if (item.___index != undefined) {
+      if (item.___index !== undefined) {
         return this.selected.index === item.___index;
       }
       return this.selected.val === item.type;

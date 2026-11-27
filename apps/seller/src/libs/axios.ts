@@ -171,7 +171,7 @@ const formSerialize = (data: Record<string, unknown>): string => {
 
 type Params = Record<string, unknown> | undefined;
 
-export const getRequest = <T = any>(
+export const getRequest = <T = unknown>(
   url: string,
   params?: Params,
   resBlob?: string
@@ -189,7 +189,7 @@ export const getRequest = <T = any>(
   return service(data) as Promise<ResultMessage<T>>;
 };
 
-export const getRequestHasHeader = <T = any>(
+export const getRequestHasHeader = <T = unknown>(
   url: string,
   params?: Params,
   headers?: Record<string, string>
@@ -208,7 +208,7 @@ export const getRequestHasHeader = <T = any>(
   }) as Promise<ResultMessage<T>>;
 };
 
-export const postRequest = <T = any>(
+export const postRequest = <T = unknown>(
   url: string,
   params?: unknown,
   headers?: Record<string, string>
@@ -228,7 +228,7 @@ export const postRequest = <T = any>(
   }) as Promise<ResultMessage<T>>;
 
 /** 不带 form 表单、不走 transformRequest */
-export const postRequestWithNoForm = <T = any>(
+export const postRequestWithNoForm = <T = unknown>(
   url: string,
   params?: unknown
 ): Promise<ResultMessage<T>> =>
@@ -239,7 +239,7 @@ export const postRequestWithNoForm = <T = any>(
     headers: { accessToken: getStore("accessToken") },
   }) as Promise<ResultMessage<T>>;
 
-export const putRequest = <T = any>(
+export const putRequest = <T = unknown>(
   url: string,
   params?: unknown,
   headers?: Record<string, string>
@@ -258,7 +258,7 @@ export const putRequest = <T = any>(
     },
   }) as Promise<ResultMessage<T>>;
 
-export const putRequestWithNoForm = <T = any>(
+export const putRequestWithNoForm = <T = unknown>(
   url: string,
   params?: unknown
 ): Promise<ResultMessage<T>> =>
@@ -269,7 +269,7 @@ export const putRequestWithNoForm = <T = any>(
     headers: { accessToken: getStore("accessToken") },
   }) as Promise<ResultMessage<T>>;
 
-export const deleteRequest = <T = any>(
+export const deleteRequest = <T = unknown>(
   url: string,
   params?: Params
 ): Promise<ResultMessage<T>> =>
@@ -280,7 +280,7 @@ export const deleteRequest = <T = any>(
     headers: { accessToken: getStore("accessToken") },
   }) as Promise<ResultMessage<T>>;
 
-export const importRequest = <T = any>(
+export const importRequest = <T = unknown>(
   url: string,
   params?: unknown
 ): Promise<ResultMessage<T>> =>
@@ -291,7 +291,7 @@ export const importRequest = <T = any>(
     headers: { accessToken: getStore("accessToken") },
   }) as Promise<ResultMessage<T>>;
 
-export const uploadFileRequest = <T = any>(
+export const uploadFileRequest = <T = unknown>(
   url: string,
   params?: unknown
 ): Promise<ResultMessage<T>> =>
@@ -308,21 +308,21 @@ export const uploadFileRequest = <T = any>(
 /**
  * 无需 token 验证的请求，避免旧 token 过期导致请求失败
  */
-export const getRequestWithNoToken = <T = any>(
+export const getRequestWithNoToken = <T = unknown>(
   url: string,
   params?: Params
 ): Promise<ResultMessage<T>> =>
   service({ method: "get", url: `${url}`, params }) as Promise<ResultMessage<T>>;
 
 /** 无需 token 验证的请求，避免旧 token 过期导致请求失败 */
-export const postRequestWithNoToken = <T = any>(
+export const postRequestWithNoToken = <T = unknown>(
   url: string,
   params?: Params
 ): Promise<ResultMessage<T>> =>
   service({ method: "post", url: `${url}`, params }) as Promise<ResultMessage<T>>;
 
 /** 无需 token 验证的请求，避免旧 token 过期导致请求失败 */
-export const postRequestWithNoTokenData = <T = any>(
+export const postRequestWithNoTokenData = <T = unknown>(
   url: string,
   params?: unknown
 ): Promise<ResultMessage<T>> =>

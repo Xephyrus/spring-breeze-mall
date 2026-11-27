@@ -126,7 +126,7 @@ function clickBreadcrumb(item) {
 }
 
 function init() {
-  orderChart.value ? orderChart.value.clear() : "";
+  if (orderChart.value) orderChart.value.clear();
   API_Member.getStatisticsList(params.value).then(async (res) => {
     if (res.result) {
       data.value = res.result;

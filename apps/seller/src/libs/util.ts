@@ -377,7 +377,7 @@ util.toDefaultPage = function (routers, name, route, next) {
     if (
       routers[i].name === name &&
       routers[i].children &&
-      routers[i].redirect == undefined
+      routers[i].redirect === undefined
     ) {
       route.replace({
         name: routers[i].children?.[0]?.name,

@@ -554,6 +554,7 @@ import VideoConfig from "./video-config";
 import panelMap from "./config-panel";
 import alignTextLeft from "@/assets/align-text-left.png";
 import alignTextCenter from "@/assets/align-text-center.png";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- 模板里以 :src="alignTextRight" 使用（嵌套 template 中，eslint-plugin-vue 未识别）
 import alignTextRight from "@/assets/align-text-right.png";
 
 const props = defineProps(["res"]);
@@ -567,10 +568,8 @@ const textAlign = ref(
   props.res.options.list[0] ? props.res.options.list[0].textAlign : "center"
 ); //文字对齐方式
 const promotionsFlag = ref(false); //广告魔方开关
-const selectedLinkIndex = ref(""); //选择链接的索引
 const selectedGoods = ref(""); // 已选商品
 const selectedLinks = ref(""); // 已选链接
-const modelList = ref(""); // 装修列表
 const enableSelectCategory = ref(false); //商品是否绑定分类
 const pendingCategory = ref(null); // 选择分类弹窗草稿
 const goodsSelectedIndex = ref(0); //绑定商品分类的索引
@@ -775,24 +774,10 @@ function clickLink(val, index, oval) {
     liliDialogFlag(false);
   }
 }
-function addZone(zoneInfo) {
-  selectedLinks.value.zoneInfo.push(zoneInfo);
-}
 function changeZone(zoneInfo) {
   selectedLinks.value.zoneInfo = zoneInfo;
 }
 //点击图片解析成base64
-function changeFile(item, index) {
-  const file = document.getElementById("files" + index).files[0];
-  if (file === void 0) return false;
-  const reader = new FileReader();
-  reader.readAsDataURL(file);
-  nextTick((res) => {
-    reader.onload = (e) => {
-      item.img = e.target.result;
-    };
-  });
-}
 //添加设置
 function addDecorate(type, data) {
   if (type === "notice") {
@@ -814,15 +799,6 @@ function addDecorate(type, data) {
     };
     props.res.options.list.push(way);
   }
-}
-function addHotPoint() {
-  let way = {
-    img: "https://picsum.photos/id/264/200/200",
-    text: "标题",
-    link: "",
-    url: "",
-  };
-  props.res.options.list[0].points.push(way);
 }
 // 图片选择器回显
 function callbackSelected(val) {

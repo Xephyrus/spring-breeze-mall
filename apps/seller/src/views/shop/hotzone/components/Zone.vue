@@ -137,13 +137,6 @@ function setZoneInfo(val) {
   zoneForm.link = val.link;
   settingZone(val);
 }
-function handlehideZone(isHide = true) {
-  if (hideZone.value === isHide) {
-    return;
-  }
-
-  hideZone.value = isHide;
-}
 function changeInfo(info = {}) {
   const { index } = props;
 

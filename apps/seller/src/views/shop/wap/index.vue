@@ -99,6 +99,7 @@
   </div>
 </template>
 <script setup>
+import { Modal } from "@/utils/message";
 import { ref, watch, nextTick, onMounted, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import {
@@ -129,7 +130,6 @@ import decorate from "./decorate";
 import PanelPageSetting from "./config-panel/PanelPageSetting.vue";
 import * as API_Other from "@/api/other";
 import { getStore } from "@spring-breeze/shared";
-import { Message, Modal } from "@/utils/message";
 import { useAppStore } from "@/stores/app";
 
 const route = useRoute();

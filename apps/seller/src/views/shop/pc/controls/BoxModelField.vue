@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue';
+import { ref, computed } from 'vue';
 import { Link, Paperclip } from '@element-plus/icons-vue';
 
 const props = defineProps({
@@ -77,10 +77,6 @@ const props = defineProps({
 const emit = defineEmits(['update:modelValue', 'change']);
 
 // Check if initial 4 values are all equal
-const isAllEqual = arr => {
-  if (!Array.isArray(arr) || arr.length < 4) return true;
-  return arr[0] === arr[1] && arr[1] === arr[2] && arr[2] === arr[3];
-};
 
 const linked = ref(false);
 

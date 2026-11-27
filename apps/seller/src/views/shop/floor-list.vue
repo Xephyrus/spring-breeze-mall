@@ -126,10 +126,10 @@ function newTemplate() {
   formRef.value.validate((valid) => {
     if (valid) {
       const data = formData.value;
-      data.status ? (data.pageShow = "OPEN") : (data.pageShow = "CLOSE");
+      data.pageShow = data.status ? "OPEN" : "CLOSE";
       delete data.status;
-      (data.pageType = searchForm.pageType),
-        (data.pageClientType = "PC");
+      data.pageType = searchForm.pageType;
+      data.pageClientType = "PC";
       if (data.id) {
         API_floor.updateHome(data.id, data).then((res) => {
           Message.success("编辑模板成功");

@@ -253,22 +253,6 @@ function seckillStatusTagType(status) {
   };
   return map[status] || "danger";
 }
-function applyStatusText(status) {
-  const map = {
-    APPLY: "申请中",
-    PASS: "已通过",
-    REFUSE: "已拒绝",
-  };
-  return map[status] || "未申请";
-}
-function applyStatusTagType(status) {
-  const map = {
-    APPLY: "warning",
-    PASS: "success",
-    REFUSE: "danger",
-  };
-  return map[status] || "info";
-}
 function closeCurrentPage() {
   router.back();
 }
@@ -435,12 +419,6 @@ function save() {
     .finally(() => {
       submitLoading.value = false;
     });
-}
-function showReason(reason) {
-  Modal.info({
-    title: "拒绝原因",
-    content: reason,
-  });
 }
 function unixDate(time) {
   return unixToDate(new Date(time) / 1000);

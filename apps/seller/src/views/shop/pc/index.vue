@@ -476,7 +476,7 @@ import Draggable from 'vuedraggable';
 
 import {
 
-  ArrowLeft, Search, Plus, Close, Delete, Top, Bottom, Rank, CopyDocument, Files,
+  ArrowLeft, Search, Plus, Delete, Top, Bottom, Rank, CopyDocument, Files,
 
   House, Compass, Picture, ShoppingBag, Ticket, Document, Menu, Bottom as BottomIcon,
 
@@ -495,8 +495,6 @@ import {
   COMPONENT_GROUPS,
 
   COMPONENT_DEFINITIONS,
-
-  DEFAULT_ROW_STYLE,
 
   createRow,
 
@@ -1182,13 +1180,6 @@ function deleteRow(index) {
 
 
 // 计算行剩余可用宽度百分比
-function getRowRemainingWidth(row) {
-  if (!row || !Array.isArray(row.components)) return 100;
-  const used = row.components.reduce((sum, compItem) => {
-    return sum + (parseFloat(compItem.componentStyle?.widthRatio) || 100);
-  }, 0);
-  return Math.max(0, 100 - used);
-}
 
 // 判断当前行是否能与上一行合并同行
 function canMergeWithPrev(rIndex) {

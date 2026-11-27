@@ -143,7 +143,7 @@ const route = useRoute();
 const timeRange = ref([]);
 const activeStatus = ref("");
 const distributionId = ref(route.query.id);
-const { loading, data, total, searchForm, getDataList, handleSearch, resetSearch } = useTable(
+const { loading, data, total, searchForm, getDataList, handleSearch } = useTable(
   getDistributionOrder,
   {
     pageSize: 20,
@@ -165,10 +165,6 @@ const { loading, data, total, searchForm, getDataList, handleSearch, resetSearch
     },
   }
 );
-function handleReset() {
-  timeRange.value = [];
-  resetSearch();
-}
 
 function handleStatusChange(status) {
   searchForm.distributionOrderStatus = status;

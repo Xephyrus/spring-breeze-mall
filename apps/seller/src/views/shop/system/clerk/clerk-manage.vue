@@ -451,7 +451,7 @@ function submitUser() {
       delete params.id;
       delete params.status;
       if (newMember.value) {
-        if (params.password === "" || params.password == undefined) {
+        if (params.password === "" || params.password === undefined) {
           errorPass.value = "密码不能为空";
           return;
         }
