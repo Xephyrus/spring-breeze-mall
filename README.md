@@ -174,6 +174,7 @@ mysql -u root -p lilishop < docker/init/mysql/lilishop.sql   # 约 8 MB
 | 7 | `backend/DB/store-menu-kebab-front-route.sql` | **商家端**菜单 `front_route` 对齐（幂等） |
 | 8 | `backend/DB/store-menu-kebab-names.sql` | **商家端**菜单 `name` 统一 kebab（幂等） |
 | 9 | `backend/DB/store-menu-kebab-paths.sql` | **商家端**菜单 `path`（URL）统一 kebab（幂等） |
+| 10 | `backend/DB/store-menu-orphan-cleanup.sql` | 清理商家端孤儿菜单（父节点已不存在的行，软删除） |
 
 > 第 4–6 个补丁对应 **平台端（manager）**，第 7–9 个对应 **商家端（seller）**，
 > 都 **必须执行**，否则菜单点进去是空白页（前端文件已统一 kebab-case，
