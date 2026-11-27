@@ -599,7 +599,7 @@
     </el-dialog>
 
     <!--<el-dialog width="1200px" v-model="picModelFlag">-->
-    <!--<ossManage @callback="callbackSelected" ref="ossManage" />-->
+    <!--<ossManage @callback="callbackSelected" ref="oss-manage" />-->
     <!--</el-dialog>-->
     <el-dialog v-model="picModelFlag" width="1200px" title="选择图片" append-to-body destroy-on-close>
       <ossManage

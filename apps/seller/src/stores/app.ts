@@ -40,7 +40,7 @@ export const useAppStore = defineStore("app", {
       {
         title: "首页",
         path: "",
-        name: "home_index",
+        name: "home-index",
       },
     ],
     menuList: [],

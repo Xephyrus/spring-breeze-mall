@@ -247,7 +247,7 @@ import * as API_Member from "@/api/member";
 import { Message } from "@/utils/message";
 import uploadPicThumb from "@/views/my-components/lili/upload-pic-thumb";
 
-defineOptions({ name: "memberComment" });
+defineOptions({ name: "member-comment" });
 
 const detailInfo = ref({});
 const image = ref([]);

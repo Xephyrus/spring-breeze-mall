@@ -328,7 +328,7 @@ function handleSave(andSubmit) {
     });
 }
 function goBack() {
-  customRouterPush({ name: "procurementDamageReportList" });
+  customRouterPush({ name: "procurement-damage-report-list" });
 }
 </script>
 

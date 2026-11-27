@@ -325,7 +325,7 @@ async function handleSave() {
 }
 
 function goBack() {
-  router.push({ name: "stockOutboundList" });
+  router.push({ name: "stock-outbound-list" });
 }
 </script>
 

@@ -69,7 +69,7 @@ import { validateMobile } from "@/libs/validate";
 import { Message, Modal } from "@/utils/message";
 import multipleMap from "@/views/my-components/map/multiple-map";
 
-defineOptions({ name: "shopAddress" });
+defineOptions({ name: "shop-address" });
 
 const formRef = ref(null);
 

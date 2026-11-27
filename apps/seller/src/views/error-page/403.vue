@@ -29,7 +29,7 @@ function backPage() {
 }
 function goHome() {
   router.push({
-    name: "home_index",
+    name: "home-index",
   });
 }
 </script>

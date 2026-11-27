@@ -160,7 +160,7 @@ import { computed, onMounted, ref } from "vue";
 import * as API_Shop from "@/api/shops";
 import { getGoodsCategoryAll } from "@/api/goods";
 
-defineOptions({ name: "shopInfo" });
+defineOptions({ name: "shop-info" });
 
 const loading = ref(false);
 const storeInfo = ref({});

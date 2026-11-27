@@ -75,19 +75,19 @@
           <h4>待办事项</h4>
           <div class="todo-group-list">
             <div class="todo-group">
-              <div class="todo-item" @click="navigateTo('orderList', { orderStatus: 'UNPAID' })">
+              <div class="todo-item" @click="navigateTo('order-list', { orderStatus: 'UNPAID' })">
                 <div class="todo-item-label">待付款订单</div>
                 <span>{{ homeData.unPaidOrder || 0 }}</span>
               </div>
-              <div class="todo-item" @click="navigateTo('orderList', { orderStatus: 'UNDELIVERED' })">
+              <div class="todo-item" @click="navigateTo('order-list', { orderStatus: 'UNDELIVERED' })">
                 <div class="todo-item-label">待发货订单</div>
                 <span>{{ homeData.unDeliveredOrder || 0 }}</span>
               </div>
-              <div class="todo-item" @click="navigateTo('orderList', { orderStatus: 'DELIVERED' })">
+              <div class="todo-item" @click="navigateTo('order-list', { orderStatus: 'DELIVERED' })">
                 <div class="todo-item-label">待收货订单</div>
                 <span>{{ homeData.deliveredOrder || 0 }}</span>
               </div>
-              <div class="todo-item" @click="navigateTo('orderList', { orderStatus: 'TAKE' })">
+              <div class="todo-item" @click="navigateTo('order-list', { orderStatus: 'TAKE' })">
                 <div class="todo-item-label">待核验订单</div>
                 <span>{{ homeData.waitCheckOrder || 0 }}</span>
               </div>
@@ -123,7 +123,7 @@
                 <div class="todo-item-label">待审核商品</div>
                 <span>{{ homeData.waitAuth || 0 }}</span>
               </div>
-              <div class="todo-item" @click="navigateTo('storeBill', { billStatus: 'OUT' })">
+              <div class="todo-item" @click="navigateTo('store-bill', { billStatus: 'OUT' })">
                 <div class="todo-item-label">待结算账单</div>
                 <span>{{ homeData.waitPayBill || 0 }}</span>
               </div>
@@ -144,7 +144,7 @@
     <div class="card">
       <h4>经营概览</h4>
       <div class="overview-list flex">
-        <div class="overview-item" @click="navigateTo('orderStatistics')">
+        <div class="overview-item" @click="navigateTo('order-statistics')">
           <div class="overview-label">今日销售额</div>
           <div class="overview-value">
             {{ $filters.unitPrice(overviewToday.paymentAmount || 0, "￥") }}
@@ -156,7 +156,7 @@
             </span>
           </div>
         </div>
-        <div class="overview-item" @click="navigateTo('orderList')">
+        <div class="overview-item" @click="navigateTo('order-list')">
           <div class="overview-label">今日订单量</div>
           <div class="overview-value">{{ overviewToday.orderNum || 0 }}</div>
           <div class="overview-sub">
@@ -166,7 +166,7 @@
             </span>
           </div>
         </div>
-        <div class="overview-item" @click="navigateTo('trafficStatistics')">
+        <div class="overview-item" @click="navigateTo('traffic-statistics')">
           <div class="overview-label">今日访客数</div>
           <div class="overview-value">{{ overviewToday.uvNum || 0 }}</div>
           <div class="overview-sub">
@@ -227,18 +227,18 @@ defineOptions({ name: "home" });
 const router = useRouter();
 
 const HOME_ROUTE_TARGETS = {
-  orderList: { name: "orderList", path: "/order/orderList" },
-  returnMoneyOrder: { name: "returnMoneyOrder", path: "/order/returnMoneyOrder" },
-  returnGoodsOrder: { name: "returnGoodsOrder", path: "/order/returnGoodsOrder" },
-  memberComment: { name: "memberComment", path: "/order/memberComment" },
+  orderList: { name: "order-list", path: "/order/orderList" },
+  returnMoneyOrder: { name: "return-money-order", path: "/order/returnMoneyOrder" },
+  returnGoodsOrder: { name: "return-goods-order", path: "/order/returnGoodsOrder" },
+  memberComment: { name: "member-comment", path: "/order/memberComment" },
   goods: { name: "goods", path: "/goods" },
   alertQuantityWarnList: { name: "alertQuantityWarnList", path: "/alertQuantityWarnList" },
-  orderStatistics: { name: "orderStatistics", path: "/statistics/orderStatistics" },
-  trafficStatistics: { name: "trafficStatistics", path: "/statistics/trafficStatistics" },
+  orderStatistics: { name: "order-statistics", path: "/statistics/orderStatistics" },
+  trafficStatistics: { name: "traffic-statistics", path: "/statistics/trafficStatistics" },
   accountStatementBill: { name: "accountStatementBill", path: "/bill/accountStatementBill" },
-  storeBill: { name: "storeBill", path: "/bill/storeBill" },
+  storeBill: { name: "store-bill", path: "/bill/storeBill" },
   procurementPurchaseOrderList: {
-    name: "procurementPurchaseOrderList",
+    name: "procurement-purchase-order-list",
     path: "/procurement/purchase-order/list",
   },
 };
@@ -262,12 +262,12 @@ const load = ref(false);
 
 function navigateAfterSale(serviceStatus) {
   const routeKey = AFTER_SALE_RETURN_GOODS_STATUSES.includes(serviceStatus)
-    ? "returnGoodsOrder"
-    : "returnMoneyOrder";
+    ? "return-goods-order"
+    : "return-money-order";
   navigateTo(routeKey, { serviceStatus });
 }
 function navigateToProcurementAudit() {
-  navigateTo("procurementPurchaseOrderList", { status: "SUBMITTED" });
+  navigateTo("procurement-purchase-order-list", { status: "SUBMITTED" });
 }
 function navigateTo(key, query) {
   const target = HOME_ROUTE_TARGETS[key] || { name: key };

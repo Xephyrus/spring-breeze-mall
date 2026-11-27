@@ -5,8 +5,8 @@
 -->
 <template>
   <nav class="seller-navigation" aria-label="商家功能菜单">
-    <button type="button" class="nav-heading home-link" :class="{ 'is-active': route.name === 'home_index' }"
-      :aria-current="route.name === 'home_index' ? 'page' : undefined" @click="router.push({ name: 'home_index' })">
+    <button type="button" class="nav-heading home-link" :class="{ 'is-active': route.name === 'home-index' }"
+      :aria-current="route.name === 'home-index' ? 'page' : undefined" @click="router.push({ name: 'home-index' })">
       <el-icon :size="20"><House /></el-icon><span>首页</span>
     </button>
     <section v-for="section in sections" :key="section.name" class="nav-section">

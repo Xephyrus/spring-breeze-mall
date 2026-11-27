@@ -34,7 +34,7 @@ export const useUserStore = defineStore("user", {
       appStore.setAdded(false);
       appStore.setUnreadMessageCount(0);
       appStore.resetNavigationRoutes();
-      appStore.storeOpenedList = [{ title: "首页", path: "", name: "home_index" }];
+      appStore.storeOpenedList = [{ title: "首页", path: "", name: "home-index" }];
     },
   },
 });

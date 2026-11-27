@@ -159,8 +159,8 @@ const lang = computed(() => appStore.lang);
  * 跳转至系统消息页面。
  */
 function openMessagePage() {
-  util.openNewPage("message_index");
-  router.push({ name: "message_index" });
+  util.openNewPage("message-index");
+  router.push({ name: "message-index" });
 }
 
 /**
@@ -266,8 +266,8 @@ function init() {
 
 function handleClickUserDropdown(name) {
   if (name === "changePass") {
-    util.openNewPage("change_pass");
-    router.push({ name: "change_pass" });
+    util.openNewPage("change-password");
+    router.push({ name: "change-password" });
   } else if (name === "loginOut") {
     logout().then(() => {
       Cookies.set("accessToken", "");

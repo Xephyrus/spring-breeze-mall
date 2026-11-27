@@ -112,7 +112,7 @@ import * as API_Order from "@/api/order";
 import vueQr from "vue-qr";
 import { customRouterPush } from "@/utils/filters";
 
-defineOptions({ name: "orderComplaint" });
+defineOptions({ name: "order-complaint" });
 
 const route = useRoute();
 

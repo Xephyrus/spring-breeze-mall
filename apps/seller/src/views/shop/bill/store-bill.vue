@@ -98,7 +98,7 @@ import * as API_Finance from "@/api/finance";
 import { downloadBlob } from "@/utils/download-blob";
 import { customRouterPush } from "@/utils/filters";
 
-defineOptions({ name: "storeBill" });
+defineOptions({ name: "store-bill" });
 
 const route = useRoute();
 

@@ -136,7 +136,7 @@ import { getDistributionOrder } from "@/api/distribution";
 import vueQr from "vue-qr";
 import * as filters from "@/utils/filters";
 
-defineOptions({ name: "distributionOrder" });
+defineOptions({ name: "distribution-order" });
 
 const route = useRoute();
 

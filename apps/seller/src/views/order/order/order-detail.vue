@@ -1210,7 +1210,7 @@ onMounted(() => {
 });
 
 onBeforeRouteLeave((to, from, next) => {
-  if (to.name === "orderList" || to.name === "virtualOrderList") {
+  if (to.name === "order-list" || to.name === "virtualOrderList") {
     to.meta.keepAlive = true;
   }
   next();

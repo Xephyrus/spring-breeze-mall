@@ -13,7 +13,7 @@ export const loginRouter: MenuRoute = {
 };
 export const forgetPasswordRouter: MenuRoute = {
   path: "/forgetPassword",
-  name: "forgetPassword",
+  name: "forget-password",
   component: () => import("@/views/forget-password.vue")
 };
 
@@ -47,19 +47,19 @@ export const otherRouter: MenuRoute = {
     {
       path: "home",
       title: "首页",
-      name: "home_index",
+      name: "home-index",
       component: () => import("@/views/home/home.vue")
     },
     {
       path: "change-password",
       title: "修改密码",
-      name: "change_pass",
+      name: "change-password",
       component: () => import("@/views/change-password/change-password.vue")
     },
     {
       path: "message",
       title: "消息中心",
-      name: "message_index",
+      name: "message-index",
       component: () => import("@/views/message/message.vue")
     },
     {
@@ -185,9 +185,9 @@ export const otherRouter: MenuRoute = {
       component: () => import("@/views/order/order/order-detail.vue")
     },
     {
-      path: "orderVerification",
+      path: "order-verification",
       title: "订单核销",
-      name: "orderVerification",
+      name: "order-verification",
       component: () => import("@/views/order/order/order-verification.vue")
     },
     {
@@ -259,7 +259,7 @@ export const otherRouter: MenuRoute = {
     {
       path: "procurement/purchase-order/list",
       title: "采购单",
-      name: "procurementPurchaseOrderList",
+      name: "procurement-purchase-order-list",
       component: () => import("@/views/procurement/purchase-order/list.vue")
     },
     {
@@ -309,19 +309,19 @@ export const otherRouter: MenuRoute = {
     {
       path: "order/returnMoneyOrder",
       title: "退款管理",
-      name: "returnMoneyOrder",
+      name: "return-money-order",
       component: () => import("@/views/order/after-order/return-money-order.vue")
     },
     {
       path: "order/returnGoodsOrder",
       title: "退货管理",
-      name: "returnGoodsOrder",
+      name: "return-goods-order",
       component: () => import("@/views/order/after-order/return-goods-order.vue")
     },
     {
       path: "order/memberComment",
       title: "评价管理",
-      name: "memberComment",
+      name: "member-comment",
       component: () => import("@/views/member/member-comment.vue")
     },
     {
@@ -333,7 +333,7 @@ export const otherRouter: MenuRoute = {
     {
       path: "bill/storeBill",
       title: "店铺结算",
-      name: "storeBill",
+      name: "store-bill",
       meta: { firstRouterName: "bill" },
       component: () => import("@/views/shop/bill/store-bill.vue")
     }

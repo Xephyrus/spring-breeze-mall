@@ -51,7 +51,7 @@ import Cookies from "js-cookie";
 import util from "@/libs/util.js";
 import { Message } from "@/utils/message";
 
-defineOptions({ name: "shopSetting" });
+defineOptions({ name: "shop-setting" });
 
 const currentKey = ref(""); // 存储当前点击地址的key
 const type = ref("INFO");

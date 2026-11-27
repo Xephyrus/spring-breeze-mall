@@ -166,7 +166,7 @@ import { canShowShipButton, isNonShippableOrder } from "@/utils/order-fulfill";
 import { Message } from "@/utils/message";
 import { customRouterPush } from "@/utils/filters";
 
-defineOptions({ name: "orderList" });
+defineOptions({ name: "order-list" });
 
 const route = useRoute();
 

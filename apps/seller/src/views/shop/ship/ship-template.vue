@@ -178,7 +178,7 @@ import { useAppStore } from "@/stores/app";
 import { Message, Modal } from "@/utils/message";
 
 defineOptions({
-  name: "shipTemplate",
+  name: "ship-template",
 });
 
 const appStore = useAppStore();

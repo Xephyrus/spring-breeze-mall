@@ -118,7 +118,7 @@ import { reactive, ref } from "vue";
 import { confirmVerification, getVerificationRecords, previewVerification } from "@/api/order";
 import { Message } from "@/utils/message";
 
-defineOptions({ name: "orderVerification" });
+defineOptions({ name: "order-verification" });
 
 const activeTab = ref("verify");
 const code = ref("");

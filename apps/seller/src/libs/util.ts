@@ -49,13 +49,13 @@ export const HOME_NAV_ITEM: NavItem = { name: HOME_NAV_NAME, title: "主页" };
 
 /** 静态路由名，禁止被动态路由清理误删 */
 const STATIC_ROUTE_NAMES = new Set<string>([
-  "home_index",
-  "change_pass",
-  "message_index",
+  "home-index",
+  "change-password",
+  "message-index",
   "main",
   "renovation",
   "login",
-  "forgetPassword",
+  "forget-password",
 ]);
 
 util.dynamicRouteNames = [];
@@ -97,7 +97,7 @@ util.resolveRouteComponent = function (menu) {
     menu.frontRoute ||
     (typeof menu.component === "string" &&
     menu.component &&
-    menu.component !== "Main"
+    menu.component !== "main"
       ? menu.component
       : "");
   return routeKey ? (lazyLoading(routeKey) as () => Promise<unknown>) : null;
@@ -279,20 +279,20 @@ util.setCurrentPath = function (name) {
   });
 
   let currentPathArr: OpenedTag[];
-  if (name === "home_index") {
+  if (name === "home-index") {
     currentPathArr = [
       {
-        title: String(util.handleTitle(null, util.getRouterObjByName(appStore.routers, "home_index"))),
+        title: String(util.handleTitle(null, util.getRouterObjByName(appStore.routers, "home-index"))),
         path: "",
-        name: "home_index",
+        name: "home-index",
       },
     ];
-  } else if ((name.indexOf("_index") >= 0 || isOtherRouter) && name !== "home_index") {
+  } else if ((name.indexOf("_index") >= 0 || isOtherRouter) && name !== "home-index") {
     currentPathArr = [
       {
-        title: String(util.handleTitle(null, util.getRouterObjByName(appStore.routers, "home_index"))),
+        title: String(util.handleTitle(null, util.getRouterObjByName(appStore.routers, "home-index"))),
         path: "/home",
-        name: "home_index",
+        name: "home-index",
       },
       {
         title: String(title),
@@ -311,16 +311,16 @@ util.setCurrentPath = function (name) {
     if (!currentPathObj) {
       currentPathArr = [];
     } else if ((currentPathObj.children?.length ?? 0) <= 1 && currentPathObj.name === "home") {
-      currentPathArr = [{ title: "首页", path: "", name: "home_index" }];
+      currentPathArr = [{ title: "首页", path: "", name: "home-index" }];
     } else if ((currentPathObj.children?.length ?? 0) <= 1 && currentPathObj.name !== "home") {
       currentPathArr = [
-        { title: "首页", path: "/home", name: "home_index" },
+        { title: "首页", path: "/home", name: "home-index" },
         { title: String(currentPathObj.title ?? ""), path: "", name },
       ];
     } else {
       const childObj = currentPathObj.children?.filter((child) => child.name === name)[0];
       currentPathArr = [
-        { title: "首页", path: "/home", name: "home_index" },
+        { title: "首页", path: "/home", name: "home-index" },
         { title: String(currentPathObj.title ?? ""), path: "", name: currentPathObj.name as string },
         {
           title: String(childObj?.title ?? ""),

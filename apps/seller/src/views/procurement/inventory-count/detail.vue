@@ -150,7 +150,7 @@ function handleExport() {
     });
 }
 function goBack() {
-  customRouterPush({ name: "procurementInventoryCountList" });
+  customRouterPush({ name: "procurement-inventory-count-list" });
 }
 </script>
 

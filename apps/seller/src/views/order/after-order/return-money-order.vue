@@ -151,7 +151,7 @@ import { useRoute } from "vue-router";
 import * as API_Order from "@/api/order";
 import { customRouterPush } from "@/utils/filters";
 
-defineOptions({ name: "returnMoneyOrder" });
+defineOptions({ name: "return-money-order" });
 
 const route = useRoute();
 

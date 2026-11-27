@@ -234,7 +234,7 @@ import {
 import { getShopGoodsLabelListSeller } from "@/api/goods";
 import { Message, Modal } from "@/utils/message";
 
-defineOptions({ name: "distributionGoods" });
+defineOptions({ name: "distribution-goods" });
 
 const modalVisible = ref(false);
 const modalTitle = ref("添加分销商品");

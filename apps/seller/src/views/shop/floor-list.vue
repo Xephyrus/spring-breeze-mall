@@ -90,7 +90,7 @@ import { useRouter } from "vue-router";
 import * as API_floor from "@/api/other";
 import { Message, Modal } from "@/utils/message";
 
-defineOptions({ name: "floorList" });
+defineOptions({ name: "floor-list" });
 
 const router = useRouter();
 

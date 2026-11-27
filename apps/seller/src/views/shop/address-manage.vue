@@ -100,7 +100,7 @@ import multipleMap from "@/views/my-components/map/multiple-map";
 import * as RegExp from "@/libs/reg-exp";
 import { Message } from "@/utils/message";
 
-defineOptions({ name: "addressManage" });
+defineOptions({ name: "address-manage" });
 
 const currentKey = ref("");
 const submitLoading = ref(false);

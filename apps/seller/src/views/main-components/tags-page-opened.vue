@@ -26,7 +26,7 @@
       <el-tag
         v-for="item in pageTagsList"
         :key="item.name"
-        :closable="item.name !== 'home_index'"
+        :closable="item.name !== 'home-index'"
         :type="tagType(item)"
         :effect="isActive(item) ? 'dark' : 'plain'"
         class="page-tag"
@@ -159,7 +159,7 @@ const handlescroll = (e) => {
 const handleTagsOption = (type) => {
   if (type === "clearAll") {
     appStore.clearAllTags();
-    router.push({ name: "home_index" });
+    router.push({ name: "home-index" });
   } else {
     appStore.clearOtherTags(route.name);
   }

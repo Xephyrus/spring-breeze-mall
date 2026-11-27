@@ -20,7 +20,7 @@ router.beforeEach((to, from, next) => {
   const hasToken = Cookies.get("userInfoSeller");
 
   if (!hasToken && name !== "login") {
-    if (name === "forgetPassword") {
+    if (name === "forget-password") {
       Util.toDefaultPage([...routers] as never[], name, router, next);
       return;
     }
@@ -30,7 +30,7 @@ router.beforeEach((to, from, next) => {
 
   if (hasToken && name === "login") {
     Util.title();
-    next({ name: "home_index" });
+    next({ name: "home-index" });
     return;
   }
 

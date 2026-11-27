@@ -15,7 +15,7 @@ export const result = [{
       type: 0,
       title: "商品管理",
       path: "",
-      component: "Main",
+      component: "main",
       children: [{
           name: "goods-operation",
           level: 2,
@@ -72,14 +72,14 @@ export const result = [{
         type: 0,
         title: "订单管理",
         path: "/order",
-        component: "Main",
+        component: "main",
         children: [{
-            name: "orderList",
+            name: "order-list",
             level: 2,
             type: 0,
             keepAlive: true,
             title: "商品订单",
-            path: "orderList",
+            path: "order-list",
             component: "order/order/orderList",
             children: null,
           },
@@ -94,30 +94,30 @@ export const result = [{
             children: null
           },
           {
-            name: "orderVerification",
+            name: "order-verification",
             level: 2,
             type: 0,
             keepAlive: true,
             title: "订单核销",
-            path: "orderVerification",
+            path: "order-verification",
             component: "order/order/orderVerification",
             children: null
           }
         ]
       },
       {
-        name: "memberComment",
+        name: "member-comment",
         level: 1,
         type: 0,
         title: "评价管理",
         path: "/order",
-        component: "Main",
+        component: "main",
         children: [{
-          name: "memberComment",
+          name: "member-comment",
           level: 2,
           type: 0,
           title: "评价管理",
-          path: "memberComment",
+          path: "member-comment",
           component: "member/memberComment",
           children: null,
         }]
@@ -128,34 +128,34 @@ export const result = [{
         type: 0,
         title: "售后管理",
         path: "/order",
-        component: "Main",
+        component: "main",
         children: [{
-            name: "returnGoodsOrder",
+            name: "return-goods-order",
             level: 2,
             type: 0,
             keepAlive: true,
             title: "退货管理",
-            path: "returnGoodsOrder",
+            path: "return-goods-order",
             component: "order/after-order/returnGoodsOrder",
             children: null
           },
           {
-            name: "returnMoneyOrder",
+            name: "return-money-order",
             level: 2,
             type: 0,
             keepAlive: true,
             title: "退款管理",
-            path: "returnMoneyOrder",
+            path: "return-money-order",
             component: "order/after-order/returnMoneyOrder",
             children: null
           },
           {
-            name: "orderComplaint",
+            name: "order-complaint",
             level: 2,
             type: 0,
             keepAlive: true,
             title: "投诉管理",
-            path: "orderComplaint",
+            path: "order-complaint",
             component: "order/after-order/orderComplaint",
             children: null
           }
@@ -176,7 +176,7 @@ export const result = [{
         type: 0,
         title: "财务管理",
         path: "/bill",
-        component: "Main",
+        component: "main",
         children: [{
             name: "accountStatementBill",
             level: 2,
@@ -188,12 +188,12 @@ export const result = [{
             children: null
           },
           {
-            name: "storeBill",
+            name: "store-bill",
             level: 2,
             type: 0,
             keepAlive: true,
             title: "店铺结算",
-            path: "storeBill",
+            path: "store-bill",
             component: "shop/bill/storeBill",
             children: null
           }
@@ -205,7 +205,7 @@ export const result = [{
         type: 0,
         title: "发票管理",
         path: "/bill",
-        component: "Main",
+        component: "main",
         children: [{
           name: "receipt",
           level: 2,
@@ -231,7 +231,7 @@ export const result = [{
         type: 0,
         title: "平台活动",
         path: "/promotion",
-        component: "Main",
+        component: "main",
         children: [{
             name: "pintuan",
             level: 2,
@@ -260,7 +260,7 @@ export const result = [{
         type: 0,
         title: "直播活动",
         path: "/promotion",
-        component: "Main",
+        component: "main",
         children: [{
             name: "live",
             level: 2,
@@ -271,11 +271,11 @@ export const result = [{
             children: null
           },
           {
-            name: "liveGoods",
+            name: "live-goods",
             level: 2,
             type: 0,
             title: "直播商品",
-            path: "liveGoods",
+            path: "live-goods",
             component: "promotion/live/liveGoods",
             children: null
           }
@@ -287,7 +287,7 @@ export const result = [{
         type: 0,
         title: "商家活动",
         path: "/storePromotion",
-        component: "Main",
+        component: "main",
         children: [{
             name: "full-cut",
             level: 2,
@@ -314,22 +314,22 @@ export const result = [{
         type: 0,
         title: "分销管理",
         path: "/distribution",
-        component: "Main",
+        component: "main",
         children: [{
-            name: "distributionGoods",
+            name: "distribution-goods",
             level: 2,
             type: 0,
             title: "分销商品",
-            path: "distributionGoods",
+            path: "distribution-goods",
             component: "distribution/distributionGoods",
             children: null
           },
           {
-            name: "distributionOrder",
+            name: "distribution-order",
             level: 2,
             type: 0,
             title: "分销订单",
-            path: "distributionOrder",
+            path: "distribution-order",
             component: "distribution/distributionOrder",
             children: null
           }
@@ -350,40 +350,40 @@ export const result = [{
       type: 0,
       title: "统计管理",
       path: "/statistics",
-      component: "Main",
+      component: "main",
       children: [{
-          name: "goodsStatistics",
+          name: "goods-statistics",
           level: 2,
           type: 0,
           title: "商品统计",
-          path: "goodsStatistics",
+          path: "goods-statistics",
           component: "statistics/goods",
           children: null
         },
         {
-          name: "orderStatistics",
+          name: "order-statistics",
           level: 2,
           type: 0,
           title: "订单统计",
-          path: "orderStatistics",
+          path: "order-statistics",
           component: "statistics/order",
           children: null
         },
         {
-          name: "trafficStatistics",
+          name: "traffic-statistics",
           level: 2,
           type: 0,
           title: "流量统计",
-          path: "trafficStatistics",
+          path: "traffic-statistics",
           component: "statistics/traffic",
           children: null
         },
         {
-          name: "dataReport",
+          name: "data-report",
           level: 2,
           type: 0,
           title: "数据报表",
-          path: "dataReport",
+          path: "data-report",
           component: "statistics/data-report",
           children: null
         },
@@ -413,7 +413,7 @@ export const result = [{
         type: 0,
         title: "店员设置",
         path: "",
-        component: "Main",
+        component: "main",
         children: [
           {
             name: "clerkManage",
@@ -424,11 +424,11 @@ export const result = [{
             component: "shop/system/clerk/clerkManage",
             children: null
           },{
-            name: "storeDepartmentManage",
+            name: "store-department-manage",
             level: 2,
             type: 0,
             title: "部门管理",
-            path: "storeDepartmentManage",
+            path: "store-department-manage",
             component: "shop/system/department/storeDepartmentManage",
             children: null
           },
@@ -449,13 +449,13 @@ export const result = [{
         type: 0,
         title: "配送设置",
         path: "",
-        component: "Main",
+        component: "main",
         children: [{
-            name: "shipTemplate",
+            name: "ship-template",
             level: 2,
             type: 0,
             title: "配送模板",
-            path: "shipTemplate",
+            path: "ship-template",
             component: "shop/ship/shipTemplate",
             children: null
           },
@@ -477,42 +477,42 @@ export const result = [{
         type: 0,
         title: "店铺管理",
         path: "/shop",
-        component: "Main",
+        component: "main",
         description: "",
         children: [
          {
-            name: "shopSetting",
+            name: "shop-setting",
             level: 2,
             type: 0,
             title: "店铺设置",
-            path: "shopSetting",
+            path: "shop-setting",
             component: "shop/shopSetting",
             children: null,
           },
           {
-            name: "shopInfo",
+            name: "shop-info",
             level: 2,
             type: 0,
             title: "店铺信息",
-            path: "shopInfo",
+            path: "shop-info",
             component: "shop/shopInfo",
             children: null,
           },
           {
-            name: "addressManage",
+            name: "address-manage",
             level: 2,
             type: 0,
             title: "地址管理",
-            path: "addressManage",
+            path: "address-manage",
             component: "shop/addressManage",
             children: null,
           },
           {
-            name: "wapList",
+            name: "wap-list",
             level: 2,
             type: 0,
             title: "移动楼层",
-            path: "wapList",
+            path: "wap-list",
             component: "shop/wap/wapList",
             children: null
 
@@ -528,11 +528,11 @@ export const result = [{
 
           },
           {
-            name: "ossManage",
+            name: "oss-manage",
             level: 2,
             type: 0,
             title: "素材管理",
-            path: "ossManage",
+            path: "oss-manage",
             component: "sys/oss-manage/ossManage",
             /**
              * 运行时菜单来自 li_store_menu，此处仅为静态参考。
@@ -543,20 +543,20 @@ export const result = [{
             children: null
           },
           // {
-          //   name: "shopAddress",
+          //   name: "shop-address",
           //   level: 2,
           //   type: 0,
           //   title: "自提管理",
-          //   path: "shopAddress",
+          //   path: "shop-address",
           //   component: "shop/shopAddress",
           //   children: null,
           // }
           // {
-          //   name: "shopAddress",
+          //   name: "shop-address",
           //   level: 2,
           //   type: 0,
           //   title: "自提管理",
-          //   path: "shopAddress",
+          //   path: "shop-address",
           //   component: "shop/shopAddress",
           //   children: null,
           // }
@@ -579,7 +579,7 @@ export const result = [{
       path: "user-manage",
       component: "sys/user-manage/userManage",
       children: [{
-        name: "message_index",
+        name: "message-index",
         level: 2,
         type: 0,
         title: "系统消息",

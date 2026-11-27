@@ -197,6 +197,40 @@ li_store_menu 共 81 行，front_route 去重 55 个
 
 **验证**：typecheck 0 错误 / lint 58（未增长）/ build 6.13s / 产物 12.81 MB
 
+### M3-2a 路由 name 统一 kebab（✅ 2026-11-28）
+
+| 项 | 数值 |
+|---|---:|
+| DB 改名 | **40 条**（`li_store_menu.name`，含 `Main`→`main`、`message_index`→`message-index`、`home_index`→`home-index`、`change_pass`→`change-password`） |
+| 代码替换 | **47 个文件 / 169 处**引号字面量 |
+| SQL | `backend/DB/store-menu-kebab-names.sql`（幂等 `UPDATE ... WHERE 旧值`） |
+| 数据修复 | 一条历史脏数据：`name` 与 `path` 里存了字面 `\nclerkManage` → 统一为 `clerk-manage` |
+
+**为什么必须同步 DB**：`util.initRouterNode` 直接用菜单 `name` 注册路由
+（`router.addRoute("otherRouter", { name: leaf.name })`），
+所以「代码里的 `push({ name: "order-list" })`」必须与 DB 的 `name` 同时改，否则跳转 404。
+
+**校验**
+
+```
+li_store_menu 81 行；name 去重 64 个，非 kebab 数 0 ✅
+代码里 40 个旧 name 的引号字面量残留：0 ✅
+```
+
+**验证**：typecheck 0 错误 / lint 58（未增长）/ build 7.74s / dev HTTP 200
+
+### M3-2b 待办：路径（URL）统一 kebab
+
+`li_store_menu.path` 与前端 `router.ts`/`router-json.ts` 里的路径字面量仍是驼峰
+（如 `/orderList`、`/ossManage`，共 8 类、约 24 处代码引用 + 33 行 DB）。
+
+改动会让旧链接 404（计划里已确认接受），需要：
+
+1. 生成 `path` 改名 SQL（`backend/DB/store-menu-kebab-paths.sql`）
+2. 改 `router/router.ts`、`router-json.ts` 里的 `path` 与静态 `name`
+3. 扫掉代码里的 `/orderList` 这类字面量（含 `push("/xxx")`、`<router-link to="...">`）
+4. 与 M3-2a 相同的双端校验 + 冒烟
+
 ---
 
 ## 待办（后续里程碑）

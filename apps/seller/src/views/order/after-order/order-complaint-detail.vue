@@ -268,7 +268,7 @@ function getDetail() {
     });
 }
 function returnDataList() {
-  router.push({ name: "orderComplaint" });
+  router.push({ name: "order-complaint" });
 }
 function appealSubmit() {
   if (!appeal.appealContent) {

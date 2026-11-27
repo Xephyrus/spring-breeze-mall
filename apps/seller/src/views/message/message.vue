@@ -86,7 +86,7 @@ import { Bell, ChatDotRound, Clock, Delete } from "@element-plus/icons-vue";
 import * as API_Index from "@/api/index";
 import { useAppStore } from "@/stores/app";
 
-defineOptions({ name: "message_index" });
+defineOptions({ name: "message-index" });
 
 const route = useRoute();
 const appStore = useAppStore();
@@ -120,7 +120,7 @@ onMounted(() => {
 });
 
 watch(() => route, (to) => {
-  if (to.name === "message_index") getAll();
+  if (to.name === "message-index") getAll();
 });
 
 function contentText(html) {

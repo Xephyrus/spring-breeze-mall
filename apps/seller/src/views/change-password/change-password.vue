@@ -51,7 +51,7 @@ import { md5 } from "@/utils/md5.js";
 import { useAppStore } from "@/stores/app";
 import { useUserStore } from "@/stores/user";
 
-defineOptions({ name: "change_pass" });
+defineOptions({ name: "change-password" });
 
 const router = useRouter();
 const appStore = useAppStore();
@@ -114,7 +114,7 @@ function editPassword() {
   });
 }
 function cancelEditPass() {
-  appStore.removeTag("change_pass");
+  appStore.removeTag("change-password");
   localStorage.storeOpenedList = JSON.stringify(appStore.storeOpenedList);
   const list = appStore.storeOpenedList;
   const lastPageName = list.length > 1 ? list[list.length - 1].name : list[0].name;

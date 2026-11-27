@@ -313,7 +313,7 @@ function handleAudit(pass) {
   });
 }
 function goBack() {
-  customRouterPush({ name: "procurementPurchaseOrderList" });
+  customRouterPush({ name: "procurement-purchase-order-list" });
 }
 </script>
 

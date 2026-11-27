@@ -177,7 +177,7 @@
         :is-component="true"
         :initialize="picModelFlag"
         :max-select="1"
-        ref="ossManage"
+        ref="oss-manage"
       />
     </el-dialog>
   </div>

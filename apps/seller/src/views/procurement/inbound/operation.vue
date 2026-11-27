@@ -250,7 +250,7 @@ function handleSubmit() {
     });
 }
 function goBack() {
-  customRouterPush({ name: "procurementInboundList" });
+  customRouterPush({ name: "procurement-inbound-list" });
 }
 </script>
 

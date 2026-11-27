@@ -143,7 +143,7 @@ import {
 } from "@/api/goods";
 import { Message } from "@/utils/message";
 
-defineOptions({ name: "alertQuantityWarn" });
+defineOptions({ name: "alert-quantity-warn" });
 
 const ROUTE_TAB_MAP = {
   alertQuantityWarn: "warnList",
