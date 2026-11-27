@@ -8,10 +8,10 @@ import { useAppStore } from "@/stores/app";
 import { handleRefreshToken } from "@/api/index";
 import { v4 as uuidv4 } from "uuid";
 
-const qs = require("qs");
+import qs from "qs";
 
 export const buyerUrl =
-  process.env.NODE_ENV === "development"
+  import.meta.env.DEV
     ? BASE.API_DEV.buyer
     : BASE.API_PROD.buyer;
 

@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-const psl = require("psl");
+import psl from "psl";
 
 const isClient = typeof window !== "undefined";
 

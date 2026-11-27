@@ -218,6 +218,7 @@ function calcMD5(str) {
   return binl2hex(coreMD5(str2binl(str)))
 }
 
-module.exports = {
+export { hexMD5 as md5 };
+export default {
   md5: hexMD5
 }

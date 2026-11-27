@@ -29,7 +29,8 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import { Message } from "@/utils/message";
-import { aMapSwitch } from '@/config/index'
+import config from '@/config/index'
+const aMapSwitch = config.aMapSwitch
 import mapping from "@/components/map/index.vue";
 import * as API_Setup from "@/api/common.js";
 

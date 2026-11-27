@@ -1,7 +1,6 @@
 import { setupRequestErrorHandling } from "@/utils/requestError";
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import "core-js/stable";
 import "./assets/styles/global-layout.scss";
 import "./assets/styles/theme.less";
 import App from "./App.vue";
