@@ -121,6 +121,25 @@
 
 **验证**：typecheck 0 错误 / lint 58（未增长）/ build 5.75s / dev server HTTP 200
 
+### 2.3 stores / plugins / composables 类型化（✅ 2026-11-28）
+
+| 文件 | 说明 |
+|---|---|
+| `plugins/element.js` → `element.ts` | `setupElementPlus(app: App): void` |
+| `stores/user.js` → `user.ts` | `LOGOUT_KEYS: string[]`，`logout(): void` |
+| `stores/dict.js` → `dict.ts` | 新增 `DictItem` 接口，4 个 setter 显式类型 |
+| `stores/setting.js` → `setting.ts` | 新增 `SettingState`；持久化 JSON 用 `Record<string, unknown>` 收口 |
+| `stores/app.js` → `app.ts` | 新增 `AppState` / `OpenedTag` / `NavMenuItem`；路由数组用 vue-router 的 `RouteRecordRaw` |
+| `composables/useSiteSettings.js` → `useSiteSettings.ts` | 新增 `SiteSettings` / `UseSiteSettings`；`computed` 返回值类型为 `ComputedRef<string>` |
+
+**编译器暴露的问题**：`getBaseSite()` 在 api 层没有声明泛型（返回 `ResultMessage<any>`），
+`getBaseSite<T>()` 的写法无效 → 改为在 composable 内收窄 `res.result`。
+
+**验证**：typecheck 0 错误 / lint 58（未增长）/ build 7.88s / dev server HTTP 200
+
+> `router/index.js`（49 行）与 `router/router.js`（359 行）依赖 `libs/util` 的 `frontRoute` 解析，
+> 与 M3 命名统一强耦合，留到 M3 一起改。
+
 ---
 
 ## 待办（后续里程碑）
