@@ -162,6 +162,59 @@ Tomcat 的 WebSocket 升级过滤器**不在过滤器链里**（只有启动时 
 > 本轮已完成：前端「疯狂重连」修复 + 后端 400 的精确定位（安全链之后、Tomcat WS 升级之前）。
 > 后端修复需要改 `im-api` 的 WebSocket 注册方式，属独立任务，未在本轮改动。
 
+---
+
+### 四、与原项目（`F:\yibase\mall\lilishop`）对比 + 最终修复
+
+按用户提示对比了同目录下的**原始项目**，结论如下。
+
+#### 4.1 版本与配置完全一致，所以原项目也有同样的问题
+
+| 项 | 原项目 | 本仓库 |
+|---|---|---|
+| Spring Boot | 4.0.5 | 4.0.5 |
+| Tomcat | 11.x（`tomcat-embed-core`） | 11.0.20 |
+| framework 依赖 | 含 `spring-boot-starter-websocket` | 同 |
+| `ImApiApplication` | 声明 `ServerEndpointExporter` | **文件哈希完全相同** |
+| `ImSecurityConfig` | `securityMatcher` 含 `/lili/webSocket/**` 且 `permitAll` | 同（差异仅为注释/格式） |
+| `SecretKeyUtil` / `JWTTokenProperties` | 默认密钥同一常量 | 同 |
+
+**关键差异**：**两个项目都没有显式注册 `WsFilter`**，而 Spring Boot 4 + Tomcat 11 下
+`WsSci` 没有把升级过滤器挂进链（实测 TRACE 无任何 `org.apache.tomcat.websocket` 输出）。
+也就是说：**这不是本仓库迁移引入的问题，原项目同样无法握手**。
+
+#### 4.2 最终修复（`backend/im-api`）
+
+新增 `cn.lili.config.WebSocketFilterConfig`，显式注册 `WsFilter`（`/*`，`HIGHEST_PRECEDENCE`）。
+实测同一请求：`HTTP 400` → **`101 Switching Protocols`**。
+
+同时修掉一个易踩的坑：`WebSocketServer.onOpen/onClose` 在 `authUser == null` 时直接 NPE，
+现改为记录明确原因并 `close(1008, "unauthorized")`，`UserContext.getAuthUser` 的 catch 也加了日志。
+
+#### 4.3 顺带修复：manager-api 的 fat jar 被我之前的构建覆盖了
+
+排查过程中发现 `backend/manager-api/target/manager-api-5.0.2.jar` 变成了 **0.57 MB 的瘦 jar**
+（只有 `cn/lili/**` 类、没有 `BOOT-INF`）——是之前为了编译 framework 跑 `install/package` 时，
+在**进程占用该 jar** 的情况下覆盖造成的。后果：**一旦重启就起不来**。
+
+已修复：停掉进程 → `mvnw -o -pl manager-api -am package -DskipTests` → 重新生成
+**201 MB 的 fat jar**（含 `BOOT-INF`）→ 重新启动，`Started ManagerApiApplication` 正常。
+
+> 教训写进这里：Windows 上**运行中的 jar 被占位时，Maven 会静默写出不完整的瘦 jar**。
+> 以后重打包前先停服务，或先确认 jar 含 `BOOT-INF`。
+
+#### 4.4 当前状态
+
+| 项 | 状态 |
+|---|---|
+| WebSocket 升级（101） | ✅ 已修复并验证 |
+| token 无效时的行为 | ✅ 明确 `1008 unauthorized` + 日志，不再 NPE |
+| 两个服务的 JWT 密钥 | ✅ 都使用默认密钥（manager-api 已用新构建重启） |
+| 端到端「用户建立连接」 | ⏳ 需要一次**真实登录**（`13011111111` / `admin` 的密码在本地库里与 README 不一致，登录返回「密码不正确」） |
+
+> 下一步：用你自己的密码在 http://localhost:10002 登录，然后在 http://localhost:8000 刷新，
+> Network → WS 应看到 `101`，服务端日志出现 `用户建立连接，sessionId: ...`。
+
 > 结论：**前端不再「疯狂重连」**（退避 + 单条提示 + 上限 12 次）；**WS 仍连不上是后端握手返回 400**，需后端单独修。
 
 ---
