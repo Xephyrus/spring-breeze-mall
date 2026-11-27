@@ -656,6 +656,9 @@ importers:
 
   packages/shared:
     devDependencies:
+      axios:
+        specifier: 'catalog:'
+        version: 1.21.1(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
       typescript:
         specifier: 'catalog:'
         version: 5.9.3

@@ -247,6 +247,11 @@ cd backend
 - 数据库密码等敏感信息请放在 `backend/local-secrets.yml`，格式见 `backend/config/README.md`
 - `application*.yml` 里的 `password: lilishop` 是上游默认示例值，本地请覆盖
 - `docker/init/mysql/lilishop.sql` 里的第三方密钥字段均为空/占位符，可安全提交
+- **地图 Key 已从源码外置**：高德 / 腾讯位置服务的 Key 改由各端 `public/config.js` 的
+  `BASE.MAP` 运行时注入（`manager` / `seller` / `buyer`），源码里不再出现。
+  部署时按需填写，留空只会影响地图相关功能。
+  历史上这些 Key 曾硬编码在 `src/config` 中，**请自行到高德/腾讯控制台吊销并重新申请**
+  （仓库历史里仍能看到旧值，修改源码不能撤回已公开的记录）。
 
 ---
 

@@ -19,16 +19,21 @@ export interface AppConfig {
   };
 }
 
+/** `public/config.js` 运行时注入的地图 Key（部署环境填写） */
+const mapConfig = (typeof window !== "undefined" ? window.BASE?.MAP : undefined) ?? {};
+
 const config: AppConfig = {
   title: "lilishop",
   /**
-   * 高德地图申请链接
-   * https://lbs.amap.com/api/javascript-api/guide/abc/prepare
-   * 添加成功后，可获取到key值和安全密钥jscode（自2021年12月02日升级，升级之后所申请的 key 必须配备安全密钥 jscode 一起使用)
+   * 地图 Key 不再硬编码在源码里（会随仓库泄露）。
+   * 统一由 `public/config.js` 的 `BASE.MAP` 在运行时注入：
+   *   - 高德地图申请：https://lbs.amap.com/api/javascript-api/guide/abc/prepare
+   *     （2021-12-02 之后申请的 Key 必须同时配安全密钥 jscode）
+   *   - 腾讯位置服务：https://lbs.qq.com/webApi/javascriptGL/glGuide/glOverview
+   * 未配置时地图相关功能不可用，其余功能不受影响。
    */
-  // FIXME 请检查当前高德key创建的日期，如果2021年12月02日之前申请的 无需填写安全密钥
-  aMapSecurityJsCode: "2bd0fbf621881f4c77be74f0e76495f3",
-  aMapKey: "7f11113750315d8543daaf5c3ba353ca",
+  aMapSecurityJsCode: mapConfig.aMapSecurityJsCode ?? "",
+  aMapKey: mapConfig.aMapKey ?? "",
   aMapSwitch: false,
   website: "https://www.pickmall.cn",
   enableCDN: true,

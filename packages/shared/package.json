@@ -18,10 +18,12 @@
     "src"
   ],
   "peerDependencies": {
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "axios": "catalog:"
   },
   "devDependencies": {
     "typescript": "catalog:",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "axios": "catalog:"
   }
 }

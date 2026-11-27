@@ -18,6 +18,12 @@ interface ManagerBaseConfig {
   PC_URL: string;
   WAP_URL: string;
   PREFIX: string;
+  /** 第三方地图 Key，由 public/config.js 运行时注入（不写进 src） */
+  MAP?: {
+    aMapKey?: string;
+    aMapSecurityJsCode?: string;
+    tMapKey?: string;
+  };
 }
 
 declare global {
