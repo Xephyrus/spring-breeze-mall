@@ -16,7 +16,7 @@ export function checkBankno(bankno: string): boolean {
   const arrJiShu2: number[] = []; // 奇数位 *2 的积 >9
   const arrOuShu: string[] = []; // 偶数位数组
   for (let j = 0; j < newArr.length; j++) {
-    if ((j + 1) % 2 == 1) {
+    if ((j + 1) % 2 === 1) {
       if (parseInt(newArr[j]) * 2 < 9) arrJiShu.push(parseInt(newArr[j]) * 2);
       else arrJiShu2.push(parseInt(newArr[j]) * 2);
     } else {
@@ -48,7 +48,7 @@ export function checkBankno(bankno: string): boolean {
   // 计算总和
   const sumTotal = sumJiShu + sumOuShu + sumJiShuChild1 + sumJiShuChild2;
   // 计算 Luhm 值
-  const k = sumTotal % 10 == 0 ? 10 : sumTotal % 10;
+  const k = sumTotal % 10 === 0 ? 10 : sumTotal % 10;
   const luhm = 10 - k;
   return String(lastNum) === String(luhm);
 }

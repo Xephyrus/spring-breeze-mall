@@ -1,4 +1,4 @@
-import { post, get, upload, del } from "@/utils/request";
+import { get } from "@/utils/request";
 import type { GoodsSkuQuery } from "@/types/api";
 
 export const ServeGetGoodsDetail = (data: GoodsSkuQuery) => {

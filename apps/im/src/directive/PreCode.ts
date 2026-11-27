@@ -36,7 +36,7 @@ function updateNodes(el: HTMLElement, _binding?: DirectiveBinding): void {
 
     copyFunc(elPre, elCode.innerText);
 
-    if (language != undefined) {
+    if (language !== undefined) {
       preNmae(elPre, language);
     }
   });

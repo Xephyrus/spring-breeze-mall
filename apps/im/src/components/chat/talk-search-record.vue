@@ -216,7 +216,8 @@
 import { ref, reactive, onMounted } from "vue";
 import { ServeGetContacts } from "@/api/contacts";
 import { ServeFindTalkRecords } from "@/api/chat";
-import { formatSize as renderSize, download, imgZoom } from "@/utils/functions";
+// 只保留实际使用的 imgZoom（原 import 里 formatSize/download 未被使用，删除时连带丢过这两个）
+import { imgZoom } from "@/utils/functions";
 import { ElNotification } from "@/utils/message";
 import { useUserStore } from "@/stores/user";
 

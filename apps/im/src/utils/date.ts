@@ -27,7 +27,7 @@ export function formatDate(date: Date, fmt: string): string {
   for (const k in o) {
     if (new RegExp("(" + k + ")").test(fmt)) {
       const value =
-        RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length);
+        RegExp.$1.length === 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length);
       fmt = fmt.replace(RegExp.$1, String(value));
     }
   }
@@ -66,13 +66,13 @@ export function formatDateShort(
   const timeExtraStr = mustIncludeTime ? " " + formatDate(srcDate, "hh:mm") : "";
 
   // 当年
-  if (currentYear == srcYear) {
+  if (currentYear === srcYear) {
     const currentTimestamp = currentDate.getTime();
     // 相差时间（单位：毫秒）
     const deltaTime = currentTimestamp - srcTimestamp;
 
     // 当天（月份和日期一致才是）
-    if (currentMonth == srcMonth && currentDateD == srcDateD) {
+    if (currentMonth === srcMonth && currentDateD === srcDateD) {
       // 时间相差 60 秒以内
       if (deltaTime < 60 * 1000) ret = "刚刚";
       // 否则当天其它时间段的，直接显示「时:分」
@@ -90,13 +90,13 @@ export function formatDateShort(
 
       // 用目标日期的「月/日」跟「昨天」比较最准确（用时间戳差值判断会误判跨天场景）
       if (
-        srcMonth == yesterdayDate.getMonth() + 1 &&
-        srcDateD == yesterdayDate.getDate()
+        srcMonth === yesterdayDate.getMonth() + 1 &&
+        srcDateD === yesterdayDate.getDate()
       ) {
         ret = "昨天" + timeExtraStr;
       } else if (
-        srcMonth == beforeYesterdayDate.getMonth() + 1 &&
-        srcDateD == beforeYesterdayDate.getDate()
+        srcMonth === beforeYesterdayDate.getMonth() + 1 &&
+        srcDateD === beforeYesterdayDate.getDate()
       ) {
         ret = "前天" + timeExtraStr;
       } else {

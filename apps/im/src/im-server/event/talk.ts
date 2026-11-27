@@ -57,6 +57,7 @@ export default class Talk extends Base {
 
     // 判断发送者是否已在当前用户列表中，不在则触发一次用户信息刷新
     const bridge = getAppBridge();
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     if (this.sender_id && !useTalkStore().items.some((item) => item.userId == this.sender_id)) {
       (bridge.loadUserSetting as (type: string) => void)("update");
     }
@@ -64,12 +65,13 @@ export default class Talk extends Base {
 
   /** 判断消息发送者是否是我自己 */
   isCurrSender(): boolean {
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     return this.sender_id == this.getAccountId();
   }
 
   /** 获取对话索引 */
   getIndexName(): string {
-    if (this.talk_type == 2) {
+    if (this.talk_type === 2) {
       return `${this.talk_type}_${this.receiver_id}`;
     }
 
@@ -81,8 +83,10 @@ export default class Talk extends Base {
   getFloatType(): string {
     const userId = this.resource.userId;
 
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     if (userId == 0) return "center";
 
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     return userId == this.getAccountId() ? "right" : "left";
   }
 
@@ -135,7 +139,7 @@ export default class Talk extends Base {
     const talk_type = this.resource.talk_type;
     let receiver_id = this.receiver_id;
 
-    if (talk_type == 2) {
+    if (talk_type === 2) {
       avatar = this.resource.group_avatar;
       nickname += `【 ${this.resource.group_name ?? ""} 】`;
     } else {
@@ -167,15 +171,16 @@ export default class Talk extends Base {
     let receiver_id = this.sender_id;
     const talk_type = this.talk_type;
 
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     if (talk_type == 1 && this.receiver_id != this.getAccountId()) {
       receiver_id = this.receiver_id;
-    } else if (talk_type == 2) {
+    } else if (talk_type === 2) {
       receiver_id = this.receiver_id;
     }
 
     ServeCreateTalkList(receiver_id).then((raw) => {
       const { code, data } = raw as { code?: number; data?: Record<string, unknown> };
-      if (code == 200 && data) {
+      if (code === 200 && data) {
         useTalkStore().PUSH_TALK_ITEM(formatTalkItem(data));
       }
     });
@@ -197,6 +202,7 @@ export default class Talk extends Base {
       ? Math.ceil(el.scrollTop) + el.clientHeight >= el.scrollHeight
       : false;
 
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     if (isBottom || record.userId == this.getAccountId() || record.fromUser == this.getAccountId()) {
       nextTick(() => {
         if (el) el.scrollTop = el.scrollHeight;
@@ -220,6 +226,7 @@ export default class Talk extends Base {
     });
 
     // 清除该会话未读数
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     if (this.talk_type == 1 && this.getAccountId() !== this.sender_id) {
       ServeClearTalkUnreadNum({
         talk_type: 1,

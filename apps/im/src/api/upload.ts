@@ -1,5 +1,5 @@
 import { post, get, upload } from '@/utils/request'
-import type { Query, RequestOptions } from "@/types/api";
+import type { Query } from "@/types/api";
 
 // 上传头像裁剪图片服务接口
 export const ServeUploadFileStream = (data: Query) => {

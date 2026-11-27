@@ -184,7 +184,7 @@ class WsSocket {
   /** 解析收到的消息 */
   onParse(evt: MessageEvent): Record<string, unknown> {
     const res = JSON.parse(String(evt.data)).result as Record<string, unknown>;
-    if (typeof res.createTime == "number") {
+    if (typeof res.createTime === "number") {
       res.createTime = this.unixToDate(res.createTime as number, "yyyy-MM-dd hh:mm");
     }
     return res;

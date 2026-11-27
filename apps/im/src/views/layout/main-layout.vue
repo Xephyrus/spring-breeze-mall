@@ -45,7 +45,6 @@
 </template>
 <script setup>
 import { computed, watch } from "vue";
-import Face from '../../components/face'
 import { useAppStore } from "@/stores/app";
 import { useUserStore } from "@/stores/user";
 import { useNotifyStore } from "@/stores/notify";

@@ -150,6 +150,7 @@ export function loadStoreChatList(hooks: ChatSessionHooks = {}): Promise<void> {
       let takeData: unknown;
       let takeIndex = -1;
       result.forEach((take, index) => {
+        // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
         if (take.id == targetId) {
           takeData = take;
           takeIndex = index;

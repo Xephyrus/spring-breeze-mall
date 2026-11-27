@@ -7,12 +7,12 @@ const KEY_INDEX_NAME = "send_message_index_name";
 
 /** 通过对话索引查找对话列表下标 */
 export function findTalkIndex(indexName: string): number {
-  return useTalkStore().items.findIndex((item) => item.index_name == indexName);
+  return useTalkStore().items.findIndex((item) => item.index_name === indexName);
 }
 
 /** 通过对话索引查找对话列表 */
 export function findTalk(indexName: string): TalkItem | undefined {
-  return useTalkStore().items.find((item) => item.index_name == indexName);
+  return useTalkStore().items.find((item) => item.index_name === indexName);
 }
 
 /** 格式化后的会话项（在 TalkItem 基础上补齐可编辑字段） */
@@ -57,7 +57,7 @@ export function formatTalkItem(params: Record<string, unknown> = {}): FormattedT
 export function toTalk(talkType: number | string, receiverId: number | string): void {
   ServeCreateTalkList(receiverId).then((raw) => {
     const { code } = raw as { code?: number; data?: unknown };
-    if (code == 200) {
+    if (code === 200) {
       sessionStorage.setItem(KEY_INDEX_NAME, `${talkType}_${receiverId}`);
       router.push({
         path: "/message",

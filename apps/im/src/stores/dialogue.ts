@@ -88,6 +88,7 @@ export const useDialogueStore = defineStore("dialogue", {
 
     BATCH_DELETE_DIALOGUE(ids: Array<string | number>): void {
       ids.forEach((recordId) => {
+        // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
         const index = this.records.findIndex((item) => item.id == recordId);
         if (index >= 0) this.records.splice(index, 1);
       });

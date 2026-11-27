@@ -18,33 +18,33 @@ export function formatTime(datetime?: string | number | null): string {
     outTime = new Date(parseInt(text) * 1000);
   }
 
-  if (time.getTime() < outTime.getTime() || time.getFullYear() != outTime.getFullYear()) {
+  if (time.getTime() < outTime.getTime() || time.getFullYear() !== outTime.getFullYear()) {
     return parseTime(outTime, "{y}-{m}-{d} {h}:{i}") as string;
   }
 
-  if (time.getMonth() != outTime.getMonth()) {
+  if (time.getMonth() !== outTime.getMonth()) {
     return parseTime(outTime, "{m}-{d} {h}:{i}") as string;
   }
 
-  if (time.getDate() != outTime.getDate()) {
+  if (time.getDate() !== outTime.getDate()) {
     const day = outTime.getDate() - time.getDate();
-    if (day == -1) {
+    if (day === -1) {
       return parseTime(outTime, "昨天 {h}:{i}") as string;
     }
 
-    if (day == -2) {
+    if (day === -2) {
       return parseTime(outTime, "前天 {h}:{i}") as string;
     }
 
     return parseTime(outTime, "{m}-{d} {h}:{i}") as string;
   }
 
-  if (time.getHours() != outTime.getHours()) {
+  if (time.getHours() !== outTime.getHours()) {
     return parseTime(outTime, "{h}:{i}") as string;
   }
 
   let minutes = outTime.getMinutes() - time.getMinutes();
-  if (minutes == 0) {
+  if (minutes === 0) {
     return "刚刚";
   }
 
@@ -104,7 +104,7 @@ export function getImageInfo(imgsrc: string): { width: number; height: number } 
   };
 
   const arr = imgsrc.split("_");
-  if (arr.length == 1) return data;
+  if (arr.length === 1) return data;
 
   const info = arr[arr.length - 1].match(/\d+x\d+/g);
   if (info == null) return data;
@@ -355,33 +355,33 @@ export function beautifyTime(datetime: string | number | null = ""): string {
     return parseTime(outTime, "{y}-{m}-{d}") as string;
   }
 
-  if (time.getFullYear() != outTime.getFullYear()) {
+  if (time.getFullYear() !== outTime.getFullYear()) {
     return parseTime(outTime, "{y}-{m}-{d}") as string;
   }
 
-  if (time.getMonth() != outTime.getMonth()) {
+  if (time.getMonth() !== outTime.getMonth()) {
     return parseTime(outTime, "{m}-{d}") as string;
   }
 
-  if (time.getDate() != outTime.getDate()) {
+  if (time.getDate() !== outTime.getDate()) {
     const day = outTime.getDate() - time.getDate();
-    if (day == -1) {
+    if (day === -1) {
       return parseTime(outTime, "昨天 {h}:{i}") as string;
     }
 
-    if (day == -2) {
+    if (day === -2) {
       return parseTime(outTime, "前天 {h}:{i}") as string;
     }
 
     return parseTime(outTime, "{m}-{d}") as string;
   }
 
-  if (time.getHours() != outTime.getHours()) {
+  if (time.getHours() !== outTime.getHours()) {
     return parseTime(outTime, "{h}:{i}") as string;
   }
 
   let minutes = outTime.getMinutes() - time.getMinutes();
-  if (minutes == 0) {
+  if (minutes === 0) {
     return "刚刚";
   }
 
@@ -412,7 +412,7 @@ export function getMutipSort<T>(arr: Array<(a: T, b: T) => number>): (a: T, b: T
 
     do {
       tmp = arr[i++](a, b);
-    } while (tmp == 0 && i < arr.length);
+    } while (tmp === 0 && i < arr.length);
 
     return tmp;
   };

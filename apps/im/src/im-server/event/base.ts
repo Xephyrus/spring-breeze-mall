@@ -53,15 +53,16 @@ export default class Base {
   ): boolean {
     const params = this.getTalkParams();
 
-    if (talk_type != params.talk_type) {
+    if (talk_type !== params.talk_type) {
       return false;
     }
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     return params.receiver_id == Number(receiver_id) || params.receiver_id == Number(sender_id);
   }
 
   /** 判断用户是否打开对话页 */
   isTalkPage(): boolean {
     const path = router.currentRoute.value.path;
-    return !(path != "/message" && path != "/");
+    return !(path !== "/message" && path !== "/");
   }
 }

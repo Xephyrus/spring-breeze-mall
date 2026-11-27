@@ -48,7 +48,7 @@ app.config.globalProperties.linkToStore = function (storeId: string) {
   window.open(`${config.PC_URL}merchant?id=${storeId}`, "_blank");
 };
 app.config.globalProperties.linkToOrders = function (sn: string) {
-  if (localStorage.getItem("storeFlag") == "false") {
+  if (localStorage.getItem("storeFlag") === "false") {
     window.open(`${config.PC_STORE}order-detail?sn=${sn}`, "_blank");
   } else {
     window.open(`${config.PC_URL}home/OrderDetail?sn=${sn}`, "_blank");

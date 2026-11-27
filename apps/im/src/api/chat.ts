@@ -1,5 +1,5 @@
 import { post, get, upload, del } from "@/utils/request";
-import type { Query, RequestOptions } from "@/types/api";
+import type { Query } from "@/types/api";
 import config from "@/config/config";
 
 // 获取聊天列表服务接口

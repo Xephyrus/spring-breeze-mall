@@ -19,11 +19,12 @@ export default class Keyboard extends Base {
     }
 
     // 只在私聊里提示「正在输入」
-    if (params.talk_type != 1) {
+    if (params.talk_type !== 1) {
       return false;
     }
 
     // 消息必须来自当前对话对象
+    // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
     if (params.receiver_id != Number(this.resource.sender_id)) {
       return false;
     }

@@ -28,7 +28,7 @@ export const useTalkStore = defineStore("talks", {
   }),
   getters: {
     // 过滤所有置顶对话列表
-    topItems: (state): TalkItem[] => state.items.filter((item) => item.is_top == 1),
+    topItems: (state): TalkItem[] => state.items.filter((item) => item.is_top === 1),
     // 原 vuex getter，注意：sort 会原地修改 items 数组（历史行为，原样保留）
     talkItems: (state): TalkItem[] =>
       state.items.sort(getMutipSort([getSort((a: TalkItem, b: TalkItem) => (a.lastTalkTime ?? 0) > (b.lastTalkTime ?? 0))])),
@@ -67,6 +67,7 @@ export const useTalkStore = defineStore("talks", {
       this.items.forEach((item) => {
         if (
           item.index_name === resource.index_name ||
+          // eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较
           item.userId == String(resource.index_name).split("_")[1]
         ) {
           item.unread = (item.unread ?? 0) + 1;

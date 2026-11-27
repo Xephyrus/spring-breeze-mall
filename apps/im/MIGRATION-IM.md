@@ -267,3 +267,33 @@ Components({ dts: "src/components.d.ts", dirs: [], resolvers: [ElementPlusResolv
 > 验证方式：除了 build 成功，还拉取 dev server 编译后的 `talk-panel.vue` 产物，
 > 确认 `el-*` 已被改写成 `import { ElContainer } from "element-plus/es"` +
 > 组件级 `style/css.js` 引入，而不是留成运行时 `resolveComponent("el-container")`。
+#### 5.2 告警清零与 lint 闸门（M5）
+
+`lint` 脚本的 ratchet 从 `--max-warnings 172` 收紧到 **`--max-warnings 0`**。
+
+| 层 | 规则 | 状态 |
+|---|---|---|
+| `.ts`（已类型化） | `eqeqeq`（always，仅放行 `== null`）、`@typescript-eslint/no-unused-vars` | **0 告警** |
+| `.vue`（组件脚本未类型化） | `eqeqeq` / `no-unused-vars` 关闭 | 待后续里程碑 |
+
+**为什么 `.vue` 层是「关闭规则」而不是「机械把 `==` 改成 `===`」**：
+
+组件里大量比较的是后端 JSON 字段（`talk_type` / `is_top` / `user_id` / `record_id` / `messageType`），
+同一字段在不同接口里既可能是 `number` 也可能是 `string`。统一改成 `===` 会在类型未对齐前**静默改变行为**，
+例如 `item.is_top == 0` 在 `is_top` 为 `"0"` 时从 `true` 变 `false`，直接导致「置顶 / 取消置顶」菜单文案错误。
+
+正确路径：先给组件层补类型 → 让 TS 报出真实的类型不一致 → 再逐个用 `===` 或
+`String(a) === String(b)` 显式归一。
+
+**`.ts` 层实际处理**：
+- 43 处 `==` / `!=` 改为严格比较（数值、字符串、`typeof`、日期字段等）
+- 12 处**保留** `==`，逐行加 `// eslint-disable-next-line eqeqeq -- 前后端 id 类型不一致（string vs number），需宽松比较`
+
+**引入 `typescript-eslint`**：此前 `.ts` 文件根本没有被 ESLint 解析（无 TS 解析器），
+所以「`.ts` 0 告警」是假象。接上解析器后立刻暴露出 60 处 `eqeqeq` 与 8 处未使用导入，
+已全部处理。
+
+**踩坑记录（重要）**：第一版批量删未使用变量的脚本按「整行 import」删除，
+但一行里可能同时导入多个名称 —— `import { formatSize as renderSize, download, imgZoom }`
+里只有前两个未使用，整行删除把**在用的 `imgZoom` 一起删掉**了，`ElNotification` 同理。
+后来改为：整行 import 仅在**单绑定**时才自动删除，多绑定一律人工处理。

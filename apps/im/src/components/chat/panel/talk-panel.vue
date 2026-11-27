@@ -197,7 +197,6 @@ import {
   ref,
   watch,
 } from "vue";
-import { textReplaceLink } from "@/utils/functions";
 import { textReplaceEmoji, emojistwo } from "@/utils/emojis";
 import OtherLink from "@/components/chat/panel/other-link.vue";
 import TalkSearchRecord from "@/components/chat/talk-search-record";

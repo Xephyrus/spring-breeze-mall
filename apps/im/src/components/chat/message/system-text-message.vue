@@ -4,7 +4,6 @@
   </div>
 </template>
 <script setup>
-import { formatTime as sendTime } from '@/utils/functions'
 
 defineOptions({ name: 'SystemTextMessage' })
 

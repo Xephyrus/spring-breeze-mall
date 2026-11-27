@@ -1,5 +1,5 @@
 import { post, get } from '@/utils/request'
-import type { Query, RequestOptions } from "@/types/api";
+import type { Query } from "@/types/api";
 
 // 获取好友列表服务接口
 export const ServeGetContacts = (data: Query) => {

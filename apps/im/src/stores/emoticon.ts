@@ -25,10 +25,9 @@ export const useEmoticonStore = defineStore("emoticon", {
     LOAD_USER_EMOTICON(): void {
       // TODO 隐藏（上游保留：接口未就绪）
       return;
-      // eslint-disable-next-line no-unreachable
       ServeFindUserEmoticon().then((raw) => {
         const res = raw as unknown as EmoticonResponse;
-        if (res.code == 200) {
+        if (res.code === 200) {
           const collect = res.data?.collect_emoticon ?? [];
           const sys = res.data?.sys_emoticon ?? [];
 
@@ -50,7 +49,7 @@ export const useEmoticonStore = defineStore("emoticon", {
       })
         .then((raw) => {
           const res = raw as unknown as EmoticonResponse;
-          if (res.code == 200) {
+          if (res.code === 200) {
             ElNotification({
               title: "收藏提示",
               message: "表情包收藏成功...",
@@ -76,7 +75,7 @@ export const useEmoticonStore = defineStore("emoticon", {
       ServeUploadEmoticon(fileData as unknown as Query)
         .then((raw) => {
           const res = raw as unknown as EmoticonResponse;
-          if (res.code == 200 && this.items[1]?.list) {
+          if (res.code === 200 && this.items[1]?.list) {
             this.items[1].list.push({});
           }
         })

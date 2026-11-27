@@ -1,5 +1,5 @@
 import { post, get, upload } from '@/utils/request'
-import type { Query, RequestOptions } from "@/types/api";
+import type { Query } from "@/types/api";
 
 // 查询用户表情包服务接口
 export const ServeFindUserEmoticon = () => {

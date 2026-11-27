@@ -32,7 +32,7 @@ class SmsLock {
     this.clearTimer();
 
     this.timer = setInterval(() => {
-      if (this.time == 0) {
+      if (this.time === 0) {
         this.clearTimer();
         this.time = null;
         localStorage.removeItem(this.lockName);
