@@ -117,6 +117,51 @@
 2. 若确认 `WsFilter` 未生效，考虑显式注册 `WsFilter` 或改用 Spring 的 `WebSocketHandler` + `WebSocketHandlerRegistry`（不依赖 `ServerEndpointExporter`）；
 3. 用最小 Spring Boot 4 + `@ServerEndpoint` 样例验证该组合是否可用，再回填到 im-api。
 
+---
+
+### 三、TRACE 级别的第二轮定位（关键证据）
+
+按上面的第 1 步做了实测（`--logging.level.org.apache.tomcat.websocket=TRACE`，
+`org.springframework.security=DEBUG`），一次握手的完整日志是：
+
+```
+FilterChainProxy : Securing GET /lili/webSocket/abc
+AnonymousAuthenticationFilter : Set SecurityContextHolder to anonymous SecurityContext
+FilterChainProxy : Secured GET /lili/webSocket/abc
+FilterChainProxy : Securing GET /error          ← 随后转 /error，说明下游抛了错误
+```
+
+**没有任何 `org.apache.tomcat.websocket` / `WsFilter` / `UpgradeUtil` 日志**，说明
+Tomcat 的 WebSocket 升级过滤器**不在过滤器链里**（只有启动时 `ServerEndpointExporter` 的
+`Registering @ServerEndpoint class:` 一行）。
+
+对照实验（同一时刻、仅改路径或头）：
+
+| 请求 | 结果 | 说明 |
+|---|---|---|
+| `/im/xxx` + WS 头 | **403** | 安全链生效（该路径需登录） |
+| `/lili/other` + WS 头 | 404 | 不在 `securityMatcher` 内，走普通链 → MVC 无映射 |
+| `/lili/webSocket/abc` **不带** WS 头 | 404 | MVC 无映射 |
+| `/lili/webSocket/abc` **带** WS 头 | **400** | 只有带升级头才 400 |
+
+结论收敛为：**请求 `permitAll` 通过了安全链，但没有走到 Tomcat 的 WS 升级处理，
+而是在「安全链之后、MVC 之前」被以 400 拒绝**；而 Tomcat 的 `WsFilter` 全程无日志，
+说明它根本没被注册进链。
+
+**因此这不是前端问题，也不是 token 问题**，而是后端 `im-api` 的 **JSR-356 升级通道未生效**。
+
+**修复方向（供后续后端专项）**，按性价比排序：
+
+1. **改用 Spring 原生方式**：把 `@ServerEndpoint` 换成 `WebSocketHandler` +
+   `WebSocketHandlerRegistry.addHandler(...).setAllowedOrigins("*")`，
+   不依赖 `ServerEndpointExporter` / Tomcat `WsFilter`（改动集中在 `WebSocketServer` 与一个 `@Configuration`）；
+2. 保留 JSR-356，但**显式注册 `WsFilter`**（`FilterRegistrationBean<WsFilter>` 映射 `/*`），验证 101 是否恢复；
+3. 检查 `WsSci`（`ServletContainerInitializer`）是否被排除（`tomcat-embed-websocket` 在 jar 内，
+   `WsFilter.class` 存在，但未进链，属可疑点）。
+
+> 本轮已完成：前端「疯狂重连」修复 + 后端 400 的精确定位（安全链之后、Tomcat WS 升级之前）。
+> 后端修复需要改 `im-api` 的 WebSocket 注册方式，属独立任务，未在本轮改动。
+
 > 结论：**前端不再「疯狂重连」**（退避 + 单条提示 + 上限 12 次）；**WS 仍连不上是后端握手返回 400**，需后端单独修。
 
 ---
