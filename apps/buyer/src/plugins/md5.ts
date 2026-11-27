@@ -10,7 +10,7 @@
  * Add integers, wrapping at 2^32. This uses 16-bit operations internally
  * to work around bugs in some JS interpreters.
  */
-function safe_add (x, y) {
+function safe_add(x: number, y: number): number {
   var lsw = (x & 0xFFFF) + (y & 0xFFFF)
   var msw = (x >> 16) + (y >> 16) + (lsw >> 16)
   return (msw << 16) | (lsw & 0xFFFF)
@@ -19,30 +19,30 @@ function safe_add (x, y) {
 /*
  * Bitwise rotate a 32-bit number to the left.
  */
-function rol (num, cnt) {
+function rol(num: number, cnt: number): number {
   return (num << cnt) | (num >>> (32 - cnt))
 }
 
 /*
  * These functions implement the four basic operations the algorithm uses.
  */
-function cmn(q, a, b, x, s, t) {
+function cmn(q: number, a: number, b: number, x: number, s: number, t: number): number {
   return safe_add(rol(safe_add(safe_add(a, q), safe_add(x, t)), s), b)
 }
 
-function ff(a, b, c, d, x, s, t) {
+function ff(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   return cmn((b & c) | ((~b) & d), a, b, x, s, t)
 }
 
-function gg(a, b, c, d, x, s, t) {
+function gg(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   return cmn((b & d) | (c & (~d)), a, b, x, s, t)
 }
 
-function hh(a, b, c, d, x, s, t) {
+function hh(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   return cmn(b ^ c ^ d, a, b, x, s, t)
 }
 
-function ii (a, b, c, d, x, s, t) {
+function ii(a: number, b: number, c: number, d: number, x: number, s: number, t: number): number {
   return cmn(c ^ (b | (~d)), a, b, x, s, t)
 }
 
@@ -50,7 +50,7 @@ function ii (a, b, c, d, x, s, t) {
  * Calculate the MD5 of an array of little-endian words, producing an array
  * of little-endian words.
  */
-function coreMD5 (x) {
+function coreMD5(x: number[]): number[] {
   var a = 1732584193
   var b = -271733879
   var c = -1732584194
@@ -141,7 +141,7 @@ function coreMD5 (x) {
 /*
  * Convert an array of little-endian words to a hex string.
  */
-function binl2hex(binarray) {
+function binl2hex(binarray: number[]): string {
   var hex_tab = "0123456789abcdef"
   var str = ""
   for (var i = 0; i < binarray.length * 4; i++) {
@@ -154,7 +154,7 @@ function binl2hex(binarray) {
 /*
  * Convert an array of little-endian words to a base64 encoded string.
  */
-function binl2b64(binarray) {
+function binl2b64(binarray: number[]): string {
   var tab = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
   var str = ""
   for (var i = 0; i < binarray.length * 32; i += 6) {
@@ -169,7 +169,7 @@ function binl2b64(binarray) {
  * as an array, and append appropriate padding for MD4/5 calculation.
  * If any of the characters are >255, the high byte is silently ignored.
  */
-function str2binl(str) {
+function str2binl(str: string): number[] {
   var nblk = ((str.length + 8) >> 6) + 1 // number of 16-word blocks
   var blks = new Array(nblk * 16)
   for (var i = 0; i < nblk * 16; i++) blks[i] = 0
@@ -184,7 +184,7 @@ function str2binl(str) {
  * Convert a wide-character string to a sequence of 16-word blocks, stored as
  * an array, and append appropriate padding for MD4/5 calculation.
  */
-function strw2binl(str) {
+function strw2binl(str: string): number[] {
   var nblk = ((str.length + 4) >> 5) + 1 // number of 16-word blocks
   var blks = new Array(nblk * 16)
   for (var i = 0; i < nblk * 16; i++) blks[i] = 0
@@ -198,23 +198,23 @@ function strw2binl(str) {
 /*
  * External interface
  */
-function hexMD5(str) {
+function hexMD5(str: string): string {
   return binl2hex(coreMD5(str2binl(str)))
 }
 
-function hexMD5w(str) {
+function hexMD5w(str: string): string {
   return binl2hex(coreMD5(strw2binl(str)))
 }
 
-function b64MD5(str) {
+function b64MD5(str: string): string {
   return binl2b64(coreMD5(str2binl(str)))
 }
 
-function b64MD5w(str) {
+function b64MD5w(str: string): string {
   return binl2b64(coreMD5(strw2binl(str)))
 }
 /* Backward compatibility */
-function calcMD5(str) {
+function calcMD5(str: string): string {
   return binl2hex(coreMD5(str2binl(str)))
 }
 

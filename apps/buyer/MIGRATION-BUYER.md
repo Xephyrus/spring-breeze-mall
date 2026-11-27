@@ -255,3 +255,34 @@ TS 会报 `string | undefined 不能赋给 string`，这里统一用 `?? ""` 归
 | 组件配置 | `components/drawer/config.js`(63) / `components/indexDecorate/registry.js`(73) / `components/verify/verify.js`(28) | 164 |
 | composables | `composables/useSiteSettings.js` | 38 |
 | **豁免** | `components/indexDecorate/presets/double11Preset.js`（1,967 行装修预设数据） | 1,967 |
+### 2.10 plugins + stores（已完成 6 个文件）
+
+| 原文件 | 目标 | 要点 |
+|---|---|---|
+| `plugins/Foundation.js`（200） | `plugins/Foundation.ts` | 7 个函数全部带签名；**就地注解**，未替换为 im 的实现 |
+| `plugins/filters.js`（77） | `plugins/filters.ts` | `unitPrice` / `unixToDate` / `unitAddress` / `secrecyMobile` / `goodsDisplayPrice`；新增 `setupFilters(app)` |
+| `plugins/RegExp.js`（50） | `plugins/RegExp.ts` | 纯常量表，直接改名 |
+| `plugins/element.js`（176） | `plugins/element.ts` | `components: Plugin[]`（`app.use()` 要的是 Plugin 不是 Component） |
+| `plugins/md5.js`（224） | `plugins/md5.ts` | 16 个内部函数补 `number` / `string` / `number[]` 签名；保留 `export { hexMD5 as md5 }` |
+| `stores/app.js`（45） | `stores/app.ts` | 新增 `AppState` 接口 + `state: (): AppState => ({...})` |
+
+**关于 Foundation 的一个决定**
+
+buyer 与 im 各有一份 `Foundation.js`，函数名与逻辑高度相似。第一版我直接拿 im 的 TS 版本
+替换 buyer 的实现，核对后发现**行数与细节并不完全一致**（buyer 那份是 200 行、im 是 155 行的
+带类型版本，`dateToUnix` 等处写法有差异），于是**回滚，改为就地注解 buyer 自己的实现**。
+
+> 判断标准：两个端的同名工具函数看起来一样，不代表实现完全等价。
+> 就地补类型是零风险，替换实现是行为风险。
+
+唯一的语义无关改动：`arr[1] - 1`（字符串参与算术）在 TS 下非法，统一写成 `Number(arr[1]) - 1`。
+
+### 2.11 验证
+
+| 检查 | 结果 |
+|---|---|
+| `typecheck` | ✅ 0 错误 |
+| `build` | ✅ 4.95s |
+| `lint` | ✅ 0 error / 0 warning |
+| dev | ✅ `/`、`/home` 与 element / filters / stores/app / md5 四个新模块均 200 |
+| 剩余 `.js` | **11 个**（M2 起始 42 个，含 1 个豁免） |

@@ -1,3 +1,4 @@
+import type { App, Plugin } from "vue";
 import zhCn from "element-plus/es/locale/lang/zh-cn";
 
 // 组件样式（css.mjs 会自动传递 base/overlay/scrollbar/popper 等依赖样式）
@@ -113,7 +114,7 @@ import {
   provideGlobalConfig,
 } from "element-plus";
 
-const components = [
+const components: Plugin[] = [
   ElAffix,
   ElAlert,
   ElAvatar,
@@ -167,7 +168,7 @@ const components = [
   ElUpload,
 ];
 
-export function setupElementPlus(app) {
+export function setupElementPlus(app: App): void {
   components.forEach((component) => app.use(component));
   // 注册 v-loading 指令
   app.use(ElLoading);
