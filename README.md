@@ -31,7 +31,7 @@
 | 端 | 说明 | 状态 |
 |---|---|---|
 | **manager** 平台运营端 | 商品、订单、会员、营销、分销、直播、装修、统计、系统设置 | ✅ Vue 3 + TS 全量 |
-| **seller** 商家端 | 商家入驻、商品、订单、结算 | 🚧 Vite 8（构建已迁移，TS 迁移中） |
+| **seller** 商家端 | 商家入驻、商品、订单、结算 | ✅ Vite 8 + TypeScript |
 | **buyer** PC 买家端 | 商城前台 | Vue CLI（待迁移） |
 | **im** 客服端 | 在线客服 | Vue CLI（待迁移） |
 | **uniapp** 移动端 | 小程序 / H5 | uni-app |
@@ -59,7 +59,7 @@
 spring-breeze-mall/
 ├── apps/
 │   ├── manager/          # 平台运营端（Vue 3 + TS + Vite 8）
-│   ├── seller/           # 商家端（Vite 8，TS 迁移中）
+│   ├── seller/           # 商家端（Vite 8 + TS）
 │   ├── buyer/            # PC 买家端（Vue CLI）
 │   ├── im/               # IM 客服端（Vue CLI）
 │   └── uniapp/           # 移动端（uni-app）
@@ -171,9 +171,15 @@ mysql -u root -p lilishop < docker/init/mysql/lilishop.sql   # 约 8 MB
 | 4 | `backend/DB/menu-kebab-routes.sql` | 菜单 `front_route` 与前端文件名对齐（幂等） |
 | 5 | `backend/DB/menu-kebab-names.sql` | 菜单 `name` / `path` 统一 kebab（幂等） |
 | 6 | `backend/DB/menu-kebab-front-route.sql` | `Main` → `main` 等收尾（幂等） |
+| 7 | `backend/DB/store-menu-kebab-front-route.sql` | **商家端**菜单 `front_route` 对齐（幂等） |
+| 8 | `backend/DB/store-menu-kebab-names.sql` | **商家端**菜单 `name` 统一 kebab（幂等） |
+| 9 | `backend/DB/store-menu-kebab-paths.sql` | **商家端**菜单 `path`（URL）统一 kebab（幂等） |
 
-> 第 4–6 个补丁 **必须执行**，否则菜单点进去是空白页（前端文件已统一 kebab-case，
-> 而菜单表里存的是视图文件路径）。三个补丁都带 `WHERE 旧值`，重复执行无副作用。
+> 第 4–6 个补丁对应 **平台端（manager）**，第 7–9 个对应 **商家端（seller）**，
+> 都 **必须执行**，否则菜单点进去是空白页（前端文件已统一 kebab-case，
+> 而菜单表里存的是视图文件路径）。所有补丁都带 `WHERE 旧值`，重复执行无副作用。
+>
+> ⚠️ 第 9 个补丁会让商家端**旧 URL 404**（`/orderList` → `/order-list`），属计划内变更。
 
 测试数据（可选）：
 
@@ -236,6 +242,9 @@ cd backend
 | [`apps/manager/TEST-CASES.md`](apps/manager/TEST-CASES.md) | 分章测试用例（P0/P1/P2） |
 | [`apps/manager/SMOKE-REUSE.md`](apps/manager/SMOKE-REUSE.md) | 合并冒烟清单（78 条可勾选） |
 | [`apps/manager/LINT-DEBT.md`](apps/manager/LINT-DEBT.md) | 逐轮改造台账 |
+| [`apps/seller/MIGRATION-SELLER.md`](apps/seller/MIGRATION-SELLER.md) | seller 迁移记录（M0–M5，含菜单 SQL 与豁免说明） |
+| [`apps/seller/MIGRATION-BASELINE.md`](apps/seller/MIGRATION-BASELINE.md) | seller 迁移前基线（规模/重复面/风险） |
+| [`apps/seller/SMOKE-SELLER.md`](apps/seller/SMOKE-SELLER.md) | seller 冒烟清单（72 条可勾选） |
 | [`backend/SETTING-NPE-AUDIT.md`](backend/SETTING-NPE-AUDIT.md) | 设置读取空指针审计与修复 |
 | [`backend/DB/TEST-DATA.md`](backend/DB/TEST-DATA.md) | 测试数据说明与清理 |
 
