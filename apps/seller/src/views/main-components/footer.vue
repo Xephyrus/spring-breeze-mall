@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { useSiteSettings } from "@/composables/useSiteSettings";
+import { useSiteSettings } from "@/composables/use-site-settings";
 import zhizhaoImg from "@/assets/images/zhizhao.jpg";
 
 const year = new Date().getFullYear();

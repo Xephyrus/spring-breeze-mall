@@ -139,7 +139,7 @@ function init() {
     });
 }
 
-// login.vue / ForgetPassword.vue 通过 verifyRef.value.show = false 关闭、verifyRef.value.init() 打开
+// login.vue / forget-password.vue 通过 verifyRef.value.show = false 关闭、verifyRef.value.init() 打开
 defineExpose({ show, init });
 </script>
 

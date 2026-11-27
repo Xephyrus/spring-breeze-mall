@@ -54,7 +54,7 @@
 import { onMounted, ref } from "vue";
 import { getOnSiteSettings, saveOnSiteSettings } from "@/api/appointment";
 import { Message } from "@/utils/message";
-import ServiceAreaFence from "./components/ServiceAreaFence.vue";
+import ServiceAreaFence from "./components/service-area-fence.vue";
 
 defineOptions({ name: "appointmentOnSiteSettings" });
 

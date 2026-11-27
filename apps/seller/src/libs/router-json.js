@@ -212,7 +212,7 @@ export const result = [{
           type: 0,
           title: "发票管理",
           path: "receipt",
-          component: "order/receiptManager/receipt",
+          component: "order/receipt-manager/receipt",
           children: null
         }]
       }

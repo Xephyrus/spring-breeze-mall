@@ -30,7 +30,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import * as API_Finance from "@/api/finance";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 
 defineOptions({ name: "shop-finance-summary" });
 

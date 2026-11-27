@@ -106,7 +106,7 @@ import Cookies from "js-cookie";
 import util from "@/libs/util.js";
 import { flattenNavigation, findNavigationItem } from "@/libs/seller-navigation";
 import defaultLogo from "@/assets/logo.png";
-import { loadSiteSettings } from "@/composables/useSiteSettings";
+import { loadSiteSettings } from "@/composables/use-site-settings";
 import { getMessageSendData, logout, userMsg } from "@/api/index";
 import { getIMDetail } from "@/api/common";
 import { Message } from "@/utils/message";

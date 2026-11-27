@@ -81,7 +81,7 @@
 <script>
 import ColorField from "../controls/ColorField.vue";
 import SegmentField from "../controls/SegmentField.vue";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 import { Close } from "@element-plus/icons-vue";
 
 const DEFAULTS = {

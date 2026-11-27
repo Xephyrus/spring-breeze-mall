@@ -56,10 +56,10 @@
 
 <script setup>
 import { useRouter } from "vue-router";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { getRequest, postRequestWithNoForm, deleteRequest } from "@/libs/axios";
 import { ElMessage, ElMessageBox } from "element-plus";
-import { countFormFields } from "@/constants/systemForm";
+import { countFormFields } from "@/constants/system-form";
 
 defineOptions({ name: "appointmentSystemFormList" });
 

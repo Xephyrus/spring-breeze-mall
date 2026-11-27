@@ -9,7 +9,7 @@
 <script setup>
 import logoLilishopUrl from "@/assets/logo-lilishop.png";
 import { onMounted, ref } from "vue";
-import { loadSiteSettings } from "@/composables/useSiteSettings";
+import { loadSiteSettings } from "@/composables/use-site-settings";
 
 const storeSideLogo = ref(logoLilishopUrl);
 

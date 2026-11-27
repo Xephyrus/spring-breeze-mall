@@ -1,4 +1,4 @@
-import Main from "@/views/Main.vue";
+import Main from "@/views/main.vue";
 import type { RouteRecordRaw } from "vue-router";
 import type { MenuRoute } from "@/types/menu";
 // 不作为Main组件的子页面展示的页面单独写，如下
@@ -14,7 +14,7 @@ export const loginRouter: MenuRoute = {
 export const forgetPasswordRouter: MenuRoute = {
   path: "/forgetPassword",
   name: "forgetPassword",
-  component: () => import("@/views/ForgetPassword.vue")
+  component: () => import("@/views/forget-password.vue")
 };
 
 // 移动端楼层装修编辑器：全屏独立页，不在 Main（左侧菜单）布局内
@@ -66,7 +66,7 @@ export const otherRouter: MenuRoute = {
       path: "goods-operation",
       title: "添加商品",
       name: "goods-operation",
-      component: () => import("@/views/goods/goods-seller/goodsOperation.vue")
+      component: () => import("@/views/goods/goods-seller/goods-operation.vue")
     },
     {
       path: "goods-scheduled-upper",
@@ -78,69 +78,69 @@ export const otherRouter: MenuRoute = {
       path: "goods-operation-edit",
       title: "编辑商品",
       name: "goods-operation-edit",
-      component: () => import("@/views/goods/goods-seller/goodsOperation.vue")
+      component: () => import("@/views/goods/goods-seller/goods-operation.vue")
     },
     {
       path: "goods-template-operation-edit",
       title: "编辑模版",
       name: "goods-template-operation-edit",
-      component: () => import("@/views/goods/goods-seller/goodsOperation.vue")
+      component: () => import("@/views/goods/goods-seller/goods-operation.vue")
     },
     {
       path: "goods-draft-operation-edit",
       title: "编辑草稿",
       name: "goods-draft-operation-edit",
-      component: () => import("@/views/goods/goods-seller/goodsOperation.vue")
+      component: () => import("@/views/goods/goods-seller/goods-operation.vue")
     },
     /** 卡密商品（E_COUPON）卡池管理；query: skuId（必填）, goodsId, goodsName */
     {
       path: "card-key-pool",
       title: "卡池管理",
       name: "card-key-pool",
-      component: () => import("@/views/goods/card-key/cardKeyPool.vue")
+      component: () => import("@/views/goods/card-key/card-key-pool.vue")
     },
     /** 预约服务 · 到店/上门设置、服务人员、工单、月历（菜单由后端配置，路由在此注册） */
     {
       path: "appointment/in-store-settings",
       title: "到店服务",
       name: "appointment-in-store-settings",
-      component: () => import("@/views/appointment/inStoreSettings.vue")
+      component: () => import("@/views/appointment/in-store-settings.vue")
     },
     {
       path: "appointment/on-site-settings",
       title: "上门服务",
       name: "appointment-on-site-settings",
-      component: () => import("@/views/appointment/onSiteSettings.vue")
+      component: () => import("@/views/appointment/on-site-settings.vue")
     },
     {
       path: "appointment/service-staff",
       title: "服务人员管理",
       name: "appointment-service-staff",
-      component: () => import("@/views/appointment/serviceStaffList.vue")
+      component: () => import("@/views/appointment/service-staff-list.vue")
     },
     {
       path: "appointment/work-orders",
       title: "工单管理",
       name: "appointment-work-orders",
-      component: () => import("@/views/appointment/workOrderList.vue")
+      component: () => import("@/views/appointment/work-order-list.vue")
     },
     {
       path: "appointment/service-calendar",
       title: "服务月历",
       name: "appointment-service-calendar",
-      component: () => import("@/views/appointment/serviceCalendar.vue")
+      component: () => import("@/views/appointment/service-calendar.vue")
     },
     {
       path: "appointment/system-forms",
       title: "系统表单",
       name: "appointment-system-forms",
-      component: () => import("@/views/appointment/systemFormList.vue")
+      component: () => import("@/views/appointment/system-form-list.vue")
     },
     {
       path: "appointment/system-forms/designer",
       title: "表单设计器",
       name: "appointment-system-form-designer",
-      component: () => import("@/views/appointment/systemFormDesigner.vue")
+      component: () => import("@/views/appointment/system-form-designer.vue")
     },
     {
       path: "add-coupon",
@@ -152,13 +152,13 @@ export const otherRouter: MenuRoute = {
       path: "add-live",
       title: "创建直播",
       name: "add-live",
-      component: () => import("@/views/promotion/live/addLive.vue")
+      component: () => import("@/views/promotion/live/add-live.vue")
     },
     {
       path: "bill-detail",
       title: "结算单详情",
       name: "bill-detail",
-      component: () => import("@/views/shop/bill/billDetail.vue")
+      component: () => import("@/views/shop/bill/bill-detail.vue")
     },
     {
       path: "seckill-goods",
@@ -182,27 +182,27 @@ export const otherRouter: MenuRoute = {
       path: "order-detail",
       title: "订单详情",
       name: "order-detail",
-      component: () => import("@/views/order/order/orderDetail.vue")
+      component: () => import("@/views/order/order/order-detail.vue")
     },
     {
       path: "orderVerification",
       title: "订单核销",
       name: "orderVerification",
-      component: () => import("@/views/order/order/orderVerification.vue")
+      component: () => import("@/views/order/order/order-verification.vue")
     },
     {
       path: "order-complaint-detail",
       title: "投诉详情",
       name: "order-complaint-detail",
       component: () =>
-        import("@/views/order/after-order/orderComplaintDetail.vue")
+        import("@/views/order/after-order/order-complaint-detail.vue")
     },
     {
       path: "return-goods-order-detail",
       title: "售后详情",
       name: "return-goods-order-detail",
       component: () =>
-        import("@/views/order/after-order/reurnGoodsOrderDetail.vue")
+        import("@/views/order/after-order/reurn-goods-order-detail.vue")
     },
     {
       path: "full-discount-detail",
@@ -214,7 +214,7 @@ export const otherRouter: MenuRoute = {
       path: "export-order-deliver",
       title: "发货",
       name: "export-order-deliver",
-      component: () => import("@/views/order/order/exportOrderDeliver.vue")
+      component: () => import("@/views/order/order/export-order-deliver.vue")
     },
     {
       path: "promotions/coupon-receive",
@@ -298,44 +298,44 @@ export const otherRouter: MenuRoute = {
       path: "alertQuantityWarnList",
       title: "预警商品",
       name: "alertQuantityWarnList",
-      component: () => import("@/views/goods/goods-seller/alertQuantityWarn.vue")
+      component: () => import("@/views/goods/goods-seller/alert-quantity-warn.vue")
     },
     {
       path: "alertQuantityWarnSetting",
       title: "设置预警",
       name: "alertQuantityWarnSetting",
-      component: () => import("@/views/goods/goods-seller/alertQuantityWarn.vue")
+      component: () => import("@/views/goods/goods-seller/alert-quantity-warn.vue")
     },
     {
       path: "order/returnMoneyOrder",
       title: "退款管理",
       name: "returnMoneyOrder",
-      component: () => import("@/views/order/after-order/returnMoneyOrder.vue")
+      component: () => import("@/views/order/after-order/return-money-order.vue")
     },
     {
       path: "order/returnGoodsOrder",
       title: "退货管理",
       name: "returnGoodsOrder",
-      component: () => import("@/views/order/after-order/returnGoodsOrder.vue")
+      component: () => import("@/views/order/after-order/return-goods-order.vue")
     },
     {
       path: "order/memberComment",
       title: "评价管理",
       name: "memberComment",
-      component: () => import("@/views/member/memberComment.vue")
+      component: () => import("@/views/member/member-comment.vue")
     },
     {
       path: "bill/accountStatementBill",
       title: "财务对账",
       name: "accountStatementBill",
-      component: () => import("@/views/shop/bill/accountStatementBill.vue")
+      component: () => import("@/views/shop/bill/account-statement-bill.vue")
     },
     {
       path: "bill/storeBill",
       title: "店铺结算",
       name: "storeBill",
       meta: { firstRouterName: "bill" },
-      component: () => import("@/views/shop/bill/storeBill.vue")
+      component: () => import("@/views/shop/bill/store-bill.vue")
     }
   ]
 };

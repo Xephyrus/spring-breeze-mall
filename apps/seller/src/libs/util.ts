@@ -1,5 +1,5 @@
 import { getCurrentPermissionList } from "@/api/index";
-import lazyLoading from "./lazyLoading";
+import lazyLoading from "./lazy-loading";
 import { router } from "@/router/index";
 import Cookies from "js-cookie";
 import config from "@/config/index";

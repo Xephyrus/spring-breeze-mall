@@ -239,8 +239,8 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import * as API_Goods from "@/api/goods";
-import orderRow from "./order/orderDetail";
-import refundRow from "./order/refundOrder";
+import orderRow from "./order/order-detail";
+import refundRow from "./order/refund-order";
 import affixTime from "@/views/lili-components/affix-time";
 
 const orderOrRefund = ref("order"); // order | refund

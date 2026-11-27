@@ -69,9 +69,9 @@
 
 <script setup>
 import { onMounted, ref } from "vue";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import * as API_Statistics from "@/api/statistics";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 import { unitPrice } from "@/utils/filters";
 
 defineOptions({ name: "seller-sales-order-detail-report" });

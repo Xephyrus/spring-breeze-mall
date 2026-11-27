@@ -139,7 +139,7 @@ import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { savePintuan, editPintuan, getPintuanDetail } from "@/api/promotion";
 import liliDialog from "@/views/lili-dialog";
-import { promotionPriceMin } from "@/constants/goodsType";
+import { promotionPriceMin } from "@/constants/goods-type";
 import { Message } from "@/utils/message";
 import { unixToDate } from "@/utils/filters";
 

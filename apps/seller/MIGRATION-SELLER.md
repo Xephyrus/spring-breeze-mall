@@ -162,6 +162,43 @@
 
 ---
 
+## M3 · 命名统一（kebab-case）
+
+### M3-1 文件与目录重命名（✅ 2026-11-28）
+
+| 项 | 数值 |
+|---|---:|
+| 重命名文件 | **66 个**（`.vue` 57 / `.js` 6 / `.ts` 3） |
+| 重命名目录 | **1 个**（`order/receiptManager` → `receipt-manager`） |
+| 改写 import | 3 遍脚本共 **67 处**（含扩展名 40 + 无扩展名 48 中重叠部分） |
+| 当前 `src` 非 kebab 文件 | 91 / 303（**全部是装修子系统，见下方豁免**） |
+
+**豁免：装修子系统 91 个文件**（`views/shop/pc/{config-panel,template,controls}`、
+`views/shop/wap/{config-panel,template,controls}`、`views/shop/hotzone`）
+
+理由：这些文件名与**组件 `name` 及页面 JSON 的 type 键一一对应**
+（`PanelGoods.vue` ↔ `name: "PanelGoods"` ↔ `"goodsList": PanelGoods`），
+且商家已保存的装修页面数据里存的就是这些键。改名需要同时迁移历史页面 JSON，
+属于独立的「装修数据迁移」任务，不与本次命名统一混做。
+
+**菜单 SQL 同步（关键）**
+
+| 文件 | 内容 |
+|---|---|
+| `backend/DB/store-menu-kebab-front-route.sql` | **54 条**幂等 `UPDATE li_store_menu SET front_route = 新 WHERE front_route = 旧`（含 `Main` → `main` 24 行、`receiptManager` 目录） |
+| `docker/init/mysql/patches/2026-11-28-store-menu-kebab-front-route.sql` | 同一份补丁，供全新环境初始化 |
+
+**数据完整性校验**
+
+```
+li_store_menu 共 81 行，front_route 去重 55 个
+逐个比对磁盘文件（含 index.vue 兜底 + 2 个显式映射）：无法解析 0 个 ✅
+```
+
+**验证**：typecheck 0 错误 / lint 58（未增长）/ build 6.13s / 产物 12.81 MB
+
+---
+
 ## 待办（后续里程碑）
 
 | 里程碑 | 内容 |

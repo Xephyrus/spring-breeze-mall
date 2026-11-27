@@ -639,8 +639,8 @@ import editor from "@/views/lili-components/editor/index.vue";
 
 import { uploadFile } from "@/libs/axios";
 import { regular } from "@/utils";
-import ossManage from "@/views/sys/oss-manage/ossManage";
-import AppointmentPublishPanel from "./components/AppointmentPublishPanel.vue";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
+import AppointmentPublishPanel from "./components/appointment-publish-panel.vue";
 import {
   defaultAppointmentSettings,
   defaultSlotDivision,

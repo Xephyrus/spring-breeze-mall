@@ -158,11 +158,11 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { useRoute } from "vue-router";
 import { CopyDocument } from "@element-plus/icons-vue";
 import * as API_Order from "@/api/order";
-import { canShowShipButton, isNonShippableOrder } from "@/utils/orderFulfill";
+import { canShowShipButton, isNonShippableOrder } from "@/utils/order-fulfill";
 import { Message } from "@/utils/message";
 import { customRouterPush } from "@/utils/filters";
 

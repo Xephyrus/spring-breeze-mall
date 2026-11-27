@@ -69,7 +69,7 @@
 <script setup>
 import { ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { getDraftGoodsListData, deleteDraftGoods } from "@/api/goods";
 import { Message, Modal } from "@/utils/message";
 

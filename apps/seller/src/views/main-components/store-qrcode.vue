@@ -154,7 +154,7 @@ function copyText(text) {
   document.body.removeChild(textArea);
 }
 
-// 外部无 ref/$refs/$parent 访问（仅 Main.vue 以 <store-qrcode /> 使用），无需暴露成员
+// 外部无 ref/$refs/$parent 访问（仅 main.vue 以 <store-qrcode /> 使用），无需暴露成员
 defineExpose({});
 </script>
 

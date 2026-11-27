@@ -231,12 +231,12 @@ import {
   getCardKeyStats,
   exportCardKey,
   downloadImportTemplate,
-} from "@/api/cardKey";
+} from "@/api/card-key";
 import { getQueryGoodsIdGoodsList } from "@/api/goods";
 import {
   formatCardKeyStatus,
   CARD_KEY_STATUS_TAG,
-} from "@/constants/cardKey";
+} from "@/constants/card-key";
 import { Message, Modal } from "@/utils/message";
 
 /**

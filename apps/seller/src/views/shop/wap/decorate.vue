@@ -545,7 +545,7 @@
 import { ref, watch, nextTick, computed } from "vue";
 import { CircleClose } from "@element-plus/icons-vue";
 import { Message } from "@/utils/message";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 import { modelData } from "./config";
 import hotzone from "@/views/shop/hotzone";
 import ways from "@/views/lili-dialog/wap.js";

@@ -150,7 +150,7 @@
 <script>
 import ColorField from "../controls/ColorField.vue";
 import SliderField from "../controls/SliderField.vue";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 import ways from "@/views/lili-dialog/wap.js";
 
 const DEFAULTS = {

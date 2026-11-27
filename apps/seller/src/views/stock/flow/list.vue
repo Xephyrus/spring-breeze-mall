@@ -136,8 +136,8 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import { useTable } from "@/utils/useTable";
-import { formatGoodsSpecs } from "@/utils/goodsSpecs";
+import { useTable } from "@/utils/use-table";
+import { formatGoodsSpecs } from "@/utils/goods-specs";
 import { getStockFlowPage } from "@/api/stock";
 
 defineOptions({ name: "stock-flow-list" });

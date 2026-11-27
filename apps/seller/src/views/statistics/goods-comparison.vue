@@ -130,7 +130,7 @@
 import { onMounted, reactive, ref } from "vue";
 import * as API_Statistics from "@/api/statistics";
 import { getCategoryTree } from "@/api/goods";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 import { unitPrice } from "@/utils/filters";
 
 defineOptions({ name: "seller-goods-comparison-report" });

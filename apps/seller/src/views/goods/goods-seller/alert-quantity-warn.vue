@@ -133,7 +133,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import {
   getGoodsCategoryAll,
   getGoodsListDataByStockSeller,

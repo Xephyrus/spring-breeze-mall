@@ -172,9 +172,9 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { Download, UploadFilled } from "@element-plus/icons-vue";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 import {
   downloadStockTemplate,
   getGoodsCategoryAll,

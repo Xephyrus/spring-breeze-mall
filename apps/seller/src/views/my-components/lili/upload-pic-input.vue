@@ -74,7 +74,7 @@ import { nextTick, ref, useAttrs, watch } from "vue";
 import { View } from "@element-plus/icons-vue";
 import { getStore } from "@/libs/storage";
 import { Message } from "@/utils/message";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 
 defineOptions({ name: "uploadPicInput" });
 

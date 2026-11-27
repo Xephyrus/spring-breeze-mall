@@ -128,7 +128,7 @@
 import { computed, onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import { formatGoodsSpecs } from "@/utils/goodsSpecs";
+import { formatGoodsSpecs } from "@/utils/goods-specs";
 import liliDialog from "@/views/lili-dialog";
 import {
   createStockOutbound,

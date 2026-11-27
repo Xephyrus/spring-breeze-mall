@@ -275,7 +275,7 @@ import {
 } from "@/api/goods";
 import { Message, Modal } from "@/utils/message";
 import { customRouterPush } from "@/utils/filters";
-import GoodsImportDialog from "./components/GoodsImportDialog.vue";
+import GoodsImportDialog from "./components/goods-import-dialog.vue";
 
 defineOptions({ name: "goods" });
 const emit = defineEmits(["edit-schedule", "delete-schedule"]);

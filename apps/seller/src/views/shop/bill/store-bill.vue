@@ -95,7 +95,7 @@ import { computed, onMounted, ref } from "vue";
 import { onBeforeRouteLeave, useRoute } from "vue-router";
 import * as API_Shop from "@/api/shops";
 import * as API_Finance from "@/api/finance";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 import { customRouterPush } from "@/utils/filters";
 
 defineOptions({ name: "storeBill" });

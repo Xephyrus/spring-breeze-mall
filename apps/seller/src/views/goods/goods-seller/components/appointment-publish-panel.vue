@@ -713,7 +713,7 @@ onMounted(() => {
   prepareDivisionTarget();
 });
 
-// 父组件 goodsOperationSec.vue 通过 ref 调用以下方法，保持公开接口不变
+// 父组件 goods-operation-sec.vue 通过 ref 调用以下方法，保持公开接口不变
 defineExpose({
   prepareDivisionTarget,
   slotKey,

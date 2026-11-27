@@ -100,7 +100,7 @@
 import ColorField from "../controls/ColorField.vue";
 import SliderField from "../controls/SliderField.vue";
 import hotzone from "@/views/shop/hotzone";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 import { ElMessage } from "element-plus";
 
 const DEFAULTS = {

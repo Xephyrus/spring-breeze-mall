@@ -35,7 +35,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { createInventoryCount, getInventoryCountPage } from "@/api/procurement";
 import { Message, Modal } from "@/utils/message";
 import { customRouterPush } from "@/utils/filters";

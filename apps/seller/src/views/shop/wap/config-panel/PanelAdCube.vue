@@ -101,7 +101,7 @@
 </template>
 
 <script>
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 import ways from "@/views/lili-dialog/wap.js";
 import { modelData } from "../config";
 // import ColorField from "../controls/ColorField.vue";

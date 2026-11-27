@@ -219,7 +219,7 @@ onMounted(() => {
   GET_NextLevelCategory();
 });
 
-// 父组件 goodsOperation.vue 通过 ref 直接赋值 selectGoodsType 打开弹窗
+// 父组件 goods-operation.vue 通过 ref 直接赋值 selectGoodsType 打开弹窗
 defineExpose({ selectGoodsType });
 </script>
 <style lang="scss" scoped>

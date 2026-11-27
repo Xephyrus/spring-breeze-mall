@@ -107,7 +107,7 @@
 <script>
 import GradientField from "../controls/GradientField.vue";
 import SliderField from "../controls/SliderField.vue";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 
 const DEFAULTS = {
   bgColor1: "#FFFFFF",

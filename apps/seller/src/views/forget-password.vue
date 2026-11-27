@@ -124,7 +124,7 @@ import { md5 } from "@/utils/md5.js";
 import * as RegExp from "@/utils/regular.js";
 import * as apiLogin from "@/api/index";
 import { sendSms } from "@/api/common";
-import { useSiteSettings } from "@/composables/useSiteSettings";
+import { useSiteSettings } from "@/composables/use-site-settings";
 import verify from "@/views/my-components/verify";
 import { useAppStore } from "@/stores/app";
 

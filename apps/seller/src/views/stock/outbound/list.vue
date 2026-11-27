@@ -132,7 +132,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { Message, Modal } from "@/utils/message";
 import { customRouterPush } from "@/utils/filters";
 import {

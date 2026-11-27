@@ -95,7 +95,7 @@ import { ref, reactive, watch, onMounted } from "vue";
 // 自定义指令：script setup 中以 vXxx 命名的顶层变量即注册为指令
 import vChangeSize from "../directives/changeSize";
 import vDragItem from "../directives/dragItem";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 import { formatLinkType } from "@/utils/filters";
 
 defineOptions({ name: "Zone" });

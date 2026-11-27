@@ -21,9 +21,9 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
-import firstStep from './goodsOperationFirst'
-import secondStep from './goodsOperationSec'
-import thirdStep from './goodsOperationThird'
+import firstStep from './goods-operation-first'
+import secondStep from './goods-operation-sec'
+import thirdStep from './goods-operation-third'
 
 defineOptions({ name: "addGoods" });
 

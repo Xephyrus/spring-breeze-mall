@@ -88,7 +88,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from "vue";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { ElMessageBox } from "element-plus";
 import {
   getDamageReportPage,

@@ -91,7 +91,7 @@ import vuedraggable from "vuedraggable";
 import { uploadFile } from "@/libs/axios";
 import { getStore } from "@/libs/storage";
 import { Message } from "@/utils/message";
-import OssManage from "@/views/sys/oss-manage/ossManage";
+import OssManage from "@/views/sys/oss-manage/oss-manage";
 
 defineOptions({ name: "upload-image" });
 

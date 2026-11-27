@@ -468,7 +468,7 @@
 
 import { ref, computed, onMounted, onUnmounted, reactive, provide, nextTick, watch } from 'vue';
 import liliDialog from '@/views/lili-dialog/index.vue';
-import ossManage from '@/views/sys/oss-manage/ossManage.vue';
+import ossManage from '@/views/sys/oss-manage/oss-manage.vue';
 
 import { useRoute, useRouter } from 'vue-router';
 

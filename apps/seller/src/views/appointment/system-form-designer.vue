@@ -282,7 +282,7 @@ import {
 } from "@element-plus/icons-vue";
 import { getRequest, postRequestWithNoForm } from "@/libs/axios";
 import editor from "@/views/lili-components/editor/index.vue";
-import SystemFormFieldPreview from "./components/SystemFormFieldPreview.vue";
+import SystemFormFieldPreview from "./components/system-form-field-preview.vue";
 import {
   FORM_FIELD_PALETTE,
   FORM_FIELD_LABEL,
@@ -299,7 +299,7 @@ import {
   batchAddOptions,
   hasRequiredSwitch,
   hasOptions,
-} from "@/constants/systemForm";
+} from "@/constants/system-form";
 
 defineOptions({ name: "appointmentSystemFormDesigner" });
 

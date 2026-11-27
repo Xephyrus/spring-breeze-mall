@@ -130,7 +130,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { useRoute } from "vue-router";
 import { getDistributionOrder } from "@/api/distribution";
 import vueQr from "vue-qr";

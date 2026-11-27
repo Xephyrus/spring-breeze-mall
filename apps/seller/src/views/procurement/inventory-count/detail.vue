@@ -77,7 +77,7 @@ import {
   exportInventoryCountItems,
 } from "@/api/procurement";
 import { MARKET_ENABLE } from "../constants";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 import { customRouterPush } from "@/utils/filters";
 
 defineOptions({ name: "procurement-inventory-count-detail" });

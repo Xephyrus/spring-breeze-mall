@@ -972,20 +972,20 @@ import * as RegExp from "@/libs/reg-exp";
 import multipleMap from "@/views/my-components/map/multiple-map";
 import vueQr from "vue-qr";
 import { printElement } from "@/utils/print";
-import { formatCardKeyStatus } from "@/constants/cardKey";
+import { formatCardKeyStatus } from "@/constants/card-key";
 import {
   collectCardKeyFulfillLines,
   orderHasCardKeySection,
   cardKeyFulfillAlertType,
   resolveCardKeyFulfillMessage,
-} from "@/constants/goodsType";
+} from "@/constants/goods-type";
 import {
   validateFulfillForm,
   isNoDeliveryPackage,
   getFulfillmentModeLabel,
   resolveDefaultFulfillmentMode,
   canShowShipButton,
-} from "@/utils/orderFulfill";
+} from "@/utils/order-fulfill";
 import {
   getEnabledServiceStaff,
   getAppointmentVerificationByOrderSn,

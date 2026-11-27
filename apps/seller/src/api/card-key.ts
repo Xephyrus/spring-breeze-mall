@@ -13,7 +13,7 @@ import {
   putRequest,
   uploadFileRequest,
 } from "@/libs/axios";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 import type { Query } from "@/types/api";
 
 /** API-S-01a 下载卡密导入模板（同步文件流） */

@@ -86,7 +86,7 @@ import {
   downloadGoodsImportTemplate,
   importGoodsExcel,
 } from "@/api/goods";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 import { Message } from "@/utils/message";
 
 const props = defineProps({

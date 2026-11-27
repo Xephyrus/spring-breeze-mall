@@ -7,7 +7,7 @@ import {
   postRequestWithNoForm,
   uploadFileRequest
 } from "@/libs/axios";
-import { downloadBlob } from "@/utils/downloadBlob";
+import { downloadBlob } from "@/utils/download-blob";
 import type { Query } from "@/types/api";
 // 获取数据字典
 export const getDictData = "/dictData/getByType/";

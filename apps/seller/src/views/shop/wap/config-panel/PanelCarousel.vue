@@ -188,7 +188,7 @@ import { Top, Bottom, Delete } from "@element-plus/icons-vue";
 import ColorField from "../controls/ColorField.vue";
 import GradientField from "../controls/GradientField.vue";
 import SliderField from "../controls/SliderField.vue";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 import ways from "@/views/lili-dialog/wap.js";
 
 const DEFAULTS = {

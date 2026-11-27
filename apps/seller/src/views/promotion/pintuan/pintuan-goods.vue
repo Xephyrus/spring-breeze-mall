@@ -154,7 +154,7 @@ import { useRoute, useRouter } from "vue-router";
 import { getPintuanGoodsList, getPintuanDetail, editPintuan } from "@/api/promotion";
 import liliDialog from "@/views/lili-dialog";
 import vueQr from "vue-qr";
-import { promotionPriceMin } from "@/constants/goodsType";
+import { promotionPriceMin } from "@/constants/goods-type";
 import { Message, Modal } from "@/utils/message";
 
 const route = useRoute();

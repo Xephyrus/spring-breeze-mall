@@ -50,7 +50,7 @@
 
 <script setup>
 import { ref } from "vue";
-import { useTable } from "@/utils/useTable";
+import { useTable } from "@/utils/use-table";
 import { getProcurementInboundPage } from "@/api/procurement";
 import { formatMoney } from "../constants";
 import { customRouterPush } from "@/utils/filters";

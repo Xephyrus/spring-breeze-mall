@@ -127,7 +127,7 @@ import { onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import uploadPicThumb from "@/views/my-components/lili/upload-pic-thumb";
 import { addLive, addLiveGoods, editLive, getLiveInfo, delRoomLiveGoods } from "@/api/promotion";
-import liveGoods from "./liveGoods";
+import liveGoods from "./live-goods";
 import { Message } from "@/utils/message";
 import { getStore } from "@/libs/storage";
 import { unixToDate } from "@/utils/filters";

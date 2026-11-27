@@ -87,7 +87,7 @@ import { Camera, Delete, View } from "@element-plus/icons-vue";
 import { getStore } from "@/libs/storage";
 import { Message } from "@/utils/message";
 import vuedraggable from "vuedraggable";
-import ossManage from "@/views/sys/oss-manage/ossManage";
+import ossManage from "@/views/sys/oss-manage/oss-manage";
 
 defineOptions({ name: "uploadPicThumb" });
 
