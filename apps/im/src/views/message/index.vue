@@ -190,6 +190,7 @@ import { useUserStore } from "@/stores/user";
 import { useTalkStore } from "@/stores/talk";
 import { useNotifyStore } from "@/stores/notify";
 import { useDialogueStore } from "@/stores/dialogue";
+import { useChatSession } from "@/composables/use-chat-session";
 
 const title = document.title;
 
@@ -232,12 +233,18 @@ const input = ref("");
 // header 工具菜单
 const subMenu = ref(false);
 
-// 对话消息列表加载状态[0:加载中;1:加载完成;2:加载失败;]
-// 注意：不能命名为 loadStatus——全局 main-mixin 的 loadStoreChatList 会以
-// Options API 方式（this.loadStatus = ...）写入它，而 <script setup> 的同名绑定
-// 会被 Vue 公共代理拦截（dev 下直接拒绝写入）。故改用内部 ref，
-// 并以 loadStatus 为名桥接到 ctx，供模板（_ctx.loadStatus）与 mixin 读写。
-const loadStatusRef = ref(0);
+// 会话初始化 / 列表加载（原 main-mixin 改组合式函数）
+// loadStatus[0:加载中;1:加载完成] 由组合式函数持有，模板与下方 loadChatList 直接读写
+const {
+  loadStatus,
+  initialize: initializeChat,
+  loadUserSetting: loadUserSettingWithHooks,
+  loadStoreChatList: loadStoreChatListWithHooks,
+} = useChatSession({
+  createTalk: (id) => createTalk(id),
+  clickTab: (id, data, index) => clickTab(id, data, index),
+  getGoodsParams: () => goodsParams.value,
+});
 
 // 消息未读数计时器
 let interval = null;
@@ -283,32 +290,9 @@ const isFriendOnline = computed(() => {
   return index >= 0 && talks.value[index].is_online == 1;
 });
 
-// 全局 main-mixin 的方法（loadUserSetting/loadStoreChatList）以组件公共实例代理为
-// this 回调本组件：createTalk/loadChatList/clickTab、读 goodsParams/talkNum、
-// 读写 loadStatus。<script setup> 绑定对公共代理不可见，故桥接到 instance.ctx；
-// 同时 defineExpose 供外部通过 ref 访问。
-defineExpose({
-  createTalk,
-  loadChatList,
-  clickTab,
-  goodsParams,
-  talkNum,
-  loadStatus: loadStatusRef,
-});
-Object.defineProperties(instance.ctx, {
-  createTalk: { configurable: true, value: createTalk },
-  loadChatList: { configurable: true, value: loadChatList },
-  clickTab: { configurable: true, value: clickTab },
-  goodsParams: { configurable: true, get: () => goodsParams.value },
-  talkNum: { configurable: true, get: () => talkNum.value },
-  loadStatus: {
-    configurable: true,
-    get: () => loadStatusRef.value,
-    set: (v) => {
-      loadStatusRef.value = v;
-    },
-  },
-});
+// 说明：原实现把 createTalk / loadChatList / clickTab / goodsParams / talkNum / loadStatus
+// 桥接到 instance.ctx 供全局 mixin 通过 `this` 访问。改用 useChatSession 后，
+// 这些依赖以显式 hooks 形式传入组合式函数，不再需要桥接，也不再需要 defineExpose。
 
 // 初始化商品参数
 function initGoodsParams(query) {
@@ -366,7 +350,7 @@ function onMenusScroll({ scrollTop }) {
 
 // 获取用户对话列表
 function loadChatList() {
-  loadStatusRef.value = talkNum.value == 0 ? 0 : 1;
+  loadStatus.value = talkNum.value == 0 ? 0 : 1;
 
   return ServeGetTalkList()
     .then(({ code, result }) => {
@@ -389,7 +373,7 @@ function loadChatList() {
     })
     .catch(() => {})
     .finally(() => {
-      loadStatusRef.value = 1;
+      loadStatus.value = 1;
     });
 }
 
@@ -717,8 +701,8 @@ syncImTokenFromRoute(route, setToken);
 // loadUserSetting）在 finishComponentSetup 的 applyOptions 阶段才挂到公共代理上，
 // 即 setup() 返回之后。故放到 onMounted 里执行。
 onMounted(async () => {
-  await proxy.initialize();
-  await proxy.loadUserSetting();
+  initializeChat();
+  await loadUserSettingWithHooks();
   // 初始化商品参数
   initGoodsParams(route.query);
   /**

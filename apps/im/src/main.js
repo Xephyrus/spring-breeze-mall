@@ -2,7 +2,6 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "@/App.vue";
 import router from "@/router";
-import MainMixin from "./mixins/main-mixin";
 import face from "@/components/face";
 import faceNull from "@/components/face-null";
 import config from "@/config/config";
@@ -33,7 +32,6 @@ app.use(createPinia());
 app.use(router);
 setupContextmenu(app);
 app.use(VueVirtualScroller);
-app.mixin(MainMixin);
 
 app.component("face", face);
 app.component("face-null", faceNull);

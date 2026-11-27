@@ -1,13 +1,9 @@
 import { h } from "vue";
 import router from "@/router";
-import MainMixin from "@/mixins/main-mixin";
 import { useTalkStore } from "@/stores/talk";
+import { loadChatListInJs, loadStoreChatList, loadUserSetting } from "@/composables/use-chat-session";
 
-/** 刷新视图的钩子（由 main-mixin 注册） */
-let refreshViewFn: (() => void) | null = null;
-
-/** mixin 方法的宽松签名（main-mixin 仍是 JS，方法体内部用 any 是既有实现） */
-type MixinMethod = (this: unknown, ...args: unknown[]) => unknown;
+export { setRefreshView, refreshView } from "@/utils/view-refresh";
 
 /**
  * vuex → pinia 兼容门面：外部（im-server/event/talk.js）仍以
@@ -22,41 +18,21 @@ const store = {
   },
 };
 
-const mixinCtx: Record<string, unknown> = {
-  get $store(): typeof store {
-    return store;
-  },
-  get $router(): typeof router {
-    return router;
-  },
-  get $route() {
-    return router.currentRoute.value;
-  },
-};
-
-const methods = MainMixin.methods as unknown as Record<string, MixinMethod>;
-
-mixinCtx.loadChatListInJs = methods.loadChatListInJs.bind(mixinCtx);
-mixinCtx.loadStoreChatList = methods.loadStoreChatList.bind(mixinCtx);
-
-/** 注册刷新视图的钩子 */
-export function setRefreshView(fn: () => void): void {
-  refreshViewFn = fn;
-}
-
-/** 触发刷新（未注册时静默忽略） */
-export function refreshView(): void {
-  refreshViewFn?.();
-}
-
-/** 给 im-server 等非组件环境使用的应用门面 */
+/**
+ * 给 im-server 等非组件环境使用的应用门面。
+ *
+ * 说明：原实现通过 `MainMixin.methods.xxx.bind(mixinCtx)` 借用 mixin 的方法，
+ * 现在改为直接调用 `composables/use-chat-session` 的纯函数 —— 不再需要伪造 `this`。
+ */
 export function getAppBridge() {
   return {
     $store: store,
     $router: router,
     $route: router.currentRoute.value,
     $createElement: h,
-    loadUserSetting: methods.loadUserSetting.bind(mixinCtx),
-    refreshView,
+    loadUserSetting,
+    loadChatListInJs,
+    loadStoreChatList,
+    refreshView: () => void 0,
   };
 }

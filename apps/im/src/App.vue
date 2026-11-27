@@ -5,7 +5,7 @@
 </template>
 <script setup>
 import { nextTick, onBeforeUnmount, onMounted, ref } from "vue";
-import { setRefreshView } from "@/utils/app-bridge";
+import { setRefreshView } from "@/utils/view-refresh";
 
 defineOptions({ name: 'App' });
 
