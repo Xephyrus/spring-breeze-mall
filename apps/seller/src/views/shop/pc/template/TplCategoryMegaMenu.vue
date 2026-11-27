@@ -77,7 +77,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { ArrowRight } from '@element-plus/icons-vue';
-import { getGoodsCategoryAll } from '@/api/goods.js';
+import { getGoodsCategoryAll } from '@/api/goods';
 
 const props = defineProps({
   options: {

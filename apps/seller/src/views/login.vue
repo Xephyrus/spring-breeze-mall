@@ -124,7 +124,7 @@ import { computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { User, Lock, Iphone, Message } from "@element-plus/icons-vue";
 import * as RegExp from "@/utils/regular.js";
-import { sendSms } from "@/api/common.js";
+import { sendSms } from "@/api/common";
 import { login, storeSmsLogin, userMsg } from "@/api/index";
 import util from "@/libs/util.js";
 import { setStore } from "@/libs/storage";

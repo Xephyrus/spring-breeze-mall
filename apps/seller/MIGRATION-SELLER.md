@@ -100,6 +100,27 @@
 
 > `libs/util.js`（575 行）、`libs/routerJson.js`（593 行）、`libs/seller-navigation.js`（79 行）留到 2.2/2.3 批次处理。
 
+### 2.2 api 层类型化（✅ 2026-11-28）
+
+| 项 | 结果 |
+|---|---|
+| 文件 | `src/api/*.js` **20 个 → 全部 `.ts`**（共 2,198 行） |
+| 参数类型 | 新增 `src/types/api.ts` 的 `Query = Record<string, unknown>`；id 类参数用 `string \| number`，文件上传用 `Blob` |
+| 注解数量 | 三遍脚本自动注解 **约 178 个形参**，编译器报错后手工修 9 处 |
+| 引用清理 | 去掉 21 处 `@/api/xxx.js` 的 `.js` 后缀（Vite 虽能兜底解析，显式无后缀更清晰） |
+| 新增 lint 告警 | **0**（用 `Query` 而非 `any`，没有推高 ratchet） |
+
+**编译器发现的真实问题（已修）**
+
+| 位置 | 问题 | 修法 |
+|---|---|---|
+| `logistics.ts` | `getRequestHasHeader(url, null, headers)` 传 null 给 `Params` | 改 `undefined` |
+| `logistics.ts` / `shops.ts` | 请求头参数标成 `Query` 但 API 要 `Record<string, string>` | 收窄为 `Record<string, string>` |
+| `cardKey.ts` / `goods.ts` | `FormData.append` 收到对象/数字 | `String(skuId)`；文件参数改 `Blob` |
+| `procurement.ts` | `encodeURIComponent(remark)` 收到对象 | `String(remark ?? "")` |
+
+**验证**：typecheck 0 错误 / lint 58（未增长）/ build 5.75s / dev server HTTP 200
+
 ---
 
 ## 待办（后续里程碑）

@@ -62,7 +62,7 @@
 import { computed, onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Message, Modal } from "@/utils/message";
-import * as API_Other from "@/api/other.js";
+import * as API_Other from "@/api/other";
 
 const router = useRouter();
 

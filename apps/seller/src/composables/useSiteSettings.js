@@ -1,5 +1,5 @@
 import { computed, onMounted, ref } from "vue";
-import { getBaseSite } from "@/api/common.js";
+import { getBaseSite } from "@/api/common";
 import config from "@/config";
 
 // 同页的页头、页脚共享请求；每次重新进入页面时刷新，避免旧缓存覆盖后台设置。

@@ -1,112 +1,113 @@
 // 统一请求路径前缀在libs/axios.js中修改
 import { getRequest, postRequest, putRequest, deleteRequest, postRequestWithNoForm } from "@/libs/axios";
+import type { Query } from "@/types/api";
 
 // 下载待发货的订单列表
-export const verificationCode = verificationCode => {
+export const verificationCode = (verificationCode: Query) => {
   return getRequest(`/order/order/getOrderByVerificationCode/${verificationCode}`);
 };
 
 // 下载待发货的订单列表
-export const downLoadDeliverExcel = params => {
+export const downLoadDeliverExcel = (params: Query) => {
   return getRequest(`/order/order/downLoadDeliverExcel`, params, 'blob');
 };
 // 导出待发货订单
-export const queryExportOrder = params => {
+export const queryExportOrder = (params: Query) => {
   return getRequest(`/order/order/queryExportOrder`, params);
 };
 
 //获取电子面单
-export const getOrderFaceSheet= (orderSn,params) =>{
+export const getOrderFaceSheet= (orderSn: Query, params: Query) =>{
   return postRequest(`/order/order/${orderSn}/createElectronicsFaceSheet`,params)
 }
 
 // 上传待发货的订单列表
-export const uploadDeliverExcel = params => {
+export const uploadDeliverExcel = (params: Query) => {
   return postRequestWithNoForm(`/order/order/batchDeliver`, params );
 };
 
 // 获取普通订单列表
-export const getOrderList = params => {
+export const getOrderList = (params: Query) => {
   return getRequest(`/order/order`, params);
 };
 
 //  导出订单列表
-export const exportOrder = (params) => {
+export const exportOrder = (params: Query) => {
   return getRequest(`/order/order/queryExportOrder`, params,'blob')
 };
 
 // 获取普通订单详细信息
-export const getOrderDetail = sn => {
+export const getOrderDetail = (sn: Query) => {
   return getRequest(`/order/order/${sn}`);
 };
 
 // 订单付款
-export const orderPay = sn => {
+export const orderPay = (sn: Query) => {
   return postRequest(`/order/order/${sn}/pay`);
 };
 
 
 // 修改订单备注
-export const modifyOrderRemark = (sn, params) => {
+export const modifyOrderRemark = (sn: Query, params: Query) => {
   return putRequest(`/order/order/${sn}/sellerRemark`, params);
 };
 
 // 取消订单
-export const cancelOrder = (sn, params) => {
+export const cancelOrder = (sn: Query, params: Query) => {
   return postRequest(`/order/order/${sn}/cancel`, params);
 };
 
 // 修改收货地址
-export const editOrderConsignee = (sn, params) => {
+export const editOrderConsignee = (sn: Query, params: Query) => {
   return postRequest(`/order/order/update/${sn}/consignee`, params);
 };
 //获取投诉列表
-export const getComplainPage = params => {
+export const getComplainPage = (params: Query) => {
   return getRequest(`/order/complain`, params);
 };
 export const getOrderComplain = getComplainPage;
 
 //获取投诉详情
-export const getComplainDetail = id => {
+export const getComplainDetail = (id: string | number) => {
   return getRequest(`/order/complain/${id}`);
 };
 export const getOrderComplainDetail = getComplainDetail;
 
 //添加交易投诉对话
-export const addOrderComplaint = params => {
+export const addOrderComplaint = (params: Query) => {
   return postRequest(`/order/complain/communication`, params);
 };
 export const addOrderCommunication = addOrderComplaint;
 
 // 更新投诉状态
-export const storeComplain = params => {
+export const storeComplain = (params: Query) => {
   return putRequest(`/order/complain/status`, params);
 };
 
 // 仲裁完成投诉
-export const orderComplete = (id, params) => {
+export const orderComplete = (id: string | number, params: Query) => {
   return putRequest(`/order/complain/complete/${id}`, params);
 };
 
 //商家申诉
-export const appeal = params => {
+export const appeal = (params: Query) => {
   return putRequest(`/order/complain/appeal`, params);
 };
 
 //获取订单日志
-export const getOrderLog = (sn, params) => {
+export const getOrderLog = (sn: Query, params: Query) => {
   return getRequest(`/orderLog/${sn}`, params);
 };
 
 // 订单发货（整单 / 拆单 / 无需配送）
-export const orderFulfill = (orderSn, params) => {
+export const orderFulfill = (orderSn: Query, params: Query) => {
   return postRequest(`/order/order/${orderSn}/fulfill`, params, {
     "Content-type": "application/json",
   });
 };
 
 // 订单发货
-export const orderShunFengDelivery = (sn) => {
+export const orderShunFengDelivery = (sn: Query) => {
   return postRequest(`/order/order/${sn}/shunfeng/delivery`);
 };
 
@@ -116,121 +117,121 @@ export const getLogisticsChecked = () => {
 };
 
 // 订单核验
-export const orderTake = (sn, verificationCode) => {
+export const orderTake = (sn: Query, verificationCode: Query) => {
   return putRequest(`/order/order/take/${sn}/${verificationCode}`);
 };
 
-export const previewVerification = (code) => {
+export const previewVerification = (code: string | number) => {
   return getRequest(`/order/order/verification/preview`, { code });
 };
 
-export const confirmVerification = (code) => {
+export const confirmVerification = (code: string | number) => {
   return postRequestWithNoForm(`/order/order/verification/confirm`, { code });
 };
 
-export const getVerificationRecords = (params) => {
+export const getVerificationRecords = (params: Query) => {
   return getRequest(`/order/order/verification/records`, params);
 };
 
 // 售后服务单
-export const afterSaleOrderPage = params => {
+export const afterSaleOrderPage = (params: Query) => {
   return getRequest(`/order/afterSale/page`, params);
 };
 export const getAfterSaleOrderPage = afterSaleOrderPage;
 
 // 售后服务单详情
-export const afterSaleOrderDetail = sn => {
+export const afterSaleOrderDetail = (sn: Query) => {
   return getRequest(`/order/afterSale/${sn}`);
 };
 export const getAfterSaleOrderDetail = afterSaleOrderDetail;
 
 // 获取售后原因分页列表
-export const getAfterSaleReasonPage = params => {
+export const getAfterSaleReasonPage = (params: Query) => {
   return getRequest(`/order/afterSaleReason/getByPage`, params);
 };
 
 // 删除售后原因
-export const delAfterSaleReason = id => {
+export const delAfterSaleReason = (id: string | number) => {
   return deleteRequest(`/order/afterSaleReason/delByIds/${id}`);
 };
 
 // 添加售后原因
-export const addAfterSaleReason = params => {
+export const addAfterSaleReason = (params: Query) => {
   return postRequest(`/order/afterSaleReason`, params);
 };
 
 // 修改售后原因
-export const editAfterSaleReason = (id, params) => {
+export const editAfterSaleReason = (id: string | number, params: Query) => {
   return putRequest(`/order/afterSaleReason/update/${id}`, params);
 };
 
 // 售后单商家收货信息
-export const storeAddress = sn => {
+export const storeAddress = (sn: Query) => {
   return getRequest(`/order/afterSale/getStoreAfterSaleAddress/${sn}`);
 };
 
 // 售后退款
-export const refundPrice = (afterSaleSn, params) => {
+export const refundPrice = (afterSaleSn: Query, params: Query) => {
   return putRequest(`/order/afterSale/refund/${afterSaleSn}`, params);
 };
 
 // 商家审核
-export const afterSaleSellerReview = (sn, params) => {
+export const afterSaleSellerReview = (sn: Query, params: Query) => {
   return putRequest(`/order/afterSale/review/${sn}`, params);
 };
 
 // 商家确认收货
-export const afterSaleSellerConfirm = (sn, params) => {
+export const afterSaleSellerConfirm = (sn: Query, params: Query) => {
   return putRequest(`/order/afterSale/confirm/${sn}`, params);
 };
 
 // 商家换货业务发货
-export const afterSaleSellerDelivery = (sn, params) => {
+export const afterSaleSellerDelivery = (sn: Query, params: Query) => {
   return postRequest(`/order/afterSale/${sn}/delivery`, params);
 };
 //查询物流
-export const getTraces = (sn, params) => {
+export const getTraces = (sn: Query, params: Query) => {
   return getRequest(`/order/order/getTraces/${sn}`, params);
 };
 //售后单查询物流
-export const getSellerDeliveryTraces = (sn, params) => {
+export const getSellerDeliveryTraces = (sn: Query, params: Query) => {
   return getRequest(`/order/afterSale/getSellerDeliveryTraces/${sn}`, params);
 };
 //售后单查询物流
-export const getAfterSaleTraces = (sn, params) => {
+export const getAfterSaleTraces = (sn: Query, params: Query) => {
   return getRequest(`/order/afterSale/getDeliveryTraces/${sn}`, params);
 };
 //获取发票列表
-export const getReceiptPage = params => {
+export const getReceiptPage = (params: Query) => {
   return getRequest(`/trade/receipt`, params);
 };
 
 //获取发票详情
-export const getReceiptDetail = id => {
+export const getReceiptDetail = (id: string | number) => {
   return getRequest(`/trade/receipt/get/${id}`);
 };
 
 //开发票
-export const invoicing = (id, params) => {
+export const invoicing = (id: string | number, params: Query) => {
   return postRequest(`/trade/receipt/${id}/invoicing`, params);
 };
 
 //查询包裹列表
-export const getPackage = (orderSn) => {
+export const getPackage = (orderSn: Query) => {
   return getRequest(`/order/order/getPackage/${orderSn}`);
 }
 
 //查询物流
-export const getTracesList = (sn) => {
+export const getTracesList = (sn: Query) => {
   return getRequest(`/order/order/getTracesList/${sn}`);
 }
 
 // 获取订单数量统计
-export const getOrderNum = (params) => {
+export const getOrderNum = (params: Query) => {
   return getRequest(`/order/order/orderNum`, params);
 }
 
 // 获取售后数量统计
-export const getAfterSaleNumVO = (params) => {
+export const getAfterSaleNumVO = (params: Query) => {
   return getRequest(`/order/afterSale/afterSaleNumVO`, params);
 }

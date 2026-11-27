@@ -151,7 +151,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getPintuanGoodsList, getPintuanDetail, editPintuan } from "@/api/promotion.js";
+import { getPintuanGoodsList, getPintuanDetail, editPintuan } from "@/api/promotion";
 import liliDialog from "@/views/lili-dialog";
 import vueQr from "vue-qr";
 import { promotionPriceMin } from "@/constants/goodsType";

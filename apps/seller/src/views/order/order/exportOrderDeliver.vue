@@ -49,7 +49,7 @@
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { UploadFilled } from "@element-plus/icons-vue";
-import { downLoadDeliverExcel, uploadDeliverExcel } from "@/api/order.js";
+import { downLoadDeliverExcel, uploadDeliverExcel } from "@/api/order";
 import { baseUrl } from "@/libs/axios.js";
 import { getStore } from "@/libs/storage";
 import { useAppStore } from "@/stores/app";

@@ -122,7 +122,7 @@
 <script setup>
 import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import { getLiveInfo } from "@/api/promotion.js";
+import { getLiveInfo } from "@/api/promotion";
 import { unixToDate } from "@/utils/filters";
 
 const route = useRoute();

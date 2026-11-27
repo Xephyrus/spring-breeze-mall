@@ -20,7 +20,7 @@
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import AMapLoader from "@amap/amap-jsapi-loader";
-import { getRegion } from "@/api/common.js";
+import { getRegion } from "@/api/common";
 import config from "@/config/index";
 import { Message } from "@/utils/message";
 

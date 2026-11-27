@@ -28,7 +28,7 @@
 </template>
 <script setup>
 import { onMounted, ref } from "vue";
-import { getCategoryTree } from "@/api/goods.js";
+import { getCategoryTree } from "@/api/goods";
 
 const emit = defineEmits(["selected"]);
 

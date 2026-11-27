@@ -41,7 +41,7 @@ import { computed, ref } from "vue";
 import Cookies from "js-cookie";
 import vueQr from "vue-qr";
 import { getStoreMpQrcode } from "@/api/index";
-import { getBaseSite } from "@/api/common.js";
+import { getBaseSite } from "@/api/common";
 import { Message } from "@/utils/message";
 
 defineOptions({ name: "store-qrcode" });

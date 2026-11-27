@@ -488,7 +488,7 @@ import {
 
 import { Message, Modal } from '@/utils/message';
 
-import * as API_floor from '@/api/other.js';
+import * as API_floor from '@/api/other';
 
 import {
 

@@ -44,7 +44,7 @@
 import { onMounted, reactive, ref } from "vue";
 import { aMapSwitch } from "@/config/index";
 import mapping from "@/views/my-components/map/index.vue";
-import * as API_Setup from "@/api/common.js";
+import * as API_Setup from "@/api/common";
 import { Message } from "@/utils/message";
 
 const emit = defineEmits(["callback"]);

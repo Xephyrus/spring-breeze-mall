@@ -128,7 +128,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { getFullDiscountList, updateFullDiscount } from "@/api/promotion.js";
+import { getFullDiscountList, updateFullDiscount } from "@/api/promotion";
 import { Message, Modal } from "@/utils/message";
 
 const props = defineProps({

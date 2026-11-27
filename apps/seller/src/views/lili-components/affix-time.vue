@@ -48,7 +48,7 @@
 
 <script setup>
 import { onMounted, reactive, ref } from "vue";
-import { getShopListData } from "@/api/shops.js";
+import { getShopListData } from "@/api/shops";
 
 const props = defineProps(["closeShop"]);
 const emit = defineEmits(["selected"]);

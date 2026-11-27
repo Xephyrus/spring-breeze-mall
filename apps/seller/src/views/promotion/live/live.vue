@@ -70,7 +70,7 @@
 <script setup>
 import { onMounted, reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
-import { getLiveList, whetherStar } from "@/api/promotion.js";
+import { getLiveList, whetherStar } from "@/api/promotion";
 
 const router = useRouter();
 

@@ -369,7 +369,7 @@ import { Plus, Delete, Link, Picture, Close } from '@element-plus/icons-vue';
 import { ElMessageBox } from 'element-plus';
 import GoodsDialog from '@/views/lili-dialog/goods-dialog.vue';
 import CategorySelector from '@/views/lili-dialog/template/category.vue';
-import { getCategoryTree } from '@/api/goods.js';
+import { getCategoryTree } from '@/api/goods';
 
 // 注入来自 pc/index.vue 的全局选择器
 const openImagePicker = inject('openImagePicker', null);

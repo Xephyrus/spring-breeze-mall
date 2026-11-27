@@ -14,6 +14,7 @@ import {
   uploadFileRequest,
 } from "@/libs/axios";
 import { downloadBlob } from "@/utils/downloadBlob";
+import type { Query } from "@/types/api";
 
 /** API-S-01a 下载卡密导入模板（同步文件流） */
 export const downloadImportTemplateBlob = () => {
@@ -26,39 +27,39 @@ export const downloadImportTemplate = async () => {
 };
 
 /** API-S-01 批量导入卡密 */
-export const importCardKey = (skuId, file) => {
+export const importCardKey = (skuId: string | number, file: Blob) => {
   const formData = new FormData();
-  formData.append("skuId", skuId);
+  formData.append("skuId", String(skuId));
   formData.append("file", file);
   return uploadFileRequest("/goods/card-key/import", formData);
 };
 
 /** API-S-02 单条新增卡密（后端 @RequestBody，须 application/json） */
-export const addCardKey = (data) => {
+export const addCardKey = (data: Query) => {
   return postRequestWithNoForm("/goods/card-key/add", data);
 };
 
 /** API-S-03 卡池分页列表 */
-export const getCardKeyList = (params) => {
+export const getCardKeyList = (params: Query) => {
   return getRequest("/goods/card-key/list", params);
 };
 
 /** API-S-04 作废卡密 */
-export const voidCardKey = (id) => {
+export const voidCardKey = (id: string | number) => {
   return putRequest(`/goods/card-key/void/${id}`);
 };
 
 /** API-S-05 卡池状态统计 */
-export const getCardKeyStats = (skuId) => {
+export const getCardKeyStats = (skuId: string | number) => {
   return getRequest(`/goods/card-key/stats/${skuId}`);
 };
 
 /** API-S-07 卡池导出（同步文件流） */
-export const exportCardKeyBlob = (params) => {
+export const exportCardKeyBlob = (params: Query) => {
   return getRequest("/goods/card-key/export", params, "blob");
 };
 
-export const exportCardKey = async (params, skuId) => {
+export const exportCardKey = async (params: Query, skuId: string | number) => {
   const blob = await exportCardKeyBlob(params);
   const ts = new Date().toISOString().replace(/[-:T]/g, "").slice(0, 14);
   downloadBlob(blob, `card-key-${skuId || "export"}-${ts}.xlsx`);

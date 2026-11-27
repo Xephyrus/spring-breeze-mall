@@ -11,34 +11,35 @@ import {
   postRequestWithNoForm,
   sellerUrl,
 } from "@/libs/axios";
+import type { Query } from "@/types/api";
 
 //获取所有city
-export const getAllCity = (params) => {
+export const getAllCity = (params: Query) => {
   return getRequest(sellerUrl+'/store/common/region/allCity', params)
 }
 
 // 获取全部权限数据
-export const getCurrentPermissionList = (params) => {
+export const getCurrentPermissionList = (params: Query) => {
   return getRequest("/menu/memberMenu", params);
 };
 // 登陆
-export const getHomeNotice = params => {
+export const getHomeNotice = (params: Query) => {
   return getRequest("/other/article/getByPage?type=STORE_ARTICLE&pageSize=15");
 };
 
 // 登陆
-export const getSellerHomeData = params => {
+export const getSellerHomeData = (params: Query) => {
   return getRequest("/statistics/index", params);
 };
 
 
 // 登陆
-export const login = params => {
+export const login = (params: Query) => {
   return postRequestWithNoTokenData("/passport/login/userLogin", params);
 };
 
 // 手机登陆
-export const storeSmsLogin = params => {
+export const storeSmsLogin = (params: Query) => {
   return postRequestWithNoToken("/passport/login/smsLogin", params);
 };
 
@@ -48,11 +49,11 @@ export const logout = () => {
 };
 
 // 获取用户登录信息
-export const userInfo = params => {
+export const userInfo = (params: Query) => {
   return getRequest("/user/info", params);
 };
 // 获取登录信息
-export const userMsg = params => {
+export const userMsg = (params: Query) => {
   return getRequest('/settings/storeSettings', params)
 }
 
@@ -61,203 +62,203 @@ export const getStoreMpQrcode = () => {
   return getRequest("/settings/storeSettings/mp-qrcode");
 };
 //验证短信验证码
-export const validateCode = params => {
+export const validateCode = (params: Query) => {
   return postRequestWithNoToken("/passport/login/resetByMobile", params);
 };
 // 初始化验证码
-export const initCaptcha = params => {
+export const initCaptcha = (params: Query) => {
   return getRequestWithNoToken("/common/captcha/init", params);
 };
 // 发送登录短信验证码
-export const sendLoginSms = (mobile, params) => {
+export const sendLoginSms = (mobile: Query, params: Query) => {
   return getRequest(`/common/captcha/sendLoginSms/${mobile}`, params);
 };
 // 发送注册短信验证码
-export const sendRegistSms = (mobile, params) => {
+export const sendRegistSms = (mobile: Query, params: Query) => {
   return getRequest(`/common/captcha/sendRegistSms/${mobile}`, params);
 };
 // 发送重置密码短信验证码
-export const sendResetSms = (mobile, params) => {
+export const sendResetSms = (mobile: Query, params: Query) => {
   return getRequest(`${sellerUrl}/common/captcha/sendResetSms/${mobile}`, params);
 };
 // 发送修改绑定手机短信验证码
-export const sendEditMobileSms = (mobile, params) => {
+export const sendEditMobileSms = (mobile: Query, params: Query) => {
   return getRequest(`/common/captcha/sendEditMobileSms/${mobile}`, params);
 };
 // 通过手机重置密码
-export const resetByMobile = params => {
+export const resetByMobile = (params: Query) => {
   return postRequest("/user/resetByMobile", params);
 };
 // 发送重置密码邮件验证码
-export const sendResetEmail = (email, params) => {
+export const sendResetEmail = (email: Query, params: Query) => {
   return getRequest(`/email/sendResetCode/${email}`, params);
 };
 // 发送修改绑定邮件验证码
-export const sendEditEmail = (email, params) => {
+export const sendEditEmail = (email: Query, params: Query) => {
   return getRequest(`/email/sendEditCode/${email}`, params);
 };
 // 通过邮件重置密码
-export const resetByEmail = params => {
+export const resetByEmail = (params: Query) => {
   return postRequest("/email/resetByEmail", params);
 };
 // 短信验证码登录
-export const smsLogin = params => {
+export const smsLogin = (params: Query) => {
   return postRequest("/user/smsLogin", params);
 };
 // IP天气信息
-export const ipInfo = params => {
+export const ipInfo = (params: Query) => {
   return getRequest("/common/ip/info", params);
 };
 // 个人中心编辑
-export const userInfoEdit = params => {
+export const userInfoEdit = (params: Query) => {
   return postRequest("/user/edit", params);
 };
 // 个人中心发送修改邮箱验证邮件
-export const sendCodeEmail = (email, params) => {
+export const sendCodeEmail = (email: Query, params: Query) => {
   return getRequest(`/email/sendCode/${email}`, params);
 };
 // 个人中心发送修改邮箱验证邮件
-export const editEmail = params => {
+export const editEmail = (params: Query) => {
   return postRequest("/email/editEmail", params);
 };
 // 忘记密码并修改
-export const forgetAndModify = params => {
+export const forgetAndModify = (params: Query) => {
   return postRequest("/passport/login/resetPassword", params);
 };
 // 个人中心修改密码
-export const changePass = params => {
+export const changePass = (params: Query) => {
   return postRequest("/passport/login/modifyPass", params);
 };
 // 个人中心修改手机
-export const changeMobile = params => {
+export const changeMobile = (params: Query) => {
   return postRequest("/user/changeMobile", params);
 };
 // 获取绑定账号信息
-export const relatedInfo = (username, params) => {
+export const relatedInfo = (username: Query, params: Query) => {
   return getRequest(`/relate/getRelatedInfo/${username}`, params);
 };
 // 解绑账号
-export const unRelate = params => {
+export const unRelate = (params: Query) => {
   return postRequest("/relate/delByIds", params);
 };
 // 分页获取绑定账号信息
-export const getRelatedListData = params => {
+export const getRelatedListData = (params: Query) => {
   return getRequest("/relate/findByCondition", params);
 };
 // 获取用户数据 多条件
-export const getUserListData = params => {
+export const getUserListData = (params: Query) => {
   return getRequest("/clerk", params);
 };
 // 通过用户名搜索
-export const searchUserByName = (username, params) => {
+export const searchUserByName = (username: Query, params: Query) => {
   return getRequest("/user/searchByName/" + username, params);
 };
 // 获取全部用户数据
-export const getAllUserData = params => {
+export const getAllUserData = (params: Query) => {
   return getRequest("/user/getAll", params);
 };
 
 // 添加用户
-export const addUser = params => {
+export const addUser = (params: Query) => {
   return postRequest("/clerk", params);
 };
 // 编辑用户
-export const editUser = params => {
+export const editUser = (params: Query) => {
   return postRequest("/user/admin/edit", params);
 };
 // 启用用户
-export const enableUser = (id, params) => {
+export const enableUser = (id: string | number, params: Query) => {
   return postRequest(`/user/admin/enable/${id}`, params);
 };
 // 禁用用户
-export const disableUser = (id, params) => {
+export const disableUser = (id: string | number, params: Query) => {
   return postRequest(`/user/admin/disable/${id}`, params);
 };
 // 删除用户
-export const deleteUser = (ids, params) => {
+export const deleteUser = (ids: Query, params: Query) => {
   return deleteRequest(`/user/delByIds/${ids}`, params);
 };
 // 重置用户密码
-export const resetUserPass = params => {
+export const resetUserPass = (params: Query) => {
   return postRequest("/user/resetPass", params);
 };
 /****************************** 权限结束 */
 
 // 分页获取日志数据
-export const getLogListData = params => {
+export const getLogListData = (params: Query) => {
   return getRequest("/log/getAllByPage", params);
 };
 // 分页获取消息数据
-export const getMessageData = params => {
+export const getMessageData = (params: Query) => {
   return getRequest("/message/storeMessage/getByCondition", params);
 };
 // 获取单个消息详情
-export const getMessageDataById = (id, params) => {
+export const getMessageDataById = (id: string | number, params: Query) => {
   return getRequest(`/message/storeMessage/get/${id}`, params);
 };
 // 添加消息
-export const addMessage = params => {
+export const addMessage = (params: Query) => {
   return postRequest("/message/storeMessage/add", params);
 };
 // 编辑消息
-export const editMessage = params => {
+export const editMessage = (params: Query) => {
   return postRequest("/message/storeMessage/edit", params);
 };
 // 回收站还原消息
-export const reductionMessage = (ids, params) => {
+export const reductionMessage = (ids: Query, params: Query) => {
   return putRequest(`/message/storeMessage/${ids}/reduction`, params);
 };
 // 彻底删除消息
-export const clearMessage = (ids, params) => {
+export const clearMessage = (ids: Query, params: Query) => {
   return deleteRequest(`/message/storeMessage/${ids}`, params);
 };
 // 已读消息放入回收站
-export const deleteMessage = (ids, params) => {
+export const deleteMessage = (ids: Query, params: Query) => {
   return deleteRequest(`/message/storeMessage/${ids}/delete`, params);
 };
 // 分页获取消息推送数据
-export const getMessageSendData = params => {
+export const getMessageSendData = (params: Query) => {
   return getRequest("/message/storeMessage", params);
 };
 // 进入消息中心首次加载全部数据
-export const getAllMessage = params => {
+export const getAllMessage = (params: Query) => {
   return getRequest("/message/storeMessage/all", params);
 };
 // 已读消息
-export const read = (id) => {
+export const read = (id: string | number) => {
   return putRequest(`/message/storeMessage/${id}/read`);
 };
 // 删除发送消息
-export const deleteMessageSend = (ids, params) => {
+export const deleteMessageSend = (ids: Query, params: Query) => {
   return deleteRequest(`/message/storeMessageSend/delByIds/${ids}`, params);
 };
 
 // 分页获取文件数据
-export const getFileListData = params => {
+export const getFileListData = (params: Query) => {
   return getRequest(`${sellerUrl}/store/common/file`, params);
 };
 
 
 // 复制文件
-export const copyFile = params => {
+export const copyFile = (params: Query) => {
   return postRequest(`${sellerUrl}/store/common/file/copy`, params);
 };
 // 重命名文件
-export const renameFile = params => {
+export const renameFile = (params: Query) => {
   return postRequest(`${sellerUrl}/store/common/file/rename`, params);
 };
 // 删除文件
-export const deleteFile = (ids, params) => {
+export const deleteFile = (ids: Query, params: Query) => {
   return deleteRequest(`${sellerUrl}/store/common/file/delete/${ids}`, params);
 };
 // 下载文件
-export const aliDownloadFile = (fKey, params) => {
+export const aliDownloadFile = (fKey: Query, params: Query) => {
   return getRequest(`${sellerUrl}/store/common/file/ali/download/${fKey}`, params);
 };
 
 
 // base64上传
-export const base64Upload = params => {
+export const base64Upload = (params: Query) => {
   return postRequest("/store/common/upload/file", params);
 };
 
@@ -265,126 +266,126 @@ export const base64Upload = params => {
 
 
 // 添加商品计量单位
-export const addGoodsUnit = (params) => {
+export const addGoodsUnit = (params: Query) => {
   return postRequest(`/goods/goodsUnit`, params);
 };
 // 分页获取商品计量单位
-export const getGoodsUnitPage = (params) => {
+export const getGoodsUnitPage = (params: Query) => {
   return getRequest(`/goods/goodsUnit`, params);
 };
 // 编辑商品计量单位
-export const updateGoodsUnit = (id, params) => {
+export const updateGoodsUnit = (id: string | number, params: Query) => {
   return putRequest(`/goods/goodsUnit/${id}`, params);
 };
 // 删除商品计量单位
-export const delGoodsUnit = (ids) => {
+export const delGoodsUnit = (ids: Query) => {
   return deleteRequest(`/goods/goodsUnit/delete/${ids}`);
 };
 
 // 获取一级部门
-export const initDepartment = (params) => {
+export const initDepartment = (params: Query) => {
   return getRequest("/department", params);
 };
 // 添加部门
-export const addDepartment = (params) => {
+export const addDepartment = (params: Query) => {
   return postRequest("/department", params);
 };
 // 删除部门
-export const deleteDepartment = (ids, params) => {
+export const deleteDepartment = (ids: Query, params: Query) => {
   return deleteRequest(`/department/${ids}`, params);
 };
 // 编辑部门
-export const editDepartment = (ids, params) => {
+export const editDepartment = (ids: Query, params: Query) => {
   return putRequest(`/department/${ids}`, params);
 };
 // 加载部门子级数据
-export const loadDepartment = (id) => {
+export const loadDepartment = (id: string | number) => {
   return getRequest(`/department/${id}`);
 };
 // 搜索部门
-export const searchDepartment = (params) => {
+export const searchDepartment = (params: Query) => {
   return getRequest("/department", params);
 };
 
 // 通过部门获取全部角色数据
-export const getUserByDepartmentId = (id, params) => {
+export const getUserByDepartmentId = (id: string | number, params: Query) => {
   return getRequest(`/departmentRole/${id}`, params);
 };
 
 // 分页获取角色数据
-export const getRoleList = (params) => {
+export const getRoleList = (params: Query) => {
   return getRequest("/role", params);
 };
 
 // 通过部门修改绑定角色
-export const updateDepartmentRole = (id, params) => {
+export const updateDepartmentRole = (id: string | number, params: Query) => {
   return putRequestWithNoForm(`/departmentRole/${id}`, params);
 };
 
 // 获取全部权限数据
-export const getAllPermissionList = (params) => {
+export const getAllPermissionList = (params: Query) => {
   return getRequest("/menu/tree", params);
 };
 
 // 添加角色
-export const addRole = (params) => {
+export const addRole = (params: Query) => {
   return postRequest("/role", params);
 };
 // 删除角色
-export const deleteRole = (ids, params) => {
+export const deleteRole = (ids: Query, params: Query) => {
   return deleteRequest(`/role/${ids}`, params);
 };
 // 编辑角色
-export const editRole = (params) => {
+export const editRole = (params: Query) => {
   return putRequest(`/role/${params.roleId}`, params);
 };
 
 // 分配角色权限
-export const editRolePerm = (params) => {
+export const editRolePerm = (params: Query) => {
   return postRequest("/role/editRolePerm", params);
 };
 // 查看某角色拥有的菜单
-export const selectRoleMenu = (params) => {
+export const selectRoleMenu = (params: Query) => {
   return getRequest(`/roleMenu/${params}`);
 };
 // 保存角色菜单
-export const saveRoleMenu = (id, params) => {
+export const saveRoleMenu = (id: string | number, params: Query) => {
   return postRequestWithNoForm(`/roleMenu/${id}`, params);
 };
 // 获取全部角色数据
-export const getAllRoleList = (params) => {
+export const getAllRoleList = (params: Query) => {
   return getRequest("/role", params);
 };
-export const checkClerk = (mobile) => {
+export const checkClerk = (mobile: Query) => {
   return postRequest(`/clerk/${mobile}/check`);
 };
 
 // 重置用户密码
-export const resetPassword = (params) => {
+export const resetPassword = (params: Query) => {
   return postRequest(`/clerk/resetPassword/${params}`);
 };
 // 删除用户
-export const deleteClerk = (ids) => {
+export const deleteClerk = (ids: Query) => {
   return deleteRequest(`/clerk/delByIds/${ids}`);
 };
 
 // 禁 启用用户
-export const enableClerk = (id, params) => {
+export const enableClerk = (id: string | number, params: Query) => {
   return putRequest(`/clerk/enable/${id}`, params);
 };
 // 获取店员详细
-export const getClerk = (id) => {
+export const getClerk = (id: string | number) => {
   return getRequest(`/clerk/${id}`);
 };
 
-export const editOtherUser = (id, params) => {
+export const editOtherUser = (id: string | number, params: Query) => {
   return putRequest(`/clerk/${id}`,params);
 };
 
 // /**
 //  *  搜索部门 先加入此api防止运行warn
 //  */
-// export const searchDepartment = (params) => {
+// export const searchDepartment = (params: Query) => {
 //   return getRequest("/permission/department/search", params);
 // };
 
@@ -395,16 +396,16 @@ export const getFileDirectory = () => {
 };
 
 // 添加文件目录
-export const addFileDirectory = (params) => {
+export const addFileDirectory = (params: Query) => {
   return postRequestWithNoForm(sellerUrl+`/store/common/fileDirectory`,params);
 };
 
 // 修改文件目录
-export const updateFileDirectory = (params) => {
+export const updateFileDirectory = (params: Query) => {
   return putRequestWithNoForm(sellerUrl+`/store/common/fileDirectory`,params);
 };
 
 // 删除文件目录
-export const delFileDirectory = (id) => {
+export const delFileDirectory = (id: string | number) => {
   return deleteRequest(sellerUrl+`/store/common/fileDirectory/${id}`);
 };

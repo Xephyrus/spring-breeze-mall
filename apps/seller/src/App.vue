@@ -9,7 +9,7 @@ import { onMounted } from "vue";
 import Cookies from "js-cookie";
 import util from "@/libs/util";
 import { getStore } from "@/libs/storage";
-import { getCategoryTree } from "@/api/goods.js";
+import { getCategoryTree } from "@/api/goods";
 import { useAppStore } from "@/stores/app";
 
 defineOptions({ name: "App" });

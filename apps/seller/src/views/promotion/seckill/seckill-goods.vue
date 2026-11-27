@@ -197,7 +197,7 @@ import {
   seckillDetail,
   setSeckillGoods,
   delSeckillGoods,
-} from "@/api/promotion.js";
+} from "@/api/promotion";
 import liliDialog from "@/views/lili-dialog";
 import { promotionPriceMin } from "@/constants/goodsType";
 import { Message, Modal } from "@/utils/message";
