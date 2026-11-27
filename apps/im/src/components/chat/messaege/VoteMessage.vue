@@ -18,7 +18,7 @@
 
         <template v-if="is_vote">
           <div class="vbody">
-            <div class="vote-view" v-for="(option, index) in options">
+            <div class="vote-view" v-for="option in options" :key="option.value">
               <p class="vote-option">{{ option.value }}. {{ option.text }}</p>
               <p class="vote-census">
                 {{ option.num }} 票 {{ option.progress }}%
@@ -38,7 +38,7 @@
         </template>
         <template v-else>
           <div class="vbody">
-            <p class="option" v-for="(option, index) in options">
+            <p class="option" v-for="option in options" :key="option.value">
               <el-checkbox
                 v-model="option.is_checked"
                 @change="toSelect2(option)"

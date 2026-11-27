@@ -39,7 +39,7 @@
 
     <!-- 语音消息提示 -->
     <audio id="audio" preload="auto">
-      <source src="~@/assets/image/1701.mp3" type="audio/mp3" />
+      <source src="@/assets/image/1701.mp3" type="audio/mp3" />
     </audio>
   </div>
 </template>
@@ -240,25 +240,25 @@ function setApplyNum () {
   transition: ease-in 0.5s;
 
   // &.bag001 {
-  //   background: url(~@/assets/image/background/001.jpg);
+  //   background: url(@/assets/image/background/001.jpg);
   //   background-repeat: no-repeat;
   //   background-size: 100% 100%;
   // }
 
   // &.bag002 {
-  //   background: url(~@/assets/image/background/002.jpg);
+  //   background: url(@/assets/image/background/002.jpg);
   //   background-repeat: no-repeat;
   //   background-size: 100% 100%;
   // }
 
   // &.bag003 {
-  //   background: url(~@/assets/image/background/003.jpg);
+  //   background: url(@/assets/image/background/003.jpg);
   //   background-repeat: no-repeat;
   //   background-size: 100% 100%;
   // }
 
   // &.bag004 {
-  //   background: url(~@/assets/image/background/005.png);
+  //   background: url(@/assets/image/background/005.png);
   //   background-repeat: no-repeat;
   //   background-size: 100% 100%;
   // }

@@ -70,7 +70,7 @@
                 >
                   <div class="avatar">
                     <el-avatar :size="20" :src="item.avatar">
-                      <img src="~@/assets/image/detault-avatar.jpg" />
+                      <img src="@/assets/image/detault-avatar.jpg" />
                     </el-avatar>
                   </div>
                   <div class="content" v-text="item.name"></div>
@@ -86,6 +86,7 @@
             <el-header height="40px" class="type-items">
               <span
                 v-for="tab in tabType"
+                :key="tab.type"
                 :class="{ active: query.msg_type == tab.type }"
                 @click="triggerLoadType(tab.type)"
                 >{{ tab.name }}
@@ -97,7 +98,7 @@
               class="history-record animated fadeIn"
             >
               <div class="empty-records">
-                <img src="~@/assets/image/chat-search-no-message.png" />
+                <img src="@/assets/image/chat-search-no-message.png" />
                 <p>暂无聊天记录</p>
               </div>
             </el-main>
@@ -595,5 +596,5 @@ onMounted(() => {
   }
 }
 
-@import "~@/assets/css/talk/talk-records.less";
+@import "@/assets/css/talk/talk-records.less";
 </style>

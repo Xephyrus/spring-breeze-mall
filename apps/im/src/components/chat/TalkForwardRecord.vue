@@ -135,5 +135,5 @@ defineExpose({ open })
   overflow-x: hidden;
 }
 
-@import '~@/assets/css/talk/talk-records.less';
+@import '@/assets/css/talk/talk-records.less';
 </style>

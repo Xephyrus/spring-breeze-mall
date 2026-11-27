@@ -21,14 +21,14 @@ export default {
    * 用于页面 document.title 设置及系统头部品牌展示
    * 默认值: "LiLi IM"
    */
-  WEBSITE_NAME: process.env.VUE_APP_WEBSITE_NAME || "LiLi IM",
+  WEBSITE_NAME: import.meta.env.VUE_APP_WEBSITE_NAME || "LiLi IM",
 
   /**
    * IM 专属后端 HTTP API 接口基准请求地址
    * 用于 Axios 请求实例 (如获取会话历史、发送单聊/群聊富文本、撤回消息、好友列表等)
    * 对应环境变量: VUE_APP_API_BASE_URL
    */
-  BASE_API_URL: process.env.VUE_APP_API_BASE_URL || "",
+  BASE_API_URL: import.meta.env.VUE_APP_API_BASE_URL || "",
 
   /**
    * IM 实时通讯 WebSocket 连接基准地址
@@ -40,21 +40,21 @@ export default {
    * 
    * 对应环境变量: VUE_APP_WEB_SOCKET_URL
    */
-  BASE_WS_URL: process.env.VUE_APP_WEB_SOCKET_URL || "",
+  BASE_WS_URL: import.meta.env.VUE_APP_WEB_SOCKET_URL || "",
 
   /**
    * 买家端 (Buyer) 接口基准地址
    * 用于在聊天窗口中查询买家用户信息、买家端商品详情、买家订单卡片数据等
    * 对应环境变量: VUE_APP_BUYER
    */
-  BASE_BUYER: process.env.VUE_APP_BUYER || "",
+  BASE_BUYER: import.meta.env.VUE_APP_BUYER || "",
 
   /**
    * 商家端/卖家端 (Seller) 接口基准地址
    * 用于获取当前店铺信息、客服坐席列表、商家端关联配置等
    * 对应环境变量: VUE_APP_SELLER
    */
-  BASE_SELLER: process.env.VUE_APP_SELLER || "",
+  BASE_SELLER: import.meta.env.VUE_APP_SELLER || "",
 
   /**
    * PC 买家端商城首页/商品详情页面跳转基准前缀
@@ -62,7 +62,7 @@ export default {
    * 默认值: "https://pc-b2b2c.pickmall.cn"
    * 对应环境变量: VUE_APP_PC_URL
    */
-  PC_URL: process.env.VUE_APP_PC_URL || "https://pc-b2b2c.pickmall.cn",
+  PC_URL: import.meta.env.VUE_APP_PC_URL || "https://pc-b2b2c.pickmall.cn",
 
   /**
    * PC 商家管理后台跳转基准前缀
@@ -70,5 +70,5 @@ export default {
    * 默认值: "https://store-b2b2c.pickmall.cn"
    * 对应环境变量: VUE_APP_PC_STORE
    */
-  PC_STORE: process.env.VUE_APP_PC_STORE || "https://store-b2b2c.pickmall.cn",
+  PC_STORE: import.meta.env.VUE_APP_PC_STORE || "https://store-b2b2c.pickmall.cn",
 };

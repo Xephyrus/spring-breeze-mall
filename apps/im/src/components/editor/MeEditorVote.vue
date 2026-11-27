@@ -28,7 +28,7 @@
 
         <div class="vote-title">投票选项</div>
         <div>
-          <div class="vote-options" v-for="(option, index) in options">
+          <div class="vote-options" v-for="(option, index) in options" :key="option.value ?? index">
             <div class="lbox">
               <el-input
                 size="default"

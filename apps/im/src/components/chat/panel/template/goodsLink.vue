@@ -110,7 +110,7 @@ function submitSendMessage () {
     });
   } else {
     talkStore.SET_TLAK_UNREAD_MESSAGE({
-      content: content,
+      content: context,
       nickname: record.name,
     });
   }

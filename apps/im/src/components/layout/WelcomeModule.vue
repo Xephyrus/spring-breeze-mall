@@ -1,7 +1,7 @@
 <template>
   <div class="welcome-box">
     <div class="famous-box">
-      <img src="~@/assets/image/chat.png" width="300" />
+      <img src="@/assets/image/chat.png" width="300" />
     </div>
   </div>
 </template>

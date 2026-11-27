@@ -286,7 +286,7 @@ const sendMessage = () => {
     .img-banner {
       width: 100%;
       height: 100%;
-      background-image: url(~@/assets/image/default-user-banner.png);
+      background-image: url(@/assets/image/default-user-banner.png);
       background-size: 100%;
       transition: all 0.2s linear;
       cursor: pointer;

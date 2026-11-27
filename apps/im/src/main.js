@@ -1,5 +1,3 @@
-import "core-js/stable";
-
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "@/App.vue";
@@ -13,6 +11,7 @@ import { setupLegacyMessage } from "@/utils/message";
 import { registerDirectives } from "./core/directives";
 import { registerGlobalComponents } from "./core/global-component";
 import { registerIcons } from "@/icons";
+import "virtual:svg-icons-register";
 import * as filters from "./plugins/filters";
 
 import VueVirtualScroller from "vue-virtual-scroller";

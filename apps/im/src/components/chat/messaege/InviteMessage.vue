@@ -5,7 +5,7 @@
         {{ invite.operate_user.nickname }}
       </a>
       <span>{{ invite.type == 1 ? '邀请了' : '将' }}</span>
-      <template v-for="(user, uidx) in invite.users">
+      <template v-for="(user, uidx) in invite.users" :key="user.id">
         <a @click="toUser(user.id)">{{ user.nickname }}</a>
         <em v-show="uidx < invite.users.length - 1">、</em>
       </template>

@@ -33,7 +33,7 @@
 | **manager** 平台运营端 | 商品、订单、会员、营销、分销、直播、装修、统计、系统设置 | ✅ Vue 3 + TS 全量 |
 | **seller** 商家端 | 商家入驻、商品、订单、结算 | ✅ Vite 8 + TypeScript |
 | **buyer** PC 买家端 | 商城前台 | Vue CLI（待迁移） |
-| **im** 客服端 | 在线客服 | Vue CLI（待迁移） |
+| **im** 客服端 | 在线客服、实时会话 | ✅ Vite 8（TS 迁移中） |
 | **uniapp** 移动端 | 小程序 / H5 | uni-app |
 
 ---
@@ -61,7 +61,7 @@ spring-breeze-mall/
 │   ├── manager/          # 平台运营端（Vue 3 + TS + Vite 8）
 │   ├── seller/           # 商家端（Vite 8 + TS）
 │   ├── buyer/            # PC 买家端（Vue CLI）
-│   ├── im/               # IM 客服端（Vue CLI）
+│   ├── im/               # IM 客服端（Vite 8）
 │   └── uniapp/           # 移动端（uni-app）
 ├── backend/
 │   ├── framework/        # 公共框架（业务核心）
@@ -246,6 +246,8 @@ cd backend
 | [`apps/seller/MIGRATION-SELLER.md`](apps/seller/MIGRATION-SELLER.md) | seller 迁移记录（M0–M5，含菜单 SQL 与豁免说明） |
 | [`apps/seller/MIGRATION-BASELINE.md`](apps/seller/MIGRATION-BASELINE.md) | seller 迁移前基线（规模/重复面/风险） |
 | [`apps/seller/SMOKE-SELLER.md`](apps/seller/SMOKE-SELLER.md) | seller 冒烟清单（72 条可勾选） |
+| [`apps/im/MIGRATION-BASELINE.md`](apps/im/MIGRATION-BASELINE.md) | im 迁移基线与计划（含「保留 Less」的决策依据） |
+| [`apps/im/MIGRATION-IM.md`](apps/im/MIGRATION-IM.md) | im 迁移记录（M1 完成，含 WebSocket 验证边界） |
 | [`backend/SETTING-NPE-AUDIT.md`](backend/SETTING-NPE-AUDIT.md) | 设置读取空指针审计与修复 |
 | [`backend/DB/TEST-DATA.md`](backend/DB/TEST-DATA.md) | 测试数据说明与清理 |
 
