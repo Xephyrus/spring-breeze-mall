@@ -30,6 +30,7 @@ declare module "*.vue" {
   export default component;
 }
 
+declare module "js-base64";
 declare module "virtual:svg-icons-register";
 declare module "vue-virtual-scroller";
 declare module "vue-cropper";
