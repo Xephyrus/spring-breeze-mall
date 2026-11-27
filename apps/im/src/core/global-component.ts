@@ -1,3 +1,4 @@
+import type { App, Component } from "vue";
 import {
   AudioMessage,
   CodeMessage,
@@ -19,7 +20,7 @@ import UserCard from "@/components/user/user-card/index";
 import LegacyElIcon from "@/components/global/LegacyElIcon.vue";
 import { resolveLegacyIcon } from "@/core/legacy-icon-map";
 
-const messageComponents = [
+const messageComponents: Component[] = [
   AudioMessage,
   CodeMessage,
   ForwardMessage,
@@ -37,9 +38,12 @@ const messageComponents = [
   LoginMessage,
 ];
 
-export function registerGlobalComponents(app) {
+/** 注册消息气泡、legacy 图标与现代图标组件 */
+export function registerGlobalComponents(app: App): void {
   messageComponents.forEach((component) => {
-    app.component(component.name, component);
+    // 消息组件都声明了 name（用于 <component :is="messageType"> 的动态渲染）
+    const name = (component as { name?: string }).name;
+    if (name) app.component(name, component);
   });
   app.component("legacy-el-icon", LegacyElIcon);
   app.config.globalProperties.$legacyIcon = resolveLegacyIcon;

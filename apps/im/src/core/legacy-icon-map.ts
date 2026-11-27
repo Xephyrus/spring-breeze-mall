@@ -1,3 +1,4 @@
+import type { Component } from "vue";
 import {
   ArrowDown,
   ArrowLeft,
@@ -44,7 +45,7 @@ import {
 } from "@element-plus/icons-vue";
 
 /** Element UI `el-icon-*` class names → Element Plus icon components */
-export const LEGACY_ICON_MAP = {
+export const LEGACY_ICON_MAP: Record<string, Component> = {
   "el-icon-arrow-down": ArrowDown,
   "el-icon-bell": Bell,
   "el-icon-bottom": Bottom,
@@ -90,7 +91,7 @@ export const LEGACY_ICON_MAP = {
   "el-icon-video-play": VideoPlay,
 };
 
-export function resolveLegacyIcon(name) {
+export function resolveLegacyIcon(name?: string | null): Component | null {
   if (!name) return null;
   return LEGACY_ICON_MAP[name] || null;
 }
