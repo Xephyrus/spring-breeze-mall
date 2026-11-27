@@ -11,7 +11,7 @@
     "serve": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint src --max-warnings 249"
+    "lint": "eslint src --max-warnings 246"
   },
   "dependencies": {
     "@element-plus/icons-vue": "catalog:",

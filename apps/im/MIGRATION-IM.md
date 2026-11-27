@@ -65,6 +65,62 @@
 
 ---
 
+## M1.5 · WebSocket 实测与「疯狂重连」修复（✅ 2026-11-28）
+
+### 一、前端：重连风暴的原因与修复
+
+上游 `plugins/ws-socket.js` 的重连实现有四个叠加问题：
+
+| # | 问题 | 后果 |
+|---|---|---|
+| 1 | 重连**固定 1s 间隔**，无退避 | 后端一拒就连，连了又拒 |
+| 2 | 每次重连都 `ElNotification({ duration: 0 })` **新建常驻通知**，从不关闭 | 屏幕上堆出一片红框，就是「疯狂短线重连」的观感 |
+| 3 | `retryCount` 上限 **1000 次** | 可持续空转近 17 分钟 |
+| 4 | `onClose` 里 `this.events.onClose(evt)` **被注释掉** | 上层 `updateSocketStatus(false)` 永不触发，UI 一直显示「已连接」，与真实状态不符 |
+
+修复后（`apps/im/src/plugins/ws-socket.js` 重写）：
+
+- **指数退避**：1s → 2s → 4s … 上限 30s
+- **通知单例**：全局只保留一个掉线提示，重连成功立即关闭，并显示「第 N/12 次重试」
+- **重试上限 12 次**：超限弹一次可操作提示（「刷新页面」/「继续等待」），不再空转 1000 次
+- **正确区分主动关闭**：`close()` 置 `manualClosed`，主动断开不再触发重连
+- **`onClose` 回调恢复调用**，连接状态与 UI 一致
+- 重建连接前先摘掉 `onclose` 监听，避免「主动关闭 → 触发重连」的自激循环
+
+### 二、后端：握手返回 HTTP 400（**迁移之前就存在**）
+
+用真实 token（商家端 `13011111111` 登录所得）做握手实测：
+
+| 请求 | 结果 |
+|---|---|
+| `GET /lili/webSocket/<token>` + 标准 WS 头 | **HTTP 400**（Spring 的 JSON 错误体） |
+| `GET /lili/webSocket/abc`（假 token） | HTTP 400（同上，与 token 无关） |
+| `GET /lili/webSocket/abc/`（多尾斜杠） | HTTP 400 |
+| `GET /lili/webSocketX/abc`（不存在的前缀） | HTTP 404 |
+| `GET /actuator/health` + WS 头 | HTTP 200（actuator 正常） |
+
+**已排除的因素**
+
+| 排查项 | 结论 |
+|---|---|
+| 端点是否注册 | ✅ 已注册（`--logging.level.org.springframework.web.socket=DEBUG` 打出 `Registering @ServerEndpoint class:`） |
+| 依赖是否缺失 | ✅ `tomcat-embed-websocket-11.0.20` / `spring-boot-websocket-4.0.5` 均在 jar 内 |
+| token 是否有效 | ✅ Redis 里有 `{ACCESS_TOKEN_STORE}_<memberId>_<token>` 会话 |
+| 安全拦截 | ✅ `ImSecurityConfig` 已 `permitAll("/lili/webSocket/**")`，且 403 不符（返回的是 400） |
+| im-api 自身健康 | ✅ 启动无异常；修好工作目录后 MySQL/Redis 均正常（之前的 `Access denied` 是因为我最初从仓库根目录启动，`./local-secrets.yml` 没被加载） |
+
+**推论**：请求被「能匹配 `/lili/webSocket/*` 的组件」以 400 拒绝，且未进到 `@ServerEndpoint`（否则应先返回 101 再断开）。属于**升级握手层**问题（Tomcat `WsFilter` / Spring Boot 4 的 WebSocket 升级链路），与本轮前端迁移无关。
+
+**建议的下一步排查**（需要后端一次专门的会话）：
+
+1. 以 `--logging.level.org.apache.tomcat.websocket=TRACE --logging.level.org.springframework.web.socket.server=TRACE` 启动，观察是否有 `WsFilter` / `UpgradeUtil` 日志；
+2. 若确认 `WsFilter` 未生效，考虑显式注册 `WsFilter` 或改用 Spring 的 `WebSocketHandler` + `WebSocketHandlerRegistry`（不依赖 `ServerEndpointExporter`）；
+3. 用最小 Spring Boot 4 + `@ServerEndpoint` 样例验证该组合是否可用，再回填到 im-api。
+
+> 结论：**前端不再「疯狂重连」**（退避 + 单条提示 + 上限 12 次）；**WS 仍连不上是后端握手返回 400**，需后端单独修。
+
+---
+
 ## 待办
 
 | 里程碑 | 内容 |

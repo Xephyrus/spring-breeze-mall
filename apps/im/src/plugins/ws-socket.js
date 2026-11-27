@@ -1,99 +1,99 @@
 import { ElNotification, ElMessageBox } from "element-plus";
-let wsSignIn; // ws 是否是掉线状态
 import { useDialogueStore } from "@/stores/dialogue";
+
+/** 掉线提示框（同一时间只保留一个，避免重连风暴时刷屏） */
+let disconnectedNotification = null;
+
+/** 手动关闭标记：避免主动断开后仍触发重连 */
+let manualClosed = false;
+
+/**
+ * WebSocket 封装。
+ *
+ * 与上游实现的差异（本次迁移修正）：
+ * 1. **指数退避重连**：1s → 2s → 4s … 上限 30s，替代原来固定 1s 的无限快重试；
+ * 2. **提示框复用**：原来每次重连都新建一个 `duration: 0` 的常驻通知且不关闭，
+ *    断线时会堆积成一片红框，现在复用同一个并在重连成功后关闭；
+ * 3. **重试上限**：连续失败 12 次后停止重连并给一次性提示（不再 1000 次空转）；
+ * 4. `onClose` 回调真正被调用（原来被注释掉，导致上层 `updateSocketStatus(false)` 永不触发）。
+ */
 class WsSocket {
-  /**
-   * Websocket 连接
-   *
-   * @var Websocket
-   */
+  /** WebSocket 实例 */
   connect;
 
-  /**
-   * 服务器连接地址
-   */
+  /** 服务器连接地址 */
   url;
 
-  /**
-   * 配置信息
-   *
-   * @var Object
-   */
+  /** 重连状态 */
+  retryCount = 0;
+
+  /** 重连定时器 */
+  retryTimer = null;
+
   config = {
     heartbeat: {
-      enabled: false, // 是否发送心跳包
-      time: 10000, // 心跳包发送间隔时长
-      setInterval: null, // 心跳包计时器
+      enabled: false,
+      time: 10000,
+      setInterval: null,
     },
     reconnect: {
-      lockReconnect: false,
-      setTimeout: null, // 计时器对象
-      time: 1000, // 重连间隔时间
-      number: 1000, // 重连次数
+      /** 首次重连延迟（毫秒） */
+      baseDelay: 1000,
+      /** 最大延迟（毫秒） */
+      maxDelay: 30000,
+      /** 最大重试次数 */
+      maxAttempts: 12,
     },
   };
 
-  /**
-   * 自定义绑定消息事件
-   *
-   * @var Array
-   */
+  /** 自定义绑定消息事件 */
   onCallBacks = [];
 
   /**
-   * 创建 WsSocket 的实例
-   *
-   * @param {Function} urlCallBack url闭包函数
-   * @param {Object} events 原生 WebSocket 绑定事件
+   * @param {Function} urlCallBack url 闭包函数
+   * @param {Object} events 原生 WebSocket 绑定事件（onOpen / onClose / onError）
    */
   constructor(urlCallBack, events) {
     this.urlCallBack = urlCallBack;
-
-    // 定义 WebSocket 原生方法
     this.events = Object.assign(
-      {
-        onError: (evt) => {},
-        onOpen: (evt) => {},
-        onClose: (evt) => {},
-      },
+      { onError: () => {}, onOpen: () => {}, onClose: () => {} },
       events
     );
   }
 
-  /**
-   * 事件绑定
-   *
-   * @param {String} event 事件名
-   * @param {Function} callBack 回调方法
-   */
+  /** 事件绑定 */
   on(event, callBack) {
-    // 对应 socket-instance.js
     this.onCallBacks[event] = callBack;
     return this;
   }
 
-  /**
-   * 加载 WebSocket
-   */
-  loadSocket() {
-    /**
-     * 判断当前如果是掉线提示
-     * 重连成功后关闭掉线提示，新增重连提示
-     */
-    if (wsSignIn) {
-      useDialogueStore().SET_WS_STATUS(true);
-      wsSignIn.close();
-
-      ElNotification({
-        title: "成功",
-        message: "重连成功",
-        type: "success",
-        position: "top-right",
-        duration: 1000,
-      });
+  /** 通知文案：区分「首次掉线」与「重连中」 */
+  showDisconnectedTip(text) {
+    if (disconnectedNotification) {
+      disconnectedNotification.close();
+      disconnectedNotification = null;
     }
-    // 判断当前是否已经连接
+    disconnectedNotification = ElNotification({
+      title: "连接已断开",
+      message: text,
+      type: "error",
+      position: "top-right",
+      duration: 0,
+    });
+  }
+
+  hideDisconnectedTip() {
+    if (disconnectedNotification) {
+      disconnectedNotification.close();
+      disconnectedNotification = null;
+    }
+  }
+
+  /** 加载 / 重建 WebSocket 连接 */
+  loadSocket() {
     if (this.connect != null) {
+      // 先摘掉监听再关闭，避免主动关闭触发 onClose 造成重连
+      this.connect.onclose = null;
       this.connect.close();
       this.connect = null;
     }
@@ -105,97 +105,74 @@ class WsSocket {
     connect.onmessage = this.onMessage.bind(this);
     connect.onclose = this.onClose.bind(this);
     this.connect = connect;
-    
+
     useDialogueStore().SET_WS_STATUS(false);
   }
 
-  /**
-   * 连接 Websocket
-   */
+  /** 建立连接（外部入口） */
   connection() {
+    manualClosed = false;
     this.loadSocket();
   }
 
-  /**
-   * 掉线重连 Websocket
-   */
+  /** 计算下一次重连延迟（指数退避 + 上限） */
+  nextDelay() {
+    const { baseDelay, maxDelay } = this.config.reconnect;
+    const delay = Math.min(baseDelay * 2 ** this.retryCount, maxDelay);
+    return delay;
+  }
+
+  /** 掉线重连 */
   reconnect() {
-    
-    /**
-     * 长时间挂载页面中并且重连次数为空的时候进行提示
-     */
-    if (this.config.reconnect.number == 0) {
-      ElMessageBox("当前对话链接已失效，请从关闭重新进入。", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        closeOnPressEscape: false,
-        closeOnClickModal: false,
-        type: "warning",
-      })
-        .then(() => {
-          window.close();
-          ElNotification({
-            title: "对话链接已失效提示",
-            message: "请手动关闭当前页面",
-            type: "error",
-            position: "top-right",
-          });
-        })
+    if (manualClosed) return false;
+
+    const { maxAttempts } = this.config.reconnect;
+
+    if (this.retryCount >= maxAttempts) {
+      this.hideDisconnectedTip();
+      ElMessageBox(
+        `已连续 ${maxAttempts} 次无法连接消息服务，请检查后端 im-api（8885）是否可用，然后刷新页面重试。`,
+        "消息连接失败",
+        {
+          confirmButtonText: "刷新页面",
+          cancelButtonText: "继续等待",
+          type: "warning",
+        }
+      )
+        .then(() => window.location.reload())
         .catch(() => {
-          ElNotification({
-            title: "对话链接已失效提示",
-            message: "请手动关闭当前页面",
-            type: "error",
-            position: "top-right",
-          });
+          /* 用户选择继续等待：保留手动触发入口 */
         });
       return false;
     }
-    // 掉线重连提示
-    wsSignIn = ElNotification({
-      title: "掉线重连接提示",
-      message: `网络连接已断开，正在尝试重新连接......`,
-      type: "error",
-      position: "top-right",
-      duration: 0,
-    });
-    // 掉线更改消息状态
+
+    const delay = this.nextDelay();
+    this.retryCount += 1;
+    this.showDisconnectedTip(
+      `正在重新连接（第 ${this.retryCount}/${maxAttempts} 次，${Math.round(delay / 1000)} 秒后重试）`
+    );
     useDialogueStore().SET_WS_STATUS(true);
-    let reconnect = this.config.reconnect;
-    if (reconnect.lockReconnect || reconnect.number == 0) {
-      return;
-    }
-    this.config.reconnect.lockReconnect = true;
-    // 没连接上会一直重连，设置延迟避免请求过多
-    reconnect.setTimeout && clearTimeout(reconnect.setTimeout);
-    this.config.reconnect.setTimeout = setTimeout(() => {
-      this.connection();
-      this.config.reconnect.lockReconnect = false;
-      this.config.reconnect.number--;
-    }, reconnect.time);
+
+    // 只保留一个待执行的重连定时器
+    if (this.retryTimer) clearTimeout(this.retryTimer);
+    this.retryTimer = setTimeout(() => {
+      this.retryTimer = null;
+      if (manualClosed) return;
+      this.loadSocket();
+    }, delay);
+    return true;
   }
 
-  /**
-   * 解析接受的消息
-   *
-   * @param {Object} evt Websocket 消息
-   */
+  /** 解析收到的消息 */
   onParse(evt) {
     const res = JSON.parse(evt.data).result;
-
-    //如果创建时间是时间戳类型则转换为 日期类型，否则新压入栈的消息的创建时间和从数据库读取出来的创建时间格式对不上，处理的时候会出异常。
     if (typeof res.createTime == "number") {
       res.createTime = this.unixToDate(res.createTime, "yyyy-MM-dd hh:mm");
     }
     return res;
   }
 
-  /**
-   * 将unix时间戳转换为指定格式
-   * @param unix   时间戳【秒】
-   * @param format 转换格式
-   * @returns {*|string}
-   */
+  /** unix 时间戳转格式化字符串 */
   unixToDate(unix, format) {
     if (!unix) return unix;
     let _format = format || "yyyy-MM-dd hh:mm:ss";
@@ -225,63 +202,43 @@ class WsSocket {
     return _format;
   }
 
-  /**
-   * 打开连接
-   *
-   * @param {Object} evt Websocket 消息
-   */
+  /** 连接打开 */
   onOpen(evt) {
+    this.retryCount = 0;
+    this.hideDisconnectedTip();
     this.events.onOpen(evt);
-
     if (this.config.heartbeat.enabled) {
       this.heartbeat();
     }
   }
 
-  /**
-   * 关闭连接
-   *
-   * @param {Object} evt Websocket 消息
-   */
+  /** 连接关闭 */
   onClose(evt) {
-    console.log("关闭连接", evt);
     if (this.config.heartbeat.enabled) {
       clearInterval(this.config.heartbeat.setInterval);
     }
-    console.log("evt", evt);
-
-    if (evt.code == 1006) {
+    this.events.onClose(evt);
+    // 主动关闭不重连；其余异常断开（1006 / 1001 等）走退避重连
+    if (!manualClosed && evt.code !== 1000) {
       this.reconnect();
     }
-
-    // this.events.onClose(evt);
   }
 
-  /**
-   * 连接错误
-   *
-   * @param {Object} evt Websocket 消息
-   */
+  /** 连接错误 */
   onError(evt) {
     this.events.onError(evt);
   }
 
-  /**
-   * 接收消息
-   *
-   * @param {Object} evt Websocket 消息
-   */
+  /** 接收消息 */
   onMessage(evt) {
-    // 图片权限校验失败属于系统反馈，不能当成聊天消息插入记录。
     const envelope = JSON.parse(evt.data);
     if (envelope.messageResultType === "SYSTEM_TIPS") {
       this.onCallBacks["event_error"]?.(envelope.result);
       return;
     }
-    let result = this.onParse(evt);
-    // 部分推送（在线状态、系统通知等）没有 text 字段，不做商品/群名解析直接透传
+    const result = this.onParse(evt);
     const text = result.text;
-    let params = {
+    const params = {
       ...result,
       text:
         typeof text === "string" &&
@@ -289,41 +246,35 @@ class WsSocket {
           ? JSON.parse(text)
           : text,
     };
-    this.onCallBacks["event_talk"](params);
-    // 指定推送消息
+    this.onCallBacks["event_talk"]?.(params);
   }
-  /**
-   * WebSocket心跳检测
-   */
+
+  /** 心跳（后端暂未启用） */
   heartbeat() {
-    console.log("WebSocket心跳检测");
     this.config.heartbeat.setInterval = setInterval(() => {
-      this.connect.send("PING");
+      if (this.connect && this.connect.readyState === 1) {
+        this.connect.send("PING");
+      }
     }, this.config.heartbeat.time);
   }
 
-  /**
-   * 聊天发送数据
-   *
-   * @param {Object} message
-   */
+  /** 发送数据 */
   send(message) {
     this.connect.send(JSON.stringify(message));
   }
 
-  /**
-   * 关闭连接
-   */
+  /** 主动关闭 */
   close() {
-    this.connect.close();
+    manualClosed = true;
+    if (this.retryTimer) {
+      clearTimeout(this.retryTimer);
+      this.retryTimer = null;
+    }
+    this.hideDisconnectedTip();
+    if (this.connect) this.connect.close();
   }
 
-  /**
-   * 推送消息
-   *
-   * @param {String} event 事件名
-   * @param {Object} data 数据
-   */
+  /** 推送消息 */
   emit(event, data) {
     if (this.connect && this.connect.readyState === 1) {
       this.connect.send(JSON.stringify(data));
