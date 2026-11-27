@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import Cookies from "js-cookie";
-import { removeStore } from "@/libs/storage";
+import { removeStore } from "@spring-breeze/shared";
 import { useAppStore } from "@/stores/app";
 
 /**

@@ -73,7 +73,7 @@ import { reactive, ref, watch, onMounted, nextTick, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import * as API_Other from "@/api/other";
 import { Edit } from "@element-plus/icons-vue";
-import { getStore, setStore } from "@/libs/storage";
+import { getStore, setStore } from "@spring-breeze/shared";
 import { Message } from "@/utils/message";
 import { useAppStore } from "@/stores/app";
 

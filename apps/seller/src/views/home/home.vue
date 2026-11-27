@@ -220,7 +220,7 @@ import { seeArticle } from "@/api/pages";
 import Cookies from "js-cookie";
 import { userMsg } from "@/api/index";
 import { Message } from "@/utils/message";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 
 defineOptions({ name: "home" });
 

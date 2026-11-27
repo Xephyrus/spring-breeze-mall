@@ -42,10 +42,10 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
+      <TablePager
         class="mt_10"
-        v-model:current-page="searchForm.pageNumber"
-        v-model:page-size="searchForm.pageSize"
+        v-model:page="searchForm.pageNumber"
+        v-model:size="searchForm.pageSize"
         :total="total"
         layout="total, prev, pager, next"
         @current-change="loadData"

@@ -8,7 +8,7 @@
 import { onMounted } from "vue";
 import Cookies from "js-cookie";
 import util from "@/libs/util";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { getCategoryTree } from "@/api/goods";
 import { useAppStore } from "@/stores/app";
 

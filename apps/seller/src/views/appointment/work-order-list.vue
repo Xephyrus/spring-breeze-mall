@@ -63,12 +63,11 @@
         </el-table-column>
       </el-table>
       <div class="mt_10" style="display: flex; justify-content: flex-end">
-        <el-pagination
-          v-model:current-page="searchForm.pageNumber"
-          v-model:page-size="searchForm.pageSize"
+        <TablePager
+          v-model:page="searchForm.pageNumber"
+          v-model:size="searchForm.pageSize"
           :total="total"
           layout="total, prev, pager, next"
-          size="small"
           @current-change="loadData"
         />
       </div>

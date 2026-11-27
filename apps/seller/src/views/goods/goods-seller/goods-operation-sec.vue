@@ -645,7 +645,7 @@ import {
   defaultAppointmentSettings,
   defaultSlotDivision,
 } from "@/constants/appointment";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { Message, Notice } from "@/utils/message";
 import { ElMessageBox } from "element-plus";
 

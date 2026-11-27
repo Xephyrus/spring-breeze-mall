@@ -18,7 +18,7 @@ import {
   importRequest,
   uploadFileRequest,
 } from "@/libs/axios";
-import { setStore, getStore, removeStore } from "@/libs/storage";
+import { setStore, getStore, removeStore } from "@spring-breeze/shared";
 import util from "@/libs/util";
 import { md5 } from "@/utils/md5.js";
 import * as filters from "@/utils/filters";

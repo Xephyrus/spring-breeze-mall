@@ -84,7 +84,7 @@
 <script setup>
 import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { Camera, Delete, View } from "@element-plus/icons-vue";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { Message } from "@/utils/message";
 import vuedraggable from "vuedraggable";
 import ossManage from "@/views/sys/oss-manage/oss-manage";

@@ -245,6 +245,40 @@ typecheck 0 错误 / lint 58（未增长）/ build 7.09s / dev HTTP 200
 
 ---
 
+## M4 · 复用落地
+
+### M4-1 直接消费 `packages/shared`（✅ 2026-11-28）
+
+| 项 | 内容 |
+|---|---|
+| 改写引用 | **23 个文件**：`@/libs/storage`、`@/libs/validate`、`@/libs/reg-exp` → 直接 `@spring-breeze/shared` |
+| 删除中间层 | `libs/storage.ts`、`libs/validate.ts`、`libs/reg-exp.ts`（原本只是转发） |
+| 特殊处理 | `import * as RegExp from "@/libs/reg-exp"` → `import { regexp as RegExp } from "@spring-breeze/shared"`（shared 用命名空间导出，避免顶层 `URL` 遮蔽全局） |
+
+结果：seller 不再有稳定工具的三份副本，manager/seller 共用同一实现。
+
+### M4-2 统一分页条 `<TablePager>`（✅ 2026-11-28）
+
+| 项 | 内容 |
+|---|---|
+| 新增 | `src/components/table-pager.vue`（与 manager 同源，多一个 `className` 透传，便于保留各页 `mt_10` 之类的类名） |
+| 默认值调整 | `layout` 默认 `total, sizes, prev, pager, next, jumper` —— 实测 seller **49 个列表页里 44 处**就是这个布局 |
+| 首批替换 | `appointment/service-staff-list.vue`、`system-form-list.vue`、`work-order-list.vue` 三页（原本各自手写 6–8 行属性） |
+| 自动注册 | `unplugin-vue-components` 已生成 `TablePager` 类型（`components.d.ts`），无需手动 import |
+
+### M4-3 `useTable` 类型化（✅ 2026-11-28）
+
+| 项 | 内容 |
+|---|---|
+| `utils/use-table.js` → `use-table.ts` | 新增 `TableSearchForm` / `TablePageData<T>` / `UseTableOptions<T>` / `UseTableReturn<T>` |
+| 泛型化 | `useTable<T>(fetcher, options)`，`data` 为 `Ref<T[]>`，调用方可 `useTable<OrderVO>(...)` |
+| 与 manager 对齐 | 保留「只采纳最后一次请求结果」的并发保护语义 |
+| 现状 | seller 已有 **10 个页面**在用（manager 是 54 个），后续按目录推进 |
+
+**验证**：typecheck 0 错误 / lint 58（未增长）/ build 10.81s / dev HTTP 200
+
+---
+
 ## 待办（后续里程碑）
 
 | 里程碑 | 内容 |

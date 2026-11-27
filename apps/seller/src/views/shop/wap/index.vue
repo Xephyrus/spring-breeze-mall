@@ -128,7 +128,7 @@ import { modelData } from "./config";
 import decorate from "./decorate";
 import PanelPageSetting from "./config-panel/PanelPageSetting.vue";
 import * as API_Other from "@/api/other";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { Message, Modal } from "@/utils/message";
 import { useAppStore } from "@/stores/app";
 

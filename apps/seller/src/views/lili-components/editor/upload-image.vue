@@ -89,7 +89,7 @@ import { nextTick, onMounted, ref } from "vue";
 import { Delete, Plus, ZoomIn } from "@element-plus/icons-vue";
 import vuedraggable from "vuedraggable";
 import { uploadFile } from "@/libs/axios";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { Message } from "@/utils/message";
 import OssManage from "@/views/sys/oss-manage/oss-manage";
 

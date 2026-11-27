@@ -129,7 +129,7 @@ import uploadPicThumb from "@/views/my-components/lili/upload-pic-thumb";
 import { addLive, addLiveGoods, editLive, getLiveInfo, delRoomLiveGoods } from "@/api/promotion";
 import liveGoods from "./live-goods";
 import { Message } from "@/utils/message";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { unixToDate } from "@/utils/filters";
 
 const route = useRoute();

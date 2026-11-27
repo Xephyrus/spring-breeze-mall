@@ -127,7 +127,7 @@ import * as RegExp from "@/utils/regular.js";
 import { sendSms } from "@/api/common";
 import { login, storeSmsLogin, userMsg } from "@/api/index";
 import util from "@/libs/util.js";
-import { setStore } from "@/libs/storage";
+import { setStore } from "@spring-breeze/shared";
 import { ElMessage } from "element-plus";
 import { md5 } from "@/utils/md5.js";
 import Footer from "@/views/main-components/footer";

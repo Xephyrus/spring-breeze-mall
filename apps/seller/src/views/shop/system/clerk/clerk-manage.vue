@@ -191,7 +191,7 @@ import {
   resetPassword,
   getClerk
 } from "@/api/index";
-import { validateMobile } from "@/libs/validate";
+import { validateMobile } from "@spring-breeze/shared";
 import { Search } from "@element-plus/icons-vue";
 import { Message, Modal } from "@/utils/message";
 import { md5 } from "@/utils/md5.js";

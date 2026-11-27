@@ -6,7 +6,7 @@ import axios, {
   type InternalAxiosRequestConfig,
 } from "axios";
 import type { ResultMessage } from "@spring-breeze/shared";
-import { getStore, setStore } from "./storage";
+import { getStore, setStore } from "@spring-breeze/shared";
 import { router } from "../router/index";
 import { Message } from "@/utils/message";
 import Cookies from "js-cookie";

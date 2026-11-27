@@ -44,7 +44,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import * as API_Shop from "@/api/shops";
-import { validateMobile } from "@/libs/validate";
+import { validateMobile } from "@spring-breeze/shared";
 import uploadPicThumb from "@/views/my-components/lili/upload-pic-thumb";
 import multipleMap from "@/views/my-components/map/multiple-map";
 import Cookies from "js-cookie";

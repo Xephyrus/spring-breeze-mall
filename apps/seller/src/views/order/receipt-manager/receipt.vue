@@ -185,7 +185,7 @@
 import { onMounted, ref } from "vue";
 import * as API_Order from "@/api/order";
 import { uploadFile } from "@/libs/axios";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { Message } from "@/utils/message";
 
 defineOptions({ name: "receipt" });

@@ -97,7 +97,7 @@
 import { onMounted, ref } from "vue";
 import * as API_Shop from "@/api/shops";
 import multipleMap from "@/views/my-components/map/multiple-map";
-import * as RegExp from "@/libs/reg-exp";
+import { regexp as RegExp } from "@spring-breeze/shared";
 import { Message } from "@/utils/message";
 
 defineOptions({ name: "address-manage" });

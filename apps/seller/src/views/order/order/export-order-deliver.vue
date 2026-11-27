@@ -51,7 +51,7 @@ import { useRouter } from "vue-router";
 import { UploadFilled } from "@element-plus/icons-vue";
 import { downLoadDeliverExcel, uploadDeliverExcel } from "@/api/order";
 import { baseUrl } from "@/libs/axios.js";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { useAppStore } from "@/stores/app";
 import downloadImg from "@/assets/download.png";
 import uploadImg from "@/assets/upload.png";

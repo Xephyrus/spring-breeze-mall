@@ -65,7 +65,7 @@
 <script setup>
 import { nextTick, onMounted, reactive, ref } from "vue";
 import * as API_Shop from "@/api/shops";
-import { validateMobile } from "@/libs/validate";
+import { validateMobile } from "@spring-breeze/shared";
 import { Message, Modal } from "@/utils/message";
 import multipleMap from "@/views/my-components/map/multiple-map";
 

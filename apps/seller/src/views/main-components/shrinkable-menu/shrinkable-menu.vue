@@ -35,7 +35,7 @@ import { useRoute, useRouter } from "vue-router";
 import { House, Goods, Tickets, Wallet, Present, TrendCharts, Shop, Bell, Grid, ArrowDown, User, Box } from "@element-plus/icons-vue";
 import { HOME_NAV_NAME } from "@/libs/util.js";
 import { flattenNavigation, findNavigationItem } from "@/libs/seller-navigation";
-import { setStore } from "@/libs/storage";
+import { setStore } from "@spring-breeze/shared";
 import { useAppStore } from "@/stores/app";
 
 defineOptions({ name: "shrinkableMenu" });

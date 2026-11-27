@@ -110,7 +110,7 @@ import { loadSiteSettings } from "@/composables/use-site-settings";
 import { getMessageSendData, logout, userMsg } from "@/api/index";
 import { getIMDetail } from "@/api/common";
 import { Message } from "@/utils/message";
-import { getStore, setStore } from "@/libs/storage";
+import { getStore, setStore } from "@spring-breeze/shared";
 import { useAppStore } from "@/stores/app";
 import { useUserStore } from "@/stores/user";
 

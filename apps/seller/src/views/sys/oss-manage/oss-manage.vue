@@ -286,7 +286,7 @@ import {
   updateFileDirectory,
 } from "@/api/index";
 import { sellerUrl } from "@/libs/axios";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 
 defineOptions({ name: "oss-manage" });
 

@@ -72,7 +72,7 @@
 <script setup>
 import { nextTick, ref, useAttrs, watch } from "vue";
 import { View } from "@element-plus/icons-vue";
-import { getStore } from "@/libs/storage";
+import { getStore } from "@spring-breeze/shared";
 import { Message } from "@/utils/message";
 import ossManage from "@/views/sys/oss-manage/oss-manage";
 

@@ -65,6 +65,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     SetPassword: typeof import('./components/lili/set-password.vue')['default']
+    TablePager: typeof import('./components/table-pager.vue')['default']
   }
   export interface ComponentCustomProperties {
     vLoading: typeof import('element-plus/es')['ElLoadingDirective']
