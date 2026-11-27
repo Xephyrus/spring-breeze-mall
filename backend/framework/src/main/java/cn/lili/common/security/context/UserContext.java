@@ -17,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 用户上下文
@@ -26,6 +28,8 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @since 2020/11/14 20:27
  */
 public class UserContext {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(UserContext.class);
 
     /**
      * 根据request获取用户信息（已校验服务端会话有效性）
@@ -82,6 +86,8 @@ public class UserContext {
             }
             return authUser;
         } catch (Exception e) {
+            // 解析失败（签名不一致 / 过期 / 格式错误）时给出可定位的日志，避免上游只看到 NPE
+            LOGGER.warn("JWT 解析失败：{} - {}", e.getClass().getSimpleName(), e.getMessage());
             return null;
         }
     }
@@ -113,6 +119,8 @@ public class UserContext {
             String json = claims.get(SecurityEnum.USER_CONTEXT.getValue()).toString();
             return new Gson().fromJson(json, AuthUser.class);
         } catch (Exception e) {
+            // 解析失败（签名不一致 / 过期 / 格式错误）时给出可定位的日志，避免上游只看到 NPE
+            LOGGER.warn("JWT 解析失败：{} - {}", e.getClass().getSimpleName(), e.getMessage());
             return null;
         }
     }

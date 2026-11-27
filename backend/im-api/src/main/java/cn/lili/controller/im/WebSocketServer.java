@@ -60,6 +60,20 @@ public class WebSocketServer {
 
         AuthUser authUser = UserContext.getAuthUser(cache, accessToken);
 
+        // token 无效 / 过期 / 签名不一致时这里会是 null。
+        // 原来直接 authUser.getRole() 会抛 NPE，Tomcat 侧只看到「socket 异常」，
+        // 前端表现为连接莫名被关掉、然后无限重连，非常难排查。
+        if (authUser == null) {
+            log.warn("WebSocket 鉴权失败：token 无法解析或会话不存在（长度={}），主动关闭连接",
+                    accessToken == null ? 0 : accessToken.length());
+            try {
+                session.close(new CloseReason(CloseReason.CloseCodes.VIOLATED_POLICY, "unauthorized"));
+            } catch (Exception e) {
+                log.error("关闭未授权会话异常", e);
+            }
+            return;
+        }
+
         String sessionId = UserEnums.STORE.equals(authUser.getRole()) ? authUser.getStoreId() : authUser.getId();
         //如果已有会话，则进行下线提醒。
         if (sessionPools.containsKey(sessionId)) {
@@ -83,6 +97,10 @@ public class WebSocketServer {
     @OnClose
     public void onClose(@PathParam("accessToken") String accessToken) {
         AuthUser authUser = UserContext.getAuthUser(cache, accessToken);
+        if (authUser == null) {
+            // 鉴权失败时连接可能从未成功建立，这里无需清理会话池
+            return;
+        }
         String sessionId = UserEnums.STORE.equals(authUser.getRole()) ? authUser.getStoreId() : authUser.getId();
         log.info("用户断开连接:{}", JSONUtil.toJsonStr(authUser));
         sessionPools.remove(sessionId);
