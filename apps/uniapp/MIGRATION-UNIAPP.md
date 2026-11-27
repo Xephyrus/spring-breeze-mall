@@ -234,3 +234,65 @@ typecheck (vue-tsc) → lint (ratchet 261) → 5 个 node 脚本测试
 | U2 剩余 | 15 个非 TS 的 SFC 补 `lang="ts"`（当前靠 allowJs 通过） |
 | U3 | 安全范围内命名 kebab 化（`pages.json` 与页面路径不动） |
 | U4 剩余 | `SMOKE-UNIAPP.md`（H5 / 小程序 / App 三端清单） |
+---
+
+## 六、H5 本地联调配置（CORS 报错修复）
+
+### 6.1 现象
+
+HBuilderX 起 H5 dev（`http://localhost:5173`）后，控制台出现：
+
+```
+Access to XMLHttpRequest at 'https://byer-api.pickmall.cn/buyer/common/site/theme'
+from origin 'http://localhost:5173' has been blocked by CORS policy:
+No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+首页三条接口（`site/theme`、`site/category-page`、`other/pageData/getIndex`）全部 `ERR_FAILED`。
+
+### 6.2 根因
+
+`config/api.js` 的 **dev 段指向远端域名**，而不是本地后端：
+
+```js
+const dev = {
+  buyer: "https://byer-api.pickmall.cn",   // 还是把生产域名（且拼错 byer）当开发地址
+  store: "https://admin-api.pickmall.cn",
+  im:    "https://im-api.pickmall.cn",
+}
+```
+
+远端不认 `http://localhost:5173` 这个 Origin（预检没有 `Access-Control-Allow-Origin`），
+浏览器直接拦掉，与前端代码无关。
+
+### 6.3 修复
+
+dev 段改成本地后端（端口对应 buyer-api 8888、manager-api 8887、im-api 8885）：
+
+```js
+const dev = {
+  buyer: "http://127.0.0.1:8888",
+  store: "http://127.0.0.1:8887",
+  im:    "http://127.0.0.1:8885",
+  mqtt:  "wss://lilishop-mqtt-pull.dllll.xyz/mqtt", // 本地无 broker，保持远端
+}
+```
+
+- **只影响 H5 / 开发环境**：`#ifdef MP-WEIXIN || APP-PLUS` 分支会强制 `api = prod`，小程序与 App 打包不受影响。
+- 后端 `SecurityBean#corsConfigurationSource` 用 `AllowedOriginPatterns("*")` + `allowCredentials`，
+  实测预检返回 `Access-Control-Allow-Origin: http://localhost:5173`，可直接联调。
+
+改完需**重启 H5 dev**（`config/api.js` 在模块加载时求值）。
+
+### 6.4 验证（本地实跑）
+
+| 接口 | 结果 |
+|---|---|
+| `OPTIONS /buyer/common/site/theme` | 200，`ACAO: http://localhost:5173`，`ACAC: true` |
+| `GET /buyer/common/site/theme` | 200，返回主题配置 |
+| `GET /buyer/common/site/category-page` | 200 |
+| `GET /buyer/other/pageData/getIndex?clientType=H5` | 200，返回装修 pageData |
+| `GET /buyer/distribution/bank-card` | 403（说明路由存在，只是未登录 —— 顺带验证上一轮补的接口路径正确） |
+
+> 若后端不在本机，改这三个地址即可；或在 `manifest.json` 的 `h5.devServer.proxy` 里配代理，
+> 让浏览器请求同源、由 dev server 转发（跨机调试时更合适）。
