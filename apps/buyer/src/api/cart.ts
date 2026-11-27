@@ -1,3 +1,4 @@
+import type { Query, BuyerResponse } from "@/types/api";
 import request, {
   Method
 } from '@/plugins/request.js';
@@ -39,7 +40,7 @@ export function cartCount () {
 /**
  * 获取结算页面购物车详情
  */
-export function cartGoodsPay (params) {
+export function cartGoodsPay(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/trade/carts/checked',
     method: Method.GET,
@@ -53,7 +54,7 @@ export function cartGoodsPay (params) {
  * @param skuId skuId
  * @param  num  购买数量
  */
-export function addCartGoods (params) {
+export function addCartGoods(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/trade/carts',
     method: Method.POST,
@@ -68,7 +69,7 @@ export function addCartGoods (params) {
  * @param way 购物车：CART / 立即购买：BUY_NOW / 积分：POINTS / 砍价：KANJIA
  * @param remark 备注  非必填
  */
-export function createTrade (data) {
+export function createTrade(data: Query): Promise<BuyerResponse> {
   return request({
     url: '/buyer/trade/carts/create/trade',
     method: Method.POST,
@@ -84,7 +85,7 @@ export function createTrade (data) {
  * @param way 购物车：CART / 立即购买：BUY_NOW / 积分：POINTS
  * @param used 使用true 弃用 false
  */
-export function selectCoupon (params) {
+export function selectCoupon(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/trade/carts/select/coupon',
     method: Method.GET,
@@ -99,7 +100,7 @@ export function selectCoupon (params) {
  * @param credentialId 礼品卡凭证 id；used=false 且不传则清空全部
  * @param used 使用 true / 弃用 false
  */
-export function selectGiftCard (params) {
+export function selectGiftCard(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/trade/carts/select/giftCard',
     method: Method.GET,
@@ -111,7 +112,7 @@ export function selectGiftCard (params) {
 /**
  * 可用优惠券数量
  */
-export function couponNum (params) {
+export function couponNum(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/trade/carts/coupon/num',
     method: Method.GET,
@@ -124,7 +125,7 @@ export function couponNum (params) {
  * @param shippingAddressId 地址id
  * @param way 购物车类型
  */
-export function selectAddr (params) {
+export function selectAddr(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/shippingAddress`,
     method: Method.GET,
@@ -137,7 +138,7 @@ export function selectAddr (params) {
  * 选中购物车所有商品
  * @param checked 设置选中 0，1
  */
-export function setCheckedAll (params) {
+export function setCheckedAll(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/sku/checked`,
     method: Method.POST,
@@ -151,7 +152,7 @@ export function setCheckedAll (params) {
  * @param checked 是否选中
  * @param storeId   商家id
  */
-export function setCheckedSeller (params) {
+export function setCheckedSeller(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/store/${params.storeId}`,
     method: Method.POST,
@@ -165,7 +166,7 @@ export function setCheckedSeller (params) {
  * @param skuId 产品id
  * @param checked 设置选中0，1
  */
-export function setCheckedGoods (params) {
+export function setCheckedGoods(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/sku/checked/${params.skuId}`,
     method: Method.POST,
@@ -179,7 +180,7 @@ export function setCheckedGoods (params) {
  * @param skuId 产品id
  * @param num   产品数量
  */
-export function setCartGoodsNum (params) {
+export function setCartGoodsNum(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/sku/num/${params.skuId}`,
     method: Method.POST,
@@ -192,7 +193,7 @@ export function setCartGoodsNum (params) {
  * 删除购物车中一个或多个产品
  * @param skuIds 产品id数组
  */
-export function delCartGoods (params) {
+export function delCartGoods(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/sku/remove`,
     method: Method.DELETE,
@@ -206,7 +207,7 @@ export function delCartGoods (params) {
  * @param shippingMethod SELF_PICK_UP(自提),LOCAL_TOWN_DELIVERY(同城配送),LOGISTICS(物流)
  * @param way 购物方式
  */
-export function shippingMethod (params) {
+export function shippingMethod(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/shippingMethod`,
     method: Method.GET,
@@ -220,7 +221,7 @@ export function shippingMethod (params) {
  * @param receiptId 发票Id
  * @param way 购物方式
  */
-export function receiptSelect (params) {
+export function receiptSelect(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/select/receipt`,
     method: Method.GET,
@@ -232,7 +233,7 @@ export function receiptSelect (params) {
 /**
  * 获取全部配送方式
  */
- export function shippingMethodList(params) {
+ export function shippingMethodList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/carts/shippingMethodList`,
     method: Method.GET,
@@ -244,7 +245,7 @@ export function receiptSelect (params) {
 /**
  * 获取全部配送方式
  */
- export function storeAddressList(params) {
+ export function storeAddressList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/store/address/shippingMethodList`,
     method: Method.GET,
@@ -257,7 +258,7 @@ export function receiptSelect (params) {
  * 设置自提地址ID
  * @param addressId
  */
- export function setStoreAddressId(storeAddressId,way) {
+ export function setStoreAddressId(storeAddressId: string | number, way: Query) {
   return request({
     url: `/buyer/trade/carts/storeAddress?storeAddressId=${storeAddressId}&way=${way}`,
     method: Method.GET,
@@ -269,7 +270,7 @@ export function receiptSelect (params) {
  * 提交配送方式
  * @param params
  */
- export function setShipMethod(params) {
+ export function setShipMethod(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: "/buyer/trade/carts/shippingMethod",
     method: Method.PUT,

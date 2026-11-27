@@ -1,4 +1,5 @@
 import request, {Method} from '@/plugins/request.js';
+import type { Query, BuyerResponse } from "@/types/api";
 
 // 查询账户余额
 export function getMembersWallet () {
@@ -10,7 +11,7 @@ export function getMembersWallet () {
 }
 
 // 查询余额列表
-export function getDepositLog (params) {
+export function getDepositLog(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/wallet/log',
     method: Method.GET,
@@ -20,7 +21,7 @@ export function getDepositLog (params) {
 }
 
 // 查询充值记录
-export function getRecharge (params) {
+export function getRecharge(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/wallet/recharge',
     method: Method.GET,
@@ -30,7 +31,7 @@ export function getRecharge (params) {
 }
 
 // 查询提现记录
-export function getWithdrawApply (params) {
+export function getWithdrawApply(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/member/withdrawApply',
     method: Method.GET,
@@ -40,7 +41,7 @@ export function getWithdrawApply (params) {
 }
 
 // 在线充值
-export function recharge (params) {
+export function recharge(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/trade/recharge',
     method: Method.POST,
@@ -50,7 +51,7 @@ export function recharge (params) {
 }
 
 // 提现
-export function withdrawalApply (params) {
+export function withdrawalApply(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/wallet/wallet/withdrawal',
     method: Method.POST,
@@ -60,7 +61,7 @@ export function withdrawalApply (params) {
 }
 
 // 收藏商品
-export function collectGoods (type, id) {
+export function collectGoods(type: Query, id: string | number) {
   return request({
     url: `/buyer/member/collection/add/${type}/${id}`,
     method: Method.POST,
@@ -69,7 +70,7 @@ export function collectGoods (type, id) {
 }
 
 // 收藏店铺
-export function collectStore (type, id) {
+export function collectStore(type: Query, id: string | number) {
   return request({
     url: `/buyer/member/storeCollection/add/${type}/${id}`,
     method: Method.POST,
@@ -78,7 +79,7 @@ export function collectStore (type, id) {
 }
 
 // 取消 收藏商品
-export function cancelCollect (type, id) {
+export function cancelCollect(type: Query, id: string | number) {
   return request({
     url: `/buyer/member/collection/delete/${type}/${id}`,
     method: Method.DELETE,
@@ -87,7 +88,7 @@ export function cancelCollect (type, id) {
 }
 
 // 取消 收藏店铺
-export function cancelStoreCollect (type, id) {
+export function cancelStoreCollect(type: Query, id: string | number) {
   return request({
     url: `/buyer/member/storeCollection/delete/${type}/${id}`,
     method: Method.DELETE,
@@ -96,7 +97,7 @@ export function cancelStoreCollect (type, id) {
 }
 
 // 查看是否收藏商品（后台查询，token 失效时静默失败，不弹全局登录框）
-export function isCollection (type, goodsId) {
+export function isCollection(type: Query, goodsId: string | number) {
   return request({
     url: `/buyer/member/collection/isCollection/${type}/${goodsId}`,
     method: Method.GET,
@@ -107,7 +108,7 @@ export function isCollection (type, goodsId) {
 }
 
 // 查看是否收藏店铺（后台查询，token 失效时静默失败，不弹全局登录框）
-export function isStoreCollection (type, goodsId) {
+export function isStoreCollection(type: Query, goodsId: string | number) {
   return request({
     url: `/buyer/member/storeCollection/isCollection/${type}/${goodsId}`,
     method: Method.GET,
@@ -118,7 +119,7 @@ export function isStoreCollection (type, goodsId) {
 }
 
 // 会员收藏商品列表
-export function collectList (params) {
+export function collectList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/collection/${params.type}`,
     method: Method.GET,
@@ -128,7 +129,7 @@ export function collectList (params) {
 }
 
 // 会员收藏店铺列表
-export function storeCollectList (params) {
+export function storeCollectList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/storeCollection/${params.type}`,
     method: Method.GET,
@@ -138,7 +139,7 @@ export function storeCollectList (params) {
 }
 
 // 单个商品评价（需登录；token 失效时静默失败，不弹全局登录框）
-export function goodsComment (params) {
+export function goodsComment(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/evaluation/${params.goodsId}/goodsEvaluation`,
     method: Method.GET,
@@ -150,7 +151,7 @@ export function goodsComment (params) {
 }
 
 // 商品各评价类别数量（需登录；token 失效时静默失败，不弹全局登录框）
-export function goodsCommentNum (goodsId) {
+export function goodsCommentNum(goodsId: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/evaluation/${goodsId}/evaluationNumber`,
     method: Method.GET,
@@ -161,7 +162,7 @@ export function goodsCommentNum (goodsId) {
 }
 
 // 添加会员评价
-export function addEvaluation (params) {
+export function addEvaluation(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/evaluation`,
     method: Method.POST,
@@ -171,7 +172,7 @@ export function addEvaluation (params) {
 }
 
 // 会员评价详情
-export function evaluationDetail (id) {
+export function evaluationDetail(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/evaluation/get/${id}`,
     method: Method.GET,
@@ -189,7 +190,7 @@ export function receiptList () {
 }
 
 // 发票详情
-export function receiptDetail (id) {
+export function receiptDetail(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/receipt/${id}`,
     method: Method.GET,
@@ -198,7 +199,7 @@ export function receiptDetail (id) {
 }
 
 // 保存发票信息
-export function saveReceipt (params) {
+export function saveReceipt(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/trade/receipt`,
     method: Method.POST,
@@ -208,7 +209,7 @@ export function saveReceipt (params) {
 }
 
 // 获取可领取优惠券列表
-export function couponList (params) {
+export function couponList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/coupon`,
     method: Method.GET,
@@ -219,7 +220,7 @@ export function couponList (params) {
 }
 
 // 会员优惠券列表
-export function memberCouponList (params) {
+export function memberCouponList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/coupon/getCoupons`,
     method: Method.GET,
@@ -229,7 +230,7 @@ export function memberCouponList (params) {
 }
 
 // 会员优惠券列表
-export function canUseCouponList (params) {
+export function canUseCouponList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/coupon/canUse`,
     method: Method.GET,
@@ -239,7 +240,7 @@ export function canUseCouponList (params) {
 }
 
 // 领取优惠券
-export function receiveCoupon (couponId) {
+export function receiveCoupon(couponId: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/coupon/receive/${couponId}`,
     method: Method.GET,
@@ -248,7 +249,7 @@ export function receiveCoupon (couponId) {
 }
 
 // 获取申请售后列表
-export function afterSaleList (params) {
+export function afterSaleList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/afterSale/page`,
     method: Method.GET,
@@ -258,7 +259,7 @@ export function afterSaleList (params) {
 }
 
 // 获取申请售后页面信息
-export function afterSaleInfo (sn) {
+export function afterSaleInfo(sn: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/afterSale/applyAfterSaleInfo/${sn}`,
     method: Method.GET,
@@ -267,7 +268,7 @@ export function afterSaleInfo (sn) {
 }
 
 // 获取申请售后、投诉原因
-export function afterSaleReason (serviceType) {
+export function afterSaleReason(serviceType: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/afterSale/get/afterSaleReason/${serviceType}`,
     method: Method.GET,
@@ -275,7 +276,7 @@ export function afterSaleReason (serviceType) {
   });
 }
 // 获取申请售后详情
-export function afterSaleDetail (sn) {
+export function afterSaleDetail(sn: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/afterSale/get/${sn}`,
     method: Method.GET,
@@ -283,7 +284,7 @@ export function afterSaleDetail (sn) {
   });
 }
 // 售后日志
-export function afterSaleLog (sn) {
+export function afterSaleLog(sn: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/afterSale/get/getAfterSaleLog/${sn}`,
     method: Method.GET,
@@ -292,7 +293,7 @@ export function afterSaleLog (sn) {
 }
 
 // 申请售后
-export function applyAfterSale (params) {
+export function applyAfterSale(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/afterSale/save/${params.orderItemSn}`,
     method: Method.POST,
@@ -302,7 +303,7 @@ export function applyAfterSale (params) {
 }
 
 // 取消售后申请
-export function cancelAfterSale (afterSaleSn) {
+export function cancelAfterSale(afterSaleSn: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/afterSale/cancel/${afterSaleSn}`,
     method: Method.POST,
@@ -312,7 +313,7 @@ export function cancelAfterSale (afterSaleSn) {
 }
 
 // 投诉商品
-export function handleComplain (data) {
+export function handleComplain(data: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/complain`,
     method: Method.POST,
@@ -321,7 +322,7 @@ export function handleComplain (data) {
   });
 }
 // 分页获取我的投诉列表
-export function complainList (params) {
+export function complainList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/complain`,
     method: Method.GET,
@@ -333,7 +334,7 @@ export function complainList (params) {
 /**
  * 获取投诉详情
  */
-export function getComplainDetail (id) {
+export function getComplainDetail(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/complain/${id}`,
     method: Method.GET,
@@ -344,7 +345,7 @@ export function getComplainDetail (id) {
 /**
  * 取消投诉
  */
-export function clearComplain (id) {
+export function clearComplain(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/complain/status/${id}`,
     method: Method.PUT,
@@ -357,7 +358,7 @@ export function clearComplain (id) {
  * @param {Number} pageNumber 页码
  * @param {Number} pageSize 页数
  */
-export function tracksList (params) {
+export function tracksList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/footprint`,
     method: Method.GET,
@@ -381,7 +382,7 @@ export function clearTracks () {
  * 根据id删除足迹
  * @param {String} ids id集合
  */
-export function clearTracksById (ids) {
+export function clearTracksById(ids: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/footprint/delByIds/${ids}`,
     method: Method.DELETE,
@@ -392,7 +393,7 @@ export function clearTracksById (ids) {
 /**
  * 获取会员积分
  */
-export function memberPoint (params) {
+export function memberPoint(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/memberPointsHistory/getMemberPointsHistoryVO`,
     method: Method.GET,
@@ -404,7 +405,7 @@ export function memberPoint (params) {
 /**
  * 积分历史
  */
-export function memberPointHistory (params) {
+export function memberPointHistory(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/memberPointsHistory/getByPage`,
     method: Method.GET,
@@ -413,7 +414,7 @@ export function memberPointHistory (params) {
   });
 }
 
-export function memberGradeCurrent (params) {
+export function memberGradeCurrent(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/memberGrade/current`,
     method: Method.GET,
@@ -441,7 +442,7 @@ export function memberGradeList () {
  * 分页获取会员站内信
  * @param {Object} params 请求参数，包括pageNumber、pageSize、status
  */
-export function memberMsgList (params) {
+export function memberMsgList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/message/member`,
     method: Method.GET,
@@ -454,7 +455,7 @@ export function memberMsgList (params) {
  * @param {String} messageId 消息id
  */
 
-export function getMemberMessage (id) {
+export function getMemberMessage(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/message/member/${id}`,
     method: Method.GET,
@@ -463,7 +464,7 @@ export function getMemberMessage (id) {
   });
 }
 
-export function readMemberMsg (id) {
+export function readMemberMsg(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/message/member/${id}`,
     method: Method.PUT,
@@ -474,7 +475,7 @@ export function readMemberMsg (id) {
  * 删除会员消息
  * @param {String} messageId 消息id
  */
-export function delMemberMsg (id) {
+export function delMemberMsg(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/message/member/${id}`,
     method: Method.DELETE,
@@ -486,7 +487,7 @@ export function delMemberMsg (id) {
  * 绑定分销
  * @param distributionId 商品分销ID
  */
-export function getGoodsDistribution (distributionId) {
+export function getGoodsDistribution(distributionId: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/distribution/distribution/bindingDistribution/${distributionId}`,
     method: Method.GET,

@@ -1,9 +1,10 @@
+import type { Query, BuyerResponse } from "@/types/api";
 import request, {
   Method
 } from '@/plugins/request.js';
 
 // 查询会员订单列表
-export function getOrderList (params) {
+export function getOrderList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/order`,
     method: Method.GET,
@@ -16,7 +17,7 @@ export function getOrderList (params) {
  * 订单明细
  * @param {orderSn} 订单编号
  */
-export function orderDetail (orderSn) {
+export function orderDetail(orderSn: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/order/${orderSn}`,
     method: Method.GET,
@@ -29,7 +30,7 @@ export function orderDetail (orderSn) {
  * @param {orderSn} 订单编号
  * @param reason 取消订单原因
  */
-export function cancelOrder (params) {
+export function cancelOrder(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/order/${params.orderSn}/cancel`,
     method: Method.POST,
@@ -42,7 +43,7 @@ export function cancelOrder (params) {
  * 删除订单
  * @param {orderSn} 订单编号
  */
-export function delOrder (orderSn) {
+export function delOrder(orderSn: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/order/${orderSn}`,
     method: Method.DELETE,
@@ -54,7 +55,7 @@ export function delOrder (orderSn) {
  * 确认收货
  * @param {orderSn} 订单编号
  */
-export function sureReceived (orderSn) {
+export function sureReceived(orderSn: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/order/${orderSn}/receiving`,
     method: Method.POST,
@@ -66,7 +67,7 @@ export function sureReceived (orderSn) {
  * 查询物流
  * @param {orderSn} 订单编号
  */
-export function getTraces (orderSn) {
+export function getTraces(orderSn: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/order/getTraces/${orderSn}`,
     method: Method.POST,
@@ -78,7 +79,7 @@ export function getTraces (orderSn) {
  * 评价列表
  *
  */
-export function evolutionList (params) {
+export function evolutionList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/evaluation`,
     method: Method.GET,
@@ -88,7 +89,7 @@ export function evolutionList (params) {
 }
 
 // 添加交易投诉对话
-export function communication (params) {
+export function communication(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/complain/communication`,
     method: Method.POST,
@@ -98,7 +99,7 @@ export function communication (params) {
 }
 
 // 退换货服务 提交物流
-export function afterSaleDelivery (params) {
+export function afterSaleDelivery(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/order/afterSale/delivery/${params.afterSaleSn}`,
     method: Method.POST,
@@ -117,7 +118,7 @@ export function getLogisticsCompany () {
 }
 
 //查询包裹列表
-export const getPackage = (sn) => {
+export const getPackage = (sn: string) => {
   return request({
     url: `/buyer/order/order/getPackage/${sn}`,
     method: Method.GET,
@@ -126,7 +127,7 @@ export const getPackage = (sn) => {
 }
 
 //查询物流
-export const getTracesList = (sn, params) => {
+export const getTracesList = (sn: string, params: Query = {}) => {
   return request({
     url: `/buyer/order/order/getTracesList/${sn}`,
     method: Method.GET,

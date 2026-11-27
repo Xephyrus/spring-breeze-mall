@@ -1,9 +1,10 @@
+import type { Query, BuyerResponse } from "@/types/api";
 import request, {
   Method
 } from '@/plugins/request.js'
 
 // 店铺分页列表
-export function shopList (params) {
+export function shopList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/store/store',
     needToken: false,
@@ -14,7 +15,7 @@ export function shopList (params) {
 }
 
 // 申请店铺第一步-填写企业信息
-export function applyFirst (params) {
+export function applyFirst(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/store/store/apply/first',
     needToken: true,
@@ -24,7 +25,7 @@ export function applyFirst (params) {
 }
 
 // 申请店铺第一步-填写企业信息
-export function applySecond (params) {
+export function applySecond(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/store/store/apply/second',
     needToken: true,
@@ -34,7 +35,7 @@ export function applySecond (params) {
 }
 
 // 申请店铺第一步-填写企业信息
-export function applyThird (params) {
+export function applyThird(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/store/store/apply/third',
     needToken: true,
@@ -44,7 +45,7 @@ export function applyThird (params) {
 }
 
 // 店铺信息（含评分）
-export function getStoreById (id) {
+export function getStoreById(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/store/store/store/${id}`,
     needToken: false,
@@ -54,7 +55,7 @@ export function getStoreById (id) {
 
 // 店铺详情
 // 获取店铺工商/营业执照信息
-export function getLicencePhoto (id) {
+export function getLicencePhoto(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/store/store/get/licencePhoto/${id}`,
     needToken: false,
@@ -63,7 +64,7 @@ export function getLicencePhoto (id) {
   })
 }
 
-export function getDetailById (id) {
+export function getDetailById(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/store/store/get/detail/${id}`,
     needToken: false,
@@ -72,7 +73,7 @@ export function getDetailById (id) {
   })
 }
 // 店铺分类
-export function getCateById (id) {
+export function getCateById(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/store/store/label/get/${id}`,
     needToken: true,
@@ -102,7 +103,7 @@ export function applyStatus () {
  * 获取自提点信息
  * @param storeId
  */
- export function getStoreAddress(storeId,params) {
+ export function getStoreAddress(storeId: string | number, params: Query) {
   return request({
     url: `/buyer/store/address/page/${storeId}`,
     method: Method.GET,

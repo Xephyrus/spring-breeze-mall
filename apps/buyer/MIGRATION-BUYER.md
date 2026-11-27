@@ -198,3 +198,60 @@ TS 会报 `string | undefined 不能赋给 string`，这里统一用 `?? ""` 归
 | `lint` | ✅ 0 error / 0 warning |
 | dev | ✅ `/`、`/home` 与 4 个新 `.ts` 模块均 200 |
 | 剩余 `.js` | 31 个（M2 起始 42 个） |
+### 2.7 api 层（已完成，14 个文件 / 约 1,600 行）
+
+| 处理 | 说明 |
+|---|---|
+| 新增 `src/types/api.ts` | `BuyerResponse<T>`（统一响应体）、`PageResult<T>`、`Query`、`RequestOptions` |
+| 14 个文件 `.js → .ts` | 共 **134 处**形参注解；`export function xxx(params) → (params: Query = {})`、`(id) → (id: string \| number)`、多参逐个补 |
+| 返回值统一 | `Promise<BuyerResponse>`（需要精确类型时调用处写 `getXxx<MyVO>()`） |
+
+**批量脚本踩的两个坑（都已复原）**
+
+1. **类型 import 插进了多行 import 中间**
+
+   脚本按「第一条 import 之后插入」，但不少文件的第一条 import 是多行的：
+
+   ```ts
+   import request, {
+     import type { Query, BuyerResponse } from "@/types/api";   // ← 插到这里
+     Method, buyerUrl
+   } from '@/plugins/request.js';
+   ```
+
+   导致 7 个文件语法错误（TS1003/TS1005）。修法：检测插入点的括号是否平衡，不平衡就把类型 import 放到文件首行。
+
+2. **带默认值的形参被拼成非法语法**
+
+   `options = {}` 追加类型后变成 `options = {}: Query`。修法：单独匹配 `x = {}` / `x = 数字` / `x = '字符串'` 三种形态，改写成 `x: Query = {}` 等。
+
+**类型检查额外抓出的 4 个真实问题**
+
+| 位置 | 问题 | 处理 |
+|---|---|---|
+| `login.webLogin` | 声明 `Promise<BuyerResponse>` 但函数体只 `window.open` 没有 return | 返回类型改为 `void`（原类型是错的） |
+| `promotion.pointGoodsDetail` | 请求配置里多传了一个 `id` 字段（id 已在 url 中） | 删除该字段 |
+| `pickupCard.getPickupCard` | `encodeURIComponent(id)` 直接吃 `string \| number` | 改 `String(id)` |
+| `request.ts` 刷新 token | `handleRefreshToken` 的形参是 `Query`，实参是 `string` | 显式断言（api 签名与调用处语义本就不同） |
+
+### 2.8 验证
+
+| 检查 | 结果 |
+|---|---|
+| `typecheck` | ✅ 0 错误 |
+| `build` | ✅ 5.49s |
+| `lint` | ✅ 0 error / 0 warning |
+| dev | ✅ `/`、`/home`、`/goodsDetail` 与 3 个新 api 模块均 200 |
+| 剩余 `.js` | **17 个**（M2 起始 42 个，其中 1 个豁免） |
+
+### 2.9 剩余 17 个 `.js` 的归属
+
+| 分类 | 文件 | 行数合计 |
+|---|---|---|
+| 入口/注册 | `main.js`、`components/global.js` | 76 |
+| plugins | `element`(176) / `Foundation`(200) / `filters`(77) / `RegExp`(50) / `md5`(224) | 727 |
+| router / stores | `router/index.js`(382) / `stores/app.js`(45) | 427 |
+| 常量与枚举 | `constants/goodsType.js`(203) / `pages/home/enumeration.js`(87) / `pages/user/menu.js`(121) | 411 |
+| 组件配置 | `components/drawer/config.js`(63) / `components/indexDecorate/registry.js`(73) / `components/verify/verify.js`(28) | 164 |
+| composables | `composables/useSiteSettings.js` | 38 |
+| **豁免** | `components/indexDecorate/presets/double11Preset.js`（1,967 行装修预设数据） | 1,967 |

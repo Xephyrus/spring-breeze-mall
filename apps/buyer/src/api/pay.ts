@@ -1,3 +1,4 @@
+import type { Query, BuyerResponse } from "@/types/api";
 import request, {
   Method
 } from '@/plugins/request.js';
@@ -8,7 +9,7 @@ import request, {
  * @param sn   订单编号
  * @param clientType  调起方式，PC
  */
-export function tradeDetail (params) {
+export function tradeDetail(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/payment/cashier/tradeDetail',
     needToken: true,
@@ -24,7 +25,7 @@ export function tradeDetail (params) {
  * @param payClient  调起方式 可用值：APP,NATIVE,JSAPI,H5
  * @param sn   订单编号
  */
-export function pay (params, config = {}) {
+export function pay(params: Query, config: Query = {}) {
   return request({
     url: `/buyer/payment/cashier/pay/${params.paymentMethod}/${params.paymentClient}`,
     needToken: true,
@@ -39,7 +40,7 @@ export function pay (params, config = {}) {
  * @param orderType 交易类型,可用值:TRADE,ORDER,RECHARGE
  * @param sn   订单编号
  */
-export function payCallback (params) {
+export function payCallback(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/payment/cashier/result`,
     needToken: true,
@@ -53,7 +54,7 @@ export function payCallback (params) {
  * @param orderType 交易类型,可用值:TRADE,ORDER,RECHARGE
  * @param sn   订单编号
  */
-export function withdrawalSettingVO (params) {
+export function withdrawalSettingVO(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/wallet/wallet/withdrawalSettingVO`,
     needToken: true,

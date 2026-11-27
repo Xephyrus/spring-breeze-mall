@@ -1,9 +1,10 @@
 import request, {Method, buyerUrl} from '@/plugins/request.js';
+import type { Query, RequestOptions, BuyerResponse } from "@/types/api";
 
 /**
  * 获取拼图验证
  */
-export function getVerifyImg (verificationEnums) {
+export function getVerifyImg(verificationEnums: Query): Promise<BuyerResponse> {
   return request({
     url: `${buyerUrl}/buyer/common/slider/${verificationEnums}`,
     method: Method.GET,
@@ -13,7 +14,7 @@ export function getVerifyImg (verificationEnums) {
 /**
  * 验证码校验
  */
-export function postVerifyImg (params) {
+export function postVerifyImg(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `${buyerUrl}/buyer/common/slider/${params.verificationEnums}`,
     method: Method.POST,
@@ -24,7 +25,7 @@ export function postVerifyImg (params) {
 /**
  * 发送短信验证码
  */
-export function sendSms (params) {
+export function sendSms(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `${buyerUrl}/buyer/common/sms/${params.verificationEnums}/${params.mobile}`,
     method: Method.GET,
@@ -34,7 +35,7 @@ export function sendSms (params) {
 }
 
 // 地区数据，用于三级联动
-export function getRegion (id) {
+export function getRegion(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `${buyerUrl}/buyer/common/region/item/${id}`,
     needToken: true,
@@ -48,7 +49,7 @@ export function getRegion (id) {
  * @param params 分页及分类查询条件
  * @param options 请求选项，skipMessage 为 true 时由页面展示错误
  */
-export function articleList (params, options = {}) {
+export function articleList(params: Query, options: RequestOptions = {}) {
   return request({
     url: `/buyer/other/article`,
     method: Method.GET,
@@ -61,7 +62,7 @@ export function articleList (params, options = {}) {
  * 获取帮助中心文章分类列表
  * @param options 请求选项，skipMessage 为 true 时由页面展示错误
  */
-export function articleCateList (options = {}) {
+export function articleCateList(options: RequestOptions = {}) {
   return request({
     url: `/buyer/other/article/articleCategory/list`,
     method: Method.GET,
@@ -70,7 +71,7 @@ export function articleCateList (options = {}) {
 }
 
 /** 通过文章 ID 获取正文；可由页面接管错误提示。 */
-export function articleDetail (id, options = {}) {
+export function articleDetail(id: string | number, options: RequestOptions = {}) {
   return request({
     url: `/buyer/other/article/get/${id}`,
     method: Method.GET,

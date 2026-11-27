@@ -1,3 +1,4 @@
+import type { Query, BuyerResponse } from "@/types/api";
 import request, {
   Method
 } from '@/plugins/request.js';
@@ -5,7 +6,7 @@ import request, {
 /**
  * 获取当天限时抢购信息
  */
-export function seckillByDay (params) {
+export function seckillByDay(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/promotion/seckill',
     method: Method.GET,
@@ -16,7 +17,7 @@ export function seckillByDay (params) {
 /**
  * 获取某个时刻限时抢购信息
  */
-export function seckillByTimeline (timeline) {
+export function seckillByTimeline(timeline: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/seckill/${timeline}`,
     method: Method.GET
@@ -26,7 +27,7 @@ export function seckillByTimeline (timeline) {
 /**
  * 获取积分商品分类列表
  */
-export function pointGoodsCategory (params) {
+export function pointGoodsCategory(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/pointsGoods/category`,
     method: Method.GET,
@@ -38,7 +39,7 @@ export function pointGoodsCategory (params) {
 /**
  * 获取积分商品列表
  */
-export function pointGoods (params) {
+export function pointGoods(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/pointsGoods`,
     method: Method.GET,
@@ -49,19 +50,18 @@ export function pointGoods (params) {
 /**
  * 获取积分商品详情
  */
-export function pointGoodsDetail (id) {
+export function pointGoodsDetail(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/pointsGoods/${id}`,
     method: Method.GET,
-    needToken: true,
-    id
+    needToken: true
   });
 }
 
 /**
  * 分页查询当前客户礼品卡
  */
-export function getGiftCardCashMemberCardPage (params) {
+export function getGiftCardCashMemberCardPage(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/promotion/giftCardCash/memberCard',
     method: Method.GET,
@@ -73,7 +73,7 @@ export function getGiftCardCashMemberCardPage (params) {
 /**
  * 绑定礼品卡（卡号 + 兑换码/卡密）
  */
-export function bindGiftCardCashMemberCard (data) {
+export function bindGiftCardCashMemberCard(data: Query): Promise<BuyerResponse> {
   return request({
     url: '/buyer/promotion/giftCardCash/memberCard/bind',
     method: Method.POST,
@@ -86,7 +86,7 @@ export function bindGiftCardCashMemberCard (data) {
 /**
  * 激活礼品卡
  */
-export function activateGiftCardCashMemberCard (memberCardId) {
+export function activateGiftCardCashMemberCard(memberCardId: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/promotion/giftCardCash/memberCard/${memberCardId}/activate`,
     method: Method.POST,

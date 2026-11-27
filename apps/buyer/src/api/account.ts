@@ -7,9 +7,10 @@
 //   getRequestWithNoToken
 // } from '@/axios/index.js';
 import request, {Method} from '@/plugins/request.js'
+import type { Query, BuyerResponse } from "@/types/api";
 
 // 获取密码状态
-export function getPwdStatus (params) {
+export function getPwdStatus(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/member/wallet/check',
     method: Method.GET,
@@ -19,7 +20,7 @@ export function getPwdStatus (params) {
 }
 
 // 设置密码
-export function setPwd (params) {
+export function setPwd(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/member/wallet/set-password',
     method: Method.POST,
@@ -29,7 +30,7 @@ export function setPwd (params) {
 }
 
 // 设置支付密码
-export function setUpdatePwdOrdinary (params) {
+export function setUpdatePwdOrdinary(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/member/wallet/update-password/ordinary',
     method: Method.GET,
@@ -39,7 +40,7 @@ export function setUpdatePwdOrdinary (params) {
 }
 
 // 修改会员资料
-export function editMemberInfo (params) {
+export function editMemberInfo(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/member/editOwn',
     method: Method.PUT,
@@ -50,7 +51,7 @@ export function editMemberInfo (params) {
 }
 
 // 修改密码
-export function editPwd (params) {
+export function editPwd(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/passport/member/modifyPass`,
     method: Method.PUT,

@@ -1,3 +1,4 @@
+import type { Query, BuyerResponse } from "@/types/api";
 import request, {
   Method, buyerUrl
 } from '@/plugins/request.js';
@@ -12,7 +13,7 @@ export function memberAddress () {
 }
 
 // 添加收货地址
-export function newMemberAddress (params) {
+export function newMemberAddress(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/member/address',
     needToken: true,
@@ -23,7 +24,7 @@ export function newMemberAddress (params) {
 }
 
 // 编辑收货地址
-export function editMemberAddress (params) {
+export function editMemberAddress(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/member/address',
     needToken: true,
@@ -34,7 +35,7 @@ export function editMemberAddress (params) {
 }
 
 // 删除收货地址
-export function delMemberAddress (id) {
+export function delMemberAddress(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/address/delById/${id}`,
     needToken: true,
@@ -44,7 +45,7 @@ export function delMemberAddress (id) {
 }
 
 // 根据id获取会员地址详情
-export function getAddrDetail (id) {
+export function getAddrDetail(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/member/address/get/${id}`,
     needToken: true,
@@ -53,7 +54,7 @@ export function getAddrDetail (id) {
 }
 
 // 传给后台citycode 获取城市街道等id
-export function handleRegion (params) {
+export function handleRegion(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `${buyerUrl}/buyer/common/region/region`,
     needToken: true,

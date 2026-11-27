@@ -1,10 +1,11 @@
 
 import request, {Method, buyerUrl} from '@/plugins/request.js';
+import type { Query, BuyerResponse } from "@/types/api";
 
 /**
  * 注册
  */
-export function regist (params) {
+export function regist(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/member/register',
     method: Method.POST,
@@ -16,7 +17,7 @@ export function regist (params) {
 /**
  * 账号密码登录
  */
-export function login (params) {
+export function login(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/member/userLogin',
     method: Method.POST,
@@ -29,7 +30,7 @@ export function login (params) {
 /**
  * 手机号验证码登录
  */
-export function smsLogin (params) {
+export function smsLogin(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/member/smsLogin',
     method: Method.POST,
@@ -42,7 +43,7 @@ export function smsLogin (params) {
 /**
  * 获取用户信息
  */
-export function getMemberMsg (params) {
+export function getMemberMsg(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/member',
     method: Method.GET,
@@ -54,14 +55,14 @@ export function getMemberMsg (params) {
 /**
  * 第三方登录 支付宝，微博，qq,微信
  */
-export function webLogin (type) {
+export function webLogin(type: Query): void {
   window.open(`${buyerUrl}/buyer/passport/connect/connect/login/web/${type}`, 'blank');
 }
 
 /**
  * 第三方登录成功 回调接口
  */
-export function loginCallback (uuid) {
+export function loginCallback(uuid: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/passport/connect/connect/result?state=${uuid}`,
     method: Method.GET,
@@ -77,7 +78,7 @@ export function getThirdAccountBindList () {
   });
 }
 
-export function bindThirdAccount (data) {
+export function bindThirdAccount(data: Query): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/connect/bind',
     method: Method.POST,
@@ -86,7 +87,7 @@ export function bindThirdAccount (data) {
   });
 }
 
-export function unbindThirdAccount (data) {
+export function unbindThirdAccount(data: Query): Promise<BuyerResponse> {
   return request({
     url: '/buyer/passport/connect/bind/unbind',
     method: Method.POST,
@@ -98,7 +99,7 @@ export function unbindThirdAccount (data) {
 /**
  * 忘记密码  验证手机验证码
  */
-export function validateCode (params) {
+export function validateCode(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/passport/member/resetByMobile`,
     method: Method.POST,
@@ -110,7 +111,7 @@ export function validateCode (params) {
 /**
  * 忘记密码 重置密码
  */
-export function resetPassword (params) {
+export function resetPassword(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/passport/member/resetPassword`,
     method: Method.POST,
@@ -119,7 +120,7 @@ export function resetPassword (params) {
   });
 }
 
-export function getSCLoginCode(params) {
+export function getSCLoginCode(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/passport/member/pc_session`,
     method: Method.POST,
@@ -128,7 +129,7 @@ export function getSCLoginCode(params) {
     params
   });
 }
-export function sCLogin(token,params) {
+export function sCLogin(token: Query, params: Query) {
   return request({
     url: `/buyer/passport/member/session_login/`+token,
     method: Method.POST,
@@ -141,7 +142,7 @@ export function sCLogin(token,params) {
   });
 }
 
-export function getWechatH5QrCode (params) {
+export function getWechatH5QrCode(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/other/wechat/h5/qrcode',
     method: Method.GET,

@@ -9,6 +9,7 @@ import { handleRefreshToken } from "@/api/index";
 import { v4 as uuidv4 } from "uuid";
 
 import qs from "qs";
+import type { BuyerResponse as BuyerResponseBody, Query } from "@/types/api";
 
 /** 后端统一响应结构 */
 export interface BuyerResponse<T = unknown> {
@@ -251,7 +252,7 @@ function getTokenDebounce(): () => Promise<"success" | "fail"> {
     if (pending) return pending;
     const token = Storage.getItem("refreshToken") ?? "";
     if (!token) return Promise.resolve("fail");
-    pending = (handleRefreshToken(token) as Promise<BuyerResponse<{ accessToken: string; refreshToken: string }>>)
+    pending = (handleRefreshToken(token as unknown as Query) as unknown as Promise<BuyerResponse<{ accessToken: string; refreshToken: string }>>)
       .then((res) => {
         if (!res.success || !res.result?.accessToken || !res.result?.refreshToken) return "fail";
         Storage.setItem("accessToken", res.result.accessToken);

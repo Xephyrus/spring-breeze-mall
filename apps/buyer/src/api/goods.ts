@@ -1,9 +1,10 @@
+import type { Query, BuyerResponse } from "@/types/api";
 import request, {
   Method
 } from '@/plugins/request.js';
 
 // 商品列表
-export function goodsList (params) {
+export function goodsList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/goods/goods/search',
     method: Method.GET,
@@ -14,7 +15,7 @@ export function goodsList (params) {
 }
 
 // 商品分类 筛选条件  品牌， 尺寸等
-export function filterList (params) {
+export function filterList(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: '/buyer/goods/goods/search/related',
     method: Method.GET,
@@ -25,7 +26,7 @@ export function filterList (params) {
 }
 
 // id获取商品详情
-export function goodsDetail (goodsId) {
+export function goodsDetail(goodsId: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/goods/goods/get/${goodsId}`,
     method: Method.GET,
@@ -34,7 +35,7 @@ export function goodsDetail (goodsId) {
 }
 
 // id获取商品Sku详情（支持未登录浏览，登录后可选携带 token）
-export function goodsSkuDetail (params) {
+export function goodsSkuDetail(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/goods/goods/sku/${params.goodsId}/${params.skuId}`,
     method: Method.GET,
@@ -45,7 +46,7 @@ export function goodsSkuDetail (params) {
 }
 
 // 获取所有商品分类
-export function getCategory (parentId) {
+export function getCategory(parentId: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/goods/category/get/${parentId}`,
     method: Method.GET,
@@ -57,7 +58,7 @@ export function getCategory (parentId) {
  * 获取搜索热词
  * @param {Number} count 获取搜索热词数量
  */
-export function hotWords (params) {
+export function hotWords(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/goods/goods/hot-words`,
     method: Method.GET,

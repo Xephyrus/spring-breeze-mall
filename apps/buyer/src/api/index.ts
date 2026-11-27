@@ -1,9 +1,10 @@
 import request, { Method } from "@/plugins/request.js";
+import type { Query, BuyerResponse } from "@/types/api";
 
 /**
  * 获取首页专题数据
  */
-export function getTopicData(id) {
+export function getTopicData(id: string | number): Promise<BuyerResponse> {
   return request({
     url: `/buyer/other/pageData/get/${id}`,
     method: Method.GET,
@@ -12,7 +13,7 @@ export function getTopicData(id) {
 
 
 // 获取首页楼层装修数据
-export function indexData(params) {
+export function indexData(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: "/buyer/other/pageData/getIndex",
     method: Method.GET,
@@ -33,7 +34,7 @@ export function getAutoCoup(){
 /**
  * 获取店铺楼层数据
  */
-export function getFloorStoreData(params) {
+export function getFloorStoreData(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/other/pageData?pageClientType=PC`,
     method: "get",
@@ -46,7 +47,7 @@ export function getFloorStoreData(params) {
  * @param pageClientType 客户端类型,可用值:PC,H5,WECHAT_MP,APP
  * @param pageType 页面类型,可用值:INDEX,STORE,SPECIAL
  */
-export function pageData(params) {
+export function pageData(params: Query = {}): Promise<BuyerResponse> {
   return request({
     url: `/buyer/other/pageData`,
     method: Method.GET,
@@ -58,7 +59,7 @@ export function pageData(params) {
 /**
  * 刷新token
  */
-export function handleRefreshToken(token) {
+export function handleRefreshToken(token: Query): Promise<BuyerResponse> {
   return request({
     url: `/buyer/passport/member/refresh/${token}`,
     method: Method.GET,
@@ -72,7 +73,7 @@ export function handleRefreshToken(token) {
 // /**
 //  * 获取店铺楼层数据
 //  */
-// export function getFloorStoreData(params) {
+// export function getFloorStoreData(params: Query = {}): Promise<BuyerResponse> {
 //   return request({
 //     url: `/buyer/other/pageData?pageClientType=PC`,
 //     method: "get",
