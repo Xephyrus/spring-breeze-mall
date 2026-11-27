@@ -1,4 +1,5 @@
 import { post, get, upload } from '@/utils/request'
+import type { Query, RequestOptions } from "@/types/api";
 
 // 查询用户表情包服务接口
 export const ServeFindUserEmoticon = () => {
@@ -11,16 +12,16 @@ export const ServeFindSysEmoticon = () => {
 }
 
 // 设置用户表情包服务接口
-export const ServeSetUserEmoticon = data => {
+export const ServeSetUserEmoticon = (data: Query) => {
   return post('/emoticon/set-user-emoticon', data)
 }
 
 // 移除收藏表情包服务接口
-export const ServeDelCollectEmoticon = data => {
+export const ServeDelCollectEmoticon = (data: Query) => {
   return post('/emoticon/del-collect-emoticon', data)
 }
 
 // 上传表情包服务接口
-export const ServeUploadEmoticon = data => {
+export const ServeUploadEmoticon = (data: Query) => {
   return upload('/emoticon/upload-emoticon', data)
 }

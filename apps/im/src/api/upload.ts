@@ -1,12 +1,13 @@
 import { post, get, upload } from '@/utils/request'
+import type { Query, RequestOptions } from "@/types/api";
 
 // 上传头像裁剪图片服务接口
-export const ServeUploadFileStream = data => {
+export const ServeUploadFileStream = (data: Query) => {
   return post('/upload/file-stream', data)
 }
 
 // 查询大文件拆分信息服务接口
-export const ServeFindFileSplitInfo = (data = {}) => {
+export const ServeFindFileSplitInfo = (data: Query = {}) => {
   return get('/upload/get-file-split-info', data)
 }
 
