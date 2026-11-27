@@ -199,12 +199,12 @@ import {
 } from "vue";
 import { textReplaceLink } from "@/utils/functions";
 import { textReplaceEmoji, emojistwo } from "@/utils/emojis";
-import OtherLink from "@/components/chat/panel/OtherLink.vue";
-import TalkSearchRecord from "@/components/chat/TalkSearchRecord";
-import MeEditor from "@/components/editor/MeEditor";
-import ImageMessage from "@/components/chat/messaege/ImageMessage.vue";
-import PanelHeader from "./PanelHeader";
-import PanelToolbar from "./PanelToolbar";
+import OtherLink from "@/components/chat/panel/other-link.vue";
+import TalkSearchRecord from "@/components/chat/talk-search-record";
+import MeEditor from "@/components/editor/me-editor";
+import ImageMessage from "@/components/chat/message/image-message.vue";
+import PanelHeader from "./panel-header";
+import PanelToolbar from "./panel-toolbar";
 import SocketInstance from "@/im-server/socket-instance";
 import { SvgMentionDown } from "@/core/icons";
 import { formatTime, parseTime, copyTextToClipboard } from "@/utils/functions";

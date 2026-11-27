@@ -95,7 +95,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import MeEditorSystemEmoticon from "@/components/editor/MeEditorSystemEmoticon";
+import MeEditorSystemEmoticon from "@/components/editor/me-editor-system-emoticon";
 import { emojiList as emoji } from "@/utils/emojis";
 import { useEmoticonStore } from "@/stores/emoticon";
 

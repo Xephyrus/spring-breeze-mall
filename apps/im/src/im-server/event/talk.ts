@@ -2,7 +2,7 @@ import Base, { type SocketResource } from "./base";
 import { nextTick } from "vue";
 import type { Component } from "vue";
 import { getAppBridge } from "@/utils/app-bridge";
-import NewMessageNotify from "@/components/notify/NewMessageNotify.vue";
+import NewMessageNotify from "@/components/notify/new-message-notify.vue";
 import { ServeClearTalkUnreadNum, ServeCreateTalkList } from "@/api/chat";
 import { formatTalkItem, toTalk } from "@/utils/talk";
 import { parseTime } from "@/utils/functions";

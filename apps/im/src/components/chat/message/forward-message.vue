@@ -19,7 +19,7 @@
 </template>
 <script setup>
 import { ref } from 'vue'
-import TalkForwardRecord from '@/components/chat/TalkForwardRecord'
+import TalkForwardRecord from '@/components/chat/talk-forward-record'
 
 defineOptions({ name: 'ForwardMessage' })
 

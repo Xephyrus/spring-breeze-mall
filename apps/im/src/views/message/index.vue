@@ -166,11 +166,11 @@ import {
   watch,
 } from "vue";
 import { onBeforeRouteUpdate, useRoute } from "vue-router";
-import MainLayout from "@/views/layout/MainLayout";
-import WelcomeModule from "@/components/layout/WelcomeModule";
-import TalkPanel from "@/components/chat/panel/TalkPanel";
-import UserSearch from "@/components/user/UserSearch";
-import OtherLink from "@/components/chat/panel/OtherLink.vue";
+import MainLayout from "@/views/layout/main-layout";
+import WelcomeModule from "@/components/layout/welcome-module";
+import TalkPanel from "@/components/chat/panel/talk-panel";
+import UserSearch from "@/components/user/user-search";
+import OtherLink from "@/components/chat/panel/other-link.vue";
 import {
   ServeGetTalkList,
   ServeDeleteTalkList,

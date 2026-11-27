@@ -27,9 +27,9 @@ import {
   ServeStoreGetFootPrint,
   ServeStoreGetOrderPrint,
 } from "@/api/user";
-import StoreDetail from "@/components/chat/panel/template/storeDetail.vue";
-import FootPrint from "@/components/chat/panel/template/footPrint.vue";
-import GoodsLink from "@/components/chat/panel/template/goodsLink.vue";
+import StoreDetail from "@/components/chat/panel/template/store-detail.vue";
+import FootPrint from "@/components/chat/panel/template/foot-print.vue";
+import GoodsLink from "@/components/chat/panel/template/goods-link.vue";
 import SocketInstance from "@/im-server/socket-instance";
 import { useTalkStore } from "@/stores/talk";
 import { useDialogueStore } from "@/stores/dialogue";

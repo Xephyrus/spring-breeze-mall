@@ -1,12 +1,12 @@
 import { createApp, h } from "vue";
 import type { App, Component } from "vue";
-import UserCardDetail from "./UserCardDetail.vue";
+import UserCardDetail from "./user-card-detail.vue";
 import router from "@/router";
 import { createPinia } from "pinia";
 import { setupElementPlus } from "@/plugins/element";
 import { setupLegacyMessage } from "@/utils/message";
 import { registerDirectives } from "@/core/directives";
-import LegacyElIcon from "@/components/global/LegacyElIcon.vue";
+import LegacyElIcon from "@/components/global/legacy-el-icon.vue";
 import { resolveLegacyIcon } from "@/core/legacy-icon-map";
 
 /** 用户名片弹窗的调用参数 */

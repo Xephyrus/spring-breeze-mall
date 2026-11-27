@@ -15,9 +15,9 @@ import {
   ReplyMessage,
   VoteMessage,
   LoginMessage,
-} from "@/components/chat/messaege";
+} from "@/components/chat/message";
 import UserCard from "@/components/user/user-card/index";
-import LegacyElIcon from "@/components/global/LegacyElIcon.vue";
+import LegacyElIcon from "@/components/global/legacy-el-icon.vue";
 import { resolveLegacyIcon } from "@/core/legacy-icon-map";
 
 const messageComponents: Component[] = [

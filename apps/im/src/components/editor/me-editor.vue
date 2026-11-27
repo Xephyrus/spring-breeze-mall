@@ -95,11 +95,11 @@
 
 <script setup>
 import { computed, reactive, ref, watch } from "vue";
-import MeEditorEmoticon from "./MeEditorEmoticon";
-import MeEditorFileManage from "./MeEditorFileManage";
-import MeEditorRecorder from "./MeEditorRecorder";
-import MeEditorVote from "./MeEditorVote";
-import TalkCodeBlock from "@/components/chat/TalkCodeBlock";
+import MeEditorEmoticon from "./me-editor-emoticon";
+import MeEditorFileManage from "./me-editor-file-manage";
+import MeEditorRecorder from "./me-editor-recorder";
+import MeEditorVote from "./me-editor-vote";
+import TalkCodeBlock from "@/components/chat/talk-code-block";
 import { getPasteImgs, getDragPasteImg } from "@/utils/editor";
 import { findTalk } from "@/utils/talk";
 import { ElNotification } from "@/utils/message";

@@ -1,5 +1,5 @@
 import { createApp, h, onMounted, onUnmounted, type App, type VNode } from "vue";
-import LegacyElIcon from "@/components/global/LegacyElIcon.vue";
+import LegacyElIcon from "@/components/global/legacy-el-icon.vue";
 
 /** 右键菜单项 */
 export interface ContextmenuItem {
