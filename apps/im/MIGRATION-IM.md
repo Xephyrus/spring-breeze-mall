@@ -297,3 +297,19 @@ Components({ dts: "src/components.d.ts", dirs: [], resolvers: [ElementPlusResolv
 但一行里可能同时导入多个名称 —— `import { formatSize as renderSize, download, imgZoom }`
 里只有前两个未使用，整行删除把**在用的 `imgZoom` 一起删掉**了，`ElNotification` 同理。
 后来改为：整行 import 仅在**单绑定**时才自动删除，多绑定一律人工处理。
+#### 5.3 与 `packages/shared` 的复用评估（M4.1）
+
+结论：**im 不需要接入 `packages/shared` 的 storage / validators / http**，理由是核对后没有可安全复用的重叠面。
+核对过程与依据如下。
+
+| shared 提供 | im 现状 | 结论 |
+|---|---|---|
+| `storage.setStore/getStore/removeStore`（JSON 序列化 + 空串兜底） | `utils/auth.ts` 用 `localStorage` 直读直写，且 `getUserInfo()` 需要 **base64 解码**、`getToken()` 语义是 `string \| null`（调用方用真值判断） | 语义不同，替换会改变返回类型与解码逻辑，**不复用** |
+| `validators`（Element 表单校验回调 `RuleValidator`） | im 原来的 `utils/validate.ts` 是 `isEmail/isMobile/isURL/isNumber/isBoolean/isWeiXin` 这类**布尔断言**，且**全仓库 0 处引用** | 纯死代码，**直接删除** |
+| `http.createHttpClient`（axios 工厂 + hooks） | im 的 `utils/request.ts` 深度耦合 `element-plus` 的 403 弹窗 / 400 toast、`qs` 表单编码、`upload` 的 `apiBase` 覆盖 | 接入需要把三类差异全部做成 hooks，改的是 **WebSocket 鉴权链路的上游**，风险 >> 收益，**暂不接入** |
+
+**当前处置**：
+- 删除 `apps/im/src/utils/validate.ts`（死代码，0 引用）；
+- `request.ts` / `auth.ts` 保持现状，等 im 也走「多端共享 axios 约定」时再统一迁移。
+
+> 判断标准：复用应当降低维护成本，而不是把「两个端恰好同名」的函数强行合并。此处三者都属于后者。
