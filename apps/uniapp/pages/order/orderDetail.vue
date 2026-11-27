@@ -304,7 +304,7 @@ import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import { getExpress, getPackage } from '@/api/trade.js'
 import { cancelOrder, confirmReceipt, getOrderDetail } from '@/api/order.js'
-import shares from '@/components/m-share/index'
+import shares from '@/components/m-share/index.vue'
 import { getClearReason } from '@/api/after-sale.js'
 import storage from '@/utils/storage'
 import {

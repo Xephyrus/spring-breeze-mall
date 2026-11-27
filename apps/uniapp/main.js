@@ -1,5 +1,5 @@
 import { createSSRApp, computed } from 'vue'
-import App from './App'
+import App from './App.vue'
 import uviewPlus, { setConfig } from 'uview-plus'
 import store from './store'
 import config from '@/config/config'

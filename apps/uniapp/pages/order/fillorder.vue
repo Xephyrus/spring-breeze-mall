@@ -431,7 +431,7 @@ import * as API_Address from '@/api/address'
 import * as API_Order from '@/api/order'
 import * as API_Trade from '@/api/trade'
 import configs from '@/config/config'
-import invoices from '@/pages/order/invoice/setInvoice'
+import invoices from '@/pages/order/invoice/setInvoice.vue'
 import {
   unitPrice,
   goodsFormatPrice,

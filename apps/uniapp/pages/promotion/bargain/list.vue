@@ -19,7 +19,7 @@
 import { ref, computed } from 'vue'
 import { onShow, onReachBottom } from '@dcloudio/uni-app'
 import { getBargainList } from '@/api/promotions'
-import goodsTemplate from '@/components/m-goods-list/promotion'
+import goodsTemplate from '@/components/m-goods-list/promotion.vue'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

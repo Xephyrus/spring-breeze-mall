@@ -59,7 +59,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
-import popupGoods from '@/components/m-buy/goods'
+import popupGoods from '@/components/m-buy/goods.vue'
 import { getPointsGoodsDetail } from '@/api/promotions'
 import { unitPrice } from '@/utils/filters'
 

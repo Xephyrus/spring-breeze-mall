@@ -135,6 +135,38 @@
 **import 扩展名**：模块从 `.js` 改名 `.ts` 后，78 + 26 处 `@/utils/xxx.js` 引用必须去掉 `.js`。
 本轮用一次性脚本处理（`(['"][^'"]*?<模块路径>)\.js(['"])` → 去扩展名），并在改完后 grep 校验零残留。
 
+### U2 进展（进行中）
+
+| 批次 | 内容 | 效果 |
+|---|---|---|
+| U2-a | 新增 `types/global-augment.d.ts`：`ComponentCustomProperties`（`$store`/`$mainColor`/`$lightColor`/`$aiderLightColor`/`$u`）、`interface Event`（`detail`/`target.dataset`/`touches`/`changedTouches`）、`Page.PageInstance.__page__`、`PlusAndroidInstanceObject`（`importClass`/`invoke`/`requestPermissions`/`runtimeMainActivity`） | 215 → 170 |
+| U2-b | 新增 `types/assets.d.ts`：`*.png/jpg/jpeg/gif/webp/svg/mp3/mp4` 资源模块 | （与 a 合并统计） |
+| U2-c | 给 53 处无扩展名 `.vue` 导入补 `.vue`（脚本按「能解析到真实文件」精确匹配，未匹配的 118 处是 `@/store`、`js_sdk/*` 等非 .vue 目标，无需处理） | 170 → 118 |
+| U2-d | `PageInstance` 归属修正：它声明在全局命名空间 `Page` 里，直接写全局 `interface PageInstance` 不会合并 | 118 → 116 |
+
+**一个类型细节值得记**：`PageInstance` 是 `declare namespace Page { interface PageInstance<D, T> }`，
+补类型必须写成 `declare global { namespace Page { interface PageInstance<D, T> {...} } }`；
+写成全局 `interface PageInstance` 不会报错，但**静默不生效**。
+
+### 剩余 typecheck 错误（116 条，长尾）
+
+曲线：**274 → 215（U1）→ 170（全局声明）→ 118（.vue 扩展名）→ 116（命名空间修正）**
+
+| 错误码 | 数量 | 性质 |
+|---|---:|---|
+| TS2339 | 36 | 零散属性缺失（`$refs` 组件实例、`PageInstance` 之外的私有字段） |
+| TS2345 | 27 | 实参类型不匹配（`canvasToTempFilePath` 的 `canvas`、uni API 重载） |
+| TS2322 | 10 | 赋值类型不匹配 |
+| TS2554 | 8 | 形参个数（`uni` API 重载差异） |
+| TS2305 | 7 | 命名导出不存在 |
+| TS2304 | 5 | 标识符未定义 |
+
+分布很散：Top 文件是 `pages/promotion/live/room.vue`(11)、`pages/passport/login.vue`(8)、
+`pages/cart/payment/payOrder.vue`(5)、`pages/tabbar/user/my.vue`(5)，其余都在 1~4 条。
+
+这些都是**逐点判断型**问题（要用 `as` 断言还是补声明，取决于该处运行时到底传什么），
+不适合批量脚本；按本方案的原则，改的时候只补类型、不改行为。
+
 ### 剩余阶段
 
 | 阶段 | 内容 | 完成标准 |

@@ -150,7 +150,7 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { onShareAppMessage } from '@dcloudio/uni-app'
 // #endif
 import { useStore } from '@/store'
-import popupGoods from '@/components/m-buy/goods'
+import popupGoods from '@/components/m-buy/goods.vue'
 import {
   getBargainDetail,
   getBargainActivity,
@@ -158,7 +158,7 @@ import {
   getBargainLog,
   helpBargain,
 } from '@/api/promotions'
-import shares from '@/components/m-share/index'
+import shares from '@/components/m-share/index.vue'
 import config from '@/config/config'
 import { unitPrice, noPassByName, isLogin } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'

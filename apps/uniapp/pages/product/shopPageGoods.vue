@@ -20,7 +20,7 @@
 import { reactive, ref } from 'vue'
 import { onLoad, onReachBottom, onShow } from '@dcloudio/uni-app'
 import { getGoodsList } from '@/api/goods.js'
-import goodsTemplate from '@/components/m-goods-list/list'
+import goodsTemplate from '@/components/m-goods-list/list.vue'
 
 const title = ref('')
 const routerVal = ref<any>('')
