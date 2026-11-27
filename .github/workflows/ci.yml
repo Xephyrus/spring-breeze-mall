@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - 'apps/manager/**'
+      - 'apps/seller/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -15,6 +16,7 @@ on:
     branches: [main]
     paths:
       - 'apps/manager/**'
+      - 'apps/seller/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -68,6 +70,43 @@ jobs:
       # 构建门：产物构建通过（大项目需要抬高 Node 堆，否则 Rolldown 会 OOM）
       - name: Build
         run: pnpm --filter @spring-breeze/manager build
+        env:
+          NODE_OPTIONS: --max-old-space-size=3072
+
+  seller:
+    name: seller · typecheck / lint / build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.14.0
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 类型门：seller 已全量 TS（strict），装修子系统仍豁免命名但同样过类型检查
+      - name: Typecheck (vue-tsc)
+        run: pnpm --filter @spring-breeze/seller typecheck
+
+      # Lint 门：ratchet 值写在 seller 的 package.json lint 脚本里（当前 58）
+      - name: Lint (ratchet)
+        run: pnpm --filter @spring-breeze/seller lint
+
+      - name: Build
+        run: pnpm --filter @spring-breeze/seller build
         env:
           NODE_OPTIONS: --max-old-space-size=3072
 
