@@ -1,3 +1,4 @@
+import type { App } from "vue";
 import empty from "./empty/Main.vue";
 import drawer from "./drawer/Main.vue";
 import Header from "@/components/header/Header.vue";
@@ -8,7 +9,8 @@ import card from "@/components/card/index.vue";
 import cateNav from "@/components/nav/CateNav.vue";
 import UserCenterLayout from "@/components/userCenter/Layout.vue";
 
-export function registerGlobalComponents(app) {
+/** 注册一批按 kebab/驼峰标签在模板里直接使用的全局组件 */
+export function registerGlobalComponents(app: App): void {
   app.component("empty", empty);
   app.component("drawer", drawer);
   app.component("BaseHeader", Header);

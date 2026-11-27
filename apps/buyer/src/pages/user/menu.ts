@@ -1,3 +1,16 @@
+/** 用户中心侧边菜单项 */
+export interface UserMenuItem {
+  icon: string;
+  title: string;
+  path?: string;
+  children?: UserMenuItem[];
+  [key: string]: unknown;
+}
+
+/** 一级菜单（含 menus 子项） */
+export interface UserMenuGroup extends UserMenuItem {
+  menus: UserMenuItem[];
+}
 //  * icon  图标
 //  * title 一级菜单
 //  * display 是否显示菜单
@@ -115,7 +128,7 @@ const member = [{
 //   display: true
 // }]
 
-let menuList = []
+const menuList: UserMenuGroup[] = []
 menuList.push(order[0], member[0])
 
 export default menuList

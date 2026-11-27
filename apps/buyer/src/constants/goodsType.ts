@@ -1,13 +1,48 @@
 /**
- * 卡密商品（E_COUPON / 电子卡券）— 买家端公共常量与工具
+ * 卡密商品（E_COUPON / 电子卡券）— 买家端公共常量与工具。
  *
  * 与 VIRTUAL_GOODS（核销型虚拟）区分：E_COUPON 常规促销走 BUY_NOW，
  * 特殊活动走 POINTS / KANJIA；禁止 CART / VIRTUAL。
- * 需求：lilishop/docs/requirements/card-key-goods-v4.md · M-02
  *
- * @author Mike
- * @date 2026-07-31
+ * 本文件由 `goodsType.js` 就地补类型，函数体逻辑保持原样。
  */
+
+/** 卡密履约行（由订单行归一化而来） */
+export interface CardKeyFulfillLine {
+  key: string | number | undefined;
+  goodsName?: string;
+  status: string;
+  message?: string;
+  cardKeys: Array<Record<string, unknown>>;
+  isGift: boolean;
+}
+
+/** 订单行 / SKU 的宽松结构（后端字段按需取用） */
+export interface CardKeyItemLike {
+  goodsType?: string;
+  quantity?: number | string;
+  cardKeyFulfillStatus?: string;
+  cardKeyDelivered?: unknown;
+  cardKeyFulfillMessage?: string;
+  cardKeys?: Array<Record<string, unknown>>;
+  sn?: string;
+  orderSn?: string;
+  id?: string | number;
+  skuId?: string | number;
+  goodsName?: string;
+  isGift?: boolean;
+  [key: string]: unknown;
+}
+
+/** 结算结果（createTrade 返回） */
+export interface TradeResultLike {
+  needPay?: boolean;
+  paid?: boolean;
+  price?: number | string | null;
+  flowPrice?: number | string | null;
+  [key: string]: unknown;
+}
+
 export const E_COUPON_GOODS_TYPE = "E_COUPON";
 export const E_COUPON_ORDER_TYPE = "E_COUPON";
 
@@ -19,11 +54,11 @@ export const E_COUPON_CART_BUY_NOW = "BUY_NOW";
 export const E_COUPON_CART_POINTS = "POINTS";
 export const E_COUPON_CART_KANJIA = "KANJIA";
 
-export function isECoupon(goodsType) {
+export function isECoupon(goodsType?: string | null): boolean {
   return goodsType === E_COUPON_GOODS_TYPE;
 }
 
-export function isECouponOrder(orderType) {
+export function isECouponOrder(orderType?: string | null): boolean {
   return orderType === E_COUPON_ORDER_TYPE;
 }
 
@@ -31,17 +66,17 @@ export function isECouponOrder(orderType) {
 export const E_COUPON_AFTER_SALE_HINT =
   "卡密交付后不支持买家售后，请确认商品信息后再购买。";
 
-export function eCouponAfterSaleHint() {
+export function eCouponAfterSaleHint(): string {
   return E_COUPON_AFTER_SALE_HINT;
 }
 
 /** 可售库存：E_COUPON 读 SKU quantity（由卡池 syncSkuStock 同步） */
-export function getECouponStock(sku) {
+export function getECouponStock(sku?: CardKeyItemLike | null): number {
   if (!sku) return 0;
   return Number(sku.quantity) || 0;
 }
 
-export function getECouponMaxBuyNum(sku) {
+export function getECouponMaxBuyNum(sku?: CardKeyItemLike | null): number {
   const stock = getECouponStock(sku);
   if (stock <= 0) return 1;
   return Math.min(stock, E_COUPON_MAX_BUY_NUM);
@@ -49,11 +84,14 @@ export function getECouponMaxBuyNum(sku) {
 
 /**
  * 解析 E_COUPON 结算 cartType / way
- * @param {object} opts
- * @param {string} [opts.routeWay] 路由 query.way
- * @param {'BUY_NOW'|'POINTS'|'KANJIA'} [opts.action] 用户点击的购买入口
+ *
+ * @param opts.routeWay 路由 query.way
+ * @param opts.action 用户点击的购买入口
  */
-export function resolveECouponCartType({ routeWay, action } = {}) {
+export function resolveECouponCartType({
+  routeWay = "",
+  action = "",
+}: { routeWay?: string; action?: string } = {}): string {
   if (action === E_COUPON_CART_POINTS) return E_COUPON_CART_POINTS;
   if (action === E_COUPON_CART_KANJIA) return E_COUPON_CART_KANJIA;
   if (action === E_COUPON_CART_BUY_NOW) return E_COUPON_CART_BUY_NOW;
@@ -64,7 +102,7 @@ export function resolveECouponCartType({ routeWay, action } = {}) {
 }
 
 /** 详情页 promotionMap 初始结构（切换 SKU 时完整重置） */
-export function createEmptyPromotionMap() {
+export function createEmptyPromotionMap(): Record<string, unknown> {
   return {
     SECKILL: null,
     SINGLE_REDUCTION: null,
@@ -80,34 +118,37 @@ export const CARD_KEY_FULFILL_STATUS = {
   DELIVERED: "DELIVERED",
   FAILED: "FAILED",
   NOT_APPLICABLE: "NOT_APPLICABLE",
-};
+} as const;
 
-export const CARD_KEY_FULFILL_STATUS_TEXT = {
+export const CARD_KEY_FULFILL_STATUS_TEXT: Record<string, string> = {
   PENDING: "待发放",
   DELIVERED: "已发放",
   FAILED: "发放失败",
   NOT_APPLICABLE: "不适用",
 };
 
-export function cardKeyFulfillAlertType(status) {
-  const map = {
+export function cardKeyFulfillAlertType(status?: string): string {
+  const map: Record<string, string> = {
     PENDING: "info",
     DELIVERED: "success",
     FAILED: "warning",
   };
-  return map[status] || "info";
+  return (status && map[status]) || "info";
 }
 
-export function formatCardKeyFulfillStatus(status) {
-  return CARD_KEY_FULFILL_STATUS_TEXT[status] || status || "—";
+export function formatCardKeyFulfillStatus(status?: string): string {
+  return (status && CARD_KEY_FULFILL_STATUS_TEXT[status]) || status || "—";
 }
 
-export function resolveCardKeyFulfillMessage(line) {
-  if (line && line.message) return line.message;
+/** 传入的是「履约行」（带 status / message），不是原始订单行 */
+export function resolveCardKeyFulfillMessage(
+  line?: Pick<CardKeyFulfillLine, "status" | "message"> | null
+): string {
+  if (line && line.message) return String(line.message);
   return formatCardKeyFulfillStatus(line?.status);
 }
 
-export function isCardKeyFulfillApplicable(item) {
+export function isCardKeyFulfillApplicable(item?: CardKeyItemLike | null): boolean {
   if (!item) return false;
   const status = item.cardKeyFulfillStatus;
   if (status) return status !== CARD_KEY_FULFILL_STATUS.NOT_APPLICABLE;
@@ -115,7 +156,7 @@ export function isCardKeyFulfillApplicable(item) {
   return item.goodsType === E_COUPON_GOODS_TYPE;
 }
 
-function normalizeCardKeyFulfillLine(source) {
+function normalizeCardKeyFulfillLine(source: CardKeyItemLike): CardKeyFulfillLine {
   const status =
     source.cardKeyFulfillStatus ||
     (source.cardKeyDelivered
@@ -136,8 +177,10 @@ function normalizeCardKeyFulfillLine(source) {
 }
 
 /** 汇总当前订单 orderItems 中的卡密履约行（不含满赠子单；赠品卡密在赠品子单详情单独查看） */
-export function collectCardKeyFulfillLines(orderItems = []) {
-  const lines = [];
+export function collectCardKeyFulfillLines(
+  orderItems: CardKeyItemLike[] = []
+): CardKeyFulfillLine[] {
+  const lines: CardKeyFulfillLine[] = [];
   (orderItems || []).forEach((item) => {
     if (!isCardKeyFulfillApplicable(item)) return;
     lines.push(normalizeCardKeyFulfillLine(item));
@@ -145,8 +188,11 @@ export function collectCardKeyFulfillLines(orderItems = []) {
   return lines;
 }
 
-export function orderHasCardKeySection({ orderItems, isECouponOrder } = {}) {
-  if (isECouponOrder) return true;
+export function orderHasCardKeySection({
+  orderItems = [],
+  isECouponOrder: isCouponOrder = false,
+}: { orderItems?: CardKeyItemLike[]; isECouponOrder?: boolean } = {}): boolean {
+  if (isCouponOrder) return true;
   if (collectCardKeyFulfillLines(orderItems).length > 0) return true;
   return (orderItems || []).some(
     (item) =>
@@ -155,8 +201,11 @@ export function orderHasCardKeySection({ orderItems, isECouponOrder } = {}) {
   );
 }
 
-export function flattenCardKeyFulfillLines(lines, withGoodsName = false) {
-  const rows = [];
+export function flattenCardKeyFulfillLines(
+  lines: CardKeyFulfillLine[] = [],
+  withGoodsName = false
+): Array<Record<string, unknown>> {
+  const rows: Array<Record<string, unknown>> = [];
   (lines || []).forEach((line) => {
     if (line.status !== CARD_KEY_FULFILL_STATUS.DELIVERED) return;
     (line.cardKeys || []).forEach((ck) => {
@@ -167,17 +216,20 @@ export function flattenCardKeyFulfillLines(lines, withGoodsName = false) {
 }
 
 /** 当前订单是否含已交付卡密（仅 orderItems，不含满赠子单） */
-export function orderHasCardKeyContent(orderItems) {
+export function orderHasCardKeyContent(orderItems?: CardKeyItemLike[]): boolean {
   return flattenCardKeyFulfillLines(collectCardKeyFulfillLines(orderItems)).length > 0;
 }
 
 /** 扁平化当前订单 orderItems 卡密 */
-export function flattenOrderCardKeys(orderItems, withGoodsName = false) {
+export function flattenOrderCardKeys(
+  orderItems?: CardKeyItemLike[],
+  withGoodsName = false
+): Array<Record<string, unknown>> {
   const lines = collectCardKeyFulfillLines(orderItems);
   if (lines.some((line) => line.status)) {
     return flattenCardKeyFulfillLines(lines, withGoodsName);
   }
-  const rows = [];
+  const rows: Array<Record<string, unknown>> = [];
   (orderItems || []).forEach((item) => {
     if (!item.cardKeyDelivered || !item.cardKeys || !item.cardKeys.length) return;
     item.cardKeys.forEach((ck) => {
@@ -188,7 +240,10 @@ export function flattenOrderCardKeys(orderItems, withGoodsName = false) {
 }
 
 /** createTrade 后是否无需进入收银台（积分单 / 0 元 / 服务端已标记） */
-export function shouldSkipPaymentPage(tradeResult, way) {
+export function shouldSkipPaymentPage(
+  tradeResult?: TradeResultLike | null,
+  way?: string
+): boolean {
   if (!tradeResult) return false;
   if (way === E_COUPON_CART_POINTS) return true;
   if (tradeResult.needPay === false || tradeResult.paid === true) return true;

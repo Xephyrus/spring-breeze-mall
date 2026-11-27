@@ -286,3 +286,64 @@ buyer 与 im 各有一份 `Foundation.js`，函数名与逻辑高度相似。第
 | `lint` | ✅ 0 error / 0 warning |
 | dev | ✅ `/`、`/home` 与 element / filters / stores/app / md5 四个新模块均 200 |
 | 剩余 `.js` | **11 个**（M2 起始 42 个，含 1 个豁免） |
+### 2.12 router + 其余基础设施（M2 收尾）
+
+**router/index.js → router/index.ts（382 行）**
+
+| 改动 | 说明 |
+|---|---|
+| `routes` 抽成常量 | `const routes: RouteRecordRaw[] = [...]`，`createRouter({ history, routes })` —— 这样每条路由都有类型检查 |
+| import 补 `.vue` | `@/pages/Xxx` 全部改成 `@/pages/Xxx.vue`（TS 不解析无扩展名，与 im/seller 同处理） |
+| 守卫参数 | `(to, _from, next)`；`to.meta.title as string \| undefined ?? title` |
+
+**结构核对（改完后逐项比对原文件）**
+
+| 项 | 原 | 新 |
+|---|---:|---:|
+| `path:` 条目 | 53 | 53 |
+| `name:` 条目 | 52 | 52 |
+| `import(` 懒加载 | 50 | 50 |
+| `component:` | 51 | 51 |
+
+**其余 6 个文件**
+
+| 文件 | 要点 |
+|---|---|
+| `main.js → main.ts` | `linkTo(url: string)`、`connectCs(sign): void`；`components/global.js`、`api/common.js` 的引用去扩展名 |
+| `components/global.js → .ts` | `registerGlobalComponents(app: App)` |
+| `components/verify/verify.js → .ts` | 两个验证码接口带返回类型 |
+| `components/drawer/config.js → .ts` | 新增 `DrawerConfig` / `DrawerMenuItem` 接口 |
+| `components/indexDecorate/registry.js → .ts` | `COMPONENT_MAP: Record<string, Component>`、`resolveComponent(): Component \| null` |
+| `composables/useSiteSettings.js → .ts` | `SiteSettings` 接口；`loadSiteSettings(): Promise<SiteSettings \| null>` |
+| `constants/goodsType.js → .ts`（203 行） | 新增 `CardKeyFulfillLine` / `CardKeyItemLike` / `TradeResultLike`；24 个导出全部带签名 |
+| `pages/home/enumeration.js → .ts` | `StatusOption` + `StatusOption[]` |
+| `pages/user/menu.js → .ts` | `UserMenuItem` / `UserMenuGroup` |
+
+**一处必须自我纠正的地方**
+
+写 `goodsType.ts` 时，我给 `resolveCardKeyFulfillMessage` 加了一个「先看 `cardKeyFulfillMessage` 再看 `message`」的分支 ——
+**这是我凭空加的，原函数只有 `line.message` 一条路径**。发现后立刻还原为原始逻辑，只补类型不改行为。
+
+同时把参数类型从 `CardKeyItemLike`（原始订单行）纠正为 `Pick<CardKeyFulfillLine, "status" | "message">`（履约行）——
+原函数读的是 `line.status`，用订单行类型是错的。
+
+**另一处：`index.html` 入口**
+
+`main.js` 改名 `main.ts` 后，`index.html` 里仍写着 `/src/main.js`。dev server 因为解析宽松仍能跑（实测 200），
+但**生产构建会找不到入口**。已改为 `/src/main.ts` 并重新构建验证。
+
+### 2.13 M2 完成状态
+
+| 检查 | 结果 |
+|---|---|
+| `typecheck` | ✅ 0 错误 |
+| `build` | ✅ 4.82s |
+| `lint` | ✅ 0 error / 0 warning |
+| dev | ✅ `/`、`/home`、`/login`、`/src/main.ts`、`/src/router/index.ts` 均 200 |
+| `src` 下 `.js` | **1 个**（`double11Preset.js`，1,967 行纯装修预设数据，**豁免**） |
+
+| 类型 | 数量 | 行数 |
+|---|---:|---:|
+| `.ts` | 约 45 | — |
+| `.vue` | 123 | 40,550 |
+| `.js`（豁免） | 1 | 1,967 |

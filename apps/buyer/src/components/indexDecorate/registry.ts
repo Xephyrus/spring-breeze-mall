@@ -1,3 +1,4 @@
+import type { Component } from "vue";
 /**
  * PC 前台装修楼层组件注册表
  * 映射 6 大分类、24 个组件
@@ -25,7 +26,7 @@ import TitleBar from './components/TitleBar.vue';
 import ArticleContent from './components/ArticleContent.vue';
 import NoticeBar from './components/NoticeBar.vue';
 
-export const COMPONENT_MAP = {
+export const COMPONENT_MAP: Record<string, Component> = {
   // 1. 结构 (3)
   topBar: TopBar,
   searchHeader: SearchHeader,
@@ -67,7 +68,7 @@ export const COMPONENT_MAP = {
 /**
  * 根据组件 type 解析 Vue 组件
  */
-export function resolveComponent(type) {
+export function resolveComponent(type?: string | null): Component | null {
   if (!type) return null;
   return COMPONENT_MAP[type] || null;
 }

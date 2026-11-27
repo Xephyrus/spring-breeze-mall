@@ -101,7 +101,7 @@ export function getBaseSite(){
 }
 
 // 获取主题色配置
-export function getThemeSetting() {
+export function getThemeSetting(): Promise<{ success?: boolean; result?: { settingValue?: string } }> {
   return request({
     url: `${buyerUrl}/buyer/common/site/theme`,
     method: Method.GET,

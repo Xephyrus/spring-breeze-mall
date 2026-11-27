@@ -1,4 +1,19 @@
-const config = {
+export interface DrawerMenuItem {
+  icon: string;
+  title: string;
+  path: string;
+  display: boolean;
+  titleShow: boolean;
+  badge?: string | number;
+}
+
+export interface DrawerConfig {
+  closable: boolean;
+  mask: boolean;
+  menuList: DrawerMenuItem[];
+}
+
+const config: DrawerConfig = {
   closable: true, // 是否显示右上角关闭按钮
   mask: true, // 是否显示遮罩层
 

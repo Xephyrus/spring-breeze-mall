@@ -1,6 +1,11 @@
+export interface StatusOption {
+  name: string;
+  status: string;
+}
+
 
 // 订单状态
-export const orderStatusList = [
+export const orderStatusList: StatusOption[] = [
   {
     name: '全部',
     status: 'ALL'
@@ -43,7 +48,7 @@ export const orderStatusList = [
   }
 ]
 // 订单售后状态
-export const afterSaleStatusList = [
+export const afterSaleStatusList: StatusOption[] = [
   {
     name: '申请中',
     status: 'APPLY'

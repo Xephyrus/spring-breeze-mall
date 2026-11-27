@@ -7,11 +7,11 @@ import App from "./App.vue";
 import { router } from "./router/index";
 import { setupElementPlus } from "@/plugins/element";
 import { setupLegacyMessage } from "@/utils/message";
-import { registerGlobalComponents } from "@/components/global.js";
+import { registerGlobalComponents } from "@/components/global";
 import * as filters from "./plugins/filters";
 import storage from "@/plugins/storage";
 import { fetchAndApplyTheme } from "@/utils/theme";
-import { getThemeSetting } from "@/api/common.js";
+import { getThemeSetting } from "@/api/common";
 import config from "@/config";
 import { openLink } from "@/utils/buyerLogin";
 
@@ -37,7 +37,7 @@ app.config.globalProperties.$filters = filters;
 app.config.globalProperties.Cookies = storage;
 app.config.globalProperties.$inputMaxLength = inputMaxLength;
 
-app.config.globalProperties.linkTo = function (url) {
+app.config.globalProperties.linkTo = function (url: string) {
   openLink(url, router);
 };
 
