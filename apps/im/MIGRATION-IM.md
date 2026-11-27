@@ -228,3 +228,42 @@ Tomcat 的 WebSocket 升级过滤器**不在过滤器链里**（只有启动时 
 | M4 | 消费 `packages/shared`；element-plus 改按需引入 |
 | M5 | 告警 249 → 0，ratchet 收紧；CI 增加 im job |
 | M6 | `SMOKE-IM.md`（含上面的 WebSocket 手工验收步骤）+ README 更新 |
+
+---
+
+### 五、M4 工程化治理
+
+#### 5.1 element-plus 按需引入（M4.2）
+
+原实现是全量引入：
+
+```ts
+import ElementPlus from "element-plus";
+import "element-plus/dist/index.css";
+app.use(ElementPlus, { locale: zhCn });
+```
+
+改为按需（`unplugin-vue-components` + `ElementPlusResolver`）：
+
+```ts
+// vite.config.ts
+Components({ dts: "src/components.d.ts", dirs: [], resolvers: [ElementPlusResolver()] })
+```
+
+- `dirs: []`：**只处理 el-\***，不扫描 `src/components`。本地组件仍由各自的 import /
+  `app.component` 注册，避免两套注册机制并存。
+- 语言包改由 `App.vue` 的 `<el-config-provider :locale="zhCn">` 提供。
+- 编程式 API（`ElMessage` / `ElNotification` / `ElMessageBox` / `ElLoading`）不走模板解析，
+  样式在 `plugins/element.ts` 里显式引入（base / message / message-box / notification / loading / overlay）。
+
+**构建产物对比**（`apps/im/dist` 下 js + css 合计）：
+
+| 项 | 改造前 | 改造后 | 变化 |
+|---|---:|---:|---:|
+| element-plus JS | 1,008.09 kB（gzip 323.97） | **365.50 kB（gzip 125.76）** | −63% |
+| element-plus CSS | 362.16 kB（gzip 48.25） | **110.68 kB（gzip 15.78）** | −69% |
+| **合计** | **1,809 kB** | **935 kB** | **−874 kB（−48%）** |
+
+> 验证方式：除了 build 成功，还拉取 dev server 编译后的 `talk-panel.vue` 产物，
+> 确认 `el-*` 已被改写成 `import { ElContainer } from "element-plus/es"` +
+> 组件级 `style/css.js` 引入，而不是留成运行时 `resolveComponent("el-container")`。

@@ -362,6 +362,12 @@ importers:
       less:
         specifier: 'catalog:'
         version: 4.9.1(supports-color@8.1.1)
+      typescript:
+        specifier: 'catalog:'
+        version: 5.9.3
+      unplugin-vue-components:
+        specifier: 0.27.5
+        version: 0.27.5(@babel/parser@7.29.15)(rollup@4.68.8)(supports-color@8.1.1)(vue@3.5.46(typescript@5.9.3))
       vite:
         specifier: 'catalog:'
         version: 8.3.8(@types/node@26.6.6)(less@4.9.1(supports-color@8.1.1))(sass@1.108.2)(terser@5.51.4)(yaml@2.9.1)
@@ -371,6 +377,9 @@ importers:
       vite-plugin-svg-icons:
         specifier: ^2.0.1
         version: 2.0.1(supports-color@8.1.1)(vite@8.3.8(@types/node@26.6.6)(less@4.9.1(supports-color@8.1.1))(sass@1.108.2)(terser@5.51.4)(yaml@2.9.1))
+      vue-tsc:
+        specifier: 'catalog:'
+        version: 3.3.14(typescript@5.9.3)
 
   apps/manager:
     dependencies:
