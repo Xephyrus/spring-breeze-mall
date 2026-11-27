@@ -27,13 +27,16 @@ interface SellerBaseConfig {
   };
 }
 
-declare global {
-  const BASE: SellerBaseConfig;
+/**
+ * `public/config.js` 以 <script> 方式注入的全局对象。
+ * 注意：本文件是全局脚本（无 import/export），因此直接在顶层 declare，
+ * 不能用 `declare global {}`（那是模块文件里的写法）。
+ */
+declare const BASE: SellerBaseConfig;
 
-  interface Window {
-    BASE?: SellerBaseConfig;
-    _AMapSecurityConfig?: { securityJsCode: string };
-  }
+interface Window {
+  BASE?: SellerBaseConfig;
+  _AMapSecurityConfig?: { securityJsCode: string };
 }
 
 declare module "*.vue" {
@@ -46,3 +49,4 @@ declare module "vue-qr";
 declare module "dplayer";
 declare module "hls";
 declare module "@amap/amap-jsapi-loader";
+declare module "uuid";

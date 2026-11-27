@@ -967,7 +967,7 @@ import { onBeforeRouteLeave, useRoute, useRouter } from "vue-router";
 import { Box, DocumentCopy, Clock, Van } from "@element-plus/icons-vue";
 import * as API_Order from "@/api/order";
 import * as API_Logistics from "@/api/logistics";
-import * as RegExp from "@/libs/RegExp.js";
+import * as RegExp from "@/libs/reg-exp";
 
 import multipleMap from "@/views/my-components/map/multiple-map";
 import vueQr from "vue-qr";

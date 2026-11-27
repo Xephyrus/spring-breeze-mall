@@ -60,6 +60,48 @@
 
 ---
 
+## M2 · TypeScript 渐进引入
+
+### 2.1 底层 libs 与共享包落地（✅ 2026-11-28）
+
+**改为从 `packages/shared` 转发（删本地实现）**
+
+| 文件 | 处理 |
+|---|---|
+| `src/libs/storage.js` → `storage.ts` | 转发 `@spring-breeze/shared` 的 `setStore/getStore/removeStore` |
+| `src/libs/validate.js` → `validate.ts` | 转发 `validatePassword/validateMobile/validateIDCard/isInteger/isMoney`，保留 `validatetoFixedNew` |
+| `src/libs/RegExp.js` → `reg-exp.ts` | 转发 shared 的 `regexp` 命名空间（11 个正则），调用方 2 处 import 同步更新 |
+
+**改为 TS 实现**
+
+| 文件 | 说明 |
+|---|---|
+| `src/libs/axios.js` → `axios.ts` | 全量类型化：`AxiosInstance`、`ResultMessage<T>`、`RefreshableConfig`；11 个请求方法都带泛型 |
+| `src/libs/lazyLoading.js` → `lazyLoading.ts` | 视图懒加载解析器，`Record<string, () => Promise<unknown>>` |
+
+**删除（死代码）**
+
+- `src/libs/emoji.js`（全项目 0 引用）
+- `src/utils/validate.js`（全项目 0 引用，且与 libs/validate 重复）
+
+**配套改动**
+
+- `eslint.config.js` 升级为 `typescript-eslint`（与 manager 同构）：TS 解析器先于 Vue，`.vue` 显式 `parserOptions.parser`；`no-unused-expressions` / `ban-ts-comment` / `no-side-effects-in-computed-properties` 降级为告警
+- `src/env.d.ts` 修正：全局脚本文件不能再包 `declare global`，改顶层 `declare const BASE`；新增 `declare module "uuid"`
+
+**验证**
+
+| 项 | 结果 |
+|---|---|
+| `typecheck` | ✅ 0 错误 |
+| `lint` | ✅ 0 error / 58 warning（ratchet 58；新增 12 条为 `axios.ts` 的 `<T = any>` 默认泛型） |
+| `build` | ✅ 6.60s |
+| dev server | ✅ HTTP 200 |
+
+> `libs/util.js`（575 行）、`libs/routerJson.js`（593 行）、`libs/seller-navigation.js`（79 行）留到 2.2/2.3 批次处理。
+
+---
+
 ## 待办（后续里程碑）
 
 | 里程碑 | 内容 |
