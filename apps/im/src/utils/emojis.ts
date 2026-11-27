@@ -1,7 +1,7 @@
 /**
  * 动态表情
  */
-const emojis = {
+const emojis: Record<string, string> = {
   "[微笑]": "<img src='https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/0.gif'>",
   "[撇嘴]": "<img src='https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/1.gif'>",
   "[色]": "<img src='https://res.wx.qq.com/mpres/htmledition/images/icon/emotion/2.gif'>",
@@ -112,7 +112,7 @@ const emojis = {
 /**
 * 符号表情
 */
-const symbol = [
+const symbol: string[] = [
   "😠", "😩", "😲", "😞", "😵", "😰", "😒", "😍", "😤", "😜", "😝", "😋", "😘", "😚", "😷",
   "😳", "😃", "😅", "😆", "😁", "😂", "😊", "☺", "😄", "😢",
   "😭", "😨", "😣", "😡", "😌", "😖", "😔", "😱", "😪", "😏", "😓", "😥", "😫", "😉",
@@ -132,7 +132,7 @@ const regEmoji = emojisKeys.map((value) => '|\\' + value).join('').replace('|', 
 * 
 * @param {String} content 需要替换的字符串
 */
-export function textReplaceEmoji (content) {
+export function textReplaceEmoji (content?: string): string {
   if (!content) {
     return ""
   }
