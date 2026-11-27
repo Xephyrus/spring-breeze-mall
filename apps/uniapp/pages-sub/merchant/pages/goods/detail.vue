@@ -240,7 +240,7 @@ const previewGallery = (current: number) => {
 }
 
 // 智能清洗并优雅格式化规格文本（过滤 images 等系统 JSON 冗余）
-const formatSpecs = (sku: any, index: number) => {
+const formatSpecs = (sku: any, index: number | string) => {
   // 1. 优先使用规范的 specList 数组
   if (sku.specList && Array.isArray(sku.specList) && sku.specList.length > 0) {
     const listStr = sku.specList

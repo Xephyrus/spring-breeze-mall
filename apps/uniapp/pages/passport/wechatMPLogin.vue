@@ -6,7 +6,7 @@
 			<div class="tips">
 				为了更好地用户体验，需要您授权手机号
 			</div>
-			<button class="register" type="primary" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+			<button class="register" v-bind="{ type: 'primary' as any }" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
 				去授权
 			</button>
 		</u-modal>
@@ -20,7 +20,7 @@
 					<view>您的公开信息（昵称、头像）</view>
 				</view>
 				<view class="btns">
-					<button type="primary" :disabled="logingFlag" bindtap="getUserProfile" @click="getUserProfile()"
+					<button v-bind="{ type: 'primary' as any }" :disabled="logingFlag" bindtap="getUserProfile" @click="getUserProfile()"
 						class="btn-auth">登录</button>
 					<div @click="goMobileLogin" class="btn-callback">手机号登录</div>
 				</view>

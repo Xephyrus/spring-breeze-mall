@@ -137,47 +137,59 @@
 
 ### U2 进展（进行中）
 
+**曲线：274 → 215（U1）→ 170 → 118 → 93 → 86 → 69 → 52**
+
 | 批次 | 内容 | 效果 |
 |---|---|---|
-| U2-a | 新增 `types/global-augment.d.ts`：`ComponentCustomProperties`（`$store`/`$mainColor`/`$lightColor`/`$aiderLightColor`/`$u`）、`interface Event`（`detail`/`target.dataset`/`touches`）、`Page.PageInstance.__page__`、`PlusAndroidInstanceObject`、`WeixinJSBridge`、`requirePlugin` | 215 → 170 → 154 |
-| U2-b | 新增 `types/assets.d.ts`：图片/音视频模块声明 | 同上 |
-| U2-c | 53 处无扩展名 `.vue` 导入补 `.vue`（脚本按"能解析到真实文件"精确匹配） | 170 → 118 |
-| U2-d | `PageInstance` 归属修正（命名空间 `Page` 下合并） | 118 → 116 |
-| U2-e | `utils/filters.ts`：`getPages` 返回 `Page.PageInstance \| string`、`isLogin` 改**重载**（`boolean \| unknown` 会让所有 `isLogin()?.id` 退化成 unknown） | 110 → 93 |
-| U2-f | 修 `== []`（恒 false）、`ua.match(...) == 'micromessenger'`（靠数组 toString 偶然成立）、`cartList.length` 等条件判断 | 93 → 86 |
-| U2-g | 条件编译重复声明：`room.vue` 的 `hlsInstance` 合并声明、`LiveChatService`/`LiveMqttService` 用 `@ts-expect-error` 按行抑制；`poster-panel.vue` 的 `st2` 同理 | 86 → 69 |
-| U2-h | **补 4 个缺失的分销银行卡接口**（见下） | 116 → 110 中的一部分 |
-
-**曲线：274 → 215（U1）→ 170 → 118 → 93 → 86 → 69**
+| U2-a | `types/global-augment.d.ts`：`ComponentCustomProperties`、`interface Event`、`Page.PageInstance.__page__`、`PlusAndroidInstanceObject`、`WeixinJSBridge`、`requirePlugin`、`Plus.cache` | 215 → 170 |
+| U2-b | `types/assets.d.ts`：图片/音视频模块 | 同上 |
+| U2-c | 53 处无扩展名 `.vue` 导入补 `.vue` | 170 → 118 |
+| U2-d | `PageInstance` 命名空间归属修正 | 118 → 116 |
+| U2-e | `getPages` 返回类型 + `isLogin` 重载 | 110 → 93 |
+| U2-f | 恒假 / 巧合成立的条件判断（`== []`、`ua.match(...) == '...'`、`!= ""`） | 93 → 86 |
+| U2-g | 条件编译重复声明（`hlsInstance` 合并、`@ts-expect-error` 按行抑制） | 86 → 69 |
+| U2-h | 模板 v-for 下标 `string \| number`：批量放宽 25 个下标形参（12 个文件） | 69 → 62 |
+| U2-i | `Plus.cache`、`getWindowInfo` 联合类型、`wechatMPLogin` 的 `<button type>`、`getWalletLog` 补接口 | 62 → 52 |
 
 ### 修类型时发现的真实缺陷
 
 | 位置 | 问题 | 处理 |
 |---|---|---|
-| `pages/mine/distribution/bank-accounts.vue`、`withdraw-apply.vue` | 从 `@/api/distribution` 具名导入 `getBankCards` / `addBankCard` / `deleteBankCard` / `setDefaultBankCard`，但**该模块从来没有这 4 个导出** → 运行时 `TypeError: getBankCards is not a function`，两个页面功能完全不可用 | 后端 `DistributionBankCardBuyerController` 已有 `GET/POST/DELETE/PUT /buyer/distribution/bank-card`，按本文件"省略 `/buyer` 前缀"的既有约定补齐 4 个函数（先核对同类接口 `distribution()` / `cash()` 的路径写法） |
-| `pages/product/comment.vue` | `res.data.result.records == []` —— 与**新数组字面量**比较，恒 false | 删除该恒假项（可证明不改变行为） |
-| `pages/passport/login.vue`、`payOrder.vue` | `ua.match(/MicroMessenger/i) == 'micromessenger'` —— 靠数组 toString 偶然成立 | 改为 `/MicroMessenger/i.test(ua)`（`ua` 已小写，等价） |
-| `pages/tabbar/home/template/fetch_coupon.vue` | `coupList.value != ""` —— 空数组 `== ""` 为 true，实际语义是"非空" | 改为 `length > 0`（等价） |
-| `utils/tools.js` | `throttle` 是箭头函数却用 `arguments` | 改普通 `function`（见 U0） |
+| `bank-accounts.vue` / `withdraw-apply.vue` | 导入的 `getBankCards` / `addBankCard` / `deleteBankCard` / `setDefaultBankCard` **在 `@/api/distribution` 里根本不存在** → 运行时 `TypeError`，两个页面完全不可用 | 后端 `DistributionBankCardBuyerController` 已有对应 4 个接口，按本文件既有约定（省略 `/buyer`）补齐 |
+| `wallet-log.vue` | 同样导入了不存在的 `getWalletLog` | 后端 `DistributionCashBuyerController#walletLog` 为 `GET /distribution/cash/walletLog`，已补齐 |
+| `comment.vue` | `records == []` 恒 false | 删除恒假项 |
+| `login.vue` / `payOrder.vue` | `ua.match(/MicroMessenger/i) == 'micromessenger'` 靠数组 toString 偶然成立 | 改 `/MicroMessenger/i.test(ua)` |
+| `fetch_coupon.vue` | `coupList.value != ""`（空数组 `== ""` 为 true） | 改 `length > 0` |
+| `utils/tools.js` | `throttle` 箭头函数里用 `arguments` | 改普通 `function` |
 
-### 条件编译完整性护栏
+### 一个被"顺手改类型"打断的测试（已修）
 
-改动前后统计「行首即指令」的 `#ifdef/#ifndef/#endif`：
-**唯一变化是 `room.vue` 里 `hlsInstance` 合并时移除的 4 行**（两个分支都是 `= null`，行为一致），
-全树 ifdef/endif **配平校验通过**。
+`scripts/test-order-evaluation.mjs` 会用正则**从 `myEvaluate.vue` 里抠出函数源码**再 eval：
 
-### 剩余 typecheck 错误（69 条，长尾）
+```js
+source.match(/function renderData\(index: number\) \{[\s\S]*?\n\}/)
+```
+
+我把下标形参放宽成 `index: number | string` 后，这个正则匹配不到 → 测试报
+`TypeError: Cannot read properties of null`。
+
+已把正则改成容忍任意类型注解（`index(?::[^)]*)?`）。
+
+> 教训：**用源码文本做断言的测试，对"类型注解"这类非行为改动也敏感**。
+> 这类测试要么改成从编译产物/导出函数取值，要么把正则写得足够宽。
+
+### 剩余 typecheck 错误（52 条）
 
 | 错误码 | 数量 | 典型场景 |
 |---|---:|---|
-| TS2345 | 27 | 实参类型不匹配（`canvasToTempFilePath` 的 canvas、uni API 重载） |
-| TS2339 | 16 | 零散属性缺失（`$refs` 组件实例等） |
-| TS2322 | 11 | 赋值类型不匹配（如 `<button type="primary">` 与 DOM 的 button type 冲突） |
-| TS2554 | 8 | 形参个数（uni API 重载差异） |
-| 其它 | 7 | TS2769 / TS2351 / TS2365 / TS2363 |
+| TS2322 | 12 | 赋值类型不匹配（模板 `:prop` 传 boolean 给 string 等） |
+| TS2345 | 12 | 实参不匹配（`canvasToTempFilePath` 的 canvas、`(e)=>boolean` 传给 `()=>void`） |
+| TS2339 | 8 | `$refs` 组件实例、`PlusIos.import`、对象字面量动态加字段 |
+| TS2554 | 8 | uni API 重载参数个数 |
+| TS2365 | 7 | `string \| number` 参与算术 |
+| 其它 | 5 | TS2351 / TS2769 / TS2352 / TS2363 / TS2447 |
 
-分布极散：最多 `pages/passport/login.vue`(5)，其余都在 1~3 条，覆盖约 30 个文件。
-这些都必须逐点判断"运行时到底传什么"，无法再用批量脚本 —— 按方案原则只补类型、不改行为。
+分布：约 35 个文件，单点最多 2 条。
 
 ### 剩余阶段
 

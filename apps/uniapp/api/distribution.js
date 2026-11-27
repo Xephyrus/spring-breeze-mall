@@ -269,3 +269,16 @@ export function setDefaultBankCard(id) {
     method: Method.PUT,
   })
 }
+
+/**
+ * 分销钱包流水分页
+ *
+ * 后端：`GET /buyer/distribution/cash/walletLog`（见 DistributionCashBuyerController）
+ */
+export function getWalletLog(params) {
+  return http.request({
+    url: `/distribution/cash/walletLog`,
+    method: Method.GET,
+    params,
+  })
+}

@@ -148,7 +148,7 @@ function getGoodsCommentsNum(id: string) {
   })
 }
 
-function select(index: number) {
+function select(index: number | string) {
   Object.assign(params, {
     pageNumber: 1,
     pageSize: 10,
@@ -169,7 +169,7 @@ function select(index: number) {
   getGoodsCommentsFun(opid.value)
 }
 
-function preview(urls: string[], index: number) {
+function preview(urls: string[], index: number | string) {
   uni.previewImage({
     current: index,
     urls: urls,

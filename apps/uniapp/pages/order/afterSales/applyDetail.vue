@@ -286,7 +286,7 @@ function accountTypeFilter(val: string) {
   }
 }
 
-function preview(urls: string[], index: number) {
+function preview(urls: string[], index: number | string) {
   uni.previewImage({
     current: index,
     urls,

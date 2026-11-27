@@ -293,7 +293,7 @@ function renderOrderTagType(orderPromotionType: string) {
 	}
 }
 
-function getOrderItemImage(goods: any, order: any, index: number) {
+function getOrderItemImage(goods: any, order: any, index: number | string) {
 	let image = goods.image
 	if (!image && order.groupImages) {
 		const images = String(order.groupImages).split(',')
@@ -317,7 +317,7 @@ function onCancel(sn: string) {
 	})
 }
 
-function initData(index: number) {
+function initData(index: number | string) {
 	navList[index].pageNumber = 1
 	navList[index].loadStatus = 'more'
 	navList[index].orderList = []
@@ -337,7 +337,7 @@ function pay(val: any) {
 	}
 }
 
-function loadData(index: number) {
+function loadData(index: number | string) {
 	const tab = navList[index]
 	if (!tab || tab.loadStatus === 'noMore') {
 		return
@@ -468,11 +468,11 @@ function changeTab(e: any) {
 	tabCurrentIndex.value = current
 }
 
-function tabClick(index: number) {
+function tabClick(index: number | string) {
 	tabCurrentIndex.value = index
 }
 
-function deleteOrder(index: number) {
+function deleteOrder(index: number | string) {
 	uni.showLoading({ title: '请稍后' })
 	setTimeout(() => {
 		navList[tabCurrentIndex.value].orderList.splice(index, 1)

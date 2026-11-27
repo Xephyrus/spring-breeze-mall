@@ -131,7 +131,7 @@ function setSearchBarWidth() {
   // #endif
   // #ifndef MP-WEIXIN
   try {
-    const info = (uni.getWindowInfo ? uni.getWindowInfo() : (uni.getSystemInfoSync ? uni.getSystemInfoSync() : {})); const windowWidth = info.windowWidth || 375;
+    const info: any = (uni.getWindowInfo ? uni.getWindowInfo() : (uni.getSystemInfoSync ? uni.getSystemInfoSync() : {})); const windowWidth = info.windowWidth || 375;
     searchBarWidth.value = windowWidth - uni.upx2px(48)
   } catch (e) {
     searchBarWidth.value = 340

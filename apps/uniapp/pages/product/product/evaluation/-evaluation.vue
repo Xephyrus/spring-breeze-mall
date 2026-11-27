@@ -103,7 +103,7 @@ function commentImages(item: any) {
   return typeof images === 'string' ? images.split(',').filter(Boolean) : images
 }
 
-function initReadMore(index: number) {
+function initReadMore(index: number | string) {
   if (readMoreInited.value[index]) return
   readMoreInited.value[index] = true
   nextTick(() => {
@@ -120,7 +120,7 @@ function getGoodsCommentsMethods() {
     commDetail.value = res.data.result || {}
     nextTick(() => {
       const records = commDetail.value.records || []
-      records.slice(0, 2).forEach((_: any, index: number) => {
+      records.slice(0, 2).forEach((_: any, index: number | string) => {
         setTimeout(() => initReadMore(index), 50 * (index + 1))
       })
     })
@@ -133,7 +133,7 @@ function toComment(id: string | number, gradeVal: string | number) {
   })
 }
 
-function previewImg(urls: string[], index: number) {
+function previewImg(urls: string[], index: number | string) {
   uni.previewImage({
     urls,
     indicator: 'number',

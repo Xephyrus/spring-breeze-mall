@@ -28,7 +28,11 @@ assert.equal(canEvaluateOrder(undefined), false)
 
 const source = readFileSync(new URL('../pages/order/evaluate/myEvaluate.vue', import.meta.url), 'utf8')
 const refresh = source.match(/function refreshEvaluations\(\) \{[\s\S]*?\n\}/)[0]
-const paginate = source.match(/function renderData\(index: number\) \{[\s\S]*?\n\}/)[0].replace('index: number', 'index')
+// 形参类型可能是 `index: number` 或 `index: number | string`（模板 v-for 下标类型更宽），
+// 这里匹配任意类型注解后再统一抹掉，避免类型微调就把测试打挂。
+const paginate = source
+  .match(/function renderData\(index(?::[^)]*)?\) \{[\s\S]*?\n\}/)[0]
+  .replace(/index(?::[^)]*)?\)/, 'index)')
 const calls = []
 const context = {
   current: { value: 1 }, params: { orderSn: 'O123', pageNumber: 3, loadStatus: 'noMore' },

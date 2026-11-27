@@ -147,7 +147,7 @@ function refreshEvaluations() {
   }
 }
 
-function preview(urls: string[], index: number) {
+function preview(urls: string[], index: number | string) {
   uni.previewImage({
     current: index,
     urls,
@@ -207,7 +207,7 @@ function loadComments() {
   })
 }
 
-function renderData(index: number) {
+function renderData(index: number | string) {
   if (params.loadStatus == 'noMore') return
   if (index != 2) {
     loadData()

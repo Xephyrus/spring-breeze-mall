@@ -387,7 +387,7 @@ async function initGoods(val: any) {
   }
 }
 
-function handleClickTitle(val: any, index: number) {
+function handleClickTitle(val: any, index: number | string) {
   selected.index = index;
   selected.val = val.title;
   if (val.bindCategory) {

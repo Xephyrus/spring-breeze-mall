@@ -97,7 +97,7 @@ function onChange(e: any) {
   current.value = typeof e === "number" ? e : e.current;
 }
 
-function clickSwiper(index: number) {
+function clickSwiper(index: number | string) {
   modelNavigateTo(props.res.list[index]);
 }
 </script>

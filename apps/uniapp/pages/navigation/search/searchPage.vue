@@ -501,7 +501,7 @@ function repick() {
 	loadData()
 }
 
-function handleSort(val: any, _index: number, type: string, parent?: any) {
+function handleSort(val: any, _index: number | string, type: string, parent?: any) {
 	if (type == 'prop') {
 		val.parent = parent.key
 	}
@@ -575,7 +575,7 @@ function sortGoods() {
 	sortPopup.value = true
 }
 
-function tabClick(index: number, type?: string) {
+function tabClick(index: number | string, type?: string) {
 	params.value.pageNumber = 1
 	params.value.pageSize = 10
 	if (params.value.sort == type) {
@@ -614,7 +614,7 @@ function loadDefaultKeyword() {
 	}
 }
 
-function loadOldKeyword(index: number) {
+function loadOldKeyword(index: number | string) {
 	oldKeywordList.value = []
 	uni.getStorage({
 		key: 'OldKeys',
@@ -708,7 +708,7 @@ function drawCorrelativeKeyword(keywords: any[], keyword: string) {
 	return keywordArr
 }
 
-function setKeyword(index: number) {
+function setKeyword(index: number | string) {
 	keyword.value = keywordList.value[index].keyword
 }
 

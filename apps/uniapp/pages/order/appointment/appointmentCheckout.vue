@@ -537,11 +537,11 @@ function onSelectChange(groupIndex: number, field: any, e: any) {
   setFormAnswer(groupIndex, field.fieldKey, opt?.value || '')
 }
 
-function rangePart(value: string, index: number) {
+function rangePart(value: string, index: number | string) {
   return String(value || '').split('~')[index] || ''
 }
 
-function setRangePart(groupIndex: number, fieldKey: string, index: number, part: string) {
+function setRangePart(groupIndex: number, fieldKey: string, index: number | string, part: string) {
   const current = String(formAnswers.value[groupIndex]?.[fieldKey] || '').split('~')
   current[index] = part
   if (!current[0]) current[0] = ''
@@ -556,7 +556,7 @@ function onCityChange(groupIndex: number, field: any, e: any) {
   setFormAnswer(groupIndex, field.fieldKey, parts.slice(0, depth).join(' '))
 }
 
-function previewImage(list: string[], index: number) {
+function previewImage(list: string[], index: number | string) {
   uni.previewImage({ urls: list, current: list[index] })
 }
 

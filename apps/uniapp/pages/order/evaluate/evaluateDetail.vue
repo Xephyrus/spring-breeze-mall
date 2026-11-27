@@ -68,7 +68,7 @@ function splitImg(val: string) {
   return false
 }
 
-function preview(urls: string[] | false, index: number) {
+function preview(urls: string[] | false, index: number | string) {
   if (!urls) return
   uni.previewImage({
     current: index,

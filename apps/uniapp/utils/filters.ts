@@ -23,7 +23,8 @@ function getMainColor(): string {
 
 /** 解析商品图片地址，兼容上传 JSON 与纯 URL，非法时返回占位图 */
 export function parseGoodsImageUrl(item: unknown, fallback: string = config.logo): string {
-  const url = Foundation.parseGoodsImageUrl(item);
+  // Foundation 仍是 JS，形参无类型；这里显式按 string 传入
+  const url = Foundation.parseGoodsImageUrl(item as string);
   return url || fallback || "";
 }
 

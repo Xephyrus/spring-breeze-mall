@@ -79,7 +79,7 @@ onLoad((option) => {
   init(option.id)
 })
 
-function preview(urls: string[], index: number) {
+function preview(urls: string[], index: number | string) {
   uni.previewImage({
     current: index,
     urls,

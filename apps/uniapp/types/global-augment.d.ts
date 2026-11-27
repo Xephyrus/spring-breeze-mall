@@ -28,6 +28,17 @@ declare module '@vue/runtime-core' {
 }
 
 /**
+ * uni-app 的内置 `<button>` 组件支持 `type="primary|default|warn"`，
+ * 而 Volar 默认按 DOM 的 `<button type="button|reset|submit">` 校验。
+ * 这里把 DOM 属性类型放宽为两者的并集 —— 对 uni 项目才是准确的。
+ */
+declare module '@vue/runtime-dom' {
+  interface ButtonHTMLAttributes {
+    type?: 'button' | 'reset' | 'submit' | 'primary' | 'default' | 'warn'
+  }
+}
+
+/**
  * uview-plus 暴露在实例上的 `$u`。
  *
  * 它本身没有随包发布 d.ts，这里按实际用到的成员收窄；其余走索引签名。
@@ -88,6 +99,17 @@ declare global {
   namespace Page {
     interface PageInstance<D extends AnyObject = any, T extends AnyObject = any> {
       __page__?: { fullPath?: string; options?: Record<string, any> }
+      [key: string]: any
+    }
+  }
+
+  /**
+   * HTML5+ 的 plus 命名空间补充：缓存统计 / 清理（`pages/mine/set/setUp.vue` 在用）。
+   */
+  interface Plus {
+    cache: {
+      calculate: (callback: (size: number) => void) => void
+      clear: (callback?: () => void) => void
       [key: string]: any
     }
   }

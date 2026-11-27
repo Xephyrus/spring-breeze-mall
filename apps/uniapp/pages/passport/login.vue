@@ -413,9 +413,9 @@ function methodFilter(codes: string[]) {
 
 async function nonH5OpenId(item: LoginListItem) {
 	let loginRes: UniApp.LoginRes | null = null
-	// scopes 仅 MP-ALIPAY 支持，统一类型里没有该字段
-	// @ts-expect-error 条件编译：scopes 只属于支付宝小程序分支，其余端没有该字段
+	// scopes 仅 MP-ALIPAY 支持；provider 在多端联合类型里只接受字面量枚举 —— 按行抑制
 	await uni.login({
+		// @ts-expect-error 条件编译：appcode 是运行时字符串，字面量枚举收不住
 		provider: item.appcode,
 		// #ifdef MP-ALIPAY
 		scopes: 'auth_user',
@@ -438,7 +438,6 @@ async function nonH5OpenId(item: LoginListItem) {
 		},
 		complete() {
 			uni.getUserInfo({
-				// @ts-expect-error 条件编译：provider/withCredentials 为多端联合类型里缺省的分支
 				success(infoRes) {
 					uni.setStorageSync('nickname', infoRes.userInfo.nickName)
 					uni.setStorageSync('avatar', infoRes.userInfo.avatarUrl)
