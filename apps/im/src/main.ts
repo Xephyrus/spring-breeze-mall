@@ -2,8 +2,8 @@ import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "@/App.vue";
 import router from "@/router";
-import face from "@/components/face";
-import faceNull from "@/components/face-null";
+import face from "@/components/face.vue";
+import faceNull from "@/components/face-null.vue";
 import config from "@/config/config";
 import { setupElementPlus } from "@/plugins/element";
 import { setupLegacyMessage } from "@/utils/message";
@@ -38,16 +38,16 @@ app.component("face-null", faceNull);
 app.component("RecycleScroller", VueVirtualScroller.RecycleScroller);
 
 app.config.globalProperties.$filters = filters;
-app.config.globalProperties.linkToGoods = function (goodsId, skuId) {
+app.config.globalProperties.linkToGoods = function (goodsId: string, skuId: string) {
   window.open(
     `${config.PC_URL}goodsDetail?skuId=${skuId}&goodsId=${goodsId}`,
     "_blank"
   );
 };
-app.config.globalProperties.linkToStore = function (storeId) {
+app.config.globalProperties.linkToStore = function (storeId: string) {
   window.open(`${config.PC_URL}merchant?id=${storeId}`, "_blank");
 };
-app.config.globalProperties.linkToOrders = function (sn) {
+app.config.globalProperties.linkToOrders = function (sn: string) {
   if (localStorage.getItem("storeFlag") == "false") {
     window.open(`${config.PC_STORE}order-detail?sn=${sn}`, "_blank");
   } else {
