@@ -129,9 +129,9 @@ import {
   isStoreCollection,
 } from "@/api/member";
 import {goodsList as goodsListApi} from "@/api/goods";
-import TopBar from '@/components/indexDecorate/components/TopBar.vue';
-import SearchHeader from '@/components/indexDecorate/components/SearchHeader.vue';
-import ModelForm from "@/components/indexDecorate/ModelForm";
+import TopBar from '@/components/index-decorate/components/top-bar.vue';
+import SearchHeader from '@/components/index-decorate/components/search-header.vue';
+import ModelForm from "@/components/index-decorate/model-form";
 import storage from "@/plugins/storage";
 import {getFloorStoreData} from "@/api/index.js";
 import { seckillByDay } from "@/api/promotion";

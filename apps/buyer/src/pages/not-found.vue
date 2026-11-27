@@ -12,8 +12,8 @@
 </template>
 
 <script setup>
-import TopBar from '@/components/indexDecorate/components/TopBar.vue';
-import SearchHeader from '@/components/indexDecorate/components/SearchHeader.vue';
+import TopBar from '@/components/index-decorate/components/top-bar.vue';
+import SearchHeader from '@/components/index-decorate/components/search-header.vue';
 
 defineOptions({ name: "NotFound" });
 </script>

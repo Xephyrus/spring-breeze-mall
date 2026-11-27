@@ -1,62 +1,62 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from "vue-router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import Index from "@/pages/Index.vue";
+import Index from "@/pages/index.vue";
 import config from "@/config";
 
-const Login = () => import("@/pages/Login.vue");
-const SignUp = () => import("@/pages/SignUp.vue");
-const ForgetPassword = () => import("@/pages/ForgetPassword.vue");
-const GoodsList = () => import("@/pages/GoodsList.vue");
-const GoodsDetail = () => import("@/pages/GoodsDetail.vue");
-const PointGoodsDetail = () => import("@/pages/promotion/PointGoodsDetail.vue");
-const ShoppingCart = () => import("@/pages/ShoppingCart.vue");
-const Cart = () => import("@/pages/Cart.vue");
-const Pay = () => import("@/pages/payment/Pay.vue");
-const PayDone = () => import("@/pages/payment/PayDone.vue");
-const PayMent = () => import("@/pages/payment/PayMent.vue");
-const ThirdPay = () => import("@/pages/payment/ThirdPay.vue");
-const Coupon = () => import("@/pages/CouponCenter.vue");
+const Login = () => import("@/pages/login.vue");
+const SignUp = () => import("@/pages/sign-up.vue");
+const ForgetPassword = () => import("@/pages/forget-password.vue");
+const GoodsList = () => import("@/pages/goods-list.vue");
+const GoodsDetail = () => import("@/pages/goods-detail.vue");
+const PointGoodsDetail = () => import("@/pages/promotion/point-goods-detail.vue");
+const ShoppingCart = () => import("@/pages/shopping-cart.vue");
+const Cart = () => import("@/pages/cart.vue");
+const Pay = () => import("@/pages/payment/pay.vue");
+const PayDone = () => import("@/pages/payment/pay-done.vue");
+const PayMent = () => import("@/pages/payment/pay-ment.vue");
+const ThirdPay = () => import("@/pages/payment/third-pay.vue");
+const Coupon = () => import("@/pages/coupon-center.vue");
 const seckill = () => import("@/pages/promotion/seckill.vue");
 const article = () => import("@/pages/article/index.vue");
 const articleDetail = () => import("@/pages/article/detail.vue");
-const PointMall = () => import("@/pages/promotion/PointMall.vue");
+const PointMall = () => import("@/pages/promotion/point-mall.vue");
 
-const MyOrder = () => import("@/pages/home/orderCenter/MyOrder.vue");
-const OrderDetail = () => import("@/pages/home/orderCenter/OrderDetail.vue");
-const MyAddress = () => import("@/pages/home/orderCenter/MyAddress.vue");
-const AddAddress = () => import("@/pages/home/orderCenter/AddAddress.vue");
-const Complain = () => import("@/pages/home/orderCenter/Complain.vue");
-const AfterSale = () => import("@/pages/home/orderCenter/AfterSale.vue");
-const AfterSaleDetail = () => import("@/pages/home/orderCenter/AfterSaleDetail.vue");
-const ApplyAfterSale = () => import("@/pages/home/orderCenter/ApplyAfterSale.vue");
+const MyOrder = () => import("@/pages/home/order-center/my-order.vue");
+const OrderDetail = () => import("@/pages/home/order-center/order-detail.vue");
+const MyAddress = () => import("@/pages/home/order-center/my-address.vue");
+const AddAddress = () => import("@/pages/home/order-center/add-address.vue");
+const Complain = () => import("@/pages/home/order-center/complain.vue");
+const AfterSale = () => import("@/pages/home/order-center/after-sale.vue");
+const AfterSaleDetail = () => import("@/pages/home/order-center/after-sale-detail.vue");
+const ApplyAfterSale = () => import("@/pages/home/order-center/apply-after-sale.vue");
 
-const Profile = () => import("@/pages/home/memberCenter/Profile.vue");
-const AccountSafe = () => import("@/pages/home/memberCenter/AccountSafe.vue");
-const ModifyPwd = () => import("@/pages/home/memberCenter/ModifyPwd.vue");
-const Favorites = () => import("@/pages/home/memberCenter/Favorites.vue");
-const CommentList = () => import("@/pages/home/memberCenter/CommentList.vue");
-const AddEval = () => import("@/pages/home/memberCenter/evaluation/AddEval.vue");
-const EvalDetail = () => import("@/pages/home/memberCenter/evaluation/EvalDetail.vue");
-const ComplainList = () => import("@/pages/home/memberCenter/ComplainList.vue");
-const ComplainDetail = () => import("@/pages/home/memberCenter/ComplainDetail.vue");
-const Point = () => import("@/pages/home/memberCenter/Point.vue");
-const MemberGrade = () => import("@/pages/home/memberCenter/MemberGrade.vue");
-const MsgList = () => import("@/pages/home/memberCenter/memberMsg/MsgList.vue");
-const MsgDetail = () => import("@/pages/home/memberCenter/memberMsg/MsgDetail.vue");
+const Profile = () => import("@/pages/home/member-center/profile.vue");
+const AccountSafe = () => import("@/pages/home/member-center/account-safe.vue");
+const ModifyPwd = () => import("@/pages/home/member-center/modify-pwd.vue");
+const Favorites = () => import("@/pages/home/member-center/favorites.vue");
+const CommentList = () => import("@/pages/home/member-center/comment-list.vue");
+const AddEval = () => import("@/pages/home/member-center/evaluation/add-eval.vue");
+const EvalDetail = () => import("@/pages/home/member-center/evaluation/eval-detail.vue");
+const ComplainList = () => import("@/pages/home/member-center/complain-list.vue");
+const ComplainDetail = () => import("@/pages/home/member-center/complain-detail.vue");
+const Point = () => import("@/pages/home/member-center/point.vue");
+const MemberGrade = () => import("@/pages/home/member-center/member-grade.vue");
+const MsgList = () => import("@/pages/home/member-center/member-msg/msg-list.vue");
+const MsgDetail = () => import("@/pages/home/member-center/member-msg/msg-detail.vue");
 
-const Coupons = () => import("@/pages/home/userCenter/Coupons.vue");
-const MyTracks = () => import("@/pages/home/userCenter/MyTracks.vue");
-const MoneyManagement = () => import("@/pages/home/userCenter/MoneyManagement.vue");
-const MyGiftCards = () => import("@/pages/home/userCenter/MyGiftCards.vue");
+const Coupons = () => import("@/pages/home/user-center/coupons.vue");
+const MyTracks = () => import("@/pages/home/user-center/my-tracks.vue");
+const MoneyManagement = () => import("@/pages/home/user-center/money-management.vue");
+const MyGiftCards = () => import("@/pages/home/user-center/my-gift-cards.vue");
 
-const Home = () => import("@/pages/user/Home.vue");
-const UserCenter = () => import("@/pages/home/Main.vue");
-const Merchant = () => import("@/pages/Merchant.vue");
-const StoreList = () => import("@/pages/StoreList.vue");
-const NotFound = () => import("@/pages/NotFound.vue");
-const topic = () => import("@/pages/Topic.vue");
-const ShopEntry = () => import("@/pages/shopEntry/ShopEntry.vue");
+const Home = () => import("@/pages/user/home.vue");
+const UserCenter = () => import("@/pages/home/main.vue");
+const Merchant = () => import("@/pages/merchant.vue");
+const StoreList = () => import("@/pages/store-list.vue");
+const NotFound = () => import("@/pages/not-found.vue");
+const topic = () => import("@/pages/topic.vue");
+const ShopEntry = () => import("@/pages/shop-entry/shop-entry.vue");
 
 const { title } = config;
 
@@ -201,7 +201,7 @@ const routes: RouteRecordRaw[] = [
       {
         path: "PickupCard",
         name: "PickupCard",
-        component: () => import("@/pages/home/userCenter/PickupCard.vue"),
+        component: () => import("@/pages/home/user-center/pickup-card.vue"),
         meta: { title: "提货卡兑换" },
       },
       {

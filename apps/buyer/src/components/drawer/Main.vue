@@ -26,7 +26,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Modal } from "@/utils/message";
 import storage from '@/plugins/storage.js';
 import Configuration from './config';
-import drawerPage from './Drawer'
+import drawerPage from './drawer'
 import {cartCount} from '@/api/cart.js'
 import { resolveIcon } from '@/utils/iconMap'
 import { useAppStore } from '@/stores/app'

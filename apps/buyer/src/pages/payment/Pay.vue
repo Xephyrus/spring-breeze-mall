@@ -340,8 +340,8 @@ import { computed, getCurrentInstance, nextTick, onMounted, reactive, ref } from
 import { useRoute, useRouter } from "vue-router";
 import { Message, Modal, Spin } from "@/utils/message";
 import { ArrowDown, ArrowUp, Check, Help } from '@element-plus/icons-vue';
-import invoiceModal from "@/components/invoiceModal";
-import addressManage from "@/components/addressManage";
+import invoiceModal from "@/components/invoice-modal";
+import addressManage from "@/components/address-manage";
 import { memberAddress, delMemberAddress } from "@/api/address";
 import {
   cartGoodsPay,

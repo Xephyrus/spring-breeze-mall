@@ -267,7 +267,7 @@ import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from "vue"
 import { useRoute, useRouter } from "vue-router";
 import { Message } from "@/utils/message";
 import { StarFilled } from '@element-plus/icons-vue';
-import Promotion from "./Promotion.vue";
+import Promotion from "./promotion.vue";
 import DPlayer from "dplayer";
 import storage from "@/plugins/storage.js";
 import {

@@ -109,7 +109,7 @@
                 <img
                   :src="
                     goods.goodsSku.thumbnail ||
-                    '../assets/images/goodsDetail/item-detail-1.jpg'
+                    '../assets/images/goods-detail/item-detail-1.jpg'
                   "
                   loading="lazy"
                   decoding="async"
@@ -234,7 +234,7 @@ export default {
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { Message, Modal } from "@/utils/message";
-import Promotion from "@/components/goodsDetail/Promotion";
+import Promotion from "@/components/goods-detail/promotion";
 import * as APICart from "@/api/cart";
 import * as APIMember from "@/api/member";
 import { isECoupon } from "@/constants/goodsType";

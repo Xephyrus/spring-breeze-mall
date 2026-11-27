@@ -44,11 +44,11 @@ import { ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Message } from "@/utils/message";
 import storage from "@/plugins/storage.js";
-import TopBar from '@/components/indexDecorate/components/TopBar.vue';
-import SearchHeader from '@/components/indexDecorate/components/SearchHeader.vue';
-import ShowGoods from "@/components/goodsDetail/ShowGoods";
-import empty from "@/components/empty/Main";
-import ShowGoodsDetail from "@/components/goodsDetail/ShowGoodsDetail";
+import TopBar from '@/components/index-decorate/components/top-bar.vue';
+import SearchHeader from '@/components/index-decorate/components/search-header.vue';
+import ShowGoods from "@/components/goods-detail/show-goods";
+import empty from "@/components/empty/main";
+import ShowGoodsDetail from "@/components/goods-detail/show-goods-detail";
 import { goodsSkuDetail } from "@/api/goods";
 import { getGoodsDistribution } from "@/api/member";
 

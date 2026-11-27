@@ -7,7 +7,7 @@
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import Index from './Index.vue'
+import Index from './index.vue'
 import { getTopicData } from '@/api/index'
 
 const route = useRoute()

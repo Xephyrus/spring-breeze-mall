@@ -106,8 +106,8 @@ export default {
 import { ref, computed, onMounted, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Message } from "@/utils/message";
-import TopBar from '@/components/indexDecorate/components/TopBar.vue';
-import SearchHeader from '@/components/indexDecorate/components/SearchHeader.vue';
+import TopBar from '@/components/index-decorate/components/top-bar.vue';
+import SearchHeader from '@/components/index-decorate/components/search-header.vue';
 import { addCartGoods } from "@/api/cart.js";
 import { pointGoodsDetail } from "@/api/promotion";
 import {
@@ -304,7 +304,7 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  background: url("../../assets/images/goodsDetail/price-bg.png");
+  background: url("../../assets/images/goods-detail/price-bg.png");
 }
 .item-price-left {
   display: flex;

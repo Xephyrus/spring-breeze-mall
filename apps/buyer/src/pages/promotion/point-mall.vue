@@ -62,11 +62,11 @@
 </template>
 <script setup>
 import { onMounted, reactive, ref } from "vue";
-import TopBar from '@/components/indexDecorate/components/TopBar.vue';
-import SearchHeader from '@/components/indexDecorate/components/SearchHeader.vue';
+import TopBar from '@/components/index-decorate/components/top-bar.vue';
+import SearchHeader from '@/components/index-decorate/components/search-header.vue';
 import { useRoute, useRouter } from "vue-router";
 import { pointGoods, pointGoodsCategory } from "@/api/promotion.js";
-import PointsCouponMall from './PointsCouponMall.vue';
+import PointsCouponMall from './points-coupon-mall.vue';
 const mallTab = ref('goods');
 
 const route = useRoute();

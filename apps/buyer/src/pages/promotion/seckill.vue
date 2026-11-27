@@ -128,7 +128,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { seckillByDay } from "@/api/promotion";
-import SearchHeader from "@/components/indexDecorate/components/SearchHeader.vue";
+import SearchHeader from "@/components/index-decorate/components/search-header.vue";
 
 const router = useRouter();
 

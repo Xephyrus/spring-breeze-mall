@@ -63,8 +63,8 @@
 
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
-import TopBar from '@/components/indexDecorate/components/TopBar.vue';
-import SearchHeader from '@/components/indexDecorate/components/SearchHeader.vue';
+import TopBar from '@/components/index-decorate/components/top-bar.vue';
+import SearchHeader from '@/components/index-decorate/components/search-header.vue';
 import { useRoute } from 'vue-router'
 import { articleCateList, articleDetail, articleList as fetchArticleList } from '@/api/common.js'
 

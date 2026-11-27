@@ -96,7 +96,7 @@ import { useRoute, useRouter } from 'vue-router'
 import storage from '@/plugins/storage.js'
 import { goodsList, hotWords } from '@/api/goods.js'
 import { Search as SearchIcon } from '@element-plus/icons-vue'
-import SearchSuggest from '@/components/SearchSuggest.vue'
+import SearchSuggest from '@/components/search-suggest.vue'
 import { useAppStore } from '@/stores/app'
 
 defineOptions({ name: 'search' })

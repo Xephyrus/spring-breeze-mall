@@ -48,13 +48,13 @@
 
 <script setup>
 import { onMounted, onUnmounted, ref, computed } from "vue";
-import Search from '@/components/Search';
-import ModelForm from '@/components/indexDecorate/ModelForm';
-import HoverSearch from '@/components/header/hoverSearch';
+import Search from '@/components/search';
+import ModelForm from '@/components/index-decorate/model-form';
+import HoverSearch from '@/components/header/hover-search';
 import fixedBar from '@/components/fixed/index';
 import storage from "@/plugins/storage";
 import { indexData, getAutoCoup } from '@/api/index.js';
-import { DOUBLE11_PAGE_DOCUMENT } from '@/components/indexDecorate/presets/double11Preset.js';
+import { DOUBLE11_PAGE_DOCUMENT } from '@/components/index-decorate/presets/double11Preset.js';
 import { seckillByDay } from '@/api/promotion';
 
 defineOptions({ name: "Index" });

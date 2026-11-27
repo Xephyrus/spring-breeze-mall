@@ -89,7 +89,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import MemberBenefitPanel from './MemberBenefitPanel.vue'
+import MemberBenefitPanel from './member-benefit-panel.vue'
 import { memberGradeCurrent, memberGradeList, memberGradeRules } from '@/api/member.js'
 
 defineOptions({ name: 'MemberGrade' })

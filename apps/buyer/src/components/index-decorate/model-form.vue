@@ -24,8 +24,8 @@
 
 <script setup>
 import { computed } from 'vue';
-import ModelFormItem from './ModelFormItem.vue';
-import RowWrapper from './RowWrapper.vue';
+import ModelFormItem from './model-form-item.vue';
+import RowWrapper from './row-wrapper.vue';
 
 defineOptions({ name: 'modelForm' });
 

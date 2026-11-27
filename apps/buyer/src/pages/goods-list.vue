@@ -112,11 +112,11 @@ import { computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Message } from "@/utils/message";
 import { ArrowDown, ArrowUp } from '@element-plus/icons-vue';
-import GoodsClassNav from "@/components/nav/GoodsClassNav";
-import GoodsThumb from "@/components/goods/GoodsThumb.vue";
+import GoodsClassNav from "@/components/nav/goods-class-nav";
+import GoodsThumb from "@/components/goods/goods-thumb.vue";
 import * as apiGoods from "@/api/goods";
-import TopBar from '@/components/indexDecorate/components/TopBar.vue';
-import SearchHeader from '@/components/indexDecorate/components/SearchHeader.vue';
+import TopBar from '@/components/index-decorate/components/top-bar.vue';
+import SearchHeader from '@/components/index-decorate/components/search-header.vue';
 
 const route = useRoute();
 const router = useRouter();

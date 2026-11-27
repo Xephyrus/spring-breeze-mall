@@ -49,7 +49,7 @@ import { onMounted, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { Modal } from "@/utils/message";
 import storage from "@/plugins/storage";
-import SearchHeader from "@/components/indexDecorate/components/SearchHeader.vue";
+import SearchHeader from "@/components/index-decorate/components/search-header.vue";
 import { couponList, receiveCoupon } from "@/api/member.js";
 
 const route = useRoute();

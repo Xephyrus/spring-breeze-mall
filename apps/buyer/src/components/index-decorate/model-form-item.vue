@@ -140,19 +140,19 @@
 
 <script setup>
 import { ref } from "vue";
-import ModelCarousel from "./modelList/Carousel.vue";
-import ModelCarousel1 from "./modelList/Carousel1.vue";
-import ModelCarousel2 from "./modelList/Carousel2.vue";
-import FirstPageAdvert from "./modelList/FirstPageAdvert.vue";
-import NewGoodsSort from "./modelList/NewGoodsSort.vue";
-import Recommend from "./modelList/Recommend.vue";
-import NotEnough from "./modelList/NotEnough.vue";
-import Seckill from "./modelList/Seckill.vue";
-import oneRowThreeColumns from "./modelList/oneRowThreeColumns.vue";
-import goodsAndType from "./modelList/goodsAndType.vue";
-import onlyGoodsModel from "./modelList/onlyGoodsModel.vue";
-import mixModel from "./modelList/mixModel.vue";
-import forYour from "./modelList/forYour.vue";
+import ModelCarousel from "./model-list/carousel.vue";
+import ModelCarousel1 from "./model-list/carousel1.vue";
+import ModelCarousel2 from "./model-list/carousel2.vue";
+import FirstPageAdvert from "./model-list/first-page-advert.vue";
+import NewGoodsSort from "./model-list/new-goods-sort.vue";
+import Recommend from "./model-list/recommend.vue";
+import NotEnough from "./model-list/not-enough.vue";
+import Seckill from "./model-list/seckill.vue";
+import oneRowThreeColumns from "./model-list/one-row-three-columns.vue";
+import goodsAndType from "./model-list/goods-and-type.vue";
+import onlyGoodsModel from "./model-list/only-goods-model.vue";
+import mixModel from "./model-list/mix-model.vue";
+import forYour from "./model-list/for-your.vue";
 import decorateImgUrl from "@/assets/images/decorate.png";
 
 defineOptions({ name: "modelFormItem" });

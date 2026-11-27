@@ -117,9 +117,9 @@
 import { onMounted, reactive, ref } from "vue";
 import { Check, Shop } from "@element-plus/icons-vue";
 import { agreement, applyStatus } from "@/api/shopentry";
-import firstApply from "./FirstApply";
-import secondApply from "./SecondApply";
-import thirdApply from "./ThirdApply";
+import firstApply from "./first-apply";
+import secondApply from "./second-apply";
+import thirdApply from "./third-apply";
 
 const currentIndex = ref(0); // 当前步骤
 const showAgreement = ref(false); // 协议显示

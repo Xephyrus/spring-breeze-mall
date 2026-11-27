@@ -137,7 +137,7 @@ import { computed, onMounted, onBeforeUnmount, reactive, ref } from 'vue';
 import { Refresh } from '@element-plus/icons-vue';
 import { goodsComment, goodsCommentNum } from '@/api/member.js';
 import storage from '@/plugins/storage.js';
-import StoreSide from './StoreSide.vue';
+import StoreSide from './store-side.vue';
 
 defineOptions({ name: 'ShowGoodsDetail' });
 

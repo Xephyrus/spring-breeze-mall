@@ -347,3 +347,50 @@ buyer 与 im 各有一份 `Foundation.js`，函数名与逻辑高度相似。第
 | `.ts` | 约 45 | — |
 | `.vue` | 123 | 40,550 |
 | `.js`（豁免） | 1 | 1,967 |
+## M3：文件命名 kebab-case 化（已完成）
+
+### 3.1 范围与边界
+
+| 项 | 数量 |
+|---|---:|
+| `.vue` 文件改名 | **113 个** |
+| 目录改名 | **12 个** |
+| 重写 import 说明符 | **139 处 / 26 个文件** |
+| 保留 | `App.vue`（Vue 约定根组件） |
+| **不改** | **路由 `path` / `name`** —— URL 属对外行为，改动可能影响外链与分享链接 |
+
+改完后 `apps/buyer/src` 下：非 kebab 的 `.vue` **0 个**、非 kebab 目录 **0 个**。
+
+目录改名示例：`components/goodsDetail` → `components/goods-detail`、`pages/home/memberCenter` →
+`pages/home/member-center`、`components/indexDecorate` → `components/index-decorate`。
+
+### 3.2 为什么分三遍才干净
+
+第一版脚本只处理「带 `.vue` 扩展名或含 `/` 的说明符」，跑完 typecheck 报错才发现三类漏网：
+
+| 遍 | 修正对象 | 修掉 |
+|---|---|---:|
+| 第一遍 | `@/xxx` 与 `./Xxx.vue` 等形式 | 96 处 |
+| 第二遍 | 位于**被改名目录内部**的相对引用（映射表 key 是改名前的路径，第一遍用改名后的目录去解析，匹配不到） | 40 处 |
+| 第三遍 | **无扩展名**的相对引用（`import X from "./FirstApply"`） | 3 处 |
+
+> 第二遍的坑值得记：批量改名的脚本里，「解析相对路径用的目录」和「映射表的命名空间」必须是同一套。
+> 一半新一半旧，就会静默漏改。
+
+### 3.3 验证
+
+| 检查 | 结果 |
+|---|---|
+| `typecheck` | ✅ 0 错误 |
+| `build` | ✅ 5.23s（`UNRESOLVED_IMPORT` 已清零） |
+| `lint` | ✅ 0 error / 0 warning |
+| dev 路由巡检 | ✅ `/`、`/home`、`/login`、`/goodsDetail`、`/goodsList`、`/cart`、`/shoppingCart`、`/merchant`、`/shopEntry`、`/pointMall`、`/MyOrder`、`/profile` **全部 200** |
+| dev 模块巡检 | ✅ `pages/index.vue`、`pages/home/main.vue`、`index-decorate/registry.ts`、`goods-detail/show-goods.vue`、`router/index.ts` 均 200 |
+| import 存在性 | ✅ 全量扫描所有 `.vue` 说明符，**全部指向真实文件** |
+
+### 3.4 组件 name 未受影响
+
+`defineOptions({ name })`/Options API 的 `name` 是显式声明（62 处），与文件名脱钩；
+全局注册（`components/global.ts`、`index-decorate/registry.ts`）用的是**局部 import 变量名**，也未改动。
+
+因此本批只改了「文件系统路径」，没有触碰任何运行时组件标识。
