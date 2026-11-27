@@ -135,7 +135,7 @@
 	}
 
 	function getMessage() {
-		params.memberId = isLogin().id
+		params.memberId = String(isLogin().id ?? '')
 
 		messages(params).then((res: any) => {
 			if (res.data.success) {

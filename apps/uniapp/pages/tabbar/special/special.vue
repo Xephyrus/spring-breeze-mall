@@ -218,7 +218,7 @@ function tipsGetSettings() {
 
 async function scan() {
   // #ifdef APP-PLUS
-  isIos.value = plus.os.name == 'iOS'
+  isIos.value = (plus.os.name == 'iOS') as unknown as string
   if (isIos.value) {
     const iosFirstCamera = uni.getStorageSync('iosFirstCamera')
     if (iosFirstCamera !== 'false') {

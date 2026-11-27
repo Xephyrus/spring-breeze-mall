@@ -146,7 +146,7 @@ export function getComments(params) {
  * @param params
  * @returns {AxiosPromise}
  */
-export function getFootprintNum(params) {
+export function getFootprintNum(params = {}) {
   return http.request({
     url: "/member/footprint/getFootprintNum",
     method: Method.GET,

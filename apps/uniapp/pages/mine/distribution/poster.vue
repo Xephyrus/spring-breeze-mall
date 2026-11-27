@@ -143,7 +143,7 @@ function initCanvas2d() {
       .createSelectorQuery()
       .in(instance?.proxy)
       .select('#qrCanvas')
-      .fields({ node: true, size: true })
+      .fields({ node: true, size: true }, () => {})
       .exec((res: any[]) => {
         const node = res?.[0]?.node
         if (!node) {
@@ -172,7 +172,7 @@ function exportQrByCanvas2d(qrPath: string): Promise<string> {
     img.onload = () => {
       ctx.drawImage(img, 0, 0, QR_CANVAS_SIZE, QR_CANVAS_SIZE)
       setTimeout(() => {
-        uni.canvasToTempFilePath(
+        (uni.canvasToTempFilePath as any)(
           {
             canvas,
             width: QR_CANVAS_SIZE,

@@ -45,7 +45,7 @@ declare module '@dcloudio/uni-app' {
     callback: (options: { scrollTop: number; scrollHeight?: number }) => void
   ) => void
   export const onResize: (callback: (options?: any) => void) => void
-  export const onBackPress: (callback: () => void | boolean) => void
+  export const onBackPress: (callback: (options?: { from?: string }) => void | boolean) => void
   export const onNavigationBarButtonTap: (
     callback: (options?: { index: number }) => void
   ) => void

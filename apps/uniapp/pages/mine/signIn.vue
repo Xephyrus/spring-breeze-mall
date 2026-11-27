@@ -20,7 +20,7 @@
           </div>
         </view>
         <view class="week">
-          <text v-for="item in weekArr" :key="item.id">{{ item }}</text>
+          <text v-for="item in weekArr" :key="item">{{ item }}</text>
         </view>
         <view class="date" v-for="(obj, rowIndex) in calendarRows" :key="rowIndex">
           <view class="item" v-for="(item, dayIndex) in obj" :key="dayIndex" :class="item == '' ? 'hide' : ''"

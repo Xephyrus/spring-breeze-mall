@@ -6,14 +6,14 @@
           <img
             class="list_img"
             src="https://web-assets.fancynode.com.cn/web_v1/images/pxcook/features/icon-cloud.png"
-            alt
+            alt=""
           />
         </u-col>
         <u-col span="7">
           <p class="tit_title">
             <img
               src="https://web-assets.fancynode.com.cn/web_v1/images/pxcook/features/icon-cloud.png"
-              alt
+              alt=""
             />
             在线客服
           </p>

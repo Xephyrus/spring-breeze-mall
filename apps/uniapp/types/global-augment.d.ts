@@ -127,6 +127,15 @@ declare global {
   const requirePlugin: any
 
   /**
+   * HTML5+ 的 plus.ios 命名空间补充：`plus.ios.import(...)` 用于导入 iOS 原生类
+   * （`pages/tabbar/screen/fullScreen.vue` 退出全屏时使用）。
+   */
+  interface PlusIos {
+    import: (name: string) => any
+    [key: string]: any
+  }
+
+  /**
    * HTML5+ 的 plus.android 命名空间。
    *
    * @dcloudio/types 里 `PlusAndroidInstanceObject` 只声明了 message 通道相关的成员，

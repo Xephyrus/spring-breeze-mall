@@ -594,7 +594,7 @@ function tabClick(index: number | string, type?: string) {
 		params.value.order = 'desc'
 	}
 
-	filterIndex.value = index
+	filterIndex.value = Number(index)
 
 	uni.pageScrollTo({
 		duration: 300,
@@ -621,7 +621,7 @@ function loadOldKeyword(index: number | string) {
 		success: (res) => {
 			const OldKeys = JSON.parse(res.data)
 			oldKeywordIndex.value = OldKeys.length
-			for (let i = 0; i < index; i++) {
+			for (let i = 0; i < Number(index); i++) {
 				oldKeywordList.value.push(OldKeys[i])
 			}
 		},

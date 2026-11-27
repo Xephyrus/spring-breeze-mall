@@ -199,7 +199,7 @@ function cashierData() {
   })
 }
 
-function awaitPay(payment: string) {
+function awaitPay(payment: string, _index?: number | string) {
   proxy.$u.throttle(() => {
     pay(payment)
   }, 2000)

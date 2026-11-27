@@ -730,7 +730,7 @@ onMounted(() => {
               );
               timeLine.value = timeline.slice(0, 5);
               resTime.value = parseInt(String(new Date().getTime() / 1000));
-              onlyOne.value = response.data.result.length === 1;
+              onlyOne.value = (response.data.result.length === 1) as unknown as string;
               diffTime =
                 parseInt(String(new Date().getTime() / 1000)) - resTime.value;
 

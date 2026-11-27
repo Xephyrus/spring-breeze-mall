@@ -469,13 +469,13 @@ function changeTab(e: any) {
 }
 
 function tabClick(index: number | string) {
-	tabCurrentIndex.value = index
+	tabCurrentIndex.value = Number(index)
 }
 
 function deleteOrder(index: number | string) {
 	uni.showLoading({ title: '请稍后' })
 	setTimeout(() => {
-		navList[tabCurrentIndex.value].orderList.splice(index, 1)
+		navList[tabCurrentIndex.value].orderList.splice(Number(index), 1)
 		hideLoadingIfNeeded()
 	}, 600)
 }

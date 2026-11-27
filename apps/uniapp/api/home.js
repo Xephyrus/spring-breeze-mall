@@ -59,7 +59,7 @@ export function getHotKeywords(count) {
  * @param client_type
  * @param page_type
  */
-export function getFloorData(params) {
+export function getFloorData(params = {}) {
   return http.request({
     url: `/other/pageData/getIndex?clientType=H5`,
     method: "get",

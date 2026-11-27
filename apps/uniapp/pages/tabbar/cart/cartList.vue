@@ -118,7 +118,7 @@
             v-if="cartDetail.cartList && cartDetail.cartList.length != 0 && cartDetail.priceDetailDTO && cartDetail.priceDetailDTO.discountPrice != 0"
             class="checkout-total-discount"
           >
-            <text>优惠减:￥{{ cartDetail.priceDetailDTO.goodsPrice - unitPrice(cartDetail.priceDetailDTO.flowPrice) }}</text>
+            <text>优惠减:￥{{ cartDetail.priceDetailDTO.goodsPrice - Number(unitPrice(cartDetail.priceDetailDTO.flowPrice)) }}</text>
             <text class="discount-details" @click="discountDetails">优惠明细</text>
           </view>
         </view>
@@ -169,6 +169,11 @@ import { unitPrice, goodsFormatPrice, isLogin, forceLogin } from '@/utils/filter
 const store = useStore()
 
 const lightColor = computed(() => store.getters.lightColor)
+// 主题样式：模板根节点 :style 使用（此前脚本里缺这个 computed，主题色不生效）
+const themeStyle = computed(() => ({
+  '--theme-color': store.getters.mainColor,
+  '--theme-light': store.getters.lightColor,
+}))
 const loading = ref(false)
 const discountDetailsFlag = ref(false)
 const isInvalid = (val: any): boolean => {

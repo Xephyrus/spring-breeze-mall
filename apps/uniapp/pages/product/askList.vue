@@ -55,7 +55,7 @@ const params = reactive({
 
 function getGoodsData() {
   if (askGoods.value.goods_id) {
-    API_GOODS.getGoods(askGoods.value.goods_id).then((result) => {
+    (API_GOODS.getGoods as any)(askGoods.value.goods_id).then((result: any) => {
       queryGoodsDetail.value = result.data
     })
   }

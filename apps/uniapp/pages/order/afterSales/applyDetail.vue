@@ -340,7 +340,7 @@ function loadDetail() {
     bankShow.value =
       serviceDetail.value.accountType === 'BANK_TRANSFER' &&
       serviceDetail.value.refundWay === 'OFFLINE' &&
-      ((serviceDetail.value.serviceType === 'RETURN_GOODS') |
+      ((serviceDetail.value.serviceType === 'RETURN_GOODS') ||
         (serviceDetail.value.serviceType === 'ORDER_CANCEL') ||
         serviceDetail.value.serviceType === 'RETURN_MONEY')
 

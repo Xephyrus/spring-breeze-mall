@@ -244,7 +244,7 @@ function refuseMap() {
             } else if (sysRes.platform == 'android') {
               const main = plus.android.runtimeMainActivity()
               const Intent = plus.android.importClass('android.content.Intent')
-              const mIntent = new Intent('android.settings.ACTION_SETTINGS')
+              const mIntent = new (Intent as any)('android.settings.ACTION_SETTINGS')
               main.startActivity(mIntent)
             }
           },

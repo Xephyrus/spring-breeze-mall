@@ -1,5 +1,5 @@
 <template>
-  <div class="layout" :style="wrapperStyle">
+  <div class="layout" :style="wrapperStyle as any">
     <div class="video-shell" :style="boxStyle">
       <div
         class="video-ratio"

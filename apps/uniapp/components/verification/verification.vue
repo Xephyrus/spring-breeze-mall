@@ -159,7 +159,7 @@ const state = reactive({
 })
 
 // 可自行调整
-state.scHight = phone.screenHeight / 2 - 200 + 'px'
+state.scHight = (phone.screenHeight / 2 - 200 + 'px') as unknown as number
 getCode()
 
 function show() {
@@ -185,7 +185,7 @@ function getCode() {
   state.col = '#b3afae'
   state.hasImg = '图片加载中...'
   if (!storage.getUuid()) {
-    storage.setUuid(uuid.v1())
+    storage.setUuid((uuid as any).v1())
   }
   uni.request({
     url: sliderBaseUrl.value + '/common/slider/' + props.business,

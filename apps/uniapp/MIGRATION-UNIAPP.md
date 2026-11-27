@@ -135,61 +135,47 @@
 **import 扩展名**：模块从 `.js` 改名 `.ts` 后，78 + 26 处 `@/utils/xxx.js` 引用必须去掉 `.js`。
 本轮用一次性脚本处理（`(['"][^'"]*?<模块路径>)\.js(['"])` → 去扩展名），并在改完后 grep 校验零残留。
 
-### U2 进展（进行中）
+### U2 进展（已完成核心目标：typecheck 274 → 0）
 
-**曲线：274 → 215（U1）→ 170 → 118 → 93 → 86 → 69 → 52**
+**曲线：274 → 215（U1）→ 170 → 118 → 93 → 86 → 69 → 52 → 30 → 10 → 0**
 
 | 批次 | 内容 | 效果 |
 |---|---|---|
-| U2-a | `types/global-augment.d.ts`：`ComponentCustomProperties`、`interface Event`、`Page.PageInstance.__page__`、`PlusAndroidInstanceObject`、`WeixinJSBridge`、`requirePlugin`、`Plus.cache` | 215 → 170 |
+| U2-a | `types/global-augment.d.ts`：`ComponentCustomProperties`、`interface Event`、`Page.PageInstance.__page__`、`PlusAndroidInstanceObject`、`PlusIos.import`、`Plus.cache`、`WeixinJSBridge`、`requirePlugin` | 215 → 170 |
 | U2-b | `types/assets.d.ts`：图片/音视频模块 | 同上 |
 | U2-c | 53 处无扩展名 `.vue` 导入补 `.vue` | 170 → 118 |
 | U2-d | `PageInstance` 命名空间归属修正 | 118 → 116 |
 | U2-e | `getPages` 返回类型 + `isLogin` 重载 | 110 → 93 |
-| U2-f | 恒假 / 巧合成立的条件判断（`== []`、`ua.match(...) == '...'`、`!= ""`） | 93 → 86 |
-| U2-g | 条件编译重复声明（`hlsInstance` 合并、`@ts-expect-error` 按行抑制） | 86 → 69 |
-| U2-h | 模板 v-for 下标 `string \| number`：批量放宽 25 个下标形参（12 个文件） | 69 → 62 |
-| U2-i | `Plus.cache`、`getWindowInfo` 联合类型、`wechatMPLogin` 的 `<button type>`、`getWalletLog` 补接口 | 62 → 52 |
+| U2-f | 恒假 / 巧合成立的条件判断 | 93 → 86 |
+| U2-g | 条件编译重复声明（`hlsInstance` 合并、`@ts-expect-error` 抑制） | 86 → 69 |
+| U2-h | 模板 v-for 下标 `string \| number`：批量放宽 25 个下标形参 | 69 → 62 |
+| U2-i | `Plus.cache`、`getWindowInfo`、`<button type>`、`getWalletLog` 补接口 | 62 → 52 |
+| U2-j | 定点修复 22 处：算术/赋值归一到 `Number()`、`!x > 0` 简化、ref 初始值、`canvasToTempFilePath`/`fields` 重载、`plus.runtime.launchApplication` | 52 → 30 |
+| U2-k | 定点修复 18 处：api 形参给默认值（比调用处断言更准）、`:key`、`|` → `||`、`wrapperStyle`、`getUserInfo` 历史多参 | 30 → 10 |
+| U2-l | 最后 10 处：`onBackPress` shim 补 `{ from }` 参数、`previewGallery`/`preview` 放宽、`cartList` 补 `themeStyle`、`PlusIos.import` | 10 → **0** |
 
-### 修类型时发现的真实缺陷
+### 修类型时发现的真实缺陷（累计 8 个）
 
 | 位置 | 问题 | 处理 |
 |---|---|---|
-| `bank-accounts.vue` / `withdraw-apply.vue` | 导入的 `getBankCards` / `addBankCard` / `deleteBankCard` / `setDefaultBankCard` **在 `@/api/distribution` 里根本不存在** → 运行时 `TypeError`，两个页面完全不可用 | 后端 `DistributionBankCardBuyerController` 已有对应 4 个接口，按本文件既有约定（省略 `/buyer`）补齐 |
-| `wallet-log.vue` | 同样导入了不存在的 `getWalletLog` | 后端 `DistributionCashBuyerController#walletLog` 为 `GET /distribution/cash/walletLog`，已补齐 |
+| `bank-accounts.vue` / `withdraw-apply.vue` | 导入的 4 个银行卡接口在 `@/api/distribution` **不存在** → 运行时 `TypeError`，页面不可用 | 后端已有对应接口，按既有约定补齐 |
+| `wallet-log.vue` | 导入的 `getWalletLog` 不存在 | 后端 `GET /distribution/cash/walletLog`，已补齐 |
 | `comment.vue` | `records == []` 恒 false | 删除恒假项 |
-| `login.vue` / `payOrder.vue` | `ua.match(/MicroMessenger/i) == 'micromessenger'` 靠数组 toString 偶然成立 | 改 `/MicroMessenger/i.test(ua)` |
+| `login.vue` / `payOrder.vue` | `ua.match(...) == 'micromessenger'` 靠数组 toString 偶然成立 | 改 `/MicroMessenger/i.test(ua)` |
 | `fetch_coupon.vue` | `coupList.value != ""`（空数组 `== ""` 为 true） | 改 `length > 0` |
-| `utils/tools.js` | `throttle` 箭头函数里用 `arguments` | 改普通 `function` |
+| `utils/tools.js` | 箭头函数里用 `arguments` | 改普通 `function` |
+| `shareOrderGoods.vue` | `!x > 0`（布尔与数字比较） | 等价简化为 `!x` |
+| `cartList.vue` | 模板 `:style="themeStyle"` 但脚本里**从未定义** `themeStyle` → 主题色不生效 | 补 computed（与同文件 `lightColor` 一致） |
+| `tpl.js` | `tipsGetSettings` 用了 `scan()` 内的 `isIos` | 就地计算 |
+| `m-share/index.vue` | 用了 `getCurrentInstance` 但没 import | 补导入 |
 
-### 一个被"顺手改类型"打断的测试（已修）
+### 被"改类型"打断的测试（已修）
 
-`scripts/test-order-evaluation.mjs` 会用正则**从 `myEvaluate.vue` 里抠出函数源码**再 eval：
+`scripts/test-order-evaluation.mjs` 用正则从 `.vue` 抠函数源码再 eval，写死了
+`function renderData(index: number)`；把下标类型放宽后匹配不到 → 测试报 null。
+正则改为容忍任意类型注解（`index(?::[^)]*)?`）。
 
-```js
-source.match(/function renderData\(index: number\) \{[\s\S]*?\n\}/)
-```
-
-我把下标形参放宽成 `index: number | string` 后，这个正则匹配不到 → 测试报
-`TypeError: Cannot read properties of null`。
-
-已把正则改成容忍任意类型注解（`index(?::[^)]*)?`）。
-
-> 教训：**用源码文本做断言的测试，对"类型注解"这类非行为改动也敏感**。
-> 这类测试要么改成从编译产物/导出函数取值，要么把正则写得足够宽。
-
-### 剩余 typecheck 错误（52 条）
-
-| 错误码 | 数量 | 典型场景 |
-|---|---:|---|
-| TS2322 | 12 | 赋值类型不匹配（模板 `:prop` 传 boolean 给 string 等） |
-| TS2345 | 12 | 实参不匹配（`canvasToTempFilePath` 的 canvas、`(e)=>boolean` 传给 `()=>void`） |
-| TS2339 | 8 | `$refs` 组件实例、`PlusIos.import`、对象字面量动态加字段 |
-| TS2554 | 8 | uni API 重载参数个数 |
-| TS2365 | 7 | `string \| number` 参与算术 |
-| 其它 | 5 | TS2351 / TS2769 / TS2352 / TS2363 / TS2447 |
-
-分布：约 35 个文件，单点最多 2 条。
+> 教训：用源码文本做断言的测试，对类型注解这类非行为改动也敏感。
 
 ### 剩余阶段
 
@@ -208,3 +194,43 @@ source.match(/function renderData\(index: number\) \{[\s\S]*?\n\}/)
 | 加 devDeps 影响 HBuilderX 构建 | 不装 `vue`；保留 `vite.config.js` 的 alias；U1 前后各在 HBuilderX 跑一次 H5 冒烟 |
 | codemod 破坏条件编译块 | 只做行内注解；改前后 `#ifdef/#endif` 计数必须一致（当前 571） |
 | 页面改名导致线上落地页 404 | 决策 B：不改页面路径 |
+
+---
+
+## 五、U2 完成与 CI 接入
+
+`typecheck` 已从 **274 → 0**，因此 `uniapp` 进入了 CI 门禁。
+
+### 5.1 CI job
+
+`.github/workflows/ci.yml` 新增 `uniapp`：
+
+```
+typecheck (vue-tsc) → lint (ratchet 261) → 5 个 node 脚本测试
+```
+
+并把 `apps/uniapp/**` 加进 `push` / `pull_request` 的 paths 触发。
+
+**CI 里不跑 build**：uni-app 的 H5 / 小程序 / App 产物只能由 HBuilderX 生成；
+硬塞 `@dcloudio/vite-plugin-uni` 会与 HBuilderX 内置 Vue 运行时冲突（`vite.config.js` 的 alias 正是在防这个）。
+该限制写在 job 注释里，避免后来者误以为是漏配。
+
+本地逐条模拟：`typecheck exit=0` / `lint exit=0` / `test exit=0`。
+
+### 5.2 门禁现状
+
+| 检查 | 结果 |
+|---|---|
+| `typecheck`（vue-tsc） | ✅ **0 错误** |
+| `lint`（ratchet） | ✅ **0 error / 261 warning** |
+| node 脚本测试 | ✅ 5 个全绿（抽奖 / 支付 / SKU / 订单评价 / MQTT） |
+| 条件编译 | ✅ 全树 `ifdef/endif` 配平 |
+
+### 5.3 下一步
+
+| 阶段 | 内容 |
+|---|---|
+| U1 剩余 | `utils/` 其余 22 个、`config/`、`store/`、`api/` 27 个、`lib/` 13 个、`plugins/` 2 个 → 转 `.ts` |
+| U2 剩余 | 15 个非 TS 的 SFC 补 `lang="ts"`（当前靠 allowJs 通过） |
+| U3 | 安全范围内命名 kebab 化（`pages.json` 与页面路径不动） |
+| U4 剩余 | `SMOKE-UNIAPP.md`（H5 / 小程序 / App 三端清单） |

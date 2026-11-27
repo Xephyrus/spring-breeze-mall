@@ -106,7 +106,7 @@ const background = ref({
   background: '#ff9f28',
 })
 
-const params = ref([
+const params = ref<any[]>([
   {
     pageNumber: 1,
     pageSize: 10,

@@ -1,5 +1,5 @@
 <template>
-  <view class="layout" :style="wrapperStyle">
+  <view class="layout" :style="wrapperStyle as any">
     <!-- 新样式：左标题+副标题，右侧更多 -->
     <view v-if="styled" class="title-bar" :style="barStyle">
       <view class="title-left">

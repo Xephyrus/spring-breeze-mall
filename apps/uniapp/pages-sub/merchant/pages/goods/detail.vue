@@ -232,7 +232,7 @@ const onSwiperChange = (e: any) => {
   currentSwiperIndex.value = e.detail.current
 }
 
-const previewGallery = (current: number) => {
+const previewGallery = (current: number | string) => {
   uni.previewImage({
     urls: galleryImages.value,
     current,
@@ -294,7 +294,7 @@ const formatSpecs = (sku: any, index: number | string) => {
   }
 
   // 4. 最终兜底
-  return skuList.value.length > 1 ? `规格 ${index + 1}` : '统一规格'
+  return skuList.value.length > 1 ? `规格 ${Number(index) + 1}` : '统一规格'
 }
 
 // 格式化分类展示：将原始 JSON 数组 [ "数码办公", "手机通讯", "手机" ] 转为层级面包屑 "数码办公 > 手机通讯 > 手机"

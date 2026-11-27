@@ -153,7 +153,7 @@ function select(index: number | string) {
     pageNumber: 1,
     pageSize: 10,
   })
-  selectIndex.value = index
+  selectIndex.value = Number(index)
   params.grade = ['', 'GOOD', 'MODERATE', 'WORSE', ''][selectIndex.value]
   if (selectIndex.value === 4) {
     params.haveImage = 1

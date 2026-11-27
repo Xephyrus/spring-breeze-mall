@@ -1,5 +1,5 @@
 <template>
-  <view class="tpl-article" :class="{ styled: styled }" :style="wrapperStyle" v-if="articleList.length">
+  <view class="tpl-article" :class="{ styled: styled }" :style="wrapperStyle as any" v-if="articleList.length">
     <view class="article-title" v-if="title">{{ title }}</view>
     <view
       class="article-item"

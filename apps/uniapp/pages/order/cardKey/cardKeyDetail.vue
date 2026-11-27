@@ -23,7 +23,7 @@
           v-for="(row, index) in line.cardKeys"
           :key="`${line.key}-${row.cardNo || index}-${index}`"
         >
-          <view class="card-key-item__title">卡密 {{ index + 1 }}</view>
+          <view class="card-key-item__title">卡密 {{ Number(index) + 1 }}</view>
           <view class="card-key-item__row">
             <text class="card-key-item__label">卡号：</text>
             <text class="card-key-item__value card-key-item__value--plain" selectable>{{

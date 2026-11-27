@@ -9,6 +9,7 @@ on:
       - 'apps/seller/**'
         - 'apps/im/**'
         - 'apps/buyer/**'
+        - 'apps/uniapp/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -21,6 +22,7 @@ on:
       - 'apps/seller/**'
         - 'apps/im/**'
         - 'apps/buyer/**'
+        - 'apps/uniapp/**'
       - 'packages/**'
       - 'pnpm-lock.yaml'
       - 'pnpm-workspace.yaml'
@@ -185,6 +187,40 @@ jobs:
         run: pnpm --filter @spring-breeze/buyer build
         env:
           NODE_OPTIONS: --max-old-space-size=3072
+  uniapp:
+    name: uniapp · typecheck / lint / node 测试
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 12.14.0
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # uni-app 的构建在 HBuilderX 里做（CI 无法产出 H5/小程序/App 包），
+      # 这里只跑静态门禁：类型检查 + lint + 5 个 node 脚本测试。
+      - name: Typecheck (vue-tsc)
+        run: pnpm --filter @spring-breeze/uniapp typecheck
+
+      - name: Lint (ratchet)
+        run: pnpm --filter @spring-breeze/uniapp lint
+
+      - name: Node tests (lottery / payment / sku / evaluation / mqtt)
+        run: pnpm --filter @spring-breeze/uniapp test
   backend-compile:
     name: backend · compile (manual)
     # 只在手动触发时跑：编译一次约 5-8 分钟，随每次 push 跑性价比不高

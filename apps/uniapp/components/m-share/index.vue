@@ -121,7 +121,7 @@ const handleShare = (val: any) => {
       : (scene = "WXSceneSession")
     uni.share({
       provider: "weixin",
-      scene: scene,
+      scene: scene as any,
       href: config.shareLink + props.link,
       imageUrl: props.thumbnail,
       type: 0,

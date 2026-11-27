@@ -175,7 +175,7 @@ const changCity = async (index: number, item: any) => {
     if (index < tabbars.value.length - 1) {
       tabbars.value.splice(index + 1, tabbars.value.length - index - 1)
     }
-    if (tabbars.value.length < pickersize.value as number) {
+    if (tabbars.value.length < Number(pickersize.value)) {
       uni.showLoading({
         title: "加载中",
         mask: true

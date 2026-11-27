@@ -94,7 +94,7 @@ function navigateTo(url: string) {
 }
 
 function openAppStoreRating() {
-  plus.runtime.launchApplication({
+  (plus.runtime.launchApplication as any)({
     action: `itms-apps://itunes.apple.com/app/${config.iosAppId}?action=write-review`,
   })
 }

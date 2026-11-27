@@ -121,7 +121,7 @@ function getGoodsCommentsMethods() {
     nextTick(() => {
       const records = commDetail.value.records || []
       records.slice(0, 2).forEach((_: any, index: number | string) => {
-        setTimeout(() => initReadMore(index), 50 * (index + 1))
+        setTimeout(() => initReadMore(index), 50 * (Number(index) + 1))
       })
     })
   })

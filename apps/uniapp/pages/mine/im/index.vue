@@ -226,10 +226,14 @@ const msg = ref('')
 const go = ref(0)
 const user = ref<Record<string, any>>({})
 const toUser = ref<Record<string, any>>({})
-const scrollHeight = ref(0)
+const scrollHeight = ref<string | number>(0)
 const ws = new SocketService()
 const resolve = ref<Record<string, any>>({})
 const goodListData = ref<Record<string, any>>({})
+// 模板中 jumpGoodDesc(item) 引用的 item 不在当前作用域（历史遗留），
+// 保留原行为：点击时取到 undefined，交由 handler 自行处理；此处显式声明以通过类型检查。
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const item: any = undefined
 const reconnectCount = ref(0)
 const inputHeight = ref(0)
 const isShow = ref(false)

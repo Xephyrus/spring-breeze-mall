@@ -11,10 +11,10 @@
         <span v-if="master.toBeGroupedNum">
           还差<span class="num">{{master.toBeGroupedNum || 0}}</span>人，赶快邀请好友拼单吧
         </span>
-        <span v-if="isBuy &&!master.toBeGroupedNum >0">
+        <span v-if="isBuy && !master.toBeGroupedNum">
           已成功拼团
         </span>
-        <span v-if="!master.toBeGroupedNum >0">
+        <span v-if="!master.toBeGroupedNum">
           拼团已结束
         </span>
       </div>
@@ -196,7 +196,7 @@ async function init(sn: string, sku: string) {
       res.data.result.pintuanMemberVOS.filter((item: any) => item.orderSn == '')[0]
 
     if (
-      storage.getUserInfo(routers.value.sku, routers.value.goodsId).id ==
+      (storage.getUserInfo as any)(routers.value.sku, routers.value.goodsId).id ==
       master.value.memberId
     ) {
       isMaster.value = true
