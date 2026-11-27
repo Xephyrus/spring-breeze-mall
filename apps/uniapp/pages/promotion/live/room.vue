@@ -489,7 +489,11 @@ import config from '@/config/config'
 import { useStore } from '@/store'
 import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters'
 // #ifndef APP-PLUS
+// 条件编译：非 App 端用真实实现；App 端下面另有同名 class 兜底（两者运行时互斥）。
+// TS 看不到编译期裁剪，会把 import 与 class 当成重复声明 → 按行抑制。
+// @ts-expect-error 条件编译：与 #ifdef APP-PLUS 分支里的同名 class 互斥
 import { LiveChatService } from './utils/liveChat.js'
+// @ts-expect-error 条件编译：与 #ifdef APP-PLUS 分支里的同名 class 互斥
 import { LiveMqttService } from './utils/liveMqtt.js'
 // #endif
 // #ifdef APP-PLUS
@@ -570,13 +574,11 @@ const shownRecommendCouponIds = ref<any[]>([])
 const hlsHttpFallbackUsed = ref(false)
 const lastHlsPullUrl = ref('')
 
-// hls.js 播放器实例与视频节点不经过 Vue 响应式代理，避免干扰其内部状态管理
-// #ifdef H5
-let hlsInstance: InstanceType<typeof Hls> | null = null
-// #endif
-// #ifndef H5
+// hls.js 播放器实例与视频节点不经过 Vue 响应式代理，避免干扰其内部状态管理。
+// 条件编译：H5 用 hls.js 实例，其它端不用 —— 两个分支互斥，合并为一个声明，
+// 否则 TS 会把两条 `let` 当成重复声明（TS2451）。运行时行为不变。
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let hlsInstance: any = null
-// #endif
 let hlsVideoElement: HTMLVideoElement | null = null
 let hlsVideoClickHandler: (() => void) | null = null
 let liveMqttService: InstanceType<typeof LiveMqttService> | null = null

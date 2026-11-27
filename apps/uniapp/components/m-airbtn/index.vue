@@ -51,7 +51,9 @@ const openApp = () => {
 
   try {
     var e = navigator.userAgent.toLowerCase(),
-      n = e.match(/cpu iphone os (.*?) like mac os/);
+      // n 先装 match 结果、后面又被复用成 0（原代码写法），显式放宽为 any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      n: any = e.match(/cpu iphone os (.*?) like mac os/);
     if (
       ((n = null !== n ? n[1].replace(/_/g, ".") : 0), parseInt(n) >= 9)
     ) {

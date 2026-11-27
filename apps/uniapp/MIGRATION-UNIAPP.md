@@ -139,33 +139,45 @@
 
 | 批次 | 内容 | 效果 |
 |---|---|---|
-| U2-a | 新增 `types/global-augment.d.ts`：`ComponentCustomProperties`（`$store`/`$mainColor`/`$lightColor`/`$aiderLightColor`/`$u`）、`interface Event`（`detail`/`target.dataset`/`touches`/`changedTouches`）、`Page.PageInstance.__page__`、`PlusAndroidInstanceObject`（`importClass`/`invoke`/`requestPermissions`/`runtimeMainActivity`） | 215 → 170 |
-| U2-b | 新增 `types/assets.d.ts`：`*.png/jpg/jpeg/gif/webp/svg/mp3/mp4` 资源模块 | （与 a 合并统计） |
-| U2-c | 给 53 处无扩展名 `.vue` 导入补 `.vue`（脚本按「能解析到真实文件」精确匹配，未匹配的 118 处是 `@/store`、`js_sdk/*` 等非 .vue 目标，无需处理） | 170 → 118 |
-| U2-d | `PageInstance` 归属修正：它声明在全局命名空间 `Page` 里，直接写全局 `interface PageInstance` 不会合并 | 118 → 116 |
+| U2-a | 新增 `types/global-augment.d.ts`：`ComponentCustomProperties`（`$store`/`$mainColor`/`$lightColor`/`$aiderLightColor`/`$u`）、`interface Event`（`detail`/`target.dataset`/`touches`）、`Page.PageInstance.__page__`、`PlusAndroidInstanceObject`、`WeixinJSBridge`、`requirePlugin` | 215 → 170 → 154 |
+| U2-b | 新增 `types/assets.d.ts`：图片/音视频模块声明 | 同上 |
+| U2-c | 53 处无扩展名 `.vue` 导入补 `.vue`（脚本按"能解析到真实文件"精确匹配） | 170 → 118 |
+| U2-d | `PageInstance` 归属修正（命名空间 `Page` 下合并） | 118 → 116 |
+| U2-e | `utils/filters.ts`：`getPages` 返回 `Page.PageInstance \| string`、`isLogin` 改**重载**（`boolean \| unknown` 会让所有 `isLogin()?.id` 退化成 unknown） | 110 → 93 |
+| U2-f | 修 `== []`（恒 false）、`ua.match(...) == 'micromessenger'`（靠数组 toString 偶然成立）、`cartList.length` 等条件判断 | 93 → 86 |
+| U2-g | 条件编译重复声明：`room.vue` 的 `hlsInstance` 合并声明、`LiveChatService`/`LiveMqttService` 用 `@ts-expect-error` 按行抑制；`poster-panel.vue` 的 `st2` 同理 | 86 → 69 |
+| U2-h | **补 4 个缺失的分销银行卡接口**（见下） | 116 → 110 中的一部分 |
 
-**一个类型细节值得记**：`PageInstance` 是 `declare namespace Page { interface PageInstance<D, T> }`，
-补类型必须写成 `declare global { namespace Page { interface PageInstance<D, T> {...} } }`；
-写成全局 `interface PageInstance` 不会报错，但**静默不生效**。
+**曲线：274 → 215（U1）→ 170 → 118 → 93 → 86 → 69**
 
-### 剩余 typecheck 错误（116 条，长尾）
+### 修类型时发现的真实缺陷
 
-曲线：**274 → 215（U1）→ 170（全局声明）→ 118（.vue 扩展名）→ 116（命名空间修正）**
+| 位置 | 问题 | 处理 |
+|---|---|---|
+| `pages/mine/distribution/bank-accounts.vue`、`withdraw-apply.vue` | 从 `@/api/distribution` 具名导入 `getBankCards` / `addBankCard` / `deleteBankCard` / `setDefaultBankCard`，但**该模块从来没有这 4 个导出** → 运行时 `TypeError: getBankCards is not a function`，两个页面功能完全不可用 | 后端 `DistributionBankCardBuyerController` 已有 `GET/POST/DELETE/PUT /buyer/distribution/bank-card`，按本文件"省略 `/buyer` 前缀"的既有约定补齐 4 个函数（先核对同类接口 `distribution()` / `cash()` 的路径写法） |
+| `pages/product/comment.vue` | `res.data.result.records == []` —— 与**新数组字面量**比较，恒 false | 删除该恒假项（可证明不改变行为） |
+| `pages/passport/login.vue`、`payOrder.vue` | `ua.match(/MicroMessenger/i) == 'micromessenger'` —— 靠数组 toString 偶然成立 | 改为 `/MicroMessenger/i.test(ua)`（`ua` 已小写，等价） |
+| `pages/tabbar/home/template/fetch_coupon.vue` | `coupList.value != ""` —— 空数组 `== ""` 为 true，实际语义是"非空" | 改为 `length > 0`（等价） |
+| `utils/tools.js` | `throttle` 是箭头函数却用 `arguments` | 改普通 `function`（见 U0） |
 
-| 错误码 | 数量 | 性质 |
+### 条件编译完整性护栏
+
+改动前后统计「行首即指令」的 `#ifdef/#ifndef/#endif`：
+**唯一变化是 `room.vue` 里 `hlsInstance` 合并时移除的 4 行**（两个分支都是 `= null`，行为一致），
+全树 ifdef/endif **配平校验通过**。
+
+### 剩余 typecheck 错误（69 条，长尾）
+
+| 错误码 | 数量 | 典型场景 |
 |---|---:|---|
-| TS2339 | 36 | 零散属性缺失（`$refs` 组件实例、`PageInstance` 之外的私有字段） |
-| TS2345 | 27 | 实参类型不匹配（`canvasToTempFilePath` 的 `canvas`、uni API 重载） |
-| TS2322 | 10 | 赋值类型不匹配 |
-| TS2554 | 8 | 形参个数（`uni` API 重载差异） |
-| TS2305 | 7 | 命名导出不存在 |
-| TS2304 | 5 | 标识符未定义 |
+| TS2345 | 27 | 实参类型不匹配（`canvasToTempFilePath` 的 canvas、uni API 重载） |
+| TS2339 | 16 | 零散属性缺失（`$refs` 组件实例等） |
+| TS2322 | 11 | 赋值类型不匹配（如 `<button type="primary">` 与 DOM 的 button type 冲突） |
+| TS2554 | 8 | 形参个数（uni API 重载差异） |
+| 其它 | 7 | TS2769 / TS2351 / TS2365 / TS2363 |
 
-分布很散：Top 文件是 `pages/promotion/live/room.vue`(11)、`pages/passport/login.vue`(8)、
-`pages/cart/payment/payOrder.vue`(5)、`pages/tabbar/user/my.vue`(5)，其余都在 1~4 条。
-
-这些都是**逐点判断型**问题（要用 `as` 断言还是补声明，取决于该处运行时到底传什么），
-不适合批量脚本；按本方案的原则，改的时候只补类型、不改行为。
+分布极散：最多 `pages/passport/login.vue`(5)，其余都在 1~3 条，覆盖约 30 个文件。
+这些都必须逐点判断"运行时到底传什么"，无法再用批量脚本 —— 按方案原则只补类型、不改行为。
 
 ### 剩余阶段
 

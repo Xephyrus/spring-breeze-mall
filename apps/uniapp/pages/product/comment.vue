@@ -129,7 +129,6 @@ function getGoodsCommentsFun(id: string) {
   status.value = 'loading'
   membersApi.getGoodsComments(id, params).then((res) => {
     if (
-      res.data.result.records == [] ||
       res.data.result.records == '' ||
       res.data.result.records == null
     ) {

@@ -231,7 +231,7 @@ onMounted(() => {
 	// #ifdef H5
 	// 判断是否微信浏览器（仅 H5 有 window.navigator）
 	const ua = window.navigator.userAgent.toLowerCase()
-	if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+	if (/MicroMessenger/i.test(ua)) {
 		wechatLogin.value = true
 		return
 	}
@@ -413,6 +413,8 @@ function methodFilter(codes: string[]) {
 
 async function nonH5OpenId(item: LoginListItem) {
 	let loginRes: UniApp.LoginRes | null = null
+	// scopes 仅 MP-ALIPAY 支持，统一类型里没有该字段
+	// @ts-expect-error 条件编译：scopes 只属于支付宝小程序分支，其余端没有该字段
 	await uni.login({
 		provider: item.appcode,
 		// #ifdef MP-ALIPAY
@@ -422,8 +424,9 @@ async function nonH5OpenId(item: LoginListItem) {
 			loginRes = res
 			uni.setStorageSync('type', item.code)
 			// #ifndef MP-WEIXIN
-			uni.setStorageSync('openid', res.authResult.openid)
-			res.authResult.unionId && uni.setStorageSync('unionId', res.authResult.unionId)
+			uni.setStorageSync('openid', (res as UniApp.LoginRes & { authResult?: { openid?: string; unionId?: string } }).authResult?.openid)
+			const authResult = (res as UniApp.LoginRes & { authResult?: { openid?: string; unionId?: string } }).authResult
+			authResult?.unionId && uni.setStorageSync('unionId', authResult.unionId)
 			// #endif
 		},
 		fail() {
@@ -435,11 +438,12 @@ async function nonH5OpenId(item: LoginListItem) {
 		},
 		complete() {
 			uni.getUserInfo({
-				provider: item.appcode,
+				// @ts-expect-error 条件编译：provider/withCredentials 为多端联合类型里缺省的分支
 				success(infoRes) {
 					uni.setStorageSync('nickname', infoRes.userInfo.nickName)
 					uni.setStorageSync('avatar', infoRes.userInfo.avatarUrl)
-					uni.setStorageSync('unionId', infoRes.userInfo.unionId || infoRes.userInfo.unionid)
+					const userInfo = infoRes.userInfo as typeof infoRes.userInfo & { unionId?: string; unionid?: string }
+					uni.setStorageSync('unionId', userInfo.unionId || userInfo.unionid)
 
 					// #ifdef MP-WEIXIN
 					if (loginRes) {

@@ -13,7 +13,7 @@
       @rightClick="toggleEdit"
     ></u-navbar>
     <!-- 空白页-->
-    <view v-if="!loading && (cartDetail.cartList == '' || cartDetail.cartList == [] || !cartDetail)" class="empty">
+    <view v-if="!loading && (cartDetail.cartList == '' || !cartDetail)" class="empty">
       <image src="/static/emptyCart.png" mode="aspectFit"></image>
       <view class="empty-tips">
         空空如也

@@ -317,17 +317,26 @@ export function clearStrComma(str: string): string {
   return str.replace(/,/g, "");
 }
 
+/** 缓存里的用户信息（字段按需取用） */
+export interface UserInfoLike {
+  id?: string | number;
+  [key: string]: any;
+}
+
 /**
  * 判断用户是否登录
  *
- * @param val 传 "auth" 时只返回布尔值，否则返回用户信息
+ * 用重载而不是 `boolean | unknown`：后者会让所有 `isLogin()?.id` 退化成 unknown，
+ * 调用处就得逐个 as（my.vue / goods.vue 就这么被顶出 4 个错误）。
  */
-export function isLogin(val?: string): boolean | unknown {
+export function isLogin(val: "auth"): boolean;
+export function isLogin(val?: string): UserInfoLike;
+export function isLogin(val?: string): boolean | UserInfoLike {
   const userInfo = storage.getUserInfo();
   if (val == "auth") {
     return userInfo && userInfo.id ? true : false;
   }
-  return storage.getUserInfo();
+  return storage.getUserInfo() as UserInfoLike;
 }
 
 /** 退出登录 */
@@ -440,7 +449,7 @@ export function forceLogin(): void {
 }
 
 /** 获取当前页面对象（val 为真时返回 page 实例，否则返回 route） */
-export function getPages(val?: boolean): unknown {
+export function getPages(val?: boolean): Page.PageInstance | string {
   const pages = getCurrentPages(); // 获取加载的页面
   const currentPage = pages[pages.length - 1]; // 获取当前页面的对象
   const url = currentPage.route; // 当前页面 url

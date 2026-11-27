@@ -231,3 +231,41 @@ export function getDistributionParent() {
     method: Method.GET,
   })
 }
+
+/**
+ * 我的银行卡列表
+ *
+ * 后端：`GET /buyer/distribution/bank-card`
+ * （对照其它分销接口，本文件统一省略 `/buyer` 前缀，由网关补齐）
+ */
+export function getBankCards() {
+  return http.request({
+    url: `/distribution/bank-card`,
+    method: Method.GET,
+  })
+}
+
+/** 添加银行卡（后端：`POST /buyer/distribution/bank-card`） */
+export function addBankCard(data) {
+  return http.request({
+    url: `/distribution/bank-card`,
+    method: Method.POST,
+    data,
+  })
+}
+
+/** 删除银行卡（后端：`DELETE /buyer/distribution/bank-card/{id}`） */
+export function deleteBankCard(id) {
+  return http.request({
+    url: `/distribution/bank-card/${id}`,
+    method: Method.DELETE,
+  })
+}
+
+/** 设为默认银行卡（后端：`PUT /buyer/distribution/bank-card/{id}/default`） */
+export function setDefaultBankCard(id) {
+  return http.request({
+    url: `/distribution/bank-card/${id}/default`,
+    method: Method.PUT,
+  })
+}

@@ -93,9 +93,11 @@ const hasGenerated = ref(false)
 let dp: any = null
 
 // #ifdef MP-WEIXIN
+// @ts-expect-error 条件编译：与 #ifndef MP-WEIXIN 分支的同名 const 互斥（运行期只会保留一个）
 const st2 = (size: number) => size * 2
 // #endif
 // #ifndef MP-WEIXIN
+// @ts-expect-error 条件编译：与 #ifdef MP-WEIXIN 分支的同名 const 互斥（运行期只会保留一个）
 const st2 = (size: number) => size
 // #endif
 

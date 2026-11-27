@@ -127,7 +127,7 @@ function getAutoCp() {
     console.log(res);
     if (res.data.success) {
       coupList.value.push(...res.data.result);
-      if (coupList.value != "") {
+      if (coupList.value.length > 0) {
         enableShowCoupon.value = true;
       } else {
         enableShowCoupon.value = false;

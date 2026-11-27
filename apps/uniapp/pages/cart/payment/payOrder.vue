@@ -180,7 +180,7 @@ function cashierData() {
 
       // #ifdef H5
       const ua = window.navigator.userAgent.toLowerCase()
-      if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+      if (/MicroMessenger/i.test(ua)) {
         payList.value = res.data.result.support.filter((item: string) => item != 'ALIPAY')
         if (orderType.value == 'RECHARGE') {
           payList.value = res.data.result.support.filter((item: string) => item == 'WECHAT')
@@ -348,7 +348,7 @@ async function pay(payment: string) {
 
 function isWeiXin() {
   const ua = window.navigator.userAgent.toLowerCase()
-  return ua.match(/MicroMessenger/i) == 'micromessenger'
+  return /MicroMessenger/i.test(ua)
 }
 </script>
 <style scoped lang="scss">

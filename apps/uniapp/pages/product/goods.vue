@@ -447,7 +447,7 @@ function share() {
 }
 
 function emptyPromotion(): boolean {
-  if (PromotionList.value == "" || PromotionList.value == null || PromotionList.value == []) {
+  if (PromotionList.value == "" || PromotionList.value == null) {
     return true
   }
   return false
