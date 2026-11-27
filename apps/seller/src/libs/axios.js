@@ -5,11 +5,10 @@ import { Message } from "@/utils/message";
 import Cookies from "js-cookie";
 import {v4 as uuidv4} from 'uuid';
 
-// 统一请求路径前缀
-export const sellerUrl =
-  process.env.NODE_ENV === "development"
-    ? BASE.API_DEV.seller
-    : BASE.API_PROD.seller;
+// 统一请求路径前缀（Vite：用 import.meta.env.DEV 替代 process.env.NODE_ENV）
+export const sellerUrl = import.meta.env.DEV
+  ? BASE.API_DEV.seller
+  : BASE.API_PROD.seller;
 export const baseUrl = sellerUrl + BASE.PREFIX;
 // 文件上传接口
 export const uploadFile = sellerUrl + "/store/common/upload/file";

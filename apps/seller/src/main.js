@@ -1,6 +1,7 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-import "./styles/theme.less";
+import "./styles/common.scss";
+import "./styles/theme.scss";
 import App from "./App.vue";
 import { router } from "./router/index";
 import { setupElementPlus } from "@/plugins/element";

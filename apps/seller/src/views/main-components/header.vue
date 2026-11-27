@@ -7,10 +7,11 @@
 </template>
 
 <script setup>
+import logoLilishopUrl from "@/assets/logo-lilishop.png";
 import { onMounted, ref } from "vue";
 import { loadSiteSettings } from "@/composables/useSiteSettings";
 
-const storeSideLogo = ref(require("@/assets/logo-lilishop.png"));
+const storeSideLogo = ref(logoLilishopUrl);
 
 function init() {
   getSite();

@@ -1,0 +1,8 @@
+// Element Plus 主题覆盖（原 theme.less 转换而来）
+// 说明：原 less 里的 @primary-color 等变量在项目中没有被引用，迁移到 Vite 时一并移除；
+// 如需定制主题，请改用 CSS 变量（ElConfigProvider / :root --el-color-primary）。
+
+.el-drawer,
+.drawer {
+  z-index: 2600 !important;
+}

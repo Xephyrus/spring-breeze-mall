@@ -118,6 +118,8 @@
 </template>
 
 <script setup>
+import loginBgUrl from "@/assets/login-bg.jpg";
+import loginLogoUrl from "@/assets/logo-lilishop.png";
 import { computed, reactive, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { User, Lock, Iphone, Message } from "@element-plus/icons-vue";
@@ -138,8 +140,8 @@ const route = useRoute();
 const router = useRouter();
 const appStore = useAppStore();
 
-const loginBg = require("@/assets/login-bg.jpg");
-const loginLogo = require("@/assets/logo-lilishop.png");
+const loginBg = loginBgUrl;
+const loginLogo = loginLogoUrl;
 const saveLogin = ref(true);
 const sendCodeLoading = ref(false);
 const loading = ref(false);

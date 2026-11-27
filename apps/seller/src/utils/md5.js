@@ -174,6 +174,6 @@ function hexMD5(str) {
   return binl2hex(coreMD5(str2binl(str)))
 }
 
-module.exports = {
-  md5: hexMD5
-}
+export const md5 = hexMD5;
+
+export default { md5: hexMD5 }

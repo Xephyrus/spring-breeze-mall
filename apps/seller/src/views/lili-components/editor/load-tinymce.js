@@ -8,7 +8,7 @@ export function loadTinymce() {
   if (!loadingPromise) {
     loadingPromise = new Promise((resolve, reject) => {
       const script = document.createElement("script");
-      script.src = window.location.origin + process.env.BASE_URL + "tinymce/tinymce.min.js";
+      script.src = window.location.origin + import.meta.env.BASE_URL + "tinymce/tinymce.min.js";
       script.onload = () => resolve();
       script.onerror = () => {
         loadingPromise = null;

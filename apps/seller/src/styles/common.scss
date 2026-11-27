@@ -130,16 +130,12 @@ li {
   cursor: pointer;
 }
 
-// 主题颜色
+// 主题色变量统一放在 variables.scss（Vite 下通过 additionalData 全局注入）
+@import "./variables.scss";
 
-$success_color: #68cabe;
-$warning_color: #fa6419;
-$error_color: #ff3c2a;
-$theme_color: #F31947;
 .theme_color {
   color: $theme_color !important;
 }
-$bg_color: #f1f6fa;
 
 @import "./table-common.scss";
 

@@ -31,7 +31,7 @@
 | 端 | 说明 | 状态 |
 |---|---|---|
 | **manager** 平台运营端 | 商品、订单、会员、营销、分销、直播、装修、统计、系统设置 | ✅ Vue 3 + TS 全量 |
-| **seller** 商家端 | 商家入驻、商品、订单、结算 | Vue CLI（待迁移） |
+| **seller** 商家端 | 商家入驻、商品、订单、结算 | 🚧 Vite 8（构建已迁移，TS 迁移中） |
 | **buyer** PC 买家端 | 商城前台 | Vue CLI（待迁移） |
 | **im** 客服端 | 在线客服 | Vue CLI（待迁移） |
 | **uniapp** 移动端 | 小程序 / H5 | uni-app |
@@ -59,7 +59,7 @@
 spring-breeze-mall/
 ├── apps/
 │   ├── manager/          # 平台运营端（Vue 3 + TS + Vite 8）
-│   ├── seller/           # 商家端（Vue CLI）
+│   ├── seller/           # 商家端（Vite 8，TS 迁移中）
 │   ├── buyer/            # PC 买家端（Vue CLI）
 │   ├── im/               # IM 客服端（Vue CLI）
 │   └── uniapp/           # 移动端（uni-app）

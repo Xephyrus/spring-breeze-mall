@@ -1,0 +1,9 @@
+// 主题色变量（原定义在 common.scss 中，抽出来以便通过 Vite additionalData 注入到每个 SFC）
+// 这些变量在 SFC 的 <style lang="scss"> 里被直接使用（如 $theme_color），
+// webpack 时代靠 style-resources-loader 全局注入；Vite 用 css.preprocessorOptions.scss.additionalData 等价实现。
+
+$success_color: #68cabe;
+$warning_color: #fa6419;
+$error_color: #ff3c2a;
+$theme_color: #f31947;
+$bg_color: #f1f6fa;
