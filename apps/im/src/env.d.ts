@@ -31,6 +31,7 @@ declare module "*.vue" {
 }
 
 declare module "js-base64";
+declare module "qs";
 declare module "virtual:svg-icons-register";
 declare module "vue-virtual-scroller";
 declare module "vue-cropper";

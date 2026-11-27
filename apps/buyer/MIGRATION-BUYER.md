@@ -433,3 +433,58 @@ buyer 与 im 各有一份 `Foundation.js`，函数名与逻辑高度相似。第
 
 > 这类拆分的价值不在"少写了多少行"，而在**把「变量注入」与「样式输出」这两件事分开**：
 > 前者需要到处都有、后者必须只有一份。
+### 4.2 CI 门禁接入（M5）
+
+`.github/workflows/ci.yml` 原有 manager / seller 两个 job，本轮补上 **im** 与 **buyer**：
+
+| job | 命令 |
+|---|---|
+| im | `typecheck` → `lint (ratchet 0)` → `build` |
+| buyer | `typecheck` → `lint (ratchet 0)` → `build`（`NODE_OPTIONS=--max-old-space-size=3072`） |
+
+同时把 `push` / `pull_request` 的 `paths` 触发补上 `apps/im/**`、`apps/buyer/**`。
+
+**接入时立刻抓到一个真实回归**
+
+本地逐条复跑 CI 命令时，`im typecheck` 从 0 变成 1 个错误：
+
+```
+src/utils/request.ts(13,16): error TS7016: Could not find a declaration file for module 'qs'
+```
+
+原因：buyer 这轮 `pnpm install` 重算了 lockfile，`qs` 的类型此前由某个传递依赖间接带出，重装后消失。
+已在 `apps/im/src/env.d.ts` 补 `declare module "qs"`（与 buyer 的做法一致）。
+
+> 这正是 CI 门禁的意义：**「我本地跑过」不等于「下次 install 后仍然绿」**。
+> 依赖树的微小变动就会让类型悄悄丢失。
+
+四个 app 全量复核：manager / seller / im / buyer 的 `typecheck` 均为 exit 0。
+
+### 4.3 冒烟清单（M6）
+
+新增 `apps/buyer/SMOKE-BUYER.md`：8 组共 52 条可勾选检查 + 快速回归脚本（脚本已实跑验证）。
+
+覆盖重点：
+- 启动骨架（入口已改 `main.ts`、`config.js` 注入）
+- **样式回归**（`global.scss` 拆分是唯一可能造成视觉变化的改动：`.wes-2` / 主题色 / 宽度类 / 深色主题）
+- **12 条路由**逐个打开（kebab 改名后）
+- **装修楼层** 22 个组件（`index-decorate` 目录整体改名）
+- 交易主链路（购物车 → 结算 → 支付 → 售后 → 卡密 / 提货卡 / 积分兑券）
+- 工程门禁（含「CSS ≈ 579 KB」「`.wes-2` 只出现 1 次」两条产物级断言）
+
+### 4.4 buyer 迁移完成度
+
+| 里程碑 | 状态 |
+|---|---|
+| M1 Vite 迁移 | ✅ |
+| M2 TypeScript 化（42 → 1 个豁免 `.js`） | ✅ |
+| M3 kebab 命名（113 文件 + 12 目录） | ✅ |
+| M4.1 `global.scss` 拆分（CSS −46%） | ✅ |
+| M4.2 shared 复用评估 | ⏭ 略（见下） |
+| M5 CI 门禁 | ✅ |
+| M6 冒烟清单 | ✅ |
+
+**关于 M4.2（shared 复用）**：与 im 同样的核对结论 —— buyer 的 `plugins/request.ts` 深度耦合
+`element-plus` 的 loading/提示、`qs` 表单序列化、`skipAuthHandler`/`needToken` 等业务开关，
+接入 `createHttpClient` 需要把这些全部做成 hooks，风险远大于收益，**明确不复用**。
+`packages/shared` 目前只在 manager / seller 侧使用。
