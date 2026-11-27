@@ -87,8 +87,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { getAutoCoup } from "@/api/login";
-import storage from "@/utils/storage.js";
-import { isLogin, unitPrice } from "@/utils/filters.js";
+import storage from "@/utils/storage";
+import { isLogin, unitPrice } from "@/utils/filters";
 
 const enableShowCoupon = ref(false);
 const coupList = ref<any[]>([]);

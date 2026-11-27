@@ -46,7 +46,7 @@
 import { onMounted, reactive, ref, computed } from 'vue'
 import { onReachBottom } from '@dcloudio/uni-app'
 import { getStoreList } from '@/api/store'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

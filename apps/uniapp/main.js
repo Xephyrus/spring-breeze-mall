@@ -7,7 +7,7 @@ import config from '@/config/config'
 import airBtn from '@/components/m-airbtn/index.vue'
 // #endif
 import mpShare from '@/utils/mpShare.js'
-import * as filterUtils from './utils/filters.js'
+import * as filterUtils from './utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 
 export function createApp() {

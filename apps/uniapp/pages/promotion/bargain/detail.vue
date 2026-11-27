@@ -160,7 +160,7 @@ import {
 } from '@/api/promotions'
 import shares from '@/components/m-share/index'
 import config from '@/config/config'
-import { unitPrice, noPassByName, isLogin } from '@/utils/filters.js'
+import { unitPrice, noPassByName, isLogin } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

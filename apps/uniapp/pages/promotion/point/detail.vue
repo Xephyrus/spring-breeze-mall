@@ -61,7 +61,7 @@ import { ref } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import popupGoods from '@/components/m-buy/goods'
 import { getPointsGoodsDetail } from '@/api/promotions'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 
 const style = ref({
   img: 'display:block',

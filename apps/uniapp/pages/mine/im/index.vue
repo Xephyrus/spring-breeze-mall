@@ -189,8 +189,8 @@ import {
   uploadImImage,
 } from '@/api/im.js'
 import SocketService from '@/utils/socket_service.js'
-import storage from '@/utils/storage.js'
-import { beautifyTime, unitPrice } from '@/utils/filters.js'
+import storage from '@/utils/storage'
+import { beautifyTime, unitPrice } from '@/utils/filters'
 import config from '@/config/config.js'
 import { textReplaceEmoji, emojistwo } from '@/utils/emojis.js'
 import { useStore } from '@/store'

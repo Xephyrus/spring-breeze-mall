@@ -90,7 +90,7 @@ import {
   bindGiftCardCashMemberCard,
   getGiftCardCashMemberCardPage,
 } from '@/api/promotions.js'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import {
   decorateGiftCard,
   GIFT_CARD_STATUS,

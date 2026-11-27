@@ -73,7 +73,7 @@ import { useStore } from '@/store'
 import config from '@/config/config'
 import { getThemeStyle } from '@/utils/theme'
 import { getDistributionGoodsShareContext } from '@/api/distribution'
-import { unitPrice, parseGoodsImageUrl } from '@/utils/filters.js'
+import { unitPrice, parseGoodsImageUrl } from '@/utils/filters'
 import PosterPanel from './poster-panel.vue'
 // #ifdef H5
 import { h5Copy } from '@/js_sdk/h5-copy/h5-copy.js'

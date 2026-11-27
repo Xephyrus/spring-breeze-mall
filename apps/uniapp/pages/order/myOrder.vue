@@ -157,7 +157,7 @@ import {
 	parseGoodsImageUrl,
 	tipsToLogin,
 	orderStatusList,
-} from '@/utils/filters.js'
+} from '@/utils/filters'
 // E_COUPON 订单不展示确认收货、退款/售后（FR-B-04）
 import { isECouponOrder, isAppointmentOrder } from '@/utils/goodsType.js'
 import { appointmentOrderStatusText, getAppointmentAllowOperation } from '@/utils/appointmentGoods.js'

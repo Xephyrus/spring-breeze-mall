@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { goodsFormatPrice } from '@/utils/filters.js'
+import { goodsFormatPrice } from '@/utils/filters'
 
 const props = withDefaults(defineProps<{
 	res?: any[]

@@ -36,7 +36,7 @@ import { ref, computed, getCurrentInstance, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { cash } from '@/api/distribution'
 import { assertActiveDistributor } from '@/utils/distributionStatus'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

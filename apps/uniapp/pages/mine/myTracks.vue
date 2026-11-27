@@ -59,7 +59,7 @@
 import { ref, computed } from 'vue'
 import { onShow, onReachBottom, onPullDownRefresh } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { myTrackList, deleteHistoryListId } from '@/api/members.js'
 import { getStoreBaseInfo } from '@/api/store.js'
 import { getThemeStyle } from '@/utils/theme'

@@ -1,4 +1,5 @@
-let isDev = process.env.NODE_ENV === "development";
+// uni 编译期会替换 process.env.NODE_ENV（HBuilderX 注入），这里保持原写法
+const isDev = process.env.NODE_ENV === "development";
 
 const UUID = isDev ? "uuid_key_dev" : "uuid_key";
 const HAS_LOGIN = isDev ? "has_login_key_dev" : "has_login_key";
@@ -16,7 +17,7 @@ const STORE_REFRESH_TOKEN = isDev ? "store_refresh_token_dev" : "store_refresh_t
 const STORE_INFO = isDev ? "store_info_obj_dev" : "store_info_obj";
 
 export default {
-	setInviter(val){
+	setInviter(val: any) {
 		uni.setStorageSync('inviter', val)
 	},
 	getInviter(){
@@ -24,7 +25,7 @@ export default {
 	},
 
   //写入自动发券
-  setAutoCp(val){
+  setAutoCp(val: any) {
     uni.setStorageSync('autoCp', val)
   },
   //获取自动发券时间
@@ -32,7 +33,7 @@ export default {
     return uni.getStorageSync('autoCp');
   },
   // 写入热门搜索时间戳
-  setHotWords(val) {
+  setHotWords(val: any) {
     uni.setStorageSync("hotWords", val);
   },
   // 获取热门搜索时间戳
@@ -40,7 +41,7 @@ export default {
     return uni.getStorageSync(`hotWords`);
   },
   //写入 展示还是不展示
-  setShow(val) {
+  setShow(val: any) {
     uni.setStorageSync("show", val);
   },
   getShow() {
@@ -54,7 +55,7 @@ export default {
     return uni.getStorageSync(FACE_LOGIN);
   },
   // 写入face id
-  setFaceLogin(val) {
+  setFaceLogin(val: any) {
     uni.setStorageSync(FACE_LOGIN, val);
   },
   // 获取指纹登录
@@ -62,25 +63,25 @@ export default {
     return uni.getStorageSync(FINGER_LOGIN);
   },
   // 写入指纹登录
-  setFingerLogin(val) {
+  setFingerLogin(val: any) {
     uni.setStorageSync(FINGER_LOGIN, val);
   },
   // 写入用户信息
-  setUserInfo(val) {
+  setUserInfo(val: any) {
     uni.setStorageSync(USER_INFO, val);
   },
   // 获取用户信息
   getUserInfo() {
     return uni.getStorageSync(USER_INFO);
   },
-  setTalkToUser(val){
+  setTalkToUser(val: any) {
     uni.setStorageSync("TALK_TO_USER", val);
   },
   getTalkToUser(){
     return uni.getStorageSync("TALK_TO_USER");
   },
   // 写入uuid
-  setUuid(val) {
+  setUuid(val: any) {
     uni.setStorageSync(UUID, val);
   },
   // 获取uuid
@@ -88,11 +89,11 @@ export default {
     return uni.getStorageSync(UUID);
   },
   // 写入登录
-  setHasLogin(val) {
+  setHasLogin(val: any) {
     uni.setStorageSync(HAS_LOGIN, val);
     if (val) {
       try {
-        const { flushPendingBind } = require("@/utils/distributionBind.js");
+        const { flushPendingBind } = require("@/utils/distributionBind");
         flushPendingBind();
       } catch (e) {
         // ignore
@@ -108,7 +109,7 @@ export default {
     uni.removeStorageSync(UUID);
   },
   // 写入accessToken
-  setAccessToken(val) {
+  setAccessToken(val: any) {
     uni.setStorageSync(ACCESS_TOKEN, val);
   },
   // 获取accessToken
@@ -116,7 +117,7 @@ export default {
     return uni.getStorageSync(ACCESS_TOKEN);
   },
   // 后退购物车
-  setCartBackbtn(val) {
+  setCartBackbtn(val: any) {
     uni.setStorageSync(CART_BACKBTN, val);
   },
 
@@ -125,7 +126,7 @@ export default {
     uni.removeStorageSync(ACCESS_TOKEN);
   },
   // 写入刷新token
-  setRefreshToken(val) {
+  setRefreshToken(val: any) {
     uni.setStorageSync(REFRESH_TOKEN, val);
   },
   // 获取刷新token
@@ -137,7 +138,7 @@ export default {
     uni.removeStorageSync(REFRESH_TOKEN);
   },
 
-  setAfterSaleData(val) {
+  setAfterSaleData(val: any) {
     uni.setStorageSync(AFTERSALE_DATA, val);
   },
 
@@ -149,7 +150,7 @@ export default {
     uni.removeStorageSync(AFTERSALE_DATA);
   },
   // 是否发送商品连接记录
-  setImGoodsLink(val) {
+  setImGoodsLink(val: any) {
     uni.setStorageSync('imGoodId', val);
   },
   getImGoodsLink() {
@@ -157,7 +158,7 @@ export default {
   },
 
   // ============== 商家专属 Token 与鉴权方法 ==============
-  setStoreAccessToken(val) {
+  setStoreAccessToken(val: any) {
     uni.setStorageSync(STORE_ACCESS_TOKEN, val);
   },
   getStoreAccessToken() {
@@ -166,7 +167,7 @@ export default {
   removeStoreAccessToken() {
     uni.removeStorageSync(STORE_ACCESS_TOKEN);
   },
-  setStoreRefreshToken(val) {
+  setStoreRefreshToken(val: any) {
     uni.setStorageSync(STORE_REFRESH_TOKEN, val);
   },
   getStoreRefreshToken() {
@@ -175,7 +176,7 @@ export default {
   removeStoreRefreshToken() {
     uni.removeStorageSync(STORE_REFRESH_TOKEN);
   },
-  setStoreInfo(val) {
+  setStoreInfo(val: any) {
     uni.setStorageSync(STORE_INFO, val);
   },
   getStoreInfo() {

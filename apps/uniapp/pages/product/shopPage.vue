@@ -255,8 +255,8 @@ import {
   navigateToLogin,
   talkIm,
   unitPrice,
-} from '@/utils/filters.js'
-import storage from '@/utils/storage.js'
+} from '@/utils/filters'
+import storage from '@/utils/storage'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

@@ -437,7 +437,7 @@ import {
   goodsFormatPrice,
   secrecyMobile,
   isLogin,
-} from '@/utils/filters.js'
+} from '@/utils/filters'
 import { hasECouponInCheckout, hasAppointmentInCheckout } from '@/utils/goodsType.js'
 import { SERVICE_MODE_LABEL, formatDate } from '@/utils/appointmentGoods.js'
 import { bindCheckout } from '@/api/appointment.js'

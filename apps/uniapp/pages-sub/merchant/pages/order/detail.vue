@@ -123,7 +123,7 @@
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getStoreOrderDetail, storeOrderTake } from '../../api/order.js'
-import { parseGoodsImageUrl } from '@/utils/filters.js'
+import { parseGoodsImageUrl } from '@/utils/filters'
 
 const orderSn = ref('')
 const orderDetail = ref<any>(null)

@@ -134,8 +134,8 @@
 import { ref, reactive, watch, onMounted, onUnmounted, computed } from "vue";
 import { getGoodsList } from "@/api/goods.js";
 import { addToCart } from "@/api/trade.js";
-import { goodsFormatPrice } from "@/utils/filters.js";
-import storage from "@/utils/storage.js";
+import { goodsFormatPrice } from "@/utils/filters";
+import storage from "@/utils/storage";
 
 const props = defineProps<{ res: any; enableBottomLoad?: boolean }>();
 

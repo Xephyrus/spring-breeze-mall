@@ -52,7 +52,7 @@
 import { ref, computed } from 'vue'
 import { onLoad, onShow, onPullDownRefresh, onBackPress } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { tipsToLogin } from '@/utils/filters.js'
+import { tipsToLogin } from '@/utils/filters'
 import * as API_Address from '@/api/address.js'
 import { getThemeStyle } from '@/utils/theme'
 

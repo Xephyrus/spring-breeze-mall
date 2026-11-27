@@ -61,7 +61,7 @@
 import { ref, watch, getCurrentInstance, nextTick } from 'vue'
 import DrawPoster from '@/js_sdk/u-draw-poster'
 import { getDistributionGoodsPosterContext } from '@/api/distribution'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 
 const CANVAS_SELECTOR = 'distributionPosterCanvas'
 const POSTER_WIDTH = 600

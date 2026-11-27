@@ -2,7 +2,7 @@
  * Created by Andste on 2018/5/2.
  * 用户认证相关API
  */
-import storage from '@/utils/storage.js';
+import storage from '@/utils/storage';
 import {http, Method} from '@/utils/request.js';
 import { md5 } from '@/utils/md5.js';
 

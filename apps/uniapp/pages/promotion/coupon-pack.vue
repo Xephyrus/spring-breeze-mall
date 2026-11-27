@@ -120,7 +120,7 @@
  * @since 2026-11-12
  */
 import { getCouponPackageDetail, receiveCouponPackage } from "@/api/promotions.js";
-import storage from "@/utils/storage.js";
+import storage from "@/utils/storage";
 import { getMpScene } from "@/api/goods.js";
 
 export default {

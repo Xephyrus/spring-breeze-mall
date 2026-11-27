@@ -487,7 +487,7 @@ import {
 } from '@/api/live.js'
 import config from '@/config/config'
 import { useStore } from '@/store'
-import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters.js'
+import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters'
 // #ifndef APP-PLUS
 import { LiveChatService } from './utils/liveChat.js'
 import { LiveMqttService } from './utils/liveMqtt.js'

@@ -120,7 +120,7 @@ import PointsCouponMall from './PointsCouponMall.vue'
 const mallTab = ref('goods')
 const userPointRef = ref<any>(null)
 const couponMallRef = ref<any>(null)
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

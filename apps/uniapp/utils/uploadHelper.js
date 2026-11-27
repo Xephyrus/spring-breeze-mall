@@ -1,4 +1,4 @@
-import storage from "@/utils/storage.js";
+import storage from "@/utils/storage";
 import { upload as uploadUrl } from "@/api/common.js";
 
 export function getUploadHeader() {

@@ -129,7 +129,7 @@
 <script setup lang="ts">
 import { ref, reactive, onBeforeUnmount, nextTick } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import { md5 } from '@/utils/md5.js'
 import myVerification from '@/components/verification/verification.vue'
 import {

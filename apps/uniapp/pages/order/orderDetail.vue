@@ -313,7 +313,7 @@ import {
 	setClipboard,
 	talkIm,
 	callPhone,
-} from '@/utils/filters.js'
+} from '@/utils/filters'
 import {
 	shouldLoadDelivery,
 	getDeliveryEntryText,

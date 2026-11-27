@@ -49,7 +49,7 @@ import { onLoad, onReady } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { sendMobile, bindMobile } from '@/api/login'
 import { getUserInfo } from '@/api/members.js'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import MyVerification from '@/components/verification/verification.vue'
 import { getThemeStyle } from '@/utils/theme'
 

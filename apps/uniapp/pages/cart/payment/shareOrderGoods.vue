@@ -93,9 +93,9 @@ import { useStore } from '@/store'
 import { getGoods } from '@/api/goods.js'
 import { getPinTuanShare } from '@/api/order'
 import shares from '@/components/m-share/index'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import popupGoods from '@/components/m-buy/goods'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

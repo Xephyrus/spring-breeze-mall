@@ -112,7 +112,7 @@ import { ref, computed, watch } from 'vue'
 import * as API_trade from '@/api/trade.js'
 import setup from './popup.js'
 import uniNumberBox from '@/components/uni-number-box.vue'
-import { goodsFormatPrice } from '@/utils/filters.js'
+import { goodsFormatPrice } from '@/utils/filters'
 import {
 	isECoupon,
 	isVirtualGoods,

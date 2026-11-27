@@ -139,10 +139,10 @@ import myVerification from '@/components/verification/verification.vue'
 import verifyCode from '@/components/verify-code/verify-code'
 import { getUserInfo } from '@/api/members'
 import { whetherNavigate } from '@/utils/Foundation'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import wechatH5Login from './wechatH5Login.vue'
 import { md5 } from '@/utils/md5.js'
-import { secrecyMobile } from '@/utils/filters.js'
+import { secrecyMobile } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 
 interface LoginListItem {

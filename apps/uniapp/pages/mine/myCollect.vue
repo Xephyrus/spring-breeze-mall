@@ -132,7 +132,7 @@
 import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 import {
 	getGoodsCollection,

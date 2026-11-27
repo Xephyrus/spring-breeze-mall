@@ -285,11 +285,11 @@ import * as API_Members from '@/api/members.js'
 import * as API_store from '@/api/store.js'
 import { getIMDetail } from '@/api/common'
 /************请求存储***************/
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 /************工具函数***************/
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
-import { unitPrice, goodsFormatPrice, goodsDisplayPrice, isLogin, parseGoodsImageUrl, clearStrComma, talkIm } from '@/utils/filters.js'
+import { unitPrice, goodsFormatPrice, goodsDisplayPrice, isLogin, parseGoodsImageUrl, clearStrComma, talkIm } from '@/utils/filters'
 import { isNonPhysicalGoods, isAppointmentGoods } from '@/utils/goodsType.js'
 
 /************组件***************/

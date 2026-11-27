@@ -51,7 +51,7 @@
 	import { messages, editMessages } from '@/api/message.js'
 	import { useStore } from '@/store'
 	import { getThemeStyle } from '@/utils/theme'
-	import { isLogin } from '@/utils/filters.js'
+	import { isLogin } from '@/utils/filters'
 
 	const store = useStore()
 	const themeStyle = computed(() => getThemeStyle(store.state.theme))

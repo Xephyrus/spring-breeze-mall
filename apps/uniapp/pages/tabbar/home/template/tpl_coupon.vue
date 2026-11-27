@@ -169,7 +169,7 @@
 import { ref, computed, onMounted } from "vue";
 import { getAllCoupons } from "@/api/promotions.js";
 import { receiveCoupons } from "@/api/members.js";
-import { isLogin, navigateToLogin, unitPrice } from "@/utils/filters.js";
+import { isLogin, navigateToLogin, unitPrice } from "@/utils/filters";
 
 const props = defineProps<{ res: any }>();
 

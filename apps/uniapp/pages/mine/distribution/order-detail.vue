@@ -108,7 +108,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import { getDistributionOrderDetail } from '@/api/distribution'
-import { parseGoodsImageUrl, formatGoodsSpecs } from '@/utils/filters.js'
+import { parseGoodsImageUrl, formatGoodsSpecs } from '@/utils/filters'
 import { assertActiveDistributor } from '@/utils/distributionStatus'
 
 const store = useStore()

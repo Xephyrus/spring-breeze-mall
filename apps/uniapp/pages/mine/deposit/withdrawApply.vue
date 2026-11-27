@@ -88,7 +88,7 @@
 import { ref, computed } from 'vue'
 import { onShow, onReachBottom } from '@dcloudio/uni-app'
 import { getWithdrawApplyPage, getWithdrawApplyWechatTransferInfo } from '@/api/members'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import {

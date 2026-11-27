@@ -161,7 +161,7 @@
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getStoreGoodsDetail, getStoreGoodsSkuList, upGoods, downGoods } from '../../api/goods.js'
-import { parseGoodsImageUrl } from '@/utils/filters.js'
+import { parseGoodsImageUrl } from '@/utils/filters'
 
 const getSkuThumb = (sku: any) => {
   const img = sku.thumbnail || sku.original

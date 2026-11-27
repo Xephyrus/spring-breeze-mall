@@ -87,7 +87,7 @@ import { reactive, ref, computed } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import * as membersApi from '@/api/members.js'
 import configs from '@/config/config'
-import { noPassByName } from '@/utils/filters.js'
+import { noPassByName } from '@/utils/filters'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

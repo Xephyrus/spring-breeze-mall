@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
-import { forceLogin } from '@/utils/filters.js'
+import { forceLogin } from '@/utils/filters'
 import { scannerCodeLogin, scannerCodeLoginConfirm } from '@/api/login'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'

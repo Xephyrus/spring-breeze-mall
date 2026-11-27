@@ -1,7 +1,7 @@
 /**
  * 分销海报 / 商品分享扫码绑客（统一入口）
  */
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import store from '@/store'
 import { getGoodsDistribution } from '@/api/distribution.js'
 import { getMpScene } from '@/api/goods.js'

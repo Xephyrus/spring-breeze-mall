@@ -115,7 +115,7 @@
 
 <script setup lang="ts">
 import { useGoodsListCommon } from './common'
-import { goodsFormatPrice, goodsDisplayPrice } from '@/utils/filters.js'
+import { goodsFormatPrice, goodsDisplayPrice } from '@/utils/filters'
 
 const { lightSearchStr, getPromotion, navigateToDetailPage, navigateToStoreDetailPage } = useGoodsListCommon()
 

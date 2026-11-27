@@ -109,7 +109,7 @@ import { onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { saveUserInfo } from '@/api/members.js'
 import { upload } from '@/api/common.js'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import MCity from '@/components/m-city/m-city.vue'
 import { getThemeStyle } from '@/utils/theme'
 

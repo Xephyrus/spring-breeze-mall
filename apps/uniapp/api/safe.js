@@ -3,7 +3,7 @@
  */
 
 import {http,Method} from '@/utils/request.js';
-import storage from "@/utils/storage.js"
+import storage from "@/utils/storage"
 import { md5 } from '@/utils/md5.js'
 
 /**

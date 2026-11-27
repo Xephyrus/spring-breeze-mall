@@ -77,7 +77,7 @@
 import { ref, reactive, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { getLogistics } from '@/api/address.js'
 import { fillShipInfo } from '@/api/after-sale.js'
 import storage from '@/utils/storage'

@@ -42,7 +42,7 @@
 import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
 import { getUserWallet } from '@/api/members'
-import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters.js'
+import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import {

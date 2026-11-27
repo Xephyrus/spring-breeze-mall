@@ -16,7 +16,7 @@
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import { setBiolofy } from '@/api/passport.js'
 
 const store = useStore()

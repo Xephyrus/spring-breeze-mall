@@ -129,7 +129,7 @@ import { ref, computed } from 'vue'
 import { distribution as fetchDistribution } from '@/api/distribution'
 import configs from '@/config/config'
 import storage from '@/utils/storage'
-import { tipsToLogin, setClipboard } from '@/utils/filters.js'
+import { tipsToLogin, setClipboard } from '@/utils/filters'
 import {
   checkSelfRecruitEntry,
   DISTRIBUTION_CLOSE_MESSAGE,

@@ -145,7 +145,7 @@ import { getUserWallet } from '@/api/members'
 import configs from '@/config/config'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
-import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters.js'
+import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters'
 
 import { getCurrentMemberBenefits } from '@/api/members'
 const memberGrade = ref<any>({})

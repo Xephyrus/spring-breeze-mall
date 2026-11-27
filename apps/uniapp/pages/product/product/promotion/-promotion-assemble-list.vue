@@ -27,7 +27,7 @@
 import { computed, ref, watch } from 'vue'
 import * as API_Promotions from '@/api/promotions'
 import configs from '@/config/config'
-import { noPassByName } from '@/utils/filters.js'
+import { noPassByName } from '@/utils/filters'
 import { useStore } from '@/store'
 
 const props = defineProps<{

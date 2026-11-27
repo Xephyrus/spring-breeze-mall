@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { goodsFormatPrice } from '@/utils/filters.js'
+import { goodsFormatPrice } from '@/utils/filters'
 
 const props = defineProps<{
   res?: any[]

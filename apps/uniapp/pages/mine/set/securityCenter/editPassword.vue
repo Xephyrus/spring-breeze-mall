@@ -58,7 +58,7 @@
 import { ref, reactive, watch, getCurrentInstance, computed } from 'vue'
 import { onReady } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { isLogin } from '@/utils/filters.js'
+import { isLogin } from '@/utils/filters'
 import { sendMobile, resetByMobile, resetPassword } from '@/api/login'
 import { md5 } from '@/utils/md5.js'
 import MyVerification from '@/components/verification/verification.vue'

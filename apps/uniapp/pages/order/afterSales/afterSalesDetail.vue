@@ -167,12 +167,12 @@
 import { ref, reactive, computed, getCurrentInstance } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { unitPrice, parseGoodsImageUrl } from '@/utils/filters.js'
+import { unitPrice, parseGoodsImageUrl } from '@/utils/filters'
 import { getAfterSaleReason, applyReturn, getAfterSaleInfo } from '@/api/after-sale'
 import { isAppointmentOrder } from '@/utils/goodsType.js'
 import { computePartialRefundPrice } from '@/utils/appointmentGoods.js'
 import { handleUploadAfterRead } from '@/utils/uploadHelper.js'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

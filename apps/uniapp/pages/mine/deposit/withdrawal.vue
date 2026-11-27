@@ -72,7 +72,7 @@
 <script setup lang="ts">
 import { ref, computed, getCurrentInstance, onMounted } from 'vue'
 import { getUserWallet, withdrawalApply, withdrawalSettingVO } from '@/api/members'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

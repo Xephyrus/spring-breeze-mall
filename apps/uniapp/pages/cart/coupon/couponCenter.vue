@@ -27,7 +27,7 @@
 import { receiveCoupons } from '@/api/members.js'
 import { getAllCoupons } from '@/api/promotions.js'
 import { useStore } from '@/store'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import {
 	onLoad,
 	onNavigationBarButtonTap,

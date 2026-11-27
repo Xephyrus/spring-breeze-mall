@@ -119,12 +119,30 @@
 
 ## 四、后续阶段（待执行）
 
+### U1 进展（进行中）
+
+| 批次 | 文件 | 状态 | 效果 |
+|---|---|---|---|
+| U1-a | `utils/filters.js` → `filters.ts`（609 行，25 个导出，78 处引用） | ✅ | TS2554 从 **87 → 8**，全部错误 274 → 215 |
+| U1-b | `utils/storage.js` → `storage.ts`（193 行，26 处引用） | ✅ | 引用零残留，错误数持平 |
+| U1-c | `utils/tools.js` 修 `throttle` 的 `arguments` 缺陷 | ✅ | lint error 清零的一部分 |
+
+**filters.ts 的转换原则**：函数体一行未改，只做三件事 ——
+① 把调用方经常省略的参数标为可选（`unitPrice(val?, unit, location?)`），这是 87 处 TS2554 的根因；
+② 把 `let` 改成 `const` 时逐个确认没有被重新赋值；
+③ 条件编译注释（`// #ifdef H5` 等）原样保留。
+
+**import 扩展名**：模块从 `.js` 改名 `.ts` 后，78 + 26 处 `@/utils/xxx.js` 引用必须去掉 `.js`。
+本轮用一次性脚本处理（`(['"][^'"]*?<模块路径>)\.js(['"])` → 去扩展名），并在改完后 grep 校验零残留。
+
+### 剩余阶段
+
 | 阶段 | 内容 | 完成标准 |
 |---|---|---|
-| U1 | `utils/`（先 `request`、`filters`、`tools`）→ `config/` → `store/` → `api/` → `lib/` → `plugins/` 的 `.js` 转 `.ts`，约 71 文件 / 9,400 行 | 这些目录 typecheck 0 错误；请求/过滤/节流行为与改前逐条对照 |
-| U2 | 15 个非 TS 的 SFC 补 `lang="ts"`；补 `types/` 全局声明（`$u`、`$lightColor`、`Event.detail`、`plus.android`、`Page.__page__`）；`*.png` 等资源模块声明；无扩展名 `.vue` 导入补扩展名 | `typecheck` 0 错误，然后接 CI |
-| U3 | 安全范围内命名 kebab 化（`api/utils/lib/plugins/config/store` + 非 easycom 组件） | `pages.json` 零改动；typecheck 0；旧路径 0 残留 |
-| U4 | CI 增加 `uniapp` job（typecheck → lint → test）；新增 `SMOKE-UNIAPP.md`（H5 / 小程序 / App 三端） | CI 可跑；清单可执行 |
+| U1 剩余 | `utils/` 其余 22 个（`Foundation` 292、`md5` 224、`uuid.modified` 247、`appointmentGoods` 703…）、`config/`、`store/`、`api/` 27 个、`lib/` 13 个、`plugins/` 2 个 | 这些目录 typecheck 0 错误 |
+| U2 | 15 个非 TS 的 SFC 补 `lang="ts"`；补 `types/` 全局声明（`$u`、`$lightColor`、`Event.detail`、`plus.android`、`Page.__page__`）；`*.png` 资源模块声明；无扩展名 `.vue` 导入补扩展名 | `typecheck` 0 错误后接 CI |
+| U3 | 安全范围内命名 kebab 化 | `pages.json` 零改动；typecheck 0；旧路径 0 残留 |
+| U4 | CI 增加 `uniapp` job；新增 `SMOKE-UNIAPP.md`（三端） | CI 可跑；清单可执行 |
 
 ### 已知风险（U1+ 需持续注意）
 

@@ -164,7 +164,7 @@ import { debounce } from '@/utils/tools.js'
 import uniNumberBox from '@/components/uni-number-box'
 import config from '@/config/config'
 import { useStore } from '@/store'
-import { unitPrice, goodsFormatPrice, isLogin, forceLogin } from '@/utils/filters.js'
+import { unitPrice, goodsFormatPrice, isLogin, forceLogin } from '@/utils/filters'
 
 const store = useStore()
 

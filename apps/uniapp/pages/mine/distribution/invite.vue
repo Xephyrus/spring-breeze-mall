@@ -60,7 +60,7 @@ import { getThemeStyle } from '@/utils/theme'
 import { getInviteCard } from '@/api/distribution'
 import { assertActiveDistributor } from '@/utils/distributionStatus'
 import { getMpCode } from '@/api/goods'
-import { parseGoodsImageUrl } from '@/utils/filters.js'
+import { parseGoodsImageUrl } from '@/utils/filters'
 import {
   POSTER_WIDTH,
   POSTER_HEIGHT,

@@ -33,7 +33,7 @@
 import { getCurrentInstance, ref } from 'vue'
 import configs from "@/config/config"
 import mpShare from "@/utils/mpShare.js"
-import { setClipboard } from "@/utils/filters.js"
+import { setClipboard } from "@/utils/filters"
 
 // mixin 处理：mpShare 提供小程序分享能力
 mpShare

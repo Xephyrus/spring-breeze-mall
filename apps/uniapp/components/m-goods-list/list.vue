@@ -107,7 +107,7 @@ import { getPaidMemberQuotes } from '@/api/paid-member'
 import { isLogin } from '@/utils/filters'
 import { useStore } from '@/store'
 import { useGoodsListCommon } from './common'
-import { goodsFormatPrice, goodsDisplayPrice } from '@/utils/filters.js'
+import { goodsFormatPrice, goodsDisplayPrice } from '@/utils/filters'
 
 const store = useStore()
 const mainColor = computed(() => (store && store.getters && store.getters.mainColor) || '#ff3c2a')

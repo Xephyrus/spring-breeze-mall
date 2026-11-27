@@ -73,7 +73,7 @@ import { useStore } from '@/store'
 import * as API_Trade from '@/api/trade'
 import { payCallback } from '@/api/members'
 import { paymentSuccessUrl, paymentReturnUrl } from '@/utils/payment-success'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

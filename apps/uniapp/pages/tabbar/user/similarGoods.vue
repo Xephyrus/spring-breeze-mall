@@ -36,7 +36,7 @@ import { ref, reactive } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { getGoodsList } from '@/api/goods.js'
 import { useStore } from '@/store'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 
 const store = useStore()
 

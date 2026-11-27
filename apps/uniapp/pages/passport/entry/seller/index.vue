@@ -34,7 +34,7 @@
 import { ref, computed } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { tipsToLogin } from '@/utils/filters.js'
+import { tipsToLogin } from '@/utils/filters'
 import { getCompanyDetail } from '@/api/entry'
 import { getThemeStyle } from '@/utils/theme'
 

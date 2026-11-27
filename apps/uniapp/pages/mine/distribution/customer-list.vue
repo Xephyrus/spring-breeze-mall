@@ -186,7 +186,7 @@ import {
   getDistributionCustomerDetail,
   updateDistributionCustomerStarred,
 } from '@/api/distribution'
-import { parseGoodsImageUrl } from '@/utils/filters.js'
+import { parseGoodsImageUrl } from '@/utils/filters'
 import { assertActiveDistributor } from '@/utils/distributionStatus'
 
 const store = useStore()

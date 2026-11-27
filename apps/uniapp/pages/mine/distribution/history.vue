@@ -57,7 +57,7 @@ import { ref, computed } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { cashLog, getDistributionOrders } from '@/api/distribution'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { assertActiveDistributor } from '@/utils/distributionStatus'
 import { getThemeStyle } from '@/utils/theme'
 

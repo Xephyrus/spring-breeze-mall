@@ -64,7 +64,7 @@ import { useStore } from '@/store'
 import { getOrderDetail } from '@/api/order.js'
 import { getComplainReason, addComplain } from '@/api/after-sale.js'
 import { handleUploadAfterRead } from '@/utils/uploadHelper.js'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

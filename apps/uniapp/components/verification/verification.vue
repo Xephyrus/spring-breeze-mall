@@ -91,7 +91,7 @@
 import { reactive, computed } from 'vue'
 import { useStore } from '@/store'
 import api from '@/config/api.js'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import uuid from '@/utils/uuid.modified.js'
 
 const emit = defineEmits(['send'])

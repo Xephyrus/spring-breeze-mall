@@ -106,7 +106,7 @@
 import { ref, computed, watch } from "vue";
 import { getStoreList } from "@/api/store.js";
 import { getGoodsList } from "@/api/goods.js";
-import { goodsFormatPrice } from "@/utils/filters.js";
+import { goodsFormatPrice } from "@/utils/filters";
 import { modelNavigateTo } from "./tpl";
 
 const props = defineProps<{ res: any }>();

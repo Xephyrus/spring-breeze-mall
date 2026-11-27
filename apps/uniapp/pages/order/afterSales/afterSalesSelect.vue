@@ -60,7 +60,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { unitPrice, parseGoodsImageUrl } from '@/utils/filters.js'
+import { unitPrice, parseGoodsImageUrl } from '@/utils/filters'
 import { getAfterSaleInfo } from '@/api/after-sale'
 import storage from '@/utils/storage'
 // 深链进入时拦截 E_COUPON，后端 apply/save 亦会拒绝

@@ -185,7 +185,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
-import storage from '@/utils/storage.js'
+import storage from '@/utils/storage'
 import {
   previewStoreVerification,
   storeOrderTake,

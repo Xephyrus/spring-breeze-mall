@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import { unitPrice, unixToDate } from '@/utils/filters.js'
+import { unitPrice, unixToDate } from '@/utils/filters'
 
 const props = defineProps<{
   res?: any

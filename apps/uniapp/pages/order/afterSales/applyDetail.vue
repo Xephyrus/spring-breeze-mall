@@ -194,7 +194,7 @@ import {
   serviceStatusList,
   secrecyMobile,
   unixToDate,
-} from '@/utils/filters.js'
+} from '@/utils/filters'
 import {
   getServiceDetail,
   getStoreAfterSaleAddress,

@@ -44,7 +44,7 @@
 import { ref, computed } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { unitPrice } from '@/utils/filters.js'
+import { unitPrice } from '@/utils/filters'
 import { getComplain, clearComplain } from '@/api/after-sale'
 import { getThemeStyle } from '@/utils/theme'
 
