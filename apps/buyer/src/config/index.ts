@@ -3,7 +3,22 @@ import Cookie from "js-cookie";
 // 地图 Key 由 public/config.js 运行时注入（不硬编码在源码里，避免随仓库泄露）
 const mapConfig = (typeof window !== "undefined" && window.BASE && window.BASE.MAP) || {};
 
-export default {
+export interface BuyerConfig {
+  title: string;
+  icpCard: string;
+  company: { href: string; name: string };
+  icpMessage: string;
+  aMapSecurityJsCode: string;
+  aMapKey: string;
+  aMapSwitch: boolean;
+  enableCDN: boolean;
+  port: number;
+  inputMaxLength: string;
+  PC_DOMAIN: string;
+  WAP_DOMAIN: string;
+}
+
+const config: BuyerConfig = {
   // 配置显示在浏览器标签的 title、底部信息、部分信息展示的值
   title: Cookie.get("siteName") || "lilishop",
   icpCard: "", // icp 证
@@ -26,3 +41,5 @@ export default {
   PC_DOMAIN: "https://pc-b2b2c.pickmall.cn", // PC 端域名
   WAP_DOMAIN: "https://m-b2b2c.pickmall.cn", // WAP 端域名
 };
+
+export default config;

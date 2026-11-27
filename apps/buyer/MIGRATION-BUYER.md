@@ -107,3 +107,70 @@ additionalData: (content, filepath) => {
 | M4 | `global.scss` 拆分为变量 + 全局样式；`packages/shared` 复用评估；产物分包优化 |
 | M5 | 门禁接入 CI（typecheck + lint + build） |
 | M6 | `SMOKE-BUYER.md` 冒烟清单 |
+
+## M2：TypeScript 化（进行中）
+
+### 2.1 基础设施（已完成）
+
+**新增**
+| 文件 | 作用 |
+|---|---|
+| `tsconfig.json` / `tsconfig.app.json` / `tsconfig.node.json` | `strict: true` + `allowJs: true`（其余 `.js` 逐步迁移） |
+| `src/env.d.ts` | `BASE` 运行时全局（来自 `public/config.js`）、`import.meta.env`、无类型第三方包声明 |
+| `src/types/axios.d.ts` | 用 declare module 扩展 `AxiosRequestConfig`，声明 buyer 自有开关 |
+
+**转换（4 个文件）**
+| 原文件 | 目标 | 要点 |
+|---|---|---|
+| `plugins/request.js` | `plugins/request.ts` | `BuyerResponse<T>` 响应结构；axios 配置开关（`loading` / `needToken` / `optionalToken` / `skipAuthHandler` / `skipMessage` / `_dataSerialized` / `_retryAfterRefresh` / `_loadingInstance`）用 **declare module 扩展** 而不是 `any` |
+| `utils/requestError.js` | `utils/requestError.ts` | `WeakSet<object>` + 泛型 `markHandledRequestError<T>` |
+| `plugins/storage.js` | `plugins/storage.ts` | Cookie 选项类型；`psl.parse` 结果收窄 |
+| `config/index.js` | `config/index.ts` | 新增 `BuyerConfig` 接口（12 个字段全部显式） |
+
+### 2.2 三个类型层面必须显式处理的地方
+
+**① axios 拦截器「返回 body 而非 response」**
+
+运行时是对的（调用方拿到 `response.data`），但 axios 的类型定义要求 fulfilled 处理器返回
+`AxiosResponse`。这里没有用 `@ts-ignore`，而是把两个处理器提取成 `onFulfilled` / `onRejected`
+常量，再对 `use()` 的参数做一次**集中断言**，并写清原因：
+
+```ts
+service.interceptors.response.use(
+  onFulfilled as unknown as (response: AxiosResponse) => AxiosResponse,
+  onRejected
+);
+```
+
+好处：断言只有一处，函数体里仍然全程有类型。
+
+**② 自定义配置字段**
+
+`config.skipAuthHandler`、`config.needToken` 这类字段 axios 不认识。用 `declare module "axios"`
+扩展 `AxiosRequestConfig`，所有调用处（含 `api/*.js`）都能直接获得类型与提示，
+也避免把整个 config 退化成 `any`。
+
+**③ Cookie 读写的可空性**
+
+`js-cookie` 的 `get` 返回 `string | undefined`，原来直接传给 `escape()` / `Storage.setItem()`。
+TS 会报 `string | undefined 不能赋给 string`，这里统一用 `?? ""` 归一 —— 这与原运行时行为一致
+（`undefined` 传进 `escape` 会变成字符串 `"undefined"`，反而是隐患）。
+
+### 2.3 验证
+
+| 检查 | 结果 |
+|---|---|
+| `typecheck` | ✅ 0 错误（`vue-tsc`，8 个初始错误逐个修掉） |
+| `build` | ✅ 5.18s |
+| `lint` | ✅ 0 error / 0 warning |
+| dev | ✅ `/`、`/home`、`/src/plugins/request.ts`、`/src/config/index.ts` 均 200 |
+
+### 2.4 待迁移（按依赖广度排序）
+
+| 顺序 | 目标 | 文件数 |
+|---|---|---|
+| 1 | `utils/*`（message / theme / buyerLogin / orderFulfill / unreadMessage / iconMap） | 6 |
+| 2 | `api/*`（account / address / cart / common / goods / index / login / member / order / pay / pickupCard / pointsCoupon / promotion / shopentry） | 14 |
+| 3 | `plugins/*`（element / filters / Foundation / RegExp / md5）+ `stores/app` + `router/index` | 7 |
+| 4 | `constants/goodsType`、`pages/home/enumeration`、`pages/user/menu`、`components/*.js`、`composables` | 6 |
+| 豁免 | `components/indexDecorate/presets/double11Preset.js`（1,967 行装修预设数据，纯数据表） | 1 |

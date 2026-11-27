@@ -1,33 +1,43 @@
 /**
  * 已向用户提示的请求异常兜底；只识别本模块登记的错误，不屏蔽代码异常。
- * @author Bulbasaur
- * @since 2026-11-09
  */
-const handledErrors = new WeakSet();
+import type { App } from "vue";
+
+const handledErrors = new WeakSet<object>();
 
 /** 登记已由请求层提示的错误，仍保持原请求的拒绝语义。 */
-export function markHandledRequestError(error) {
-  handledErrors.add(error);
-  // 开发服务器的错误遮罩有独立监听器，通过同一 Symbol 识别已提示的异常。
-  Object.defineProperty(error, Symbol.for("lilishop.buyer.handledRequestError"), { value: true });
+export function markHandledRequestError<T>(error: T): T {
+  if (error && typeof error === "object") {
+    handledErrors.add(error as object);
+    // 开发服务器的错误遮罩有独立监听器，通过同一 Symbol 识别已提示的异常。
+    Object.defineProperty(error, Symbol.for("lilishop.buyer.handledRequestError"), {
+      value: true,
+    });
+  }
   return error;
 }
 
 /** 判断错误是否已由请求层向用户展示。 */
-export function isHandledRequestError(error) {
+export function isHandledRequestError(error: unknown): boolean {
   return !!error && typeof error === "object" && handledErrors.has(error);
 }
 
 /** 页面处理预期请求失败；程序错误继续向上抛出，避免被静默吞掉。 */
-export function catchHandledRequestError(error) {
+export function catchHandledRequestError(error: unknown): void {
   if (!isHandledRequestError(error)) throw error;
+}
+
+interface UnhandledRejectionLike {
+  reason: unknown;
+  preventDefault: () => void;
+  addEventListener: (type: string, listener: (event: UnhandledRejectionLike) => void) => void;
 }
 
 /**
  * 覆盖未返回 Promise 的事件回调及 Vue 异步钩子；只有已提示的请求异常免于重复报错。
  * 未登记异常沿用已有 Vue 错误处理，无处理器时重新抛出供开发环境定位。
  */
-export function setupRequestErrorHandling(app, target = window) {
+export function setupRequestErrorHandling(app: App, target: UnhandledRejectionLike = window as unknown as UnhandledRejectionLike): void {
   target.addEventListener("unhandledrejection", (event) => {
     if (isHandledRequestError(event.reason)) event.preventDefault();
   });
