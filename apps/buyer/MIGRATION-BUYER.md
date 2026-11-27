@@ -174,3 +174,27 @@ TS 会报 `string | undefined 不能赋给 string`，这里统一用 `?? ""` 归
 | 3 | `plugins/*`（element / filters / Foundation / RegExp / md5）+ `stores/app` + `router/index` | 7 |
 | 4 | `constants/goodsType`、`pages/home/enumeration`、`pages/user/menu`、`components/*.js`、`composables` | 6 |
 | 豁免 | `components/indexDecorate/presets/double11Preset.js`（1,967 行装修预设数据，纯数据表） | 1 |
+### 2.5 utils 层（已完成，6 个文件）
+
+| 原文件 | 目标 | 要点 |
+|---|---|---|
+| `utils/message.js`（149） | `utils/message.ts` | `MessageContent` / `SpinOptions` / `ModalConfirmOptions` / `NoticeOptions` 四个接口；`Message` / `Modal` / `Notice` / `Spin` 四个门面全部带签名 |
+| `utils/theme.js`（107） | `utils/theme.ts` | `ThemeSetting` / `ThemeResponse`；`normalizeTheme` 收 `Partial<ThemeSetting>`；`fetchAndApplyTheme(requestFn)` 显式声明请求入参，并发共用 Promise 的行为保留 |
+| `utils/buyerLogin.js`（40） | `utils/buyerLogin.ts` | `openLink(url, router: Router)`；`router.resolve().href` 类型正确 |
+| `utils/orderFulfill.js`（18） | `utils/orderFulfill.ts` | 新增 `FulfillmentPackage` / `FulfillmentMode` |
+| `utils/unreadMessage.js`（24） | `utils/unreadMessage.ts` | `memberMsgList` 的返回用 `UnreadMessageResult` 断言（api 层尚未 TS 化） |
+| `utils/iconMap.js`（83） | `utils/iconMap.ts` | `Record<string, Component>`；`resolveIcon(type: string): Component` |
+| `assets/iconfont/iconMap.js` | `assets/iconfont/iconMap.ts` | `Record<string, string>` + `getIconUrl(name: string)` |
+
+> `assets/iconfont/iconMap` 一开始漏了索引签名，`iconMap[name]` 直接报 TS7053。
+> 这类「查表函数」在 TS 下必须显式声明 `Record<K, V>`，否则字面量推断出的精确形状不能索引。
+
+### 2.6 验证
+
+| 检查 | 结果 |
+|---|---|
+| `typecheck` | ✅ 0 错误 |
+| `build` | ✅ 5.45s |
+| `lint` | ✅ 0 error / 0 warning |
+| dev | ✅ `/`、`/home` 与 4 个新 `.ts` 模块均 200 |
+| 剩余 `.js` | 31 个（M2 起始 42 个） |

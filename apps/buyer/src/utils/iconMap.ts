@@ -1,3 +1,4 @@
+import type { Component } from "vue";
 import {
   Check,
   Close,
@@ -34,7 +35,7 @@ import {
 } from "@element-plus/icons-vue";
 
 /** 旧 iView type 字符串 → Element Plus 图标组件 */
-export const ICON_MAP = {
+export const ICON_MAP: Record<string, Component> = {
   "md-checkmark": Check,
   "md-close": Close,
   "md-trash": Delete,
@@ -78,6 +79,6 @@ export const ICON_MAP = {
   "md-star": Star,
 };
 
-export function resolveIcon(type) {
+export function resolveIcon(type: string): Component {
   return ICON_MAP[type] || InfoFilled;
 }

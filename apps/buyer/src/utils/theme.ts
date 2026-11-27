@@ -1,7 +1,23 @@
 /**
- * 平台主题色工具
+ * 平台主题色工具。
+ *
+ * 主题来源：`buyer-api` 的站点设置接口 → 写入 CSS 变量 → 缓存 1 小时。
  */
-const DEFAULT_THEME = {
+
+/** 主题色配置 */
+export interface ThemeSetting {
+  themeColor: string;
+  lightColor: string;
+  aiderLightColor: string;
+}
+
+/** 主题接口的返回结构（只用 settingValue） */
+export interface ThemeResponse {
+  success?: boolean;
+  result?: { settingValue?: string };
+}
+
+const DEFAULT_THEME: ThemeSetting = {
   themeColor: "#ff3c2a",
   lightColor: "#ff6b35",
   aiderLightColor: "#ff9f28",
@@ -10,11 +26,11 @@ const DEFAULT_THEME = {
 const STORAGE_KEY = "theme_setting";
 const EXPIRATION_KEY = "theme_setting_expiration_time";
 
-export function getDefaultTheme() {
+export function getDefaultTheme(): ThemeSetting {
   return { ...DEFAULT_THEME };
 }
 
-function applyElementColorVars(style, prefix, color) {
+function applyElementColorVars(style: CSSStyleDeclaration, prefix: string, color: string): void {
   const key = `--el-color-${prefix}`;
   style.setProperty(key, color);
   style.setProperty(`${key}-light-3`, `color-mix(in srgb, ${color} 70%, white)`);
@@ -25,7 +41,7 @@ function applyElementColorVars(style, prefix, color) {
   style.setProperty(`${key}-dark-2`, `color-mix(in srgb, ${color} 80%, black)`);
 }
 
-export function applyThemeToDocument(theme) {
+export function applyThemeToDocument(theme: Partial<ThemeSetting>): void {
   if (typeof document === "undefined") return;
   const primary = theme.themeColor || DEFAULT_THEME.themeColor;
   const light = theme.lightColor || DEFAULT_THEME.lightColor;
@@ -42,26 +58,25 @@ export function applyThemeToDocument(theme) {
   applyElementColorVars(root, "danger", primary);
 }
 
-export function cacheTheme(theme) {
+export function cacheTheme(theme: ThemeSetting): void {
   const expirationTime = new Date().setHours(new Date().getHours() + 1);
   localStorage.setItem(EXPIRATION_KEY, String(expirationTime));
   localStorage.setItem(STORAGE_KEY, JSON.stringify(theme));
 }
 
-export function loadCachedTheme() {
+export function loadCachedTheme(): Partial<ThemeSetting> | null {
   const expirationTime = localStorage.getItem(EXPIRATION_KEY);
-  const cacheValid =
-    expirationTime && new Date() <= new Date(Number(expirationTime));
+  const cacheValid = expirationTime && new Date() <= new Date(Number(expirationTime));
   if (!cacheValid) return null;
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
+    return raw ? (JSON.parse(raw) as Partial<ThemeSetting>) : null;
   } catch {
     return null;
   }
 }
 
-export function normalizeTheme(data = {}) {
+export function normalizeTheme(data: Partial<ThemeSetting> = {}): ThemeSetting {
   return {
     themeColor: data.themeColor || DEFAULT_THEME.themeColor,
     lightColor: data.lightColor || DEFAULT_THEME.lightColor,
@@ -69,9 +84,12 @@ export function normalizeTheme(data = {}) {
   };
 }
 
-let pendingThemeRequest = null;
+let pendingThemeRequest: Promise<ThemeSetting> | null = null;
 
-export async function fetchAndApplyTheme(requestFn) {
+/** 拉取并应用主题色；并发调用共用一个请求，失败时回退到缓存或默认主题。 */
+export async function fetchAndApplyTheme(
+  requestFn: () => Promise<ThemeResponse>
+): Promise<ThemeSetting> {
   const cachedTheme = loadCachedTheme();
   if (cachedTheme) {
     applyThemeToDocument(normalizeTheme(cachedTheme));
@@ -85,7 +103,7 @@ export async function fetchAndApplyTheme(requestFn) {
     try {
       const res = await requestFn();
       if (res?.success && res?.result?.settingValue) {
-        const data = JSON.parse(res.result.settingValue);
+        const data = JSON.parse(res.result.settingValue) as Partial<ThemeSetting>;
         const normalized = normalizeTheme(data);
         applyThemeToDocument(normalized);
         cacheTheme(normalized);

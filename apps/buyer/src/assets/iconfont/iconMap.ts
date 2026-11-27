@@ -9,7 +9,7 @@ import story from "./story.png";
 import support from "./support.png";
 import user from "./user.png";
 
-const iconMap = {
+const iconMap: Record<string, string> = {
   back,
   carts,
   collage,
@@ -22,7 +22,7 @@ const iconMap = {
   user,
 };
 
-export function getIconUrl(name) {
+export function getIconUrl(name: string): string {
   return iconMap[name] || "";
 }
 
