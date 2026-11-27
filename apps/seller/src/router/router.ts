@@ -12,14 +12,14 @@ export const loginRouter: MenuRoute = {
   component: () => import("@/views/login.vue")
 };
 export const forgetPasswordRouter: MenuRoute = {
-  path: "/forgetPassword",
+  path: "/forget-password",
   name: "forget-password",
   component: () => import("@/views/forget-password.vue")
 };
 
 // 移动端楼层装修编辑器：全屏独立页，不在 Main（左侧菜单）布局内
 export const floorDecorationRouter: MenuRoute = {
-  path: "/floorList/main",
+  path: "/floor-list/main",
   name: "main",
   meta: {
     title: "移动装修"
@@ -29,7 +29,7 @@ export const floorDecorationRouter: MenuRoute = {
 
 // PC端楼层装修编辑器：全屏独立页，不在 Main（左侧菜单）布局内
 export const pcFloorDecorationRouter: MenuRoute = {
-  path: "/pcFloorList/main",
+  path: "/pc-floor-list/main",
   name: "renovation",
   meta: {
     title: "PC装修"
@@ -295,43 +295,43 @@ export const otherRouter: MenuRoute = {
       component: () => import("@/views/stock/outbound/operation.vue")
     },
     {
-      path: "alertQuantityWarnList",
+      path: "alert-quantity-warn-list",
       title: "预警商品",
-      name: "alertQuantityWarnList",
+      name: "alert-quantity-warn-list",
       component: () => import("@/views/goods/goods-seller/alert-quantity-warn.vue")
     },
     {
-      path: "alertQuantityWarnSetting",
+      path: "alert-quantity-warn-setting",
       title: "设置预警",
-      name: "alertQuantityWarnSetting",
+      name: "alert-quantity-warn-setting",
       component: () => import("@/views/goods/goods-seller/alert-quantity-warn.vue")
     },
     {
-      path: "order/returnMoneyOrder",
+      path: "order/return-money-order",
       title: "退款管理",
       name: "return-money-order",
       component: () => import("@/views/order/after-order/return-money-order.vue")
     },
     {
-      path: "order/returnGoodsOrder",
+      path: "order/return-goods-order",
       title: "退货管理",
       name: "return-goods-order",
       component: () => import("@/views/order/after-order/return-goods-order.vue")
     },
     {
-      path: "order/memberComment",
+      path: "order/member-comment",
       title: "评价管理",
       name: "member-comment",
       component: () => import("@/views/member/member-comment.vue")
     },
     {
-      path: "bill/accountStatementBill",
+      path: "bill/account-statement-bill",
       title: "财务对账",
-      name: "accountStatementBill",
+      name: "account-statement-bill",
       component: () => import("@/views/shop/bill/account-statement-bill.vue")
     },
     {
-      path: "bill/storeBill",
+      path: "bill/store-bill",
       title: "店铺结算",
       name: "store-bill",
       meta: { firstRouterName: "bill" },

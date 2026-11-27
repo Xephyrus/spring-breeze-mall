@@ -13,7 +13,7 @@ const DETAIL_MENUS = {
   "add-coupon": ["coupon"],
   "coupon-receive": ["coupon"],
   "add-live": ["live"],
-  "bill-detail": ["store-bill", "accountStatementBill"],
+  "bill-detail": ["store-bill", "account-statement-bill"],
   "order-detail": ["order-list", "virtualOrderList"],
   "export-order-deliver": ["order-list"],
   "order-complaint-detail": ["order-complaint"],

@@ -89,14 +89,14 @@ onMounted(() => {
 function handleTabChange(val) {
   if (val === "ALERT") {
     router.push({
-      path: "/floorList/main",
+      path: "/floor-list/main",
       query: { pagetype: val },
     });
     return;
   }
   if (val === "OPEN_SCREEN_ANIMATION") {
     router.push({
-      path: "/floorList/main",
+      path: "/floor-list/main",
       query: { pagetype: val },
     });
     return;
@@ -155,14 +155,14 @@ function init() {
 const addHref = computed(
   () =>
     router.resolve({
-      path: "/floorList/main",
+      path: "/floor-list/main",
       query: { pagetype: params.pageType, mode: "add" },
     }).href
 );
 
 function editHref(val) {
   const { href } = router.resolve({
-    path: "/floorList/main",
+    path: "/floor-list/main",
     query: {
       id: val.id,
       name: val.name,

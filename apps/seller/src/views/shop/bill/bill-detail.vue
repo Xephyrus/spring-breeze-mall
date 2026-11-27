@@ -368,7 +368,7 @@ watch(
 );
 
 onBeforeRouteLeave((to, from, next) => {
-  if (to.name === "accountStatementBill" || to.name === "store-bill") {
+  if (to.name === "account-statement-bill" || to.name === "store-bill") {
     to.meta.keepAlive = true;
   }
   next();

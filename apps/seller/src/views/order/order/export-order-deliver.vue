@@ -101,7 +101,7 @@ function handleUpload(uploadFile) {
 }
 
 function navigationToGoodsOrder() {
-  router.push({ path: "/order/orderList" });
+  router.push({ path: "/order/order-list" });
 }
 
 function close() {

@@ -119,7 +119,7 @@ function finished() {
   });
 }
 
-// 父组件（shopAddress/shopSetting/orderDetail）通过 ref 调用 open() 打开弹窗
+// 父组件（shopAddress/shop-setting/orderDetail）通过 ref 调用 open() 打开弹窗
 defineExpose({ open });
 </script>
 

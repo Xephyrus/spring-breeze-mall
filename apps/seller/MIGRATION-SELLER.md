@@ -219,17 +219,29 @@ li_store_menu 81 行；name 去重 64 个，非 kebab 数 0 ✅
 
 **验证**：typecheck 0 错误 / lint 58（未增长）/ build 7.74s / dev HTTP 200
 
-### M3-2b 待办：路径（URL）统一 kebab
+### M3-2b 路径（URL）统一 kebab（✅ 2026-11-28）
 
-`li_store_menu.path` 与前端 `router.ts`/`router-json.ts` 里的路径字面量仍是驼峰
-（如 `/orderList`、`/ossManage`，共 8 类、约 24 处代码引用 + 33 行 DB）。
+| 项 | 数值 |
+|---|---:|
+| DB `path` 改名 | **33 条**（`orderList`→`order-list`、`ossManage`→`oss-manage` 等） |
+| 前端路径段替换 | **7 个文件 / 41 处**（`push("/orderList")`、`<router-link to>`、`path:` 字面量） |
+| 静态路由补充 | `/pcFloorList/main`→`/pc-floor-list/main`、`alertQuantityWarnList`/`Setting`、`accountStatementBill` |
+| 顺带删除死代码 | `libs/router-json.js`（**593 行，全项目 0 引用**，vuex 时代遗留的静态菜单表） |
+| SQL | `backend/DB/store-menu-kebab-paths.sql` + docker patch |
 
-改动会让旧链接 404（计划里已确认接受），需要：
+**如何避免误伤后端接口地址**：脚本按「URL 段」替换，且**排除 `src/api/**`**；
+逐条比对后保留了 `/order/order/batchDeliver`（后端接口）、`/home/Favorites` 等 C 端外链、
+`/couponCenter`、`/:pathMatch(.*)*`（路由通配）等非菜单路径。
 
-1. 生成 `path` 改名 SQL（`backend/DB/store-menu-kebab-paths.sql`）
-2. 改 `router/router.ts`、`router-json.ts` 里的 `path` 与静态 `name`
-3. 扫掉代码里的 `/orderList` 这类字面量（含 `push("/xxx")`、`<router-link to="...">`）
-4. 与 M3-2a 相同的双端校验 + 冒烟
+**终态校验（一次性全量）**
+
+```
+li_store_menu 81 行：name 非 kebab 0 / path 非 kebab 0 / front_route 非 kebab 0 ✅
+front_route 去重 55 个 → 逐一对磁盘文件：无法解析 0 ✅
+typecheck 0 错误 / lint 58（未增长）/ build 7.09s / dev HTTP 200
+```
+
+> 破坏性变更提醒：旧 URL（如 `/orderList`）现在 404，与计划确认一致。
 
 ---
 

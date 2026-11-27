@@ -255,7 +255,7 @@ function goBack() {
     router.go(-1);
   } else {
     window.close();
-    router.push("/wapList");
+    router.push("/wap-list");
   }
 }
 

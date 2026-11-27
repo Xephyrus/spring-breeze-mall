@@ -92,7 +92,7 @@ import { onMounted, ref } from "vue";
 import { onBeforeRouteLeave, useRouter } from "vue-router";
 import * as API_Shop from "@/api/shops";
 
-defineOptions({ name: "accountStatementBill" });
+defineOptions({ name: "account-statement-bill" });
 
 const router = useRouter();
 

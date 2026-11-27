@@ -111,7 +111,7 @@
               </div>
             </div>
             <div class="todo-group">
-              <div class="todo-item" @click="navigateTo('alertQuantityWarnList')">
+              <div class="todo-item" @click="navigateTo('alert-quantity-warn-list')">
                 <div class="todo-item-label">库存预警商品</div>
                 <span>{{ homeData.alertQuantityNum || 0 }}</span>
               </div>
@@ -227,16 +227,16 @@ defineOptions({ name: "home" });
 const router = useRouter();
 
 const HOME_ROUTE_TARGETS = {
-  orderList: { name: "order-list", path: "/order/orderList" },
-  returnMoneyOrder: { name: "return-money-order", path: "/order/returnMoneyOrder" },
-  returnGoodsOrder: { name: "return-goods-order", path: "/order/returnGoodsOrder" },
-  memberComment: { name: "member-comment", path: "/order/memberComment" },
+  orderList: { name: "order-list", path: "/order/order-list" },
+  returnMoneyOrder: { name: "return-money-order", path: "/order/return-money-order" },
+  returnGoodsOrder: { name: "return-goods-order", path: "/order/return-goods-order" },
+  memberComment: { name: "member-comment", path: "/order/member-comment" },
   goods: { name: "goods", path: "/goods" },
-  alertQuantityWarnList: { name: "alertQuantityWarnList", path: "/alertQuantityWarnList" },
-  orderStatistics: { name: "order-statistics", path: "/statistics/orderStatistics" },
-  trafficStatistics: { name: "traffic-statistics", path: "/statistics/trafficStatistics" },
-  accountStatementBill: { name: "accountStatementBill", path: "/bill/accountStatementBill" },
-  storeBill: { name: "store-bill", path: "/bill/storeBill" },
+  alertQuantityWarnList: { name: "alert-quantity-warn-list", path: "/alert-quantity-warn-list" },
+  orderStatistics: { name: "order-statistics", path: "/statistics/order-statistics" },
+  trafficStatistics: { name: "traffic-statistics", path: "/statistics/traffic-statistics" },
+  accountStatementBill: { name: "account-statement-bill", path: "/bill/account-statement-bill" },
+  storeBill: { name: "store-bill", path: "/bill/store-bill" },
   procurementPurchaseOrderList: {
     name: "procurement-purchase-order-list",
     path: "/procurement/purchase-order/list",
