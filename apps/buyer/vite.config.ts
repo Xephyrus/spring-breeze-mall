@@ -42,18 +42,17 @@ export default defineConfig(({ mode }) => {
     css: {
       preprocessorOptions: {
         scss: {
-          // 与 vue.config.js 一致：全局注入变量与基础样式。
-          // 两个例外：global.scss 自身、以及已显式 @import 它的文件（否则重复注入）。
+          // 只注入「变量 + mixin」（variables.scss 不产出任何 CSS）。
+          // 真实样式在 global.scss，由 main.ts 引入一次 —— 避免规则被复制进每个 SFC。
           additionalData: (content: string, filepath: string) => {
             const normalized = filepath.replace(/\\/g, "/");
             if (
               normalized.includes("node_modules") ||
-              normalized.endsWith("/assets/styles/global.scss") ||
-              content.includes('@import "@/assets/styles/global.scss"')
+              normalized.endsWith("/assets/styles/variables.scss")
             ) {
               return content;
             }
-            return `@import "@/assets/styles/global.scss";\n${content}`;
+            return `@import "@/assets/styles/variables.scss";\n${content}`;
           },
           sassOptions: {
             silenceDeprecations: ["legacy-js-api", "import"],

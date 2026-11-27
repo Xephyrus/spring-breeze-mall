@@ -394,3 +394,42 @@ buyer 与 im 各有一份 `Foundation.js`，函数名与逻辑高度相似。第
 全局注册（`components/global.ts`、`index-decorate/registry.ts`）用的是**局部 import 变量名**，也未改动。
 
 因此本批只改了「文件系统路径」，没有触碰任何运行时组件标识。
+## M4：工程化优化
+
+### 4.1 `global.scss` 拆分（已完成）
+
+**问题**：`global.scss`（389 行）里既有变量/mixin，也有真实样式规则，而它被 `additionalData` 注入到
+**每个 SFC 的 SCSS 块**。SCSS 的 `@import` 会把规则一起展开 —— 于是 `.wes-2`、`.global_color`、
+`.width_1200` 这些全局类被复制进每一个用到 SCSS 的组件 chunk。
+
+**改法**
+
+| 文件 | 内容 | 引入方式 |
+|---|---|---|
+| `assets/styles/variables.scss`（新增，109 行） | 只有 `$` 变量与 `@mixin`，**不产出任何 CSS** | `additionalData` 注入每个 SFC |
+| `assets/styles/global.scss`（298 行） | `@import "variables";` + `.wes-2` + 全部全局规则 | `main.ts` 引入**一次** |
+
+**效果**
+
+| 项 | 拆分前 | 拆分后 | 变化 |
+|---|---:|---:|---:|
+| dist CSS 合计 | 1,067 KB | **579 KB** | **−488 KB（−46%）** |
+| `index-*.css` | 377 KB | **152 KB** | −225 KB |
+| `goods-detail-*.css` | 35 KB | 19 KB | −16 KB |
+
+**验证（不只是看体积）**
+
+| 检查 | 结果 |
+|---|---|
+| `.wes-2` / `.global_color` / `.clearfix` / `.fontsize_14` | ✅ 产物中各出现 **1 次**（此前被复制到每个 chunk） |
+| `.width_1200` | 3 次（全局 1 次 + 组件 scoped 里 2 次，正常） |
+| 变量是否编译干净 | ✅ 产物中 `$theme_color` 残留 **0 处** |
+| 主题变量是否还在用 | ✅ `--theme-color` 引用 343 处（主题系统未受影响） |
+| `typecheck` / `lint` / `build` | ✅ 0 / 0 / 4.61s |
+| dev 巡检 | ✅ `/`、`/home`、`/goodsDetail`、`/login`、`/cart` 与两个 `scss` 模块均 200 |
+
+**CSS 顺序的影响**：全局规则从「每个 chunk 内、组件样式之前」变成「入口 chunk、组件样式之前」，
+组件 scoped 样式仍然在后、优先级关系不变；对多用 scoped 的 buyer 而言这是更正确的加载顺序。
+
+> 这类拆分的价值不在"少写了多少行"，而在**把「变量注入」与「样式输出」这两件事分开**：
+> 前者需要到处都有、后者必须只有一份。
