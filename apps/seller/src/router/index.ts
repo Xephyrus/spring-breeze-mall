@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, type RouteLocationNormalized } from "vue-router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Util from "../libs/util";
@@ -14,14 +14,14 @@ export const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  Util.title(to.meta.title);
+  Util.title(to.meta.title as string | undefined);
 
-  const name = to.name;
+  const name = to.name as string | undefined;
   const hasToken = Cookies.get("userInfoSeller");
 
   if (!hasToken && name !== "login") {
     if (name === "forgetPassword") {
-      Util.toDefaultPage([...routers], name, router, next);
+      Util.toDefaultPage([...routers] as never[], name, router, next);
       return;
     }
     next({ name: "login" });
@@ -35,15 +35,15 @@ router.beforeEach((to, from, next) => {
   }
 
   if (hasToken) {
-    Util.toDefaultPage([...routers], name, router, next);
+    Util.toDefaultPage([...routers] as never[], name, router, next);
     return;
   }
 
   next();
 });
 
-router.afterEach((to) => {
-  Util.openNewPage(to.name, to.params, to.query);
+router.afterEach((to: RouteLocationNormalized) => {
+  Util.openNewPage(to.name as string, to.params, to.query);
   NProgress.done();
   window.scrollTo(0, 0);
 });

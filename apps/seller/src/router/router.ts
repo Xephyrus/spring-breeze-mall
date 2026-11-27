@@ -1,6 +1,8 @@
 import Main from "@/views/Main.vue";
+import type { RouteRecordRaw } from "vue-router";
+import type { MenuRoute } from "@/types/menu";
 // 不作为Main组件的子页面展示的页面单独写，如下
-export const loginRouter = {
+export const loginRouter: MenuRoute = {
   path: "/login",
   name: "login",
   meta: {
@@ -9,14 +11,14 @@ export const loginRouter = {
   },
   component: () => import("@/views/login.vue")
 };
-export const forgetPasswordRouter = {
+export const forgetPasswordRouter: MenuRoute = {
   path: "/forgetPassword",
   name: "forgetPassword",
   component: () => import("@/views/ForgetPassword.vue")
 };
 
 // 移动端楼层装修编辑器：全屏独立页，不在 Main（左侧菜单）布局内
-export const floorDecorationRouter = {
+export const floorDecorationRouter: MenuRoute = {
   path: "/floorList/main",
   name: "main",
   meta: {
@@ -26,7 +28,7 @@ export const floorDecorationRouter = {
 };
 
 // PC端楼层装修编辑器：全屏独立页，不在 Main（左侧菜单）布局内
-export const pcFloorDecorationRouter = {
+export const pcFloorDecorationRouter: MenuRoute = {
   path: "/pcFloorList/main",
   name: "renovation",
   meta: {
@@ -36,7 +38,7 @@ export const pcFloorDecorationRouter = {
 };
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
-export const otherRouter = {
+export const otherRouter: MenuRoute = {
   path: "/",
   name: "otherRouter",
   redirect: "/home",
@@ -338,7 +340,7 @@ export const otherRouter = {
   ]
 };
 
-export const page403 = {
+export const page403: MenuRoute = {
   path: "/403",
   meta: {
     title: "403-权限不足"
@@ -347,7 +349,7 @@ export const page403 = {
   component: () => import("@/views/error-page/403.vue")
 };
 
-export const page500 = {
+export const page500: MenuRoute = {
   path: "/500",
   meta: {
     title: "500-服务端错误"
@@ -356,4 +358,4 @@ export const page500 = {
   component: () => import("@/views/error-page/500.vue")
 };
 // 所有上面定义的路由都要写在下面的routers里
-export const routers = [loginRouter, forgetPasswordRouter, floorDecorationRouter, pcFloorDecorationRouter, otherRouter, page500, page403];
+export const routers = [loginRouter, forgetPasswordRouter, floorDecorationRouter, pcFloorDecorationRouter, otherRouter, page500, page403] as unknown as RouteRecordRaw[];

@@ -1,24 +1,54 @@
 import { getCurrentPermissionList } from "@/api/index";
-import lazyLoading from "./lazyLoading.js";
+import lazyLoading from "./lazyLoading";
 import { router } from "@/router/index";
 import Cookies from "js-cookie";
 import config from "@/config/index";
 import { useAppStore } from "@/stores/app";
+import type { MenuNode, MenuRoute, NavItem, OpenedTag, SellerProfile } from "@/types/menu";
 
-let util = {};
+/** 动态路由名（用于退出/切换账号时清理） */
+interface UtilApi {
+  dynamicRouteNames: string[];
+  pickSellerProfile(raw: Partial<SellerProfile> | null | undefined): Partial<SellerProfile>;
+  clearDynamicRoutes(): void;
+  resolveRouteComponent(menu: MenuNode): (() => Promise<unknown>) | null;
+  collectLeafRoutes(routes: MenuRoute[], result?: MenuRoute[], parentPath?: string): MenuRoute[];
+  registerDynamicRoutes(menuData: MenuNode[], options?: { rematch?: boolean }): void;
+  bootstrapDynamicRoutesFromCache(): boolean;
+  getSiteName(): string;
+  title(title?: string): void;
+  oneOf<T>(ele: T, targetArr: T[]): boolean;
+  getRouterObjByName(routers: MenuRoute[] | undefined, name: string): MenuRoute | null;
+  handleTitle(vm: unknown, item: MenuRoute | MenuNode | null | undefined): string | Record<string, string>;
+  setCurrentPath(name: string): OpenedTag[];
+  openNewPage(name: string, argu?: unknown, query?: unknown): void;
+  toDefaultPage(
+    routers: MenuRoute[],
+    name: string | undefined,
+    route: { replace(location: { name?: string }): unknown },
+    next: () => void
+  ): void;
+  initRouter(): void;
+  initAllMenuData(constRoutes: MenuRoute[], data: MenuNode[]): void;
+  initMenuData(data: MenuNode[]): void;
+  initRouterNode(routers: MenuRoute[], data: MenuNode[]): void;
+  getFirstRouterName(routeName?: string): string | null;
+}
 
-// 避免旧缓存中的已下线菜单重新注册路由。
-const DEPRECATED_FRONT_ROUTES = new Set([
+const util = {} as UtilApi;
+
+// 避免旧缓存中的已下线菜单重新注册路由
+const DEPRECATED_FRONT_ROUTES = new Set<string>([
   "promotion/flash-discount/flash-discount",
   "promotion/nth-item-discount/nth-item-discount",
 ]);
 
 /** 店铺主页一级菜单 */
 export const HOME_NAV_NAME = "home";
-export const HOME_NAV_ITEM = { name: HOME_NAV_NAME, title: "主页" };
+export const HOME_NAV_ITEM: NavItem = { name: HOME_NAV_NAME, title: "主页" };
 
 /** 静态路由名，禁止被动态路由清理误删 */
-const STATIC_ROUTE_NAMES = new Set([
+const STATIC_ROUTE_NAMES = new Set<string>([
   "home_index",
   "change_pass",
   "message_index",
@@ -32,9 +62,6 @@ util.dynamicRouteNames = [];
 
 /**
  * 提取商家端会话必需的基础展示字段，避免超长经营范围或入驻详情导致 Cookie 超限
- *
- * @param {Object} raw 商家信息对象
- * @returns {Object} 核心会话档案对象
  */
 util.pickSellerProfile = function (raw) {
   if (!raw) return {};
@@ -73,7 +100,7 @@ util.resolveRouteComponent = function (menu) {
     menu.component !== "Main"
       ? menu.component
       : "");
-  return routeKey ? lazyLoading(routeKey) : null;
+  return routeKey ? (lazyLoading(routeKey) as () => Promise<unknown>) : null;
 };
 
 util.collectLeafRoutes = function (routes, result = [], parentPath = "") {
@@ -84,7 +111,7 @@ util.collectLeafRoutes = function (routes, result = [], parentPath = "") {
     const hasChildren = route.children && route.children.length > 0;
 
     if (hasChildren) {
-      util.collectLeafRoutes(route.children, result, fullPath);
+      util.collectLeafRoutes(route.children as MenuRoute[], result, fullPath);
     } else if (
       route.name &&
       typeof route.component === "function" &&
@@ -107,10 +134,10 @@ util.registerDynamicRoutes = function (menuData, options = {}) {
   const pendingUnmatched = router.currentRoute.value.matched.length === 0;
 
   util.clearDynamicRoutes();
-  const constRoutes = [];
+  const constRoutes: MenuRoute[] = [];
   util.initAllMenuData(constRoutes, menuData);
 
-  const leaves = [];
+  const leaves: MenuRoute[] = [];
   constRoutes.forEach((top) => {
     const base = (top.path || "").replace(/^\//, "");
     if (top.children && top.children.length) {
@@ -137,18 +164,18 @@ util.registerDynamicRoutes = function (menuData, options = {}) {
     }
     if (
       typeof component !== "function" ||
-      STATIC_ROUTE_NAMES.has(leaf.name) ||
-      router.hasRoute(leaf.name)
+      STATIC_ROUTE_NAMES.has(leaf.name as string) ||
+      router.hasRoute(leaf.name as string)
     ) {
       return;
     }
     router.addRoute("otherRouter", {
       path,
       name: leaf.name,
-      component,
+      component: component as () => Promise<unknown>,
       meta: leaf.meta,
     });
-    util.dynamicRouteNames.push(leaf.name);
+    util.dynamicRouteNames.push(leaf.name as string);
   });
 
   if (!router.hasRoute("error-404")) {
@@ -161,15 +188,10 @@ util.registerDynamicRoutes = function (menuData, options = {}) {
     util.dynamicRouteNames.push("error-404");
   }
 
-  if (
-    rematch &&
-    pendingUnmatched &&
-    pendingPath &&
-    pendingPath !== "/login"
-  ) {
+  if (rematch && pendingUnmatched && pendingPath && pendingPath !== "/login") {
     const resolved = router.resolve(pendingPath);
     if (resolved.matched.length > 0) {
-      router.replace(pendingPath).catch(() => {});
+      router.replace(pendingPath).catch(() => undefined);
     }
   }
 };
@@ -183,7 +205,7 @@ util.bootstrapDynamicRoutesFromCache = function () {
     if (!raw) {
       return false;
     }
-    util.registerDynamicRoutes(JSON.parse(raw), { rematch: false });
+    util.registerDynamicRoutes(JSON.parse(raw) as MenuNode[], { rematch: false });
     return true;
   } catch (e) {
     console.warn("[router] menuData parse failed", e);
@@ -196,9 +218,11 @@ util.getSiteName = function () {
   return window.localStorage.getItem("sellersiteName") || config.title;
 };
 
-util.title = function (title) {
+util.title = function (rawTitle) {
   const siteName = util.getSiteName();
-  title = title ? `${title} - ${siteName}商家后台` : `${siteName} 商家后台`;
+  const title = rawTitle
+    ? `${rawTitle} - ${siteName}商家后台`
+    : `${siteName} 商家后台`;
   window.document.title = title;
 };
 
@@ -210,8 +234,8 @@ util.getRouterObjByName = function (routers, name) {
   if (!name || !routers || !routers.length) {
     return null;
   }
-  let routerObj;
-  for (let item of routers) {
+  let routerObj: MenuRoute | null;
+  for (const item of routers) {
     if (item.name === name) {
       return item;
     }
@@ -223,22 +247,19 @@ util.getRouterObjByName = function (routers, name) {
   return null;
 };
 
-util.handleTitle = function (vm, item) {
+util.handleTitle = function (_vm, item) {
   if (!item) {
     return "";
   }
-  if (typeof item.title === "object") {
-    return item.title;
-  }
-  return item.title;
+  return item.title ?? "";
 };
 
 util.setCurrentPath = function (name) {
   const appStore = useAppStore();
-  let title = "";
+  let title: string | Record<string, string> = "";
   let isOtherRouter = false;
   appStore.routers.forEach((item) => {
-    if (item.children.length === 1) {
+    if (item.children?.length === 1) {
       if (item.children[0].name === name) {
         title = util.handleTitle(null, item);
         if (item.name === "otherRouter") {
@@ -246,7 +267,7 @@ util.setCurrentPath = function (name) {
         }
       }
     } else {
-      item.children.forEach((child) => {
+      item.children?.forEach((child) => {
         if (child.name === name) {
           title = util.handleTitle(null, child);
           if (item.name === "otherRouter") {
@@ -256,14 +277,12 @@ util.setCurrentPath = function (name) {
       });
     }
   });
-  let currentPathArr;
+
+  let currentPathArr: OpenedTag[];
   if (name === "home_index") {
     currentPathArr = [
       {
-        title: util.handleTitle(
-          null,
-          util.getRouterObjByName(appStore.routers, "home_index")
-        ),
+        title: String(util.handleTitle(null, util.getRouterObjByName(appStore.routers, "home_index"))),
         path: "",
         name: "home_index",
       },
@@ -271,77 +290,42 @@ util.setCurrentPath = function (name) {
   } else if ((name.indexOf("_index") >= 0 || isOtherRouter) && name !== "home_index") {
     currentPathArr = [
       {
-        title: util.handleTitle(
-          null,
-          util.getRouterObjByName(appStore.routers, "home_index")
-        ),
+        title: String(util.handleTitle(null, util.getRouterObjByName(appStore.routers, "home_index"))),
         path: "/home",
         name: "home_index",
       },
       {
-        title: title,
+        title: String(title),
         path: "",
-        name: name,
+        name,
       },
     ];
   } else {
-    let currentPathObj = appStore.routers.filter((item) => {
-      if (item.children.length <= 1) {
-        return item.children[0].name === name;
+    const currentPathObj = appStore.routers.filter((item) => {
+      if (!item.children || item.children.length <= 1) {
+        return item.children?.[0]?.name === name;
       }
-      let i = 0;
-      let childArr = item.children;
-      let len = childArr.length;
-      while (i < len) {
-        if (childArr[i].name === name) {
-          return true;
-        }
-        i++;
-      }
-      return false;
+      return item.children.some((child) => child.name === name);
     })[0];
+
     if (!currentPathObj) {
       currentPathArr = [];
-    } else if (currentPathObj.children.length <= 1 && currentPathObj.name === "home") {
+    } else if ((currentPathObj.children?.length ?? 0) <= 1 && currentPathObj.name === "home") {
+      currentPathArr = [{ title: "首页", path: "", name: "home_index" }];
+    } else if ((currentPathObj.children?.length ?? 0) <= 1 && currentPathObj.name !== "home") {
       currentPathArr = [
-        {
-          title: "首页",
-          path: "",
-          name: "home_index",
-        },
-      ];
-    } else if (currentPathObj.children.length <= 1 && currentPathObj.name !== "home") {
-      currentPathArr = [
-        {
-          title: "首页",
-          path: "/home",
-          name: "home_index",
-        },
-        {
-          title: currentPathObj.title,
-          path: "",
-          name: name,
-        },
+        { title: "首页", path: "/home", name: "home_index" },
+        { title: String(currentPathObj.title ?? ""), path: "", name },
       ];
     } else {
-      let childObj = currentPathObj.children.filter((child) => {
-        return child.name === name;
-      })[0];
+      const childObj = currentPathObj.children?.filter((child) => child.name === name)[0];
       currentPathArr = [
+        { title: "首页", path: "/home", name: "home_index" },
+        { title: String(currentPathObj.title ?? ""), path: "", name: currentPathObj.name as string },
         {
-          title: "首页",
-          path: "/home",
-          name: "home_index",
-        },
-        {
-          title: currentPathObj.title,
-          path: "",
-          name: currentPathObj.name,
-        },
-        {
-          title: childObj.title,
-          path: currentPathObj.path + "/" + childObj.path,
-          name: name,
+          title: String(childObj?.title ?? ""),
+          path: `${currentPathObj.path ?? ""}/${childObj?.path ?? ""}`,
+          name,
         },
       ];
     }
@@ -352,8 +336,8 @@ util.setCurrentPath = function (name) {
 
 util.openNewPage = function (name, argu, query) {
   const appStore = useAppStore();
-  let storeOpenedList = appStore.storeOpenedList;
-  let openedPageLen = storeOpenedList.length;
+  const storeOpenedList = appStore.storeOpenedList;
+  const openedPageLen = storeOpenedList.length;
   let i = 0;
   let tagHasOpened = false;
   while (i < openedPageLen) {
@@ -369,15 +353,15 @@ util.openNewPage = function (name, argu, query) {
     i++;
   }
   if (!tagHasOpened) {
-    let tag = appStore.tagsList.filter((item) => {
+    const matched = appStore.tagsList.filter((item) => {
       if (item.children) {
         return name === item.children[0].name;
       }
       return name === item.name;
     });
-    tag = tag[0];
-    if (tag) {
-      tag = tag.children ? tag.children[0] : tag;
+    const found = matched[0];
+    if (found) {
+      const tag = (found.children ? found.children[0] : found) as unknown as OpenedTag;
       if (argu) tag.argu = argu;
       if (query) tag.query = query;
       appStore.increateTag(tag);
@@ -386,7 +370,7 @@ util.openNewPage = function (name, argu, query) {
 };
 
 util.toDefaultPage = function (routers, name, route, next) {
-  let len = routers.length;
+  const len = routers.length;
   let i = 0;
   let notHandle = true;
   while (i < len) {
@@ -396,7 +380,7 @@ util.toDefaultPage = function (routers, name, route, next) {
       routers[i].redirect == undefined
     ) {
       route.replace({
-        name: routers[i].children[0].name,
+        name: routers[i].children?.[0]?.name,
       });
       notHandle = false;
       next();
@@ -411,20 +395,20 @@ util.toDefaultPage = function (routers, name, route, next) {
 
 util.initRouter = function () {
   const appStore = useAppStore();
-  const constRoutes = [];
-  let userInfo = Cookies.get("userInfoSeller");
+  const constRoutes: MenuRoute[] = [];
+  const userInfo = Cookies.get("userInfoSeller");
   if (!userInfo) {
     return;
   }
   if (!appStore.added) {
-    getCurrentPermissionList().then((res) => {
+    void getCurrentPermissionList().then((res) => {
       if (!res.success) return false;
-      let menuData = res.result;
+      const menuData = res.result as MenuNode[];
 
       for (let i = 0; i < menuData.length; i++) {
-        let t = menuData[i].children;
+        const t = menuData[i].children ?? [];
         for (let k = 0; k < t.length; k++) {
-          let tt = t[k].children;
+          const tt = t[k].children ?? [];
           for (let z = 0; z < tt.length; z++) {
             tt[z].children = null;
             tt[z].firstRouterName = menuData[i].name;
@@ -438,30 +422,31 @@ util.initRouter = function () {
       util.initAllMenuData(constRoutes, menuData);
       util.registerDynamicRoutes(menuData);
       appStore.updateAppRouter(
-        constRoutes.filter((item) => item.children && item.children.length > 0)
+        constRoutes.filter((item) => (item.children?.length ?? 0) > 0) as never
       );
       util.initMenuData(menuData);
       window.localStorage.setItem("menuData", JSON.stringify(menuData));
       appStore.setAdded(true);
+      return true;
     });
   } else {
-    let data = window.localStorage.getItem("menuData");
+    const data = window.localStorage.getItem("menuData");
     if (!data) {
       appStore.setAdded(false);
       util.initRouter();
       return;
     }
-    let menuData = JSON.parse(data);
+    const menuData = JSON.parse(data) as MenuNode[];
     util.registerDynamicRoutes(menuData);
     util.initMenuData(menuData);
   }
 };
 
 util.initAllMenuData = function (constRoutes, data) {
-  let allMenuData = [];
+  const allMenuData: MenuNode[] = [];
   data.forEach((e) => {
     if (e.level === 0) {
-      e.children.forEach((item) => {
+      (e.children ?? []).forEach((item) => {
         allMenuData.push(item);
       });
     }
@@ -471,38 +456,46 @@ util.initAllMenuData = function (constRoutes, data) {
 
 util.initMenuData = function (data) {
   const appStore = useAppStore();
-  // 全量导航与搜索只使用当前账号权限接口返回的菜单，沿用已下线菜单过滤规则。
-  appStore.navigationMenus = data.map((top) => {
-    const children = [];
-    util.initRouterNode(children, top.children || []);
-    return { ...top, children: children.filter((group) => group.children?.length) };
-  }).filter((top) => top.children.length);
-  let navList = [HOME_NAV_ITEM];
+  // 全量导航与搜索只使用当前账号权限接口返回的菜单，沿用已下线菜单过滤规则
+  appStore.navigationMenus = data
+    .map((top) => {
+      const children: MenuRoute[] = [];
+      util.initRouterNode(children, top.children ?? []);
+      return {
+        ...top,
+        children: children.filter((group) => group.children?.length),
+      } as MenuRoute;
+    })
+    .filter((top) => (top.children?.length ?? 0) > 0);
+
+  const navList: NavItem[] = [{ ...HOME_NAV_ITEM }];
   appStore.navigationMenus.forEach((e) => {
-    navList.push({ name: e.name, title: e.title });
+    navList.push({ name: String(e.name ?? ""), title: String(e.title ?? "") });
   });
   appStore.setNavList(navList);
+
   let currNav = window.localStorage.getItem("currNav");
   if (!navList.some((item) => item.name === currNav)) {
     currNav = HOME_NAV_NAME;
   }
-  appStore.setCurrNav(currNav);
+  appStore.setCurrNav(currNav ?? HOME_NAV_NAME);
 
-  // 首页也必须准备全部标签入口；切换栏目只更新展示，不能依赖再次初始化路由补齐标签。
-  appStore.tagsList = appStore.routers.flatMap((item) => item.children || []);
+  // 首页也必须准备全部标签入口；切换栏目只更新展示，不能依赖再次初始化路由补齐标签
+  appStore.tagsList = appStore.routers.flatMap((item) => item.children ?? []) as never;
 
   appStore.updateMenulist(
-    appStore.navigationMenus.find((item) => item.name === currNav)?.children || []
+    (appStore.navigationMenus.find((item) => item.name === currNav)?.children ??
+      []) as never
   );
 };
 
 util.initRouterNode = function (routers, data) {
-  for (let item of data) {
-    if (DEPRECATED_FRONT_ROUTES.has(item.frontRoute)) {
+  for (const item of data) {
+    if (item.frontRoute && DEPRECATED_FRONT_ROUTES.has(item.frontRoute)) {
       continue;
     }
-    const menu = Object.assign({}, item);
-    const hasChildren = item.children && item.children.length > 0;
+    const menu = Object.assign({}, item) as MenuRoute;
+    const hasChildren = (item.children?.length ?? 0) > 0;
     if (
       !hasChildren &&
       (menu.frontRoute === "promotion/full-discount/full-discount" ||
@@ -518,15 +511,15 @@ util.initRouterNode = function (routers, data) {
       if (menu.name) {
         menu.name = `${menu.name}__layout`;
       }
-      util.initRouterNode(menu.children, item.children);
-      const layoutComponent = util.resolveRouteComponent(menu);
+      util.initRouterNode(menu.children, item.children ?? []);
+      const layoutComponent = util.resolveRouteComponent(menu as MenuNode);
       if (layoutComponent) {
         menu.component = layoutComponent;
       } else {
         delete menu.component;
       }
     } else {
-      const component = util.resolveRouteComponent(menu);
+      const component = util.resolveRouteComponent(menu as MenuNode);
       if (component) {
         menu.component = component;
       } else {
@@ -534,7 +527,7 @@ util.initRouterNode = function (routers, data) {
       }
     }
 
-    const meta = {};
+    const meta: Record<string, unknown> = {};
     // 站点后缀统一由 util.title 在路由跳转时动态拼接，避免初始化时定死
     meta.title = menu.title ? menu.title : null;
     meta.firstRouterName = item.firstRouterName;
@@ -554,14 +547,14 @@ util.getFirstRouterName = function (routeName) {
     return null;
   }
   try {
-    const menuData = JSON.parse(raw);
+    const menuData = JSON.parse(raw) as MenuNode[];
     for (const top of menuData) {
-      const level1 = top.children || [];
+      const level1 = top.children ?? [];
       for (const mid of level1) {
-        const leaves = mid.children || [];
+        const leaves = mid.children ?? [];
         for (const leaf of leaves) {
           if (leaf.name === routeName) {
-            return leaf.firstRouterName || top.name;
+            return leaf.firstRouterName || top.name || null;
           }
         }
       }

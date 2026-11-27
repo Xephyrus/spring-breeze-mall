@@ -19,7 +19,7 @@ export const getAllCity = (params: Query) => {
 }
 
 // 获取全部权限数据
-export const getCurrentPermissionList = (params: Query) => {
+export const getCurrentPermissionList = (params?: Query) => {
   return getRequest("/menu/memberMenu", params);
 };
 // 登陆

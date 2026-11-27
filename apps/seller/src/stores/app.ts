@@ -1,26 +1,6 @@
 import { defineStore } from "pinia";
-import type { RouteRecordRaw } from "vue-router";
+import type { MenuRoute, NavItem, OpenedTag } from "@/types/menu";
 import { otherRouter } from "@/router/router";
-
-/** 顶部已打开标签 */
-export interface OpenedTag {
-  title: string;
-  path: string;
-  name: string;
-  argu?: unknown;
-  query?: unknown;
-  [key: string]: unknown;
-}
-
-/** 导航菜单节点（后端菜单转换而来） */
-export interface NavMenuItem {
-  name?: string;
-  path?: string;
-  title?: string;
-  icon?: string;
-  children?: NavMenuItem[];
-  [key: string]: unknown;
-}
 
 export interface AppState {
   shipTemplates: string;
@@ -28,15 +8,15 @@ export interface AppState {
   styleStore: string;
   loading: boolean;
   added: boolean;
-  navList: NavMenuItem[];
-  navigationMenus: NavMenuItem[];
+  navList: NavItem[];
+  navigationMenus: MenuRoute[];
   currNav: string;
   lang: string;
   openedSubmenuArr: string[];
   storeOpenedList: OpenedTag[];
-  menuList: NavMenuItem[];
-  routers: RouteRecordRaw[];
-  tagsList: RouteRecordRaw[];
+  menuList: MenuRoute[];
+  routers: MenuRoute[];
+  tagsList: MenuRoute[];
   refMenu: string;
   unreadMessageCount: number;
 }
@@ -65,7 +45,7 @@ export const useAppStore = defineStore("app", {
     ],
     menuList: [],
     routers: [otherRouter],
-    tagsList: [...otherRouter.children],
+    tagsList: [...(otherRouter.children ?? [])],
     refMenu: "",
     unreadMessageCount: 0,
   }),
@@ -77,12 +57,12 @@ export const useAppStore = defineStore("app", {
     /** 清理账号绑定的路由与标签目录，保留静态页面，防止切换账号后复用旧菜单 */
     resetNavigationRoutes(): void {
       this.routers = [otherRouter];
-      this.tagsList = [...otherRouter.children];
+      this.tagsList = [...(otherRouter.children ?? [])];
     },
     childrenMenu(v: string): void {
       this.refMenu = v;
     },
-    updateAppRouter(routes: RouteRecordRaw[]): void {
+    updateAppRouter(routes: MenuRoute[]): void {
       this.routers.push(...routes);
     },
     updateDefaultRouter(): void {
@@ -94,16 +74,16 @@ export const useAppStore = defineStore("app", {
     setAdded(v: boolean): void {
       this.added = v;
     },
-    setNavList(list: NavMenuItem[]): void {
+    setNavList(list: NavItem[]): void {
       this.navList = list;
     },
     setCurrNav(v: string): void {
       this.currNav = v;
     },
-    setTagsList(list: RouteRecordRaw[]): void {
+    setTagsList(list: MenuRoute[]): void {
       this.tagsList.push(...list);
     },
-    updateMenulist(routes: NavMenuItem[]): void {
+    updateMenulist(routes: MenuRoute[]): void {
       this.menuList = routes;
     },
     addOpenSubmenu(name: string): void {
@@ -147,7 +127,7 @@ export const useAppStore = defineStore("app", {
     setOpenedList(): void {
       this.storeOpenedList = localStorage.storeOpenedList
         ? (JSON.parse(localStorage.storeOpenedList) as OpenedTag[])
-        : [otherRouter.children[0] as unknown as OpenedTag];
+        : [(otherRouter.children?.[0] ?? {}) as unknown as OpenedTag];
     },
     setAvatarPath(path: string): void {
       localStorage.avatorImgPath = path;

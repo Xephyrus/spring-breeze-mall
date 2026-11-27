@@ -140,6 +140,26 @@
 > `router/index.js`（49 行）与 `router/router.js`（359 行）依赖 `libs/util` 的 `frontRoute` 解析，
 > 与 M3 命名统一强耦合，留到 M3 一起改。
 
+### 2.4 路由核心类型化（✅ 2026-11-28，M3 前置）
+
+| 文件 | 说明 |
+|---|---|
+| 新增 `src/types/menu.ts` | `MenuNode`（后端菜单）、`MenuRoute`（转路由后）、`OpenedTag`、`NavItem`、`SellerProfile`。独立成文件是为了打破 `libs/util` ↔ `stores/app` ↔ `router/*` 的循环 import |
+| `libs/util.js` → `util.ts`（575 行） | 定义 `UtilApi` 接口约束整个 `util` 对象；`dynamicRouteNames`、`registerDynamicRoutes`、`initRouterNode` 等全部显式类型 |
+| `router/router.js` → `router.ts`（359 行） | 7 个静态路由对象标 `MenuRoute`，`routers` 断言为 `RouteRecordRaw[]` 供 `createRouter` |
+| `router/index.js` → `index.ts` | 守卫参数用 `RouteLocationNormalized`；`to.meta.title` 收窄为 `string \| undefined` |
+
+**编译器暴露的问题**
+
+| 位置 | 问题 | 修法 |
+|---|---|---|
+| `getCurrentPermissionList(params)` | 调用处不传参 → TS2554 | 参数改可选 `params?: Query` |
+| `router.addRoute` 的 `component` | `unknown` 不可赋值 | 断言 `() => Promise<unknown>` |
+| `otherRouter.children` | `MenuRoute.children` 可选 → 展开报错 2 处 | `?? []` |
+| `Object.assign({}, item)` | 推断成 `MenuNode` | 断言 `as MenuRoute` |
+
+**验证**：typecheck 0 错误 / lint 58（未增长）/ build 6.21s / dev HTTP 200（含 `util.ts` 转译验证）
+
 ---
 
 ## 待办（后续里程碑）
