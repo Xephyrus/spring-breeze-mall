@@ -1,25 +1,53 @@
-import { createApp, h, onMounted, onUnmounted } from "vue";
+import { createApp, h, onMounted, onUnmounted, type App, type VNode } from "vue";
 import LegacyElIcon from "@/components/global/LegacyElIcon.vue";
 
-let activeMenu = null;
+/** 右键菜单项 */
+export interface ContextmenuItem {
+  label: string;
+  /** LegacyElIcon 的图标名 */
+  icon?: string;
+  disabled?: boolean;
+  divided?: boolean;
+  customClass?: string;
+  onClick?: () => void;
+}
 
-function destroyMenu() {
+/** showContextmenu 的参数：可只传数组，也可传完整配置 */
+export interface ContextmenuOptions {
+  items?: ContextmenuItem[];
+  event?: MouseEvent | { clientX?: number; clientY?: number };
+  x?: number;
+  y?: number;
+  customClass?: string;
+  zIndex?: number;
+  minWidth?: number;
+}
+
+interface ActiveMenu {
+  app: App;
+  el: HTMLElement;
+}
+
+let activeMenu: ActiveMenu | null = null;
+
+function destroyMenu(): void {
   if (!activeMenu) return;
   activeMenu.app.unmount();
-  if (activeMenu.el?.parentNode) {
+  if (activeMenu.el.parentNode) {
     activeMenu.el.parentNode.removeChild(activeMenu.el);
   }
   activeMenu = null;
 }
 
-function normalizeOptions(options) {
+function normalizeOptions(options: ContextmenuOptions | ContextmenuItem[]): ContextmenuOptions {
   if (Array.isArray(options)) {
     return { items: options };
   }
   return options || { items: [] };
 }
 
-function showContextmenu(options) {
+/** 打开右键菜单（同一时间只保留一个） */
+export function showContextmenu(options: ContextmenuOptions | ContextmenuItem[]): void {
   destroyMenu();
 
   const {
@@ -65,10 +93,10 @@ function showContextmenu(options) {
               zIndex,
               minWidth: `${minWidth}px`,
             },
-            onContextmenu: (e) => e.preventDefault(),
+            onContextmenu: (e: MouseEvent) => e.preventDefault(),
           },
           items.flatMap((item, index) => {
-            const nodes = [];
+            const nodes: VNode[] = [];
             if (item.divided && index > 0) {
               nodes.push(h("div", { class: "im-contextmenu-divider" }));
             }
@@ -83,29 +111,25 @@ function showContextmenu(options) {
   app.mount(el);
 }
 
-function renderMenuItem(item, close) {
+function renderMenuItem(item: ContextmenuItem, close: () => void): VNode {
   return h(
     "div",
     {
-      class: [
-        "im-contextmenu-item",
-        item.customClass,
-        item.disabled ? "is-disabled" : "",
-      ].filter(Boolean),
-      onClick: (e) => {
+      class: ["im-contextmenu-item", item.customClass, item.disabled ? "is-disabled" : ""].filter(
+        Boolean
+      ),
+      onClick: (e: MouseEvent) => {
         e.stopPropagation();
         if (item.disabled) return;
         item.onClick?.();
         close();
       },
     },
-    [
-      item.icon ? h(LegacyElIcon, { name: item.icon }) : null,
-      h("span", item.label),
-    ]
+    [item.icon ? h(LegacyElIcon, { name: item.icon }) : null, h("span", item.label)]
   );
 }
 
-export function setupContextmenu(app) {
+/** 注册全局 $contextmenu 方法 */
+export function setupContextmenu(app: App): void {
   app.config.globalProperties.$contextmenu = showContextmenu;
 }
