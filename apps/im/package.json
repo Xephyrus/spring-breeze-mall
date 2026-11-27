@@ -11,7 +11,7 @@
     "serve": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "lint": "eslint src --max-warnings 204",
+    "lint": "eslint src --max-warnings 198",
     "typecheck": "vue-tsc --noEmit -p tsconfig.app.json --pretty false"
   },
   "dependencies": {
