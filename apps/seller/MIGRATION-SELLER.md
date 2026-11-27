@@ -279,6 +279,48 @@ typecheck 0 错误 / lint 58（未增长）/ build 7.09s / dev HTTP 200
 
 ---
 
+## M5 · 质量门与持续集成
+
+### M5-1 `.js` 继续收敛（✅ 第一批 2026-11-28）
+
+| 文件 | 说明 |
+|---|---|
+| `libs/seller-navigation.js` → `.ts` | 新增 `NavigationItem` 接口；`DETAIL_MENUS`、`FULL_DISCOUNT_DETAIL_MENUS` 标 `Record<string, string[]>` |
+| `utils/order-fulfill.js` → `.ts` | 导出 `FulfillmentMode` / `FulfillForm`，`validateFulfillForm` 返回 `string \| null` |
+| `utils/download-blob.js` → `.ts` | 入参改 `unknown`（调用方拿到的是 `ResultMessage` 断言，运行时实际是 `Blob`） |
+| `utils/print.js` → `.ts` | iframe 的 `contentWindow` 显式收窄 |
+| `utils/img-fallback.js` → `.ts` | `error` 事件 `target` 收窄为 `HTMLImageElement` |
+| `utils/goods-specs.js` → `.ts` | `formatGoodsSpecs(specs: unknown)`，JSON 解析分支显式标注 |
+
+剩余 `.js` **34 个**，分三块：① `libs/util` 相关已完成；② `utils/{filters,message,regular,md5}`、`constants/*`、`main.js`、`config/index.js` 下一批；
+③ **装修子系统豁免**（`shop/pc/config.js` 1098 行、`shop/wap/config.js` 654 行、`hotzone/**`、`template/**`）。
+
+### M5-2 CI 增加 seller job（✅ 2026-11-28）
+
+`.github/workflows/ci.yml` 新增 `seller` job，与 manager 同构：
+
+| 步骤 | 命令 |
+|---|---|
+| 依赖 | `pnpm install --frozen-lockfile`（pnpm 12.14.0 / Node 24） |
+| 类型门 | `pnpm --filter @spring-breeze/seller typecheck` |
+| Lint 门 | `pnpm --filter @spring-breeze/seller lint`（ratchet 58） |
+| 构建门 | `pnpm --filter @spring-breeze/seller build`（`NODE_OPTIONS=--max-old-space-size=3072`） |
+
+触发路径同步加入 `apps/seller/**`。
+
+### M5-3 待办：告警清零
+
+当前 58 条告警的构成：
+
+| 规则 | 数量 | 处理方向 |
+|---|---:|---|
+| `@typescript-eslint/no-unused-vars` | 36 | 删掉未使用的 `ref`/`handleReset` 等，或确认是模板引用后加 `defineExpose` |
+| `@typescript-eslint/no-explicit-any` | 12 | 集中在 `libs/axios.ts` 的 `<T = any>` 默认泛型，可换 `unknown` + 调用处断言 |
+| `@typescript-eslint/no-unused-expressions` | 7 | 三元/短路当语句，改成 `if` 或赋值 |
+| `eqeqeq` | 3 | `== null` 已豁免，其余改 `===` |
+
+---
+
 ## 待办（后续里程碑）
 
 | 里程碑 | 内容 |

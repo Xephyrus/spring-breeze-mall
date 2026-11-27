@@ -1,16 +1,18 @@
 /**
- * 打印指定 DOM 区域（替代 vue-print-nb）
+ * 打印指定 DOM 区域（替代 vue-print-nb）。
  */
-export function printElement(elementId, title = "打印") {
+export function printElement(elementId: string, title = "打印"): void {
   const el = document.getElementById(elementId);
   if (!el) {
     console.warn(`[print] element #${elementId} not found`);
     return;
   }
   const iframe = document.createElement("iframe");
-  iframe.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0";
+  iframe.style.cssText =
+    "position:fixed;right:0;bottom:0;width:0;height:0;border:0";
   document.body.appendChild(iframe);
-  const doc = iframe.contentWindow.document;
+  const win = iframe.contentWindow as Window & { document: Document };
+  const doc = win.document;
   doc.open();
   doc.write(
     `<!DOCTYPE html><html><head><title>${title}</title><style>
@@ -20,7 +22,7 @@ export function printElement(elementId, title = "打印") {
     </style></head><body>${el.innerHTML}</body></html>`
   );
   doc.close();
-  iframe.contentWindow.focus();
-  iframe.contentWindow.print();
+  win.focus();
+  win.print();
   setTimeout(() => document.body.removeChild(iframe), 1000);
 }

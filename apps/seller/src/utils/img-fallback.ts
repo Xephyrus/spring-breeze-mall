@@ -15,11 +15,11 @@ const PLACEHOLDER =
       "<path d='M14 42l10-9 8 7 6-5 12 9'/></svg>"
   );
 
-export function setupImgFallback() {
+export function setupImgFallback(): void {
   document.addEventListener(
     "error",
-    (event) => {
-      const el = event.target;
+    (event: Event) => {
+      const el = event.target as HTMLImageElement | null;
       if (!el || el.tagName !== "IMG") return;
       if (el.dataset.noFallback !== undefined || el.dataset.fallbackApplied) return;
       if (!el.getAttribute("src")) return;
