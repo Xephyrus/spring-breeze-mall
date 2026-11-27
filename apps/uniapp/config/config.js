@@ -1,5 +1,25 @@
 const name = "lilishop"; //全局商城name
 const schemeName = "lilishop"; //唤醒app需要的schemeName
+
+/**
+ * IM 地址：只有「H5 + 开发模式」走本地，其余（小程序 / App / H5 生产构建）一律走生产。
+ *
+ * 为什么不用 `#ifdef H5` 写两份常量：条件编译在**构建期**才裁剪，而 ESLint / 编辑器看到的是
+ * 两份重复声明，会被 `no-useless-assignment` 判成「赋值了但没用到」。
+ *
+ * 判断依据：
+ * - `NODE_ENV`：H5 生产构建是 production，能挡住「H5 打包后还连本地」；
+ * - `UNI_PLATFORM`：HBuilderX 编译期注入（h5 / mp-weixin / app-plus 等）。
+ *   取不到时按 h5 处理 —— 此时仍有 NODE_ENV 兜底，不会把生产包带偏。
+ */
+const PLATFORM = process.env.UNI_PLATFORM || "h5";
+const IS_DEV_H5 = process.env.NODE_ENV === "development" && PLATFORM === "h5";
+
+const imWebSrc = IS_DEV_H5 ? "http://localhost:8000" : "https://im.pickmall.cn";
+const baseWsUrl = IS_DEV_H5
+  ? "ws://127.0.0.1:8885/lili/webSocket"
+  : "wss://im-api.pickmall.cn/lili/webSocket";
+
 export default {
   name: name,
   schemeLink: `${schemeName}://`, //唤起app地址
@@ -12,8 +32,8 @@ export default {
   logo: "https://lilishop-oss.oss-cn-beijing.aliyuncs.com/4c864e133c2944efad1f7282ac8a3b9e.png", //logo地址
   customerServiceMobile: "13161366885", //客服电话
   customerServiceEmail: "lili@lili.com", //客服邮箱
-  imWebSrc: "https://im.pickmall.cn", //IM地址
-  baseWsUrl: "wss://im-api.pickmall.cn/lili/webSocket", // IM WS 地址
+  imWebSrc: imWebSrc, //IM 页面地址（H5 走本地 8000）
+  baseWsUrl: baseWsUrl, // IM WS 地址（H5 走本地 8885）
   enableGetClipboard: false, //是否启用粘贴板获取 scanAuthNavigation 中的链接，如果匹配则会跳转到对应页面
   enableMiniBarStartUpApp: false, //是否在h5中右侧浮空按钮点击启动app
   /**

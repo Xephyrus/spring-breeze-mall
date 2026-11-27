@@ -296,3 +296,22 @@ const dev = {
 
 > 若后端不在本机，改这三个地址即可；或在 `manifest.json` 的 `h5.devServer.proxy` 里配代理，
 > 让浏览器请求同源、由 dev server 转发（跨机调试时更合适）。
+### 6.5 IM 地址同样按「H5 + 开发模式」区分
+
+`config/config.js` 的 `baseWsUrl` / `imWebSrc` 原本写死生产地址，H5 dev 点「联系客服」会：
+① WS 连生产 IM（聊天内容真的进生产库）；② IM 页面跳到线上站点。
+
+改成：
+
+```js
+const PLATFORM = process.env.UNI_PLATFORM || "h5";
+const IS_DEV_H5 = process.env.NODE_ENV === "development" && PLATFORM === "h5";
+const imWebSrc = IS_DEV_H5 ? "http://localhost:8000" : "https://im.pickmall.cn";
+const baseWsUrl = IS_DEV_H5 ? "ws://127.0.0.1:8885/lili/webSocket" : "wss://im-api.pickmall.cn/lili/webSocket";
+```
+
+**为什么不用 `#ifdef H5` 写两份常量**：我第一版就是那么写的，结果 lint 报
+`no-useless-assignment ×2`（条件编译在构建期裁剪，ESLint 看到的是两份重复声明）。
+`NODE_ENV + UNI_PLATFORM` 判断只有一份声明，且 `NODE_ENV` 能挡住「H5 生产包连本地」。
+
+取不到 `UNI_PLATFORM` 时按 `h5` 兜底 —— 仍有 `NODE_ENV` 把关，不会把生产包带偏。
