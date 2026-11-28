@@ -1,5 +1,12 @@
 const isWeex = typeof WXEnvironment !== 'undefined';
-const isWeexIOS = isWeex && /ios/i.test(WXEnvironment.platform);
+// 显式识别鸿蒙：weex 在鸿蒙上的 platform 既不是 ios 也不是 android，
+// 原来的「非 iOS 即 Android」属于 UA 检测，会触发 HBuilderX 的鸿蒙兼容性告警。
+// 行为保持不变：鸿蒙归到 Android 分支（gcanvas 的 android 实现可用），
+// 这里只是把判断写全，方便后续按平台差异处理。
+const weexPlatform = isWeex ? String(WXEnvironment.platform || '').toLowerCase() : '';
+const isWeexHarmony = isWeex && (weexPlatform.indexOf('harmony') !== -1 || weexPlatform.indexOf('ohos') !== -1);
+const isWeexIOS = isWeex && weexPlatform.indexOf('ios') !== -1;
+// 鸿蒙没有单独的 gcanvas 桥接实现，沿用 Android 分支（与原逻辑一致）
 const isWeexAndroid = isWeex && !isWeexIOS;
 
 import GLmethod from '../context-webgl/GLmethod';

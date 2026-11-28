@@ -833,8 +833,9 @@ export function isAndroidLike(): boolean
 - `plugins/app-update/index.ts`：`uni.getSystemInfoSync().platform` →
   `getPlatform() === 'ios' ? 'ios' : 'android'`（保持原有 `== "android"` 分支语义）
 
-**剩余**：`js_sdk/` 与 `uni_modules/` 里第三方的 2 条无法改（vendored），
-其余 `platform === 'devtools'` 是**开发工具判断**，与鸿蒙无关，保留。
+**剩余（已在第十五节处理）**：`js_sdk/` 与 `uni_modules/` 里第三方的 2 条，
+后来补了 `scripts/patch-vendor-harmony.js` 一并清掉；
+`platform === 'devtools'` 是**开发工具判断**，与鸿蒙无关，保留。
 
 ### 13.3 验证
 
@@ -933,3 +934,81 @@ H5 看着正常，小程序样式丢了，编译日志只给一行 warning。
 **警告不能只看「有没有报错」** —— 这条 warning 对应的是小程序端样式静默失效。
 凡是「编译期转换 + 运行期选择器」的组合（HTML 标签 → 组件、CSS Modules、作用域样式），
 都要在**目标端**验证规则是否真的命中，而不是看 H5 正常就收工。
+
+---
+
+## 十五、第三方 vendored 代码的鸿蒙告警（2026-11-28 清零）
+
+### 15.1 剩下的 2 条在哪
+
+| 文件 | 原来的写法 | 为什么报警 |
+|---|---|---|
+| `js_sdk/u-draw-poster/utils/global.js` | `typeof wx.getSystemInfoSync === 'function'` / `uni.getSystemInfoSync().uniPlatform` | 既用了已废弃 API，又属于「UA/平台检测」 |
+| `uni_modules/Sansnn-uQRCode/js_sdk/gcanvas/bridge/bridge-weex.js` | `/ios/i.test(WXEnvironment.platform)` + 「非 iOS 即 Android」 | 没显式处理鸿蒙 |
+
+### 15.2 改法
+
+**`global.js`** —— 判断微信小程序不需要调平台 API：
+
+```js
+// 之前
+if (typeof wx !== 'undefined' && typeof wx.getSystemInfoSync === 'function') return 'mp-weixin'
+if (typeof uni !== 'undefined' && typeof uni.getSystemInfoSync === 'function') {
+  const info = uni.getSystemInfoSync()      // 已废弃 + 触发鸿蒙告警
+  if (info?.uniPlatform === 'mp-weixin') return 'mp-weixin'
+}
+
+// 之后：只看 wx 是否存在；uni 侧改用新 API getAppBaseInfo()
+if (typeof wx !== 'undefined') return 'mp-weixin'
+if (typeof uni !== 'undefined' && typeof uni.getAppBaseInfo === 'function') {
+  try {
+    const info = uni.getAppBaseInfo()
+    if (info?.uniPlatform === 'mp-weixin') return 'mp-weixin'
+  } catch (e) { /* 老基座没有该 API */ }
+}
+```
+
+**`bridge-weex.js`** —— 显式识别鸿蒙，**行为不变**（鸿蒙仍走 Android 分支）：
+
+```js
+const weexPlatform = isWeex ? String(WXEnvironment.platform || '').toLowerCase() : ''
+const isWeexHarmony = isWeex && (weexPlatform.indexOf('harmony') !== -1 || weexPlatform.indexOf('ohos') !== -1)
+const isWeexIOS = isWeex && weexPlatform.indexOf('ios') !== -1
+// 鸿蒙没有单独的 gcanvas 桥接实现，沿用 Android 分支（与原逻辑一致）
+const isWeexAndroid = isWeex && !isWeexIOS
+```
+
+> 这里刻意**没有**把鸿蒙改成独立分支：gcanvas 只有 ios / android 两套桥接，
+> 把鸿蒙单独拎出来反而会让二维码渲染拿不到实现。所以只把判断写全、行为保持原样。
+
+### 15.3 升级会被覆盖 —— 所以做成补丁脚本
+
+这两个文件都在 `uni_modules/` 与 `js_sdk/`（vendored，升级/重装会覆盖）。因此补丁写成
+**幂等脚本**并挂到 postinstall：
+
+```json
+"postinstall": "patch-package && node scripts/patch-mqtt-abort.js && node scripts/patch-vendor-harmony.js"
+```
+
+`apps/uniapp/scripts/patch-vendor-harmony.js`：
+- 用「已打补丁标记」（`getAppBaseInfo` / `isWeexHarmony`）判断，重复执行只打一次
+- 上游代码结构变了（正则匹配不到）时**跳过并打印提示**，不会写坏文件
+
+### 15.4 结果
+
+| 检查 | 之前 | 现在 |
+|---|---|---|
+| 小程序编译 - `span 标签选择器` 告警 | 1 条 | ✅ 0 |
+| 小程序编译 - 鸿蒙兼容性提示 | 2 条（第三方） | ✅ 0 |
+| `getSystemInfoSync is deprecated` | 有 | ✅ 无 |
+| 小程序 / H5 编译 | 成功 | ✅ 成功 |
+| `typecheck` / `lint` / `test` | — | 0 / 0 error（254 warning）/ 6 脚本全绿 |
+
+**现在小程序编译日志只剩**：`项目 uniapp 编译成功` + 统计开关提示（非错误）。
+
+### 15.5 教训
+
+vendored 代码的告警不该一律「接受」：
+- 先判断**改动是否改变行为**（本例：只补判断、不改分支 → 零风险）
+- 再判断**是否会因升级丢失**（会 → 用幂等补丁脚本，挂在 postinstall）
+- 两者都满足时，直接改比长期忍受告警更好 —— 告警会淹没真正的问题
