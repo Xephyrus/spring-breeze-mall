@@ -132,7 +132,7 @@
 import { ref, reactive, computed, watch, getCurrentInstance, onMounted, onBeforeUnmount } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { openIdLogin, loginCallback, webConnect } from '@/api/connect.js'
+import { openIdLogin, loginCallback, webConnect } from '@/api/connect'
 import api from '@/config/api'
 import { sendMobile, smsLogin, userLogin } from '@/api/login'
 import myVerification from '@/components/verification/verification.vue'

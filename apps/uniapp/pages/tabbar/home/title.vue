@@ -48,7 +48,7 @@
 <script setup lang="ts">
 	import { ref, reactive, computed } from 'vue'
 	import { onShow, onReachBottom } from '@dcloudio/uni-app'
-	import { messages, editMessages } from '@/api/message.js'
+	import { messages, editMessages } from '@/api/message'
 	import { useStore } from '@/store'
 	import { getThemeStyle } from '@/utils/theme'
 	import { isLogin } from '@/utils/filters'

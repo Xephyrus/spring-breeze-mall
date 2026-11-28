@@ -279,9 +279,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getGoods } from '@/api/goods.js'
-import * as API_trade from '@/api/trade.js'
-import { listSlots, bindCheckout, getGoodsExt } from '@/api/appointment.js'
+import { getGoods } from '@/api/goods'
+import * as API_trade from '@/api/trade'
+import { listSlots, bindCheckout, getGoodsExt } from '@/api/appointment'
 import uniNumberBox from '@/components/uni-number-box.vue'
 import { goodsFormatPrice, parseGoodsImageUrl } from '@/utils/filters'
 import { getAppointmentMaxBuyNum } from '@/utils/goodsType'

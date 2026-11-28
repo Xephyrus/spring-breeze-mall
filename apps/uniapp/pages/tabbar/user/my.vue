@@ -140,7 +140,7 @@ import {
 } from '@dcloudio/uni-app'
 import tool from '@/pages/tabbar/user/utils/tool.vue'
 import { getPaidMember } from '@/api/paid-member'
-import { getCouponsNum, getFootprintNum } from '@/api/members.js'
+import { getCouponsNum, getFootprintNum } from '@/api/members'
 import { getUserWallet } from '@/api/members'
 import configs from '@/config/config'
 import { useStore } from '@/store'

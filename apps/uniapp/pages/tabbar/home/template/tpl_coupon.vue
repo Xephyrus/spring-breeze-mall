@@ -167,8 +167,8 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { getAllCoupons } from "@/api/promotions.js";
-import { receiveCoupons } from "@/api/members.js";
+import { getAllCoupons } from "@/api/promotions";
+import { receiveCoupons } from "@/api/members";
 import { isLogin, navigateToLogin, unitPrice } from "@/utils/filters";
 
 const props = defineProps<{ res: any }>();

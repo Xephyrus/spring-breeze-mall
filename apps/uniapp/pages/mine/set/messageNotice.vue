@@ -85,7 +85,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { onShow } from '@dcloudio/uni-app'
-import { getWechatOfficialAccountSetting } from '@/api/message.js'
+import { getWechatOfficialAccountSetting } from '@/api/message'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 

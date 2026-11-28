@@ -119,9 +119,9 @@
  * @author Bulbasaur
  * @since 2026-11-12
  */
-import { getCouponPackageDetail, receiveCouponPackage } from "@/api/promotions.js";
+import { getCouponPackageDetail, receiveCouponPackage } from "@/api/promotions";
 import storage from "@/utils/storage";
-import { getMpScene } from "@/api/goods.js";
+import { getMpScene } from "@/api/goods";
 
 export default {
   data() {

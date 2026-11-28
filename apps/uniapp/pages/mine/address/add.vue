@@ -101,12 +101,12 @@
 import { ref, reactive, computed, getCurrentInstance } from 'vue'
 import { onLoad, onShow, onReady } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { addAddress as addAddressApi, editAddress, getAddressDetail } from '@/api/address.js'
+import { addAddress as addAddressApi, editAddress, getAddressDetail } from '@/api/address'
 import MCity from '@/components/m-city/m-city.vue'
 import uniMap from '@/components/uniMap.vue'
 import permision from '@/js_sdk/wa-permission/permission.js'
 import { getThemeStyle } from '@/utils/theme'
-import { getRegionsById } from '@/api/common.js'
+import { getRegionsById } from '@/api/common'
 import { resolveWechatRegion, getWechatAddressErrorType } from '@/utils/wechatAddress'
 
 const store = useStore()

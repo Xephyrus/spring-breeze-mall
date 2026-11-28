@@ -16,7 +16,7 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import storage from '@/utils/storage'
-import { setBiolofy } from '@/api/passport.js'
+import { setBiolofy } from '@/api/passport'
 
 const enabled = ref(false)
 

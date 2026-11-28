@@ -139,7 +139,7 @@ import {
 	getStoreCollection,
 	deleteGoodsCollection,
 	deleteStoreCollection,
-} from '@/api/members.js'
+} from '@/api/members'
 
 const store = useStore()
 

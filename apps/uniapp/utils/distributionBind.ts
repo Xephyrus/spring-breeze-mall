@@ -3,8 +3,8 @@
  */
 import storage from '@/utils/storage'
 import store from '@/store'
-import { getGoodsDistribution } from '@/api/distribution.js'
-import { getMpScene } from '@/api/goods.js'
+import { getGoodsDistribution } from '@/api/distribution'
+import { getMpScene } from '@/api/goods'
 
 const PENDING_KEY = 'pending_distribution_id'
 

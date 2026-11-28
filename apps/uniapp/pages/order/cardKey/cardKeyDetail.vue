@@ -55,7 +55,7 @@
  */
 import { ref, computed } from 'vue'
 import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
-import { getOrderDetail } from '@/api/order.js'
+import { getOrderDetail } from '@/api/order'
 import { setClipboard } from '@/utils/filters'
 import {
   isECouponOrder,

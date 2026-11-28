@@ -3,7 +3,7 @@ import config from '@/config/config'
 import { getClipboardData } from '@/js_sdk/h5-copy/h5-copy.js'
 import APPUpdate from '@/plugins/APPUpdate'
 import storage from '@/utils/storage'
-import { getThemeSetting, getCategoryPageSetting } from '@/api/common.js'
+import { getThemeSetting, getCategoryPageSetting } from '@/api/common'
 import {
   applyTabBarStyle,
   cacheTheme,

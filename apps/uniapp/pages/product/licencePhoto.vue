@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getLicencePhoto } from '@/api/store.js'
+import { getLicencePhoto } from '@/api/store'
 
 const storeData = ref<any>({})
 

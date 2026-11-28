@@ -85,7 +85,7 @@
 <script setup lang="ts">
 import { reactive, ref, computed } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
-import * as membersApi from '@/api/members.js'
+import * as membersApi from '@/api/members'
 import configs from '@/config/config'
 import { noPassByName } from '@/utils/filters'
 import { useStore } from '@/store'

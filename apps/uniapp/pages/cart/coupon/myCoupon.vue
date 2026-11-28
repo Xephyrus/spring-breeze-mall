@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { getMemberCoupons } from '@/api/members.js'
+import { getMemberCoupons } from '@/api/members'
 import { useStore } from '@/store'
 import { unitPrice } from '@/utils/filters'
 import { onShow } from '@dcloudio/uni-app'

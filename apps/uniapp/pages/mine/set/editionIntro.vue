@@ -45,7 +45,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import APPUpdate from '@/plugins/APPUpdate'
 import config from '@/config/config'
-import { getAppVersion } from '@/api/message.js'
+import { getAppVersion } from '@/api/message'
 
 const showIosRating = ref(false)
 const versionData = ref<Record<string, any>>({})

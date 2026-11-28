@@ -484,7 +484,7 @@ import {
   receiveLiveCoupon,
   registerLiveViewUser,
   sendLiveMessage,
-} from '@/api/live.js'
+} from '@/api/live'
 import config from '@/config/config'
 import { useStore } from '@/store'
 import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters'
@@ -577,7 +577,7 @@ const lastHlsPullUrl = ref('')
 // hls.js 播放器实例与视频节点不经过 Vue 响应式代理，避免干扰其内部状态管理。
 // 条件编译：H5 用 hls.js 实例，其它端不用 —— 两个分支互斥，合并为一个声明，
 // 否则 TS 会把两条 `let` 当成重复声明（TS2451）。运行时行为不变。
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 let hlsInstance: any = null
 let hlsVideoElement: HTMLVideoElement | null = null
 let hlsVideoClickHandler: (() => void) | null = null

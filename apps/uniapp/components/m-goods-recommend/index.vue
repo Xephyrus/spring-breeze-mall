@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import goodsTemplate from '@/components/m-goods-list/list.vue'
-import { getGoodsList } from "@/api/goods.js"
+import { getGoodsList } from "@/api/goods"
 
 const props = withDefaults(defineProps<{
 	title?: string

@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 import { onLoad } from '@dcloudio/uni-app'
-import { getPackage, getExpress } from '@/api/trade.js'
+import { getPackage, getExpress } from '@/api/trade'
 
 onLoad(async (option) => {
   const orderSn = option?.order_sn

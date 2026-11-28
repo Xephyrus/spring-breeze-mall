@@ -200,7 +200,7 @@ import {
   getStoreAfterSaleAddress,
   getAfterSaleLog,
   getAfterSaleReason,
-} from '@/api/after-sale.js'
+} from '@/api/after-sale'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

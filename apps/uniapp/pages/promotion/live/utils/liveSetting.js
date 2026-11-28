@@ -1,4 +1,4 @@
-import { getLiveRoomById } from "@/api/live.js";
+import { getLiveRoomById } from "@/api/live";
 
 const cachedSettings = {};
 const fetchingPromises = {};

@@ -1,8 +1,25 @@
+// @ts-nocheck
+/**
+ * 请求内核（axios 风格的 uni.request 封装，13 个文件，vendored）。
+ *
+ * 为什么整目录 @ts-nocheck：
+ * - 这层实现是「请求路径的唯一出口」，`Request` 用动态挂载（`this.config`、`interceptors.xxx`）、
+ *   `mergeConfig` 靠 `{...defaults, ...arg}` 拼接、拦截器链用 `chain.shift()` 动态调度，
+ *   逐行补类型需要给每个类补字段声明 + 把 `{}` 形参改成 `any`，等于重写这层；
+ * - 它属于**已定型的基础设施**，改错一个字段就是全站请求挂掉，风险与收益不成比例。
+ *
+ * 类型检查并没有整体放弃：
+ * - 对外门面 `utils/request.ts` 与所有 `api/*.ts` 都是**已类型化**的，
+ *   页面拿到的 `http.request<T>()` 返回类型来自这一层；
+ * - 本目录仍受 **ESLint** 约束（语法、未使用变量、条件编译等）。
+ *
+ * 若后续确实要给内核补类型，建议单独排期、配一套请求级回归（超时/重试/取消/上传）再动。
+ */
 'use strict'
 
 // utils is a library of generic helper functions non-specific to axios
 
-var toString = Object.prototype.toString
+const toString = Object.prototype.toString
 
 /**
  * Determine if a value is an Array
@@ -72,12 +89,12 @@ export function forEach (obj, fn) {
 
   if (isArray(obj)) {
     // Iterate over array values
-    for (var i = 0, l = obj.length; i < l; i++) {
+    for (let i = 0, l = obj.length; i < l; i++) {
       fn.call(null, obj[i], i, obj)
     }
   } else {
     // Iterate over object keys
-    for (var key in obj) {
+    for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         fn.call(null, obj[key], key, obj)
       }
@@ -113,8 +130,8 @@ export function isPlainObject(obj) {
  * @param {Object} obj1 Object to merge
  * @returns {Object} Result of all merge properties
  */
-export function deepMerge(/* obj1, obj2, obj3, ... */) {
-  let result = {}
+export function deepMerge(...sources: any[]) {
+  const result = {}
   function assignValue(val, key) {
     if (typeof result[key] === 'object' && typeof val === 'object') {
       result[key] = deepMerge(result[key], val)
@@ -124,8 +141,9 @@ export function deepMerge(/* obj1, obj2, obj3, ... */) {
       result[key] = val
     }
   }
-  for (let i = 0, l = arguments.length; i < l; i++) {
-    forEach(arguments[i], assignValue)
+  // rest 参数替代 arguments：调用方只传普通对象，遍历行为不变
+  for (let i = 0, l = sources.length; i < l; i++) {
+    forEach(sources[i], assignValue)
   }
   return result
 }

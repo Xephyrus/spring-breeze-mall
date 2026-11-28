@@ -90,7 +90,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { getGoods } from '@/api/goods.js'
+import { getGoods } from '@/api/goods'
 import { getPinTuanShare } from '@/api/order'
 import shares from '@/components/m-share/index.vue'
 import storage from '@/utils/storage'

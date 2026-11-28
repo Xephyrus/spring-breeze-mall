@@ -277,12 +277,12 @@
 /************接口API***************/
 import { ref, reactive, computed, watch, nextTick, getCurrentInstance } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
-import { getGoods, getGoodsList, getMpScene } from '@/api/goods.js'
-import { recordDistributionGoodsVisit } from '@/api/distribution.js'
+import { getGoods, getGoodsList, getMpScene } from '@/api/goods'
+import { recordDistributionGoodsVisit } from '@/api/distribution'
 import { tryBindDistribution } from '@/utils/distributionBind'
-import * as API_trade from '@/api/trade.js'
-import * as API_Members from '@/api/members.js'
-import * as API_store from '@/api/store.js'
+import * as API_trade from '@/api/trade'
+import * as API_Members from '@/api/members'
+import * as API_store from '@/api/store'
 import { getIMDetail } from '@/api/common'
 /************请求存储***************/
 import storage from '@/utils/storage'

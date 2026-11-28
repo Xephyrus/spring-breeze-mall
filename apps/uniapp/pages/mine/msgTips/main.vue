@@ -30,7 +30,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getNoReadMessageNum } from '@/api/members.js'
+import { getNoReadMessageNum } from '@/api/members'
 
 const unreadCount = ref<Record<string, number>>({ system_num: 0 })
 

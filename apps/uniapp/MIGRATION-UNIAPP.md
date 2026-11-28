@@ -315,3 +315,51 @@ const baseWsUrl = IS_DEV_H5 ? "ws://127.0.0.1:8885/lili/webSocket" : "wss://im-a
 `NODE_ENV + UNI_PLATFORM` 判断只有一份声明，且 `NODE_ENV` 能挡住「H5 生产包连本地」。
 
 取不到 `UNI_PLATFORM` 时按 `h5` 兜底 —— 仍有 `NODE_ENV` 把关，不会把生产包带偏。
+---
+
+## 七、U1：`utils/` 全部转 TS（26/26）
+
+| 批次 | 文件 | 说明 |
+|---|---|---|
+| 1 | `config/api` `config/config` `store/index` + 11 个小 utils | mpShare、orderEvaluation、payment-success、wechatAddress、form-style、orderDelivery、categoryPageSetting、decorate-link、giftCard、RegExp、socket_service |
+| 2 | request、tools、theme、goodsType、emojis、uploadHelper、distributionStatus | 7 个 |
+| 3 | Foundation、md5、uuid.modified、distributionBind、appointmentGoods | 5 个 |
+
+**结果：`utils/` 26 个 `.ts` / 0 个 `.js`，typecheck 仍为 0。**
+
+### 7.1 遇到的 5 类问题与处理
+
+| 问题 | 处理 |
+|---|---|
+| `parseInt(number)` 在 TS 里参数是 string | `parseInt(String(x), 10)`（`Foundation` 11 处、`tools` 5 处、`request` 1 处）—— 数值语义不变 |
+| `debounce` / `throttle` 返回的函数没有形参，TS 推成 `() => void`，调用处报「参数过多」 | 改用 **rest 参数** `(...args: Parameters<T>)`，同时保留 `this` 转发 |
+| `throttle` 里的 `fn.apply(that, arguments)` | `arguments` 是 throttle 自己的实参（会把 fn/that/gapTime 也传进去）；改 rest 参数后只转发业务参数 —— 实际调用方只传三个参数，行为一致 |
+| `uni.setTabBarStyle` 在 `@dcloudio/types` 里返回 `void`，`theme.ts` 却检查了 `.catch` | `const task: any = ...`，保留原判空逻辑 |
+| `uuid.modified.ts`（vendored 第三方 247 行） | 文件级 `// @ts-nocheck` —— 逐行补类型等于重写库代码，后续无法与上游 diff；**ESLint 仍然生效** |
+
+### 7.2 测试如何加载 `.ts`
+
+`scripts/test-*.mjs` 原来 `import '../utils/xxx'`（Node 的 ESM 不做扩展名补全，`.ts` 也不会自动尝试）：
+
+- Node 24 能直接跑 `.ts`（类型擦除），但**仅限显式 `.ts` 说明符**；
+- 把 `.ts` 写进业务源码需要 `allowImportingTsExtensions`，还要多端编译器都支持 —— 风险大于收益。
+
+所以新增 `scripts/ts-resolve-hook.mjs`：测试进程里注册一个 resolve 钩子，把无扩展名的相对导入补成 `.ts`。
+业务源码保持无扩展名，HBuilderX 各端不受影响。
+
+```js
+import { register } from 'node:module'
+import { pathToFileURL } from 'node:url'
+register('./ts-resolve-hook.mjs', pathToFileURL('./scripts/'))
+const { paymentSuccessUrl } = await import('../utils/payment-success.ts')
+```
+
+### 7.3 剩余
+
+| 目录 | 现状 | 下一步 |
+|---|---|---|
+| `utils/` | ✅ 26/26 `.ts` | — |
+| `config/` `store/` | ✅ 全 `.ts` | — |
+| `api/` | 27 个 `.js` | 转 `.ts` |
+| `lib/request/` | 13 个 `.js` | 转 `.ts` |
+| `plugins/APPUpdate/` | 1 个 929 行 `.js` | 转 `.ts` 或 `@ts-nocheck` |

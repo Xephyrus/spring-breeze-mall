@@ -302,10 +302,10 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { canEvaluateOrder } from '@/utils/orderEvaluation'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
-import { getExpress, getPackage } from '@/api/trade.js'
-import { cancelOrder, confirmReceipt, getOrderDetail } from '@/api/order.js'
+import { getExpress, getPackage } from '@/api/trade'
+import { cancelOrder, confirmReceipt, getOrderDetail } from '@/api/order'
 import shares from '@/components/m-share/index.vue'
-import { getClearReason } from '@/api/after-sale.js'
+import { getClearReason } from '@/api/after-sale'
 import storage from '@/utils/storage'
 import {
 	unitPrice,
@@ -328,7 +328,7 @@ import {
 	resolveCardKeyFulfillMessage,
 	CARD_KEY_FULFILL_STATUS,
 } from '@/utils/goodsType'
-import { getAppointmentOrderDetail } from '@/api/appointment.js'
+import { getAppointmentOrderDetail } from '@/api/appointment'
 import VerificationCodes from './components/verificationCodes.vue'
 import {
 	SERVICE_MODE_LABEL,

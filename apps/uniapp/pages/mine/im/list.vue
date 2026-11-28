@@ -70,7 +70,7 @@
 import { ref } from 'vue'
 import { onShow, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { getTalkList, clearmeaager } from '@/api/im.js'
+import { getTalkList, clearmeaager } from '@/api/im'
 import storage from '@/utils/storage'
 import { beautifyTime } from '@/utils/filters'
 

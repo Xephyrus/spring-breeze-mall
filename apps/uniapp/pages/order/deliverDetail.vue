@@ -112,8 +112,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getPackage, getExpress } from '@/api/trade.js'
-import { getOrderDetail } from '@/api/order.js'
+import { getPackage, getExpress } from '@/api/trade'
+import { getOrderDetail } from '@/api/order'
 import { isNoDelivery, getPackageTitle } from '@/utils/orderDelivery'
 
 const packageList = ref<any[]>([])

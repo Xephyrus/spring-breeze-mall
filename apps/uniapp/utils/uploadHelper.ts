@@ -1,5 +1,5 @@
 import storage from "@/utils/storage";
-import { upload as uploadUrl } from "@/api/common.js";
+import { upload as uploadUrl } from "@/api/common";
 
 export function getUploadHeader() {
   return { accessToken: storage.getAccessToken() };

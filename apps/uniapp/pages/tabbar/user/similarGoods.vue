@@ -34,7 +34,7 @@
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
-import { getGoodsList } from '@/api/goods.js'
+import { getGoodsList } from '@/api/goods'
 import { useStore } from '@/store'
 import { unitPrice } from '@/utils/filters'
 

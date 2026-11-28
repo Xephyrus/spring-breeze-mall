@@ -47,7 +47,7 @@ import { ref } from 'vue'
 import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import * as API_Trade from '@/api/trade'
-import * as API_Address from '@/api/address.js'
+import * as API_Address from '@/api/address'
 
 const store = useStore()
 

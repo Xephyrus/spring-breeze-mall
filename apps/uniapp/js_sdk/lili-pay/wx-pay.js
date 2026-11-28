@@ -6,7 +6,7 @@
  * @param {sn,price,orderPromotionType}
  */
 
-import { getWeChatMpMessage } from "@/api/message.js";
+import { getWeChatMpMessage } from "@/api/message";
 import { initiatePay } from "@/api/trade";
 
 const SCENE_NAME_MAP = {

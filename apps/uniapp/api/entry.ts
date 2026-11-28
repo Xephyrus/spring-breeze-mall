@@ -5,7 +5,7 @@
 import { http, Method } from "@/utils/request";
 
 // 获取当前用户的代理入驻详情
-export function getCompanyDetail(params) {
+export function getCompanyDetail(params = {}) {
   return http.request({
     url: "/store/store/apply",
     method: Method.GET,

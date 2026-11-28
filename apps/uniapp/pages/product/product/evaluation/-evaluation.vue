@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
-import * as API_Members from '@/api/members.js'
+import * as API_Members from '@/api/members'
 import { noPassByName } from '@/utils/filters'
 import { useStore } from '@/store'
 

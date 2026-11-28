@@ -104,8 +104,8 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from "vue";
-import { getStoreList } from "@/api/store.js";
-import { getGoodsList } from "@/api/goods.js";
+import { getStoreList } from "@/api/store";
+import { getGoodsList } from "@/api/goods";
 import { goodsFormatPrice } from "@/utils/filters";
 import { modelNavigateTo } from "./tpl";
 

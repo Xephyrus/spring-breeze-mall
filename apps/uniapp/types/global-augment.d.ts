@@ -117,20 +117,20 @@ declare global {
   /**
    * 微信 JSAPI 的支付桥（H5 端由微信内置浏览器注入，只在公众号支付里出现）。
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const WeixinJSBridge: any
 
   /**
    * 微信小程序插件加载器（仅在 #ifdef MP-WEIXIN 分支里使用），基础库提供。
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   const requirePlugin: any
 
   /**
    * uni 对象上被 uview-plus 挂载的 `$u`（`utils/mpShare.ts` 里会读写它做分享配置）。
    */
   interface Uni {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+     
     $u: any
   }
 

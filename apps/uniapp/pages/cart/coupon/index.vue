@@ -73,7 +73,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { useCoupon } from '@/api/trade.js'
+import { useCoupon } from '@/api/trade'
 import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 

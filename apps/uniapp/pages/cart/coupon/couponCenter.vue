@@ -24,8 +24,8 @@
 </template>
 
 <script setup lang="ts">
-import { receiveCoupons } from '@/api/members.js'
-import { getAllCoupons } from '@/api/promotions.js'
+import { receiveCoupons } from '@/api/members'
+import { getAllCoupons } from '@/api/promotions'
 import { useStore } from '@/store'
 import { unitPrice } from '@/utils/filters'
 import {

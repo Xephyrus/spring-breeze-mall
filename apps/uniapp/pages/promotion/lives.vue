@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { getLiveList } from '@/api/promotions.js'
+import { getLiveList } from '@/api/promotions'
 import config from '@/config/config'
 import { useStore } from '@/store'
 import { onReachBottom, onShow } from '@dcloudio/uni-app'

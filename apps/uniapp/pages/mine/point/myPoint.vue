@@ -47,7 +47,7 @@
 import { ref, computed } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { getPointsData, getMemberPointSum } from '@/api/members.js'
+import { getPointsData, getMemberPointSum } from '@/api/members'
 import { getThemeStyle } from '@/utils/theme'
 import {
   prefetchMpMessageTemplates,

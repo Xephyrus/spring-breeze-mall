@@ -32,8 +32,8 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { onLoad, onShow, onUnload } from '@dcloudio/uni-app'
-import { getAddressList } from '@/api/address.js'
-import { getPickupCard, previewPickupCard, redeemPickupCard } from '@/api/pickupCard.js'
+import { getAddressList } from '@/api/address'
+import { getPickupCard, previewPickupCard, redeemPickupCard } from '@/api/pickupCard'
 import storage from '@/utils/storage'
 
 const detail = ref({}), selected = ref([]), addresses = ref([]), addressIndex = ref(0)

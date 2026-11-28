@@ -65,7 +65,7 @@
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { sign, signTime } from '@/api/point.js'
+import { sign, signTime } from '@/api/point'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

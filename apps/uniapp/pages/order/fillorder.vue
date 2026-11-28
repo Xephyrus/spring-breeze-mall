@@ -440,7 +440,7 @@ import {
 } from '@/utils/filters'
 import { hasECouponInCheckout, hasAppointmentInCheckout } from '@/utils/goodsType'
 import { SERVICE_MODE_LABEL, formatDate } from '@/utils/appointmentGoods'
-import { bindCheckout } from '@/api/appointment.js'
+import { bindCheckout } from '@/api/appointment'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))

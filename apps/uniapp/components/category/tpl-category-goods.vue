@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import { getGoodsList } from '@/api/goods.js'
+import { getGoodsList } from '@/api/goods'
 import CategoryScroller from './category-scroller.vue'
 import CategorySideList from './category-side-list.vue'
 import SubTagBar from './sub-tag-bar.vue'

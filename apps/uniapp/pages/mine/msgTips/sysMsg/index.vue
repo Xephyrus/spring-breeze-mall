@@ -24,7 +24,7 @@
 import { ref, getCurrentInstance } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import * as API_Message from '@/api/message.js'
+import * as API_Message from '@/api/message'
 
 const store = useStore()
 const { proxy } = getCurrentInstance()!

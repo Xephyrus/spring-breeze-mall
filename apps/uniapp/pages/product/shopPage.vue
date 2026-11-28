@@ -239,16 +239,16 @@ import coupon from '@/pages/tabbar/home/template/tpl_coupon.vue'
 import articleList from '@/pages/tabbar/home/template/tpl_article.vue'
 import shopList from '@/pages/tabbar/home/template/tpl_shop.vue'
 import goodsTemplate from '@/components/m-goods-list/list.vue'
-import { getStoreBaseInfo, getStoreCategory } from '@/api/store.js'
+import { getStoreBaseInfo, getStoreCategory } from '@/api/store'
 import {
   receiveCoupons,
   deleteStoreCollection,
   collectionStore,
   getStoreIsCollect,
-} from '@/api/members.js'
+} from '@/api/members'
 import config from '@/config/config'
-import { getGoodsList, getMpScene } from '@/api/goods.js'
-import { getAllCoupons } from '@/api/promotions.js'
+import { getGoodsList, getMpScene } from '@/api/goods'
+import { getAllCoupons } from '@/api/promotions'
 import { getFloorStoreData } from '@/api/home'
 import {
   isLogin,

@@ -81,7 +81,7 @@
 
 <script setup lang="ts">
 import { ref, getCurrentInstance } from 'vue'
-import { getRegionsById } from "@/api/common.js"
+import { getRegionsById } from "@/api/common"
 
 const instance = getCurrentInstance()
 

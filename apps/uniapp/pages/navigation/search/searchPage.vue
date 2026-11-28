@@ -255,9 +255,9 @@ import {
 	onPageScroll,
 } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { getGoodsList, getGoodsRelated } from '@/api/goods.js'
+import { getGoodsList, getGoodsRelated } from '@/api/goods'
 import goodsList from '@/components/m-goods-list/list.vue'
-import { getHotKeywords } from '@/api/home.js'
+import { getHotKeywords } from '@/api/home'
 import mSearch from '@/components/m-search-revision/m-search-revision.vue'
 import storage from '@/utils/storage'
 import { getThemeStyle } from '@/utils/theme'

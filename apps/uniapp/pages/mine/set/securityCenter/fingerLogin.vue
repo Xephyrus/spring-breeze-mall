@@ -17,7 +17,7 @@ import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import storage from '@/utils/storage'
-import { setBiolofy } from '@/api/passport.js'
+import { setBiolofy } from '@/api/passport'
 
 const store = useStore()
 const lightColor = computed(() => store.getters.lightColor)

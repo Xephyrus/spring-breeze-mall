@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getArticleDetail } from '@/api/article.js'
+import { getArticleDetail } from '@/api/article'
 
 const articleData = ref('')
 

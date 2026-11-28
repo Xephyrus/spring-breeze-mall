@@ -109,7 +109,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
-import * as API_trade from '@/api/trade.js'
+import * as API_trade from '@/api/trade'
 import setup from './popup.js'
 import uniNumberBox from '@/components/uni-number-box.vue'
 import { goodsFormatPrice } from '@/utils/filters'

@@ -16,7 +16,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
-import { getArticleList } from "@/api/article.js";
+import { getArticleList } from "@/api/article";
 
 const props = defineProps<{ res: any }>();
 

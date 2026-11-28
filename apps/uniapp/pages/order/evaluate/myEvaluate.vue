@@ -84,8 +84,8 @@ import { ref, reactive, computed, watch } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { canEvaluateOrder } from '@/utils/orderEvaluation'
 import { useStore } from '@/store'
-import { getOrderList } from '@/api/order.js'
-import { getComments } from '@/api/members.js'
+import { getOrderList } from '@/api/order'
+import { getComments } from '@/api/members'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

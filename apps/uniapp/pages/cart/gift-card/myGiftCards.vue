@@ -89,7 +89,7 @@ import {
   activateGiftCardCashMemberCard,
   bindGiftCardCashMemberCard,
   getGiftCardCashMemberCardPage,
-} from '@/api/promotions.js'
+} from '@/api/promotions'
 import { unitPrice } from '@/utils/filters'
 import {
   decorateGiftCard,

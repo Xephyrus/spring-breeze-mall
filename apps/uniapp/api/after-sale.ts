@@ -102,7 +102,7 @@ export function addComplain(params) {
 /**
  * 取消投诉
  */
-export function clearComplain(id, params) {
+export function clearComplain(id, params = {}) {
   return http.request({
     url: `/order/complain/status/${id}`,
     method: Method.PUT,

@@ -19,7 +19,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import { onLoad, onReachBottom, onShow } from '@dcloudio/uni-app'
-import { getGoodsList } from '@/api/goods.js'
+import { getGoodsList } from '@/api/goods'
 import goodsTemplate from '@/components/m-goods-list/list.vue'
 
 const title = ref('')

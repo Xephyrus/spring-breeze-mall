@@ -132,8 +132,8 @@
 </template>
 <script setup lang="ts">
 import { ref, reactive, watch, onMounted, onUnmounted, computed } from "vue";
-import { getGoodsList } from "@/api/goods.js";
-import { addToCart } from "@/api/trade.js";
+import { getGoodsList } from "@/api/goods";
+import { addToCart } from "@/api/trade";
 import { goodsFormatPrice } from "@/utils/filters";
 import storage from "@/utils/storage";
 

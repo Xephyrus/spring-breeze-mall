@@ -1,8 +1,22 @@
+// @ts-nocheck
+/**
+ * DCloud 官方「App 版本更新」插件（ext.dcloud.net.cn/plugin?id=822）的集成版，916 行。
+ *
+ * 为什么 @ts-nocheck：
+ * - 整文件被 `#ifdef APP-PLUS` 包裹（第 1 行），只在 App 端参与编译，H5/小程序根本不会打包；
+ * - 内部大量依赖 HTML5+ 的动态 API（`plus.runtime.getProperty`、`plus.downloader.createDownload`、
+ *   `plus.nativeUI.*` 的 `lineSpacing`/`width` 等 @dcloudio/types 未收录的字段）；
+ * - 文件里还有成对的条件编译声明（`getCurrentNo` 等在 APP-PLUS / 非 APP-PLUS 分支各写一次），
+ *   逐行补类型会与条件编译打架。
+ *
+ * 类型检查并没有整体放弃：对外入口 `App.vue` / `editionIntro.vue` 的调用侧是类型化的；
+ * 本文件仍受 ESLint 约束。
+ */
 // #ifdef APP-PLUS
 /**** 此文件说明请看注释 *****/
 // 可以用自己项目的请求方法
 // 请求配置说明：https://ext.dcloud.net.cn/plugin?id=822
-import { getAppVersion } from "@/api/message.js";
+import { getAppVersion } from "@/api/message";
 
 const platform = uni.getSystemInfoSync().platform;
 

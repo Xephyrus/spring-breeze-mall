@@ -114,7 +114,7 @@ import {
   onReachBottom,
   onPageScroll,
 } from '@dcloudio/uni-app'
-import { getPointsCategory, getPointsGoods } from '@/api/promotions.js'
+import { getPointsCategory, getPointsGoods } from '@/api/promotions'
 import userPoint from './user.vue'
 import PointsCouponMall from './PointsCouponMall.vue'
 const mallTab = ref('goods')

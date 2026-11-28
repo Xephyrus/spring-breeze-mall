@@ -187,7 +187,7 @@ import {
   getTalkByUser,
   jumpObtain,
   uploadImImage,
-} from '@/api/im.js'
+} from '@/api/im'
 import SocketService from '@/utils/socket_service'
 import storage from '@/utils/storage'
 import { beautifyTime, unitPrice } from '@/utils/filters'
@@ -232,7 +232,7 @@ const resolve = ref<Record<string, any>>({})
 const goodListData = ref<Record<string, any>>({})
 // 模板中 jumpGoodDesc(item) 引用的 item 不在当前作用域（历史遗留），
 // 保留原行为：点击时取到 undefined，交由 handler 自行处理；此处显式声明以通过类型检查。
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 const item: any = undefined
 const reconnectCount = ref(0)
 const inputHeight = ref(0)

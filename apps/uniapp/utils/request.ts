@@ -1,8 +1,10 @@
 import {
 	refreshTokenFn
-} from "@/api/login.js";
+} from "@/api/login";
 import api from "@/config/api";
-import Request from "@/lib/request/index.js";
+import Request from "@/lib/request/index";
+
+
 import Foundation from "@/utils/Foundation";
 import {
 	md5
@@ -15,6 +17,16 @@ import store from "../store";
 
 
 let isNavigateTo = false
+
+/**
+ * `lib/request` 是 vendored 的请求内核（整目录 @ts-nocheck），只在构造函数里
+ * `this.config = ...` / `this.interceptors = ...`，没有字段声明，所以类型上看不到 interceptors。
+ * 这里给实例加一个带类型的别名，只影响类型、不改运行时。
+ */
+type InterceptorUse = (onFulfilled?: any, onRejected?: any) => void;
+type TypedRequest = InstanceType<typeof Request> & {
+	interceptors: { request: { use: InterceptorUse }; response: { use: InterceptorUse } };
+};
 
 function cleanStorage() {
 	uni.showToast({
@@ -50,7 +62,8 @@ function cleanStorage() {
 	}
 }
 
-let http = new Request();
+// 运行时就是 lib/request 的实例；interceptors 未在类里声明，用 TypedRequest 补类型
+let http = new Request() as unknown as TypedRequest;
 
 
 /**
