@@ -68,9 +68,9 @@
 ```text
 spring-breeze-mall/
 ├── apps/
-│   ├── manager/          # 平台运营端（Vue 3 + TS + Vite 8）
+│   ├── manager/          # 平台运营端（Vue 3 + TS + Vite 8 + Element Plus）
 │   ├── seller/           # 商家端（Vite 8 + TS）
-│   ├── buyer/            # PC 买家端（Vue CLI）
+│   ├── buyer/            # PC 买家端（Vue 3 + TS + Vite 8）
 │   ├── im/               # IM 客服端（Vite 8）
 │   └── uniapp/           # 移动端（uni-app）
 ├── backend/
@@ -307,7 +307,7 @@ cd backend
 
 ## 许可
 
-- 本项目整体沿用上游 **[Apache-2.0](https://github.com/lilishop/lilishop)**
+- 本项目整体沿用上游 **[Apache-2.0](https://github.com/lilishop/lilishop)**，全文见 [LICENSE](LICENSE)
 - 富文本编辑器使用 **TinyMCE 6.4.2（MIT 授权）**，与 Apache-2.0 无冲突
   - 历史说明：曾升级到 8.x，但其自 7.0 起改为 **GPL-2.0-or-later / 商业授权**二选一，
     存在兼容性争议，因此回退到 6.4.2（详见 `apps/manager/EDITOR-UPGRADE.md` 第十节）

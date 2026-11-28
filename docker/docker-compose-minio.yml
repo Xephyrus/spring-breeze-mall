@@ -9,6 +9,7 @@ x-minio-common: &minio-common
     - "9001"
   environment:
     MINIO_ROOT_USER: AKIAIOSFODNN7EXAMPLE
+    # 下面这串是 AWS 官方文档里的**示例**密钥（非真实凭据）；本机/生产请改成自己的
     MINIO_ROOT_PASSWORD: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
   healthcheck:
     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
