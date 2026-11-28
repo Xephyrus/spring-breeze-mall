@@ -21,6 +21,6 @@
     "build:im": "pnpm --filter @spring-breeze/im build",
     "backend:compile": "cd backend && .\\mvnw.cmd -DskipTests compile",
     "backend:package": "cd backend && .\\mvnw.cmd -DskipTests package",
-    "ci:precheck": "node scripts/check-case-sensitivity.mjs"
+    "ci:precheck": "node scripts/check-case-sensitivity.mjs && node scripts/check-secrets.mjs"
   }
 }

@@ -135,7 +135,7 @@ SELECT 'VERIFICATION_SETTING', 'system', NOW(), b'0', NULL, NULL, '{\"interfereN
 WHERE NOT EXISTS (SELECT 1 FROM li_setting WHERE id = 'VERIFICATION_SETTING');
 
 INSERT INTO li_setting (id, create_by, create_time, delete_flag, update_by, update_time, setting_value)
-SELECT 'WECHAT_CONNECT', 'system', NOW(), b'0', NULL, NULL, '{\"wechatConnectSettingItems\":[{\"appId\":\"\",\"appSecret\":\"\",\"clientType\":\"PC\"},{\"appId\":\"\",\"appSecret\":\"\",\"clientType\":\"H5\"},{\"appId\":\"wx6f10f29075dc1b0b\",\"appSecret\":\"27e73c2493f9d98ba49fed069aea2c2d\",\"clientType\":\"WECHAT_MP\"}]}'
+SELECT 'WECHAT_CONNECT', 'system', NOW(), b'0', NULL, NULL, '{\"wechatConnectSettingItems\":[{\"appId\":\"\",\"appSecret\":\"\",\"clientType\":\"PC\"},{\"appId\":\"\",\"appSecret\":\"\",\"clientType\":\"H5\"},{\"appId\":\"wx0000000000000000\",\"appSecret\":\"27e73c2493f9d98ba49fed069aea2c2d\",\"clientType\":\"WECHAT_MP\"}]}'
 WHERE NOT EXISTS (SELECT 1 FROM li_setting WHERE id = 'WECHAT_CONNECT');
 
 INSERT INTO li_setting (id, create_by, create_time, delete_flag, update_by, update_time, setting_value)

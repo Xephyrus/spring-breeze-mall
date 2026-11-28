@@ -366,6 +366,12 @@ corepack pnpm ci:precheck      # 或 node scripts/check-case-sensitivity.mjs
 - `docker/init/mysql/lilishop.sql` 里的第三方密钥字段均为空/占位符，可安全提交
 - **JWT 密钥**：`application*.yml` 里是 `${LILI_JWT_SECRET:<上游默认值>}`，生产环境**必须**通过
   环境变量覆盖，否则任何人都能用公开的默认值签发 token
+- **微信 AppID / AppSecret 一律不提交**：`apps/uniapp/manifest.json`（4 处 `appid` + `appsecret`
+  + 推送 `appkey`）与 `apps/uniapp/config/config.ts`（`appid`）里现在是占位值
+  `wx0000000000000000` / 空串。跑小程序前改成自己的（微信后台 → 设置 → 开发设置），
+  **改完不要提交这一行**。两个 SQL 种子（`backend/DB/init-setting-defaults.sql`、
+  `docker/init/mysql/lilishop.sql`）同理。仓库根的 `scripts/check-secrets.mjs`
+  已接入 CI 的 precheck，提交真实值会直接失败。
 - **MQTT 演示凭据**：`apps/uniapp/pages/promotion/live/mqtt/mqtt.ts` 里的 `admin/hivemq`
   是连接演示 broker 用的，私有 broker 请在部署时替换
 - **地图 Key 已从源码外置**：高德 / 腾讯位置服务的 Key 改由各端 `public/config.js` 的

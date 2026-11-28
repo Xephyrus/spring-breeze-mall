@@ -25,7 +25,7 @@
 | 项 | 值 |
 |---|---|
 | H5 dev | HBuilderX 运行到浏览器（默认 `http://localhost:5173`） |
-| 微信小程序 | HBuilderX 运行到小程序模拟器（appid `wx32788b91bdb614c0`） |
+| 微信小程序 | HBuilderX 运行到小程序模拟器（appid 填自己的；仓库里是占位 `wx0000000000000000`） |
 | App | HBuilderX 运行到手机或模拟器 |
 | buyer-api | `http://127.0.0.1:8888`（必须启动） |
 | manager-api | `http://127.0.0.1:8887`（店铺/入驻相关页面需要） |
