@@ -16,11 +16,9 @@ export type PlatformName = 'ios' | 'android' | 'harmonyos' | 'other'
 
 /** 读取平台名；优先用新版 API，取不到再退回 getSystemInfoSync */
 export function getPlatform(): PlatformName {
-	// getDeviceInfo / getAppBaseInfo 是新版 API，鸿蒙端返回 harmonyos
-	const info: any =
-		(typeof uni.getDeviceInfo === 'function' && uni.getDeviceInfo()) ||
-		(typeof uni.getSystemInfoSync === 'function' && uni.getSystemInfoSync()) ||
-		{}
+	// 只用新版 getDeviceInfo：getSystemInfoSync 已废弃（微信基础库 3.x 会告警，
+	// 并在鸿蒙上给出「未适配」提示）。取不到时按 other 处理，由调用方走默认分支。
+	const info: any = typeof uni.getDeviceInfo === 'function' ? uni.getDeviceInfo() : {}
 	const raw = String(info.platform || info.osName || '').toLowerCase()
 	if (raw === 'ios' || raw === 'iphone' || raw === 'ipad') return 'ios'
 	if (raw === 'android') return 'android'

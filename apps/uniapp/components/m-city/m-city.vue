@@ -120,7 +120,8 @@ const show = () => {
     })
   }
 
-  windowWidth = uni.getSystemInfoSync().windowWidth
+  // getSystemInfoSync 已废弃，窗口信息用 getWindowInfo
+  windowWidth = uni.getWindowInfo().windowWidth
 }
 
 /**

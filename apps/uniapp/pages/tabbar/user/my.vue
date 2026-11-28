@@ -275,7 +275,8 @@ const headerPaddingTop = ref<number>(80)
 
 function initSafeTop() {
   try {
-    const sys = uni.getSystemInfoSync()
+    // 状态栏高度走 getWindowInfo（getSystemInfoSync 已废弃）
+    const sys = uni.getWindowInfo()
     const statusBar = sys.statusBarHeight || 44
     // #ifdef MP-WEIXIN
     const menu = uni.getMenuButtonBoundingClientRect()

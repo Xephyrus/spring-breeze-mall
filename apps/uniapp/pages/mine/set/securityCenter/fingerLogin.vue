@@ -43,11 +43,12 @@ onLoad(() => {
 
 function onFingerSwitchChange(value: boolean) {
   if (value) {
-    const systemInfo = uni.getSystemInfoSync()
+    // 设备型号走 getDeviceInfo（getSystemInfoSync 已废弃）
+    const deviceInfo = uni.getDeviceInfo()
     plus.device.getInfo({
       success(e) {
         setBiolofy({
-          mobile_type: systemInfo.model,
+          mobile_type: deviceInfo.deviceModel || deviceInfo.model || '',
           secret_key: e.uuid,
         }).then((res) => {
           if (res.statusCode === 200) {

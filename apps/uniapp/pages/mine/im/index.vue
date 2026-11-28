@@ -251,7 +251,8 @@ onLoad((options: Record<string, string | undefined> = {}) => {
     commodityDetails()
   }
 
-  const query = uni.getSystemInfoSync()
+  // 窗口尺寸统一走 getWindowInfo（getSystemInfoSync 已废弃）
+  const query = uni.getWindowInfo()
   l = query.screenWidth / 750
   wh = query.windowHeight
   scrollHeight.value = query.windowHeight - 44 + 'px'

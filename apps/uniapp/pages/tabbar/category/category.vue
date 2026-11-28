@@ -131,7 +131,9 @@ function setSearchBarWidth() {
   // #endif
   // #ifndef MP-WEIXIN
   try {
-    const info: any = (uni.getWindowInfo ? uni.getWindowInfo() : (uni.getSystemInfoSync ? uni.getSystemInfoSync() : {})); const windowWidth = info.windowWidth || 375;
+    // 只用 getWindowInfo：getSystemInfoSync 已废弃，兜底分支反而会触发弃用告警
+    const info: any = typeof uni.getWindowInfo === 'function' ? uni.getWindowInfo() : {}
+    const windowWidth = info.windowWidth || 375
     searchBarWidth.value = windowWidth - uni.upx2px(48)
   } catch (e) {
     searchBarWidth.value = 340

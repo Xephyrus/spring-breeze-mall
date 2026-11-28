@@ -256,9 +256,10 @@ function confirmWechatReceive(item: any) {
         })
       }
 
-      if (typeof wx !== 'undefined' && wx.getSystemInfoSync) {
+      // getSystemInfoSync 已废弃；设备信息统一走 getDeviceInfo
+      if (typeof uni.getDeviceInfo === 'function') {
         try {
-          const sys = wx.getSystemInfoSync()
+          const sys = uni.getDeviceInfo()
           if (sys && sys.platform === 'devtools') {
             uni.showToast({
               title: '开发者工具可能不支持，请真机测试',

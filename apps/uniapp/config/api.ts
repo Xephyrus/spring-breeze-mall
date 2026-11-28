@@ -32,8 +32,16 @@ if (process.env.NODE_ENV == "development") {
 } else {
   api = prod;
 }
-// 微信小程序、App 打包使用生产环境配置
-// #ifdef MP-WEIXIN || APP-PLUS
+/**
+ * App 端（真机）开发期也走生产地址：
+ * `dev` 段是 127.0.0.1，在手机上指向手机自身，连不上电脑上的后端。
+ * 若要在真机上连本地后端，把 dev 段改成局域网 IP（如 http://192.168.1.5:8888）
+ * 并删掉下面这段强制生产。
+ *
+ * 微信小程序不在此列：开发者工具与后端同机，`127.0.0.1` 可达，
+ * 只需在开发者工具勾选「不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书」。
+ */
+// #ifdef APP-PLUS
 api = prod;
 // #endif
 

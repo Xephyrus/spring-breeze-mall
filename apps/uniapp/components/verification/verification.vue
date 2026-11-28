@@ -116,8 +116,9 @@ const sliderBaseUrl = computed(() => {
 })
 
 const store = useStore()
-const phone = uni.getSystemInfoSync()
-const l = phone.screenWidth / 750
+// 窗口尺寸统一走 getWindowInfo（getSystemInfoSync 已废弃）
+const win = uni.getWindowInfo()
+const l = win.screenWidth / 750
 
 const mainColor = computed(() => store.getters.mainColor)
 const fillWidth = computed(() => `${state.moveX + 42 * l}px`)
@@ -159,7 +160,7 @@ const state = reactive({
 })
 
 // 可自行调整
-state.scHight = (phone.screenHeight / 2 - 200 + 'px') as unknown as number
+state.scHight = ((win.screenHeight / 2 - 200) + 'px') as unknown as number
 getCode()
 
 function show() {

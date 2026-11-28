@@ -83,27 +83,48 @@
 
 ## 七、微信小程序（条件编译分支）
 
+**前置条件（2026-11-28 起开发构建已切本地后端）**
+
+1. HBuilderX 里 `运行 → 运行到小程序模拟器 → 微信开发者工具`
+2. 微信开发者工具 → 右上角「详情 → 本地设置」勾选
+   **「不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书」**
+   （开发构建的接口是 `http://127.0.0.1:8888` / `8885`，不勾选会被域名校验拦住）
+3. 后端四个服务要在本机起着：8888 buyer-api、8887 manager-api、8885 im-api、8000 im 前端
+4. `发行` 构建仍会自动切回生产域名（`NODE_ENV=production`），不需要改代码
+
+> 校验产物：`apps/uniapp/unpackage/dist/dev/mp-weixin/config/api.js` 里应是
+> `http://127.0.0.1:8888`，而不是 `buyer-api.pickmall.cn`。
+
 | # | 步骤 | 预期 | ✅ |
 |---|---|---|:--:|
 | 26 | 编译到微信开发者工具 | 编译成功，无 `#ifdef` 相关语法错误 | [ ] |
-| 27 | 首页 | 装修楼层渲染；接口指向生产域名 | [ ] |
-| 28 | 登录（`wechatMPLogin` 页） | 微信授权按钮可点（本轮把 `<button type="primary">` 改成 `v-bind` 对象） | [ ] |
+| 27 | 首页 | 装修楼层渲染；**接口指向 `127.0.0.1:8888`**（Network 面板确认） | [ ] |
+| 28 | 登录（`wechatMPLogin` 页） | 微信授权按钮可点、样式正常（本轮从 `v-bind` 对象改回 `:type` 单属性绑定——对象形式 uni 编译器不支持） | [ ] |
 | 29 | 微信支付 | 拉起支付面板（`WeixinJSBridge`/`uni.requestPayment` 分支） | [ ] |
 | 30 | 分享（`m-share` 组件） | 分享面板弹出，标题/图片正确（本轮修了 `onBackPress` 与 `scene` 类型） | [ ] |
-| 31 | 扫码进入（`tpl.js` 的 `scan()`） | 能拉起相机扫码 | [ ] |
-| 32 | 客服消息 / IM | 连生产 IM，可收发 | [ ] |
+| 31 | 扫码进入（`tpl.ts` 的 `scan()`） | 能拉起相机扫码 | [ ] |
+| 32 | 客服消息 / IM | **连 `ws://127.0.0.1:8885`**，可收发（开发构建已切本地） | [ ] |
+| 32b | 控制台 | **不再出现 `wx.getSystemInfoSync is deprecated`**（本轮已全部换成 `getDeviceInfo` / `getWindowInfo`） | [ ] |
+| 32c | 控制台 | 鸿蒙兼容性提示最多剩 2 条，且都在 `js_sdk/`、`uni_modules/`（第三方，不改） | [ ] |
 
 ## 八、App（HTML5+ 原生能力）
+
+> App 端开发构建**仍走生产后端**（`127.0.0.1` 在手机上指向手机自身）。
+> 要在真机上连本地，把 `config/api.ts` 的 `dev` 段改成局域网 IP，并删掉 `#ifdef APP-PLUS` 的强制生产。
 
 | # | 步骤 | 预期 | ✅ |
 |---|---|---|:--:|
 | 33 | 打包/运行到手机 | 启动正常，无白屏 | [ ] |
 | 34 | 设置页 → 清理缓存（`setUp.vue` 的 `plus.cache`） | 返回缓存大小并能清理（本轮补了 `Plus.cache` 声明） | [ ] |
-| 35 | 权限设置跳转（`add.vue` / `step3.vue` 的 `plus.android.importClass`） | 能跳到系统设置页（本轮把 `new Intent` 改成 `new (Intent as any)`） | [ ] |
+| 35 | 权限设置跳转（`add.vue` / `step3.vue`） | 能跳到系统设置页（本轮把 `new Intent` 改成 `new (Intent as any)`，并把平台判断收口到 `utils/platform.ts`；**鸿蒙走 `uni.openAppAuthorizeSetting`**） | [ ] |
 | 36 | 退出全屏（`fullScreen.vue` 的 `plus.ios.import`） | iOS 上能退出 | [ ] |
-| 37 | 版本更新（`plugins/app-update`） | 能检测到新版本并下载安装 | [ ] |
+| 37 | 版本更新（`plugins/app-update`） | 能检测到新版本并下载安装（本轮把它裸读的 `platform` 换成 `getPlatform()`，**鸿蒙按 Android 线查版本**） | [ ] |
 | 38 | 分享海报（`poster.vue` / `invite.vue`，canvas 2d） | 能生成海报并保存/分享（本轮改了 `fields`/`canvasToTempFilePath` 的调用形状） | [ ] |
 | 39 | 直播页（`room.vue`，本轮合并了 `hlsInstance` 声明） | 能播放 HLS 流；App 端用 fallback 实现 | [ ] |
+| 39a | 启动全屏引导（`App.vue` 的 `isIos()`，仅 iOS） | iOS 首次启动能进全屏引导页；Android / 鸿蒙不进 | [ ] |
+| 39b | IM 聊天输入框（`mine/im/index.vue` 的 `isIos()`） | iOS 键盘弹出时输入框高度扣掉 40，不遮挡；Android 正常 | [ ] |
+| 39c | 设置 → 版本信息（`editionIntro.vue`） | iOS 显示 App Store 评分入口、查 `IOS` 版本线；Android / 鸿蒙查 `ANDROID` 线 | [ ] |
+| 39d | 设置 → 功能列表（`versionFunctionList.vue`） | 同上：只有 iOS 查 `IOS` 线 | [ ] |
 
 ## 九、工程门禁（提交前必跑，CI 已接入）
 
@@ -218,3 +239,88 @@ corepack pnpm --filter @spring-breeze/uniapp probe:h5
 - 排除了「25 个文件改名 + 71 个基础设施 `.ts` 转换」造成的 import 断裂（128 个页面全过）
 - 排除了上一轮那个 **git 索引大小写漂移**（`App.vue` vs `app.vue`）在 H5 端的影响
 - 未覆盖：小程序端条件编译分支（`#ifdef MP-WEIXIN`）、App 端原生能力、真实接口与渲染
+---
+
+## 附录 B：小程序端告警修复与「开发构建切本地后端」（2026-11-28）
+
+### B.1 `wx.getSystemInfoSync is deprecated` + 鸿蒙兼容提示
+
+微信开发者工具控制台里两类提示：
+
+```
+getSystemInfo API 提示：小程序基础库从 3.7.0 起正式支持 HarmonyOS 平台，
+开发者可通过 wx.getDeviceInfo() 判断平台进行兼容处理
+wx.getSystemInfoSync is deprecated. Please use wx.getSystemSetting /
+wx.getAppAuthorizeSetting / wx.getDeviceInfo / wx.getWindowInfo / wx.getAppBaseInfo instead.
+```
+
+**根因**：项目里还有 9 处调用已废弃的 `uni.getSystemInfoSync()` / `wx.getSystemInfoSync()`。
+
+**处理**：按用途逐个换成新 API：
+
+| 用途 | 原调用 | 新 API | 位置 |
+|---|---|---|---|
+| 窗口宽高、状态栏高度、屏幕宽 | `getSystemInfoSync()` | `uni.getWindowInfo()` | `m-city/m-city.vue`、`verification/verification.vue`、`mine/im/index.vue`、`tabbar/user/my.vue`、`tabbar/category/category.vue` |
+| 设备型号 | `getSystemInfoSync().model` | `uni.getDeviceInfo().deviceModel` | `mine/set/securityCenter/{faceLogin,fingerLogin}.vue` |
+| 平台名（含 `devtools` 判断） | `wx.getSystemInfoSync().platform` | `uni.getDeviceInfo().platform` | `mine/deposit/withdrawApply.vue` |
+| 平台判断（统一收口） | `getSystemInfoSync()` 兜底 | 只用 `getDeviceInfo()` | `utils/platform.ts` |
+
+顺带把 `utils/platform.ts` 里的 `getSystemInfoSync` **兜底分支删掉** —— 只要有这个兜底，
+即使平时走的是 `getDeviceInfo()`，打包器仍会保留对废弃 API 的引用，告警照旧。
+
+**结果**：我方代码 0 处 `getSystemInfo*`；鸿蒙兼容提示从 10 条降到 **2 条**，
+且都在 `js_sdk/u-draw-poster/utils/global.js` 与 `uni_modules/Sansnn-uQRCode/**`（第三方 verdored，不改）。
+
+### B.2 开发构建切到本地后端
+
+**问题**：`config/api.ts` 里有一段
+
+```ts
+// #ifdef MP-WEIXIN || APP-PLUS
+api = prod;   // 无条件强制生产
+// #endif
+```
+
+导致小程序**开发**构建也打生产接口，本地联调无法进行。
+
+**改法**：
+
+```ts
+// 只对 App 真机强制生产（127.0.0.1 在手机上指向手机自身）
+// #ifdef APP-PLUS
+api = prod;
+// #endif
+```
+
+- 微信小程序：开发构建 → `http://127.0.0.1:8888` / `8885`；发行构建（`NODE_ENV=production`）→ 生产
+- H5：开发本地、发行生产（原有逻辑不变）
+- App：始终生产（要真机连本地就改 `dev` 段为局域网 IP 并删掉这段）
+
+`config/config.ts` 的 IM 地址同步改为「开发构建且非 App → 本地」：
+
+```ts
+const IS_DEV_LOCAL = process.env.NODE_ENV === "development" && PLATFORM !== "app-plus";
+```
+
+**验证**（编译产物里直接查字符串）：
+
+```
+apps/uniapp/unpackage/dist/dev/mp-weixin/config/api.js
+  buyer: "http://127.0.0.1:8888"
+  im:    "http://127.0.0.1:8885"
+config/config.js
+  baseWsUrl = "ws://127.0.0.1:8885/lili/webSocket"
+```
+
+### B.3 小程序联调的两个前提
+
+1. 微信开发者工具 → 详情 → 本地设置 → 勾选
+   **不校验合法域名、web-view（业务域名）、TLS 版本以及 HTTPS 证书**
+2. 本机后端起着：`8888` buyer-api、`8887` manager-api、`8885` im-api、`8000` im 前端
+
+### B.4 编译验证
+
+| 平台 | 命令 | 结果 |
+|---|---|---|
+| H5 | `cli.exe launch web --project <项目> --compile true` | ✅ 编译成功 |
+| 微信小程序 | `cli.exe launch mp-weixin --project <项目> --compile true` | ✅ 编译成功；鸿蒙提示 2 条（均为第三方） |
