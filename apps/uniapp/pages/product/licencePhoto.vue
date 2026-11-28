@@ -43,8 +43,22 @@ onLoad((options: any) => {
 <style lang="scss" scoped>
 .wrapper {
   padding: 32rpx;
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > p {
     margin: 20rpx 0;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    margin: 20rpx 0;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    margin: 20rpx 0;
+  }
+  /* #endif */
 }
 </style>

@@ -65,12 +65,32 @@ page {
 }
 .tit_title {
   color: $u-main-color;
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > img {
     vertical-align: middle;
     margin-right: 10rpx;
     width: 40rpx;
     height: 40rpx;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > image {
+    vertical-align: middle;
+    margin-right: 10rpx;
+    width: 40rpx;
+    height: 40rpx;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > image {
+    vertical-align: middle;
+    margin-right: 10rpx;
+    width: 40rpx;
+    height: 40rpx;
+  }
+  /* #endif */
 }
 .tit_tips {
   color: $u-tips-color;

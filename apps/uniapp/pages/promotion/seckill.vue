@@ -168,11 +168,29 @@ function clickNavigateTime(type: number) {
 		align-items: center;
 		margin-top: 40rpx;
 
+		/* #ifdef H5 */
+		/* #ifdef H5 */
 		>div {
 			font-size: 24rpx;
 			margin-top: 20rpx;
 			color: #666;
 		}
+		/* #endif */
+		/* #ifndef H5 */
+		>view {
+			font-size: 24rpx;
+			margin-top: 20rpx;
+			color: #666;
+		}
+		/* #endif */
+		/* #endif */
+		/* #ifndef H5 */
+		>view {
+			font-size: 24rpx;
+			margin-top: 20rpx;
+			color: #666;
+		}
+		/* #endif */
 	}
 
 	.header-wraper {

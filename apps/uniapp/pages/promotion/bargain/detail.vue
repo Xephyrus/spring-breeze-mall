@@ -537,6 +537,8 @@ page {
     flex: 1;
     min-width: 0;
 
+    /* #ifdef H5 */
+    /* #ifdef H5 */
     > div:nth-of-type(1) {
       font-size: 28rpx;
       max-width: 300rpx;
@@ -544,11 +546,47 @@ page {
       white-space: nowrap;
       text-overflow: ellipsis;
     }
+    /* #endif */
+    /* #ifndef H5 */
+    > view:nth-of-type(1) {
+      font-size: 28rpx;
+      max-width: 300rpx;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    /* #endif */
+    /* #endif */
+    /* #ifndef H5 */
+    > view:nth-of-type(1) {
+      font-size: 28rpx;
+      max-width: 300rpx;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+    /* #endif */
 
+    /* #ifdef H5 */
+    /* #ifdef H5 */
     > div:nth-last-of-type(1) {
       font-size: 24rpx;
       color: #999;
     }
+    /* #endif */
+    /* #ifndef H5 */
+    > view:nth-last-of-type(1) {
+      font-size: 24rpx;
+      color: #999;
+    }
+    /* #endif */
+    /* #endif */
+    /* #ifndef H5 */
+    > view:nth-last-of-type(1) {
+      font-size: 24rpx;
+      color: #999;
+    }
+    /* #endif */
   }
 }
 

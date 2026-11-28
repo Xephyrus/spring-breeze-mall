@@ -21,7 +21,7 @@
           ></div>
           <view class="price-box" @click="navigateToDetailPage(item)">
             <div class="price" v-if="item.price != undefined">
-              ¥<span
+              ¥<span class="price-int"
                 >{{
                   goodsFormatPrice(goodsDisplayPrice(item))[0]
                 }} </span
@@ -76,7 +76,7 @@
             </div>
             <view class="price-box" @click="navigateToDetailPage(item)">
               <div class="price" v-if="item.price != undefined">
-                ¥<span
+                ¥<span class="price-int"
                   >{{ goodsFormatPrice(goodsDisplayPrice(item))[0] }} </span
                 >.{{ goodsFormatPrice(goodsDisplayPrice(item))[1] }}
               </div>
@@ -86,12 +86,12 @@
                 v-for="(promotionItem, promotionIndex) in getPromotion(item)"
                 :key="promotionIndex"
               >
-                <span v-if="promotionItem.indexOf('COUPON') != -1">劵</span>
-                <span v-if="promotionItem.indexOf('FULL_DISCOUNT') != -1"
+                <span class="promo-tag" v-if="promotionItem.indexOf('COUPON') != -1">劵</span>
+                <span class="promo-tag" v-if="promotionItem.indexOf('FULL_DISCOUNT') != -1"
                   >满优惠</span
                 >
-                <span v-if="promotionItem.indexOf('SINGLE_REDUCTION') != -1">单品立减</span>
-                <span v-if="promotionItem.indexOf('SECKILL') != -1">秒杀</span>
+                <span class="promo-tag" v-if="promotionItem.indexOf('SINGLE_REDUCTION') != -1">单品立减</span>
+                <span class="promo-tag" v-if="promotionItem.indexOf('SECKILL') != -1">秒杀</span>
               </div>
             </div>
             <div
@@ -210,14 +210,14 @@ const props = withDefaults(defineProps<{
     margin-top: 4rpx;
     display: flex;
 
-    div {
-      span {
-        font-size: 24rpx;
-        color: $light-color;
-        margin-right: 10rpx;
-        padding: 0 4rpx;
-        border-radius: 2rpx;
-      }
+    // 小程序端不支持 div / span 标签选择器（编译告警），改用 class；
+    // 元素本身由 uni 编译器自动转成 view / text
+    .promo-tag {
+      font-size: 24rpx;
+      color: $light-color;
+      margin-right: 10rpx;
+      padding: 0 4rpx;
+      border-radius: 2rpx;
     }
   }
 
@@ -251,7 +251,8 @@ const props = withDefaults(defineProps<{
       color: $main-color;
       font-weight: bold;
 
-      ::v-deep span:nth-of-type(1) {
+      // 小程序端不支持 span 标签选择器（编译告警），改用 class
+      .price-int {
         font-size: 38rpx;
       }
     }

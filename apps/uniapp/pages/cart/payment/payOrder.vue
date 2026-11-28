@@ -460,9 +460,23 @@ function isWeiXin() {
   background: #fff;
   color: $u-tips-color;
 
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > p {
     padding: 8rpx;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    padding: 8rpx;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    padding: 8rpx;
+  }
+  /* #endif */
 }
 
 .box {

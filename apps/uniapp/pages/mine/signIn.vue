@@ -16,7 +16,7 @@
       <view class="date-con">
         <view class="date-tit">
           <div class="current-month">
-            <div class="day">每日记录<span> ({{ currentMonth }})</span></div>
+            <div class="day">每日记录<span class="day-month"> ({{ currentMonth }})</span></div>
           </div>
         </view>
         <view class="week">
@@ -268,7 +268,8 @@ page {
   .day {
     font-size: 36rpx;
 
-    > span {
+    // 小程序端不支持 span 标签选择器（编译告警），改用 class
+    > .day-month {
       font-size: 30rpx;
       color: #999;
       margin-left: 20rpx;

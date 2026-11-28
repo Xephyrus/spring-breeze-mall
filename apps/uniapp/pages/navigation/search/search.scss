@@ -269,9 +269,23 @@ page {
   -webkit-line-clamp: 2 !important;
 
   overflow: hidden;
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > span {
     line-height: 1.5;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    line-height: 1.5;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    line-height: 1.5;
+  }
+  /* #endif */
 }
 
 
@@ -279,13 +293,41 @@ page {
   color: #666;
   overflow: hidden;
 
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > div {
     float: left;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    float: left;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    float: left;
+  }
+  /* #endif */
 
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > span {
     float: right;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    float: right;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    float: right;
+  }
+  /* #endif */
 }
 
 .count-config {

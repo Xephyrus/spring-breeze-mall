@@ -108,10 +108,26 @@ page {
 .max-price {
   color: $main-color;
   font-size: 24rpx;
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > span {
     font-size: 32rpx;
     font-weight: bold;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    font-size: 32rpx;
+    font-weight: bold;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    font-size: 32rpx;
+    font-weight: bold;
+  }
+  /* #endif */
 }
 .goods-buy {
   margin: 10rpx 0;

@@ -31,28 +31,28 @@
       </div>
       <div>
         <div class="form-item">
-          <span> {{isSpecialInvoice ? '单位' : title}}名称</span>
+          <span class="form-label"> {{isSpecialInvoice ? '单位' : title}}名称</span>
           <u-input :placeholder="'请输入'+(isSpecialInvoice ? '单位' : title)+'名称'" v-model="titleName" />
         </div>
         <div class="form-item" v-if="taxpayerFlag || isSpecialInvoice">
-          <span>纳税人识别号</span>
+          <span class="form-label">纳税人识别号</span>
           <u-input placeholder="请输入纳税人识别号" v-model="submitData.taxpayerId" />
         </div>
         <div v-if="isSpecialInvoice">
           <div class="form-item">
-            <span>单位地址</span>
+            <span class="form-label">单位地址</span>
             <u-input placeholder="请输入单位地址" v-model="submitData.companyAddress" />
           </div>
           <div class="form-item">
-            <span>单位电话</span>
+            <span class="form-label">单位电话</span>
             <u-input placeholder="请输入单位电话" v-model="submitData.companyPhone" />
           </div>
           <div class="form-item">
-            <span>开户银行</span>
+            <span class="form-label">开户银行</span>
             <u-input placeholder="请输入开户银行" v-model="submitData.bankName" />
           </div>
           <div class="form-item">
-            <span>银行账号</span>
+            <span class="form-label">银行账号</span>
             <u-input placeholder="请输入银行账号" v-model="submitData.bankAccount" />
           </div>
         </div>
@@ -63,11 +63,11 @@
       <div class="invoice-title">收票人信息</div>
       <div>
         <div class="form-item">
-          <span>收票人手机</span>
+          <span class="form-label">收票人手机</span>
           <u-input placeholder="请输入收票人手机" v-model="submitData.receiptPhone" />
         </div>
         <div class="form-item">
-          <span>收票人邮箱</span>
+          <span class="form-label">收票人邮箱</span>
           <u-input placeholder="请输入收票人邮箱(选填)" v-model="submitData.receiptEmail" />
         </div>
       </div>
@@ -455,7 +455,8 @@ function submitInvoice() {
   display: flex;
   margin: 30rpx 0;
   align-items: center;
-  > span {
+  // 小程序端不支持 span 标签选择器（编译告警），改用 class
+  > .form-label {
     margin-right: 50rpx;
   }
 }

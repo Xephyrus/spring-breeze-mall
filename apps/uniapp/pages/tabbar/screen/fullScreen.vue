@@ -4,9 +4,9 @@
       请您务必审慎阅读,充分理解“服务协议”和“隐私政策”各条款，
       包括但不限于：为了更好的向你提供服务，我们需要收集你的设备标识,
       操作日志等信息用于分析，优化应用性能。 您可阅读你可阅读
-      <a @click="gotoLink">《服务协议》</a>
+      <a class="policy-link" @click="gotoLink">《服务协议》</a>
       和
-      <a @click="gotoB"> 《隐私政策》</a>了解详细信息。
+      <a class="policy-link" @click="gotoB"> 《隐私政策》</a>了解详细信息。
       如果您同意，请点击下面按钮开始接受我们的服务。
     </view>
   </u-modal>
@@ -54,7 +54,8 @@ function confirm() {
   font-size: 26rpx;
   padding: 30rpx;
 }
-a {
+/* 小程序端不支持 a 标签选择器（编译告警），改用 class */
+.policy-link {
   text-decoration: blue;
   color: blue;
 }

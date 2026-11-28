@@ -844,3 +844,92 @@ export function isAndroidLike(): boolean
 | `typecheck` / `lint` / `test` | 0 错误 / 256 warning / 6 个脚本全绿 |
 | 条件编译配平 | 全树配平（本次改了 `add.vue`、`step3.vue` 的 `#ifndef` 区块） |
 | HBuilderX 完整编译 | **编译成功**，无 `v-bind` 报错、无鸿蒙告警 |
+---
+
+---
+
+## 十四、小程序样式：`<style>` 里的标签选择器（2026-11-28 完成清零）
+
+### 14.1 为什么这是个「看不见的错误」
+
+```
+小程序端 style 暂不支持 span 标签选择器，推荐使用 class 选择器
+```
+
+uni-app 编译到小程序时会把 HTML 标签自动转换（实测产物 wxml 里 `<span>`/`<div>` 数量为 0）：
+
+| 源码 | 小程序 | H5 |
+|---|---|---|
+| `<span>` | `<text>` | `<span>` |
+| `<div>` / `<p>` | `<view>` | `<div>` / `<p>` |
+| `<img>` | `<image>` | `<img>` |
+| `<a>` | `<navigator>` | `<a>` |
+
+但 **WXSS 里的标签选择器不会跟着改** —— `span { color: red }` 在小程序端**静默失效**：
+H5 看着正常，小程序样式丢了，编译日志只给一行 warning。
+
+反过来把选择器改成 `text`/`view` 也不行：H5 端元素仍是原生 `span`（实测 H5 产物里
+`uni-text` 出现 0 次），`text {}` 在 H5 匹配不到。**必须两端各有各的写法。**
+
+### 14.2 两种修法（本次都用了）
+
+**A. class 选择器（14 处，优先）** —— 适合「元素就在本组件模板里」的情况：
+
+| 文件 | 改动 |
+|---|---|
+| `components/m-goods-list/base-list.vue` | `.promotion div span` → `.promo-tag`；`::v-deep span:nth-of-type(1)` → `.price-int` |
+| `pages/mine/address/address.scss` + `address.vue` / `storeAddress.vue` | `.region span` → `.region-item` |
+| `pages/passport/login.scss` + `login.vue` | 全局 `span` → `.login-link` |
+| `pages/order/invoice/setInvoice.vue` | `.form-item > span` → `.form-label`（8 个表单项标签） |
+| `pages/mine/signIn.vue` | `.day > span` → `.day-month` |
+| `pages/promotion/point/detail.vue` | `.purchase-price > span` → `.price-num` |
+| `pages/order/complain/complainInfo.vue` | `.speak-msg > span` → `.speak-text` |
+| `pages/tabbar/screen/fullScreen.vue` | `a` → `.policy-link` |
+
+**B. 条件编译拆两段（26 处）** —— 适合「多子元素、加 class 需要改动大片模板」的情况：
+
+```scss
+/* #ifdef H5 */
+.goods-price > span { font-size: 32rpx; }   /* H5：原生 span 有效 */
+/* #endif */
+/* #ifndef H5 */
+.goods-price > text { font-size: 32rpx; }   /* 小程序/App：span 已编译成 text */
+/* #endif */
+```
+
+- H5 分支保留 `span`（H5 完全支持）
+- 小程序分支用组件名（`text`/`view`/`image`/`navigator`），**告警消失、样式也真正生效**
+- 模板一行不用改，零视觉风险
+
+覆盖文件（14 个）：`cartList.vue`(7)、`search.scss`(3)、`fillorder.vue`(2)、
+`login.vue`(2)、`bargain/detail.vue`(2)、`point/detail.vue`(2)、
+`payOrder.vue`、`serviceMsg/index.vue`、`deliverDetail.vue`、`orderDetail.vue`、
+`article.vue`、`licencePhoto.vue`、`bargain/list.vue`、`seckill.vue`
+
+> 实现方式：脚本只在 `<style>` 块内部操作、逐块从后往前改，改完自检模板未被触碰。
+> （第一版脚本用了「与文件无关的块内行号」，把模板包进了 ifdef —— 已从备份恢复后重做。）
+
+### 14.3 新增门禁（现在要求 0 处）
+
+`scripts/check-tag-selectors.mjs`：
+- 扫所有 `.vue` 的 `<style>` 与独立 `.scss`
+- 只报「uni 会转换的 HTML 标签」（`span/div/p/img/a/li/...`）；
+  `button/input/textarea` 是小程序原生组件，选择器有效、不报
+- **跳过 `/* #ifdef H5 */ ... /* #endif */` 段**（这些规则只编译到 H5，本来就合法）
+- 已接入根 `ci:precheck` 与 CI precheck job（与大小写、凭据扫描一起跑），**不为 0 就失败**
+
+### 14.4 验证
+
+| 检查 | 结果 |
+|---|---|
+| `node scripts/check-tag-selectors.mjs` | ✅ 0 处 |
+| 微信小程序编译 | ✅ 编译成功，**`span 标签选择器` 告警消失** |
+| H5 编译 | ✅ 编译成功 |
+| `typecheck` / `lint` / `test` | 0 错误 / 0 error（254 warning）/ 6 脚本全绿 |
+| 条件编译 ifdef/endif | ✅ 全树配平 |
+
+### 14.5 教训
+
+**警告不能只看「有没有报错」** —— 这条 warning 对应的是小程序端样式静默失效。
+凡是「编译期转换 + 运行期选择器」的组合（HTML 标签 → 组件、CSS Modules、作用域样式），
+都要在**目标端**验证规则是否真的命中，而不是看 H5 正常就收工。

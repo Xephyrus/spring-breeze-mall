@@ -942,9 +942,23 @@ page,
   font-size: 26rpx;
   font-weight: bold;
 
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   >span {
     margin-right: 20rpx;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  >text {
+    margin-right: 20rpx;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  >text {
+    margin-right: 20rpx;
+  }
+  /* #endif */
 }
 
 .info-view {

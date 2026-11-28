@@ -271,6 +271,8 @@ page {
 	padding: 20rpx;
 	list-style-type: none;
 
+	/* #ifdef H5 */
+	/* #ifdef H5 */
 	li {
 		display: flex;
 		margin-top: 18rpx;
@@ -279,6 +281,28 @@ page {
 			margin-top: 0;
 		}
 	}
+	/* #endif */
+	/* #ifndef H5 */
+	view {
+		display: flex;
+		margin-top: 18rpx;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+	/* #endif */
+	/* #endif */
+	/* #ifndef H5 */
+	view {
+		display: flex;
+		margin-top: 18rpx;
+
+		&:first-child {
+			margin-top: 0;
+		}
+	}
+	/* #endif */
 
 	.time {
 		width: 180rpx;

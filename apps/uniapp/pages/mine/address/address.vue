@@ -10,11 +10,11 @@
           <text class="default" v-show="item.isDefault">默认</text>
           <view>
             <div class="region">
-              <span v-if="item.consigneeAddressPath[0]">{{item.consigneeAddressPath[0]}}</span>
-              <span v-if="item.consigneeAddressPath[1]">{{item.consigneeAddressPath[1]}}</span>
-              <span v-if="item.consigneeAddressPath[2]">{{item.consigneeAddressPath[2]}}</span>
-              <span v-if="item.consigneeAddressPath[3]">{{item.consigneeAddressPath[3]}}</span>
-              <span>{{ item.detail }}</span>
+              <span class="region-item" v-if="item.consigneeAddressPath[0]">{{item.consigneeAddressPath[0]}}</span>
+              <span class="region-item" v-if="item.consigneeAddressPath[1]">{{item.consigneeAddressPath[1]}}</span>
+              <span class="region-item" v-if="item.consigneeAddressPath[2]">{{item.consigneeAddressPath[2]}}</span>
+              <span class="region-item" v-if="item.consigneeAddressPath[3]">{{item.consigneeAddressPath[3]}}</span>
+              <span class="region-item">{{ item.detail }}</span>
             </div>
           </view>
         </view>

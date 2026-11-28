@@ -6,7 +6,7 @@
 				<div class="title">{{ loginTitleWay[current].title }}</div>
 				<div :class="current == 1 ? 'desc-light' : 'desc'">
 					{{ loginTitleWay[current].desc
-          }}<span v-if="current == 1">{{secrecyMobile(mobile) }}</span>
+          }}<span class="login-link" v-if="current == 1">{{secrecyMobile(mobile) }}</span>
 				</div>
 			</div>
 			<!-- 手机号 -->
@@ -92,8 +92,8 @@
 					:icon-size="18"
 				></u-checkbox>
 				<div class="tips">
-					未注册的手机号验证后将自动创建用户账号，登录即代表您已同意<span @click="navigateToPrivacy('PRIVACY_POLICY')">《隐私协议》</span>
-					<span @click="navigateToPrivacy('USER_AGREEMENT')">
+					未注册的手机号验证后将自动创建用户账号，登录即代表您已同意<span class="login-link" @click="navigateToPrivacy('PRIVACY_POLICY')">《隐私协议》</span>
+					<span class="login-link" @click="navigateToPrivacy('USER_AGREEMENT')">
 						《用户协议》
 					</span>
 				</div>
@@ -761,10 +761,26 @@ declare function miniProgramLogin(code: string | undefined): Promise<{ data: any
 	.desc-light {
 		color: #999999;
 
+		/* #ifdef H5 */
+		/* #ifdef H5 */
 		>span {
 			color: #333;
 			margin-left: 8rpx;
 		}
+		/* #endif */
+		/* #ifndef H5 */
+		>text {
+			color: #333;
+			margin-left: 8rpx;
+		}
+		/* #endif */
+		/* #endif */
+		/* #ifndef H5 */
+		>text {
+			color: #333;
+			margin-left: 8rpx;
+		}
+		/* #endif */
 	}
 
 	.login-form-block {
@@ -801,9 +817,23 @@ declare function miniProgramLogin(code: string | undefined): Promise<{ data: any
 		margin-top: 0;
 		color: #666;
 
+		/* #ifdef H5 */
+		/* #ifdef H5 */
 		>span {
 			color: $light-color;
 		}
+		/* #endif */
+		/* #ifndef H5 */
+		>text {
+			color: $light-color;
+		}
+		/* #endif */
+		/* #endif */
+		/* #ifndef H5 */
+		>text {
+			color: $light-color;
+		}
+		/* #endif */
 	}
 
 	.privacy-row {

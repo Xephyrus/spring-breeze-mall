@@ -733,9 +733,23 @@ page {
   ::v-deep .number {
     line-height: 1;
     font-size: 30rpx;
+    /* #ifdef H5 */
+    /* #ifdef H5 */
     > span {
       font-weight: bold;
     }
+    /* #endif */
+    /* #ifndef H5 */
+    > text {
+      font-weight: bold;
+    }
+    /* #endif */
+    /* #endif */
+    /* #ifndef H5 */
+    > text {
+      font-weight: bold;
+    }
+    /* #endif */
   }
 }
 
@@ -828,9 +842,23 @@ page {
   font-size: 26rpx;
   margin-left: 16rpx;
 
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > span {
     margin-left: 20rpx;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    margin-left: 20rpx;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    margin-left: 20rpx;
+  }
+  /* #endif */
 }
 
 .right-line {
@@ -947,12 +975,40 @@ page {
   > .sp-price {
     flex-shrink: 0;
 
+    /* #ifdef H5 */
+    /* #ifdef H5 */
     ::v-deep span:nth-of-type(1) {
       font-size: 38rpx;
     }
+    /* #endif */
+    /* #ifndef H5 */
+    ::v-deep text:nth-of-type(1) {
+      font-size: 38rpx;
+    }
+    /* #endif */
+    /* #endif */
+    /* #ifndef H5 */
+    ::v-deep text:nth-of-type(1) {
+      font-size: 38rpx;
+    }
+    /* #endif */
+    /* #ifdef H5 */
+    /* #ifdef H5 */
     ::v-deep span:nth-of-type(2) {
       font-size: 24rpx;
     }
+    /* #endif */
+    /* #ifndef H5 */
+    ::v-deep text:nth-of-type(2) {
+      font-size: 24rpx;
+    }
+    /* #endif */
+    /* #endif */
+    /* #ifndef H5 */
+    ::v-deep text:nth-of-type(2) {
+      font-size: 24rpx;
+    }
+    /* #endif */
   }
 
   > .sp-numbox {
@@ -969,9 +1025,23 @@ page {
 .priceDetail-flowPrice {
   font-weight: bold;
   padding-left: 20rpx;
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > span:nth-of-type(1) {
     font-size: 38rpx;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > text:nth-of-type(1) {
+    font-size: 38rpx;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > text:nth-of-type(1) {
+    font-size: 38rpx;
+  }
+  /* #endif */
 }
 
 .discount-details {
@@ -985,13 +1055,43 @@ page {
   display: flex;
   margin: 40rpx 0;
   justify-content: space-between;
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > span:nth-of-type(1) {
     color: #666;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > text:nth-of-type(1) {
+    color: #666;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > text:nth-of-type(1) {
+    color: #666;
+  }
+  /* #endif */
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > span:nth-of-type(2) {
     color: #333;
     font-weight: bold;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > text:nth-of-type(2) {
+    color: #333;
+    font-weight: bold;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > text:nth-of-type(2) {
+    color: #333;
+    font-weight: bold;
+  }
+  /* #endif */
 }
 .discount-title {
   font-size: 36rpx;

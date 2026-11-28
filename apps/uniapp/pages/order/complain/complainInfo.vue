@@ -31,7 +31,7 @@
             ? "买家"
             : "卖家"
         }}：
-        <span>{{ complaint.content }}</span>
+        <span class="speak-text">{{ complaint.content }}</span>
       </view>
     </view>
     <view class="speak-way" v-else>暂无对话</view>
@@ -149,7 +149,8 @@ function init(id: string) {
 
 .speak-msg {
   padding: 26rpx 32rpx;
-  > span {
+  // 小程序端不支持 span 标签选择器（编译告警），改用 class
+  > .speak-text {
     color: #999 !important;
   }
 }

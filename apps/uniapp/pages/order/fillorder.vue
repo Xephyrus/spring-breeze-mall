@@ -1290,9 +1290,23 @@ page {
   font-size: 26rpx;
   font-weight: bold;
 
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > span {
     font-size: 36rpx;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    font-size: 36rpx;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > text {
+    font-size: 36rpx;
+  }
+  /* #endif */
 }
 
 .goods-prices {
@@ -1397,11 +1411,29 @@ page {
   flex: 8;
   margin-left: 20rpx !important;
 
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > p {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  /* #endif */
 }
 
 .goods-item {

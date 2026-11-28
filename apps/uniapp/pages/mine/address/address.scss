@@ -5,8 +5,9 @@
     display: inline-block;
   }
   
+  /* 小程序端不支持 span 标签选择器（编译告警），改用 class */
   .region {
-    span {
+    .region-item {
       margin: 0 4rpx !important;
     }
   }

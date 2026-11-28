@@ -22,7 +22,7 @@
                 {{goodsData.goodsName}}
               </div>
               <div class="flex price-box">
-                <div class="purchase-price">积分:<span>{{unitPrice(pointDetail.points) }}</span>
+                <div class="purchase-price">积分:<span class="price-num">{{unitPrice(pointDetail.points) }}</span>
                 </div>
                 <div class="max-price">原价:<span>￥{{unitPrice(goodsData.price)}}</span>
 
@@ -160,7 +160,8 @@ function closePopupBuy(val: boolean) {
 }
 .purchase-price {
   color: #44a88d;
-  > span {
+  // 小程序端不支持 span 标签选择器（编译告警），改用 class
+  > .price-num {
     font-size: 32rpx;
     font-weight: bold;
   }
@@ -207,13 +208,43 @@ function closePopupBuy(val: boolean) {
   align-items: center;
   justify-content: space-between;
   > .user-name {
+    /* #ifdef H5 */
+    /* #ifdef H5 */
     > div:nth-of-type(1) {
       font-size: 28rpx;
     }
+    /* #endif */
+    /* #ifndef H5 */
+    > view:nth-of-type(1) {
+      font-size: 28rpx;
+    }
+    /* #endif */
+    /* #endif */
+    /* #ifndef H5 */
+    > view:nth-of-type(1) {
+      font-size: 28rpx;
+    }
+    /* #endif */
+    /* #ifdef H5 */
+    /* #ifdef H5 */
     > div:nth-last-of-type(1) {
       font-size: 24rpx;
       color: #999;
     }
+    /* #endif */
+    /* #ifndef H5 */
+    > view:nth-last-of-type(1) {
+      font-size: 24rpx;
+      color: #999;
+    }
+    /* #endif */
+    /* #endif */
+    /* #ifndef H5 */
+    > view:nth-last-of-type(1) {
+      font-size: 24rpx;
+      color: #999;
+    }
+    /* #endif */
   }
 }
 

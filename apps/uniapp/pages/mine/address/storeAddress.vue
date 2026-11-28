@@ -9,7 +9,7 @@
           <text>{{ item.mobile }}</text>
           <view>
             <div class="region">
-              <span>{{ item.address }}</span>
+              <span class="region-item">{{ item.address }}</span>
             </div>
           </view>
         </view>

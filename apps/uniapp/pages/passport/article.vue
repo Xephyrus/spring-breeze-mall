@@ -34,8 +34,22 @@ page {
 }
 .container {
   padding: 32rpx;
+  /* #ifdef H5 */
+  /* #ifdef H5 */
   > p {
     margin: 20rpx;
   }
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    margin: 20rpx;
+  }
+  /* #endif */
+  /* #endif */
+  /* #ifndef H5 */
+  > view {
+    margin: 20rpx;
+  }
+  /* #endif */
 }
 </style>
