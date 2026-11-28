@@ -68,9 +68,11 @@ function navigateToBargainDetail(val: any) {
 }
 </script>
 <style lang="scss">
+/* #ifdef H5 */
 page {
   background-color: $light-color !important;
 }
+/* #endif */
 </style>
 <style lang="scss" scoped>
 .wrapper {

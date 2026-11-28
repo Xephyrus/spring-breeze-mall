@@ -173,11 +173,13 @@ function gotoGoodsDetail(item: any) {
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page,
 .content {
   background: $page-color-base;
   height: 100%;
 }
+/* #endif */
 
 .mp-iphonex-bottom {
   overflow: hidden;

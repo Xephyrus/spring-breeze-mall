@@ -907,11 +907,13 @@ function reBuy(orderItem: any) {
       $aider-light-color 100%) !important;
 }
 
+/* #ifdef H5 */
 page,
 .content {
   background: #f1f1f1;
   height: 100%;
 }
+/* #endif */
 
 .info-line {
   align-items: center;

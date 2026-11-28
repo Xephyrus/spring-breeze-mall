@@ -292,9 +292,11 @@ onReachBottom(() => {
 .mall-tabs .selected { color: #e74646; font-weight: bold; }
 .coupon-panel { flex: 1; min-height: 0; display: flex; flex-direction: column; background: #f6f7f9; }
 .goods-panel { display: flex; flex-direction: column; flex: 1; min-height: 0; }
+/* #ifdef H5 */
 page {
   height: 100%;
 }
+/* #endif */
 .tipsMkt {
   flex-shrink: 0;
   color: #c0c4cc;

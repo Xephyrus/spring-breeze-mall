@@ -704,9 +704,11 @@ function fetchCode() {
 declare function miniProgramLogin(code: string | undefined): Promise<{ data: any }>
 </script>
 <style>
+	/* #ifdef H5 */
 	page {
 		background: #fff;
 	}
+	/* #endif */
 </style>
 <style lang="scss" scoped>
 	.login-body {

@@ -361,9 +361,11 @@ async function openActivity() {
 </script>
 
 <style lang="scss">
+/* #ifdef H5 */
 page {
   background-color: var(--theme-light, #ff6b35) !important;
 }
+/* #endif */
 </style>
 
 <style lang="scss" scoped>

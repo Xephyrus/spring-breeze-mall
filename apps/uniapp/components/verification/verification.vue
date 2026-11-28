@@ -276,9 +276,10 @@ defineExpose({
 </script>
 
 <style lang="scss" scoped>
-@import "./animation.css";
-@import "./icon.css";
-// @import './main.css';
+/* animation.css / icon.css 里用了 `[class*=animation-]`、`[class*="cuIcon-"]` 这类
+ * 属性选择器；微信小程序把组件 wxss 里的属性选择器/标签选择器/ID 选择器一律拒绝
+ * （控制台报 Some selectors are not allowed in component wxss）。
+ * 这两份是全局工具样式（动画 keyframes + cuIcon 字体），已改到 App.vue 全局引入。 */
 
 .v-track {
   position: relative;

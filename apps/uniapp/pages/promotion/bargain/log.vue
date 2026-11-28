@@ -76,9 +76,11 @@ function navigateToBargainDetail(val: any) {
 }
 </script>
 <style>
+/* #ifdef H5 */
 page {
   background: #f5f5f5;
 }
+/* #endif */
 </style>
 <style scoped lang="scss">
 .box {

@@ -292,6 +292,10 @@ lili:
     path: data/uploads
     # 静态文件访问的 URL 前缀
     url-prefix: /files
+    # 对外访问的绝对地址（小程序端必须是绝对地址，否则 /files/xxx 会被当成
+    # 小程序项目内的相对文件去加载，表现为 500/404、图片不显示）
+    # 真机调试改成局域网 IP，例如 http://192.168.1.5:8888
+    public-base-url: ${LILI_FILE_PUBLIC_BASE_URL:http://127.0.0.1:8888}
 
   # 在线会员人数统计设置
   statistics:

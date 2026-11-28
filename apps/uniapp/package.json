@@ -8,7 +8,7 @@
   },
   "main": "main.js",
   "scripts": {
-    "postinstall": "patch-package && node scripts/patch-mqtt-abort.js && node scripts/patch-vendor-harmony.js",
+    "postinstall": "node scripts/apply-uview-patch.js && node scripts/patch-mqtt-abort.js && node scripts/patch-vendor-harmony.js",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json --pretty false",
     "lint": "eslint . --max-warnings 254",
     "lint:fix": "eslint . --fix",

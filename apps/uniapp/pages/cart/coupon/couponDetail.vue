@@ -44,10 +44,12 @@ onLoad((option) => {
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page,
 .content {
   height: 100%;
 }
+/* #endif */
 .body {
   .top-view {
     margin: 20rpx 20rpx 0;

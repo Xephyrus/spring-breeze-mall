@@ -118,11 +118,13 @@ function fetchPointSummary() {
 </script>
 
 <style lang="scss">
+/* #ifdef H5 */
 page,
 .content {
   min-height: 100vh;
   background: #f9f9f9;
 }
+/* #endif */
 
 .content {
   overflow: hidden;

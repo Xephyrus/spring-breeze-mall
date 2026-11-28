@@ -589,11 +589,13 @@ function reBuy(order: any) {
 </script>
 
 <style lang="scss" scoped>
+	/* #ifdef H5 */
 	page,
 	.content {
 		background: $page-color-base;
 		height: 100%;
 	}
+	/* #endif */
 
 	.swiper-box {
 		height: calc(100vh - 40px);

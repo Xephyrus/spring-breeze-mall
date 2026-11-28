@@ -123,11 +123,13 @@ function navigateToGoodsDetail(skuId: string) {
 </script>
 
 <style lang="scss">
+/* #ifdef H5 */
 page,
 .content {
   background: $page-color-base;
   height: 100%;
 }
+/* #endif */
 .after-sales-goods-detail-view {
   background-color: #fff;
   .header {

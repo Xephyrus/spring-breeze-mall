@@ -348,9 +348,11 @@ async function validatorStep3Form() {
 }
 </script>
 <style lang="scss">
+/* #ifdef H5 */
 page {
   background: #f8f8f8;
 }
+/* #endif */
 </style>
 <style lang="scss" scoped>
 @import "./entry.scss";

@@ -483,7 +483,7 @@
           this.templateOptions.canvasHeight = qr.size;
           this.templateOptions.canvasTransform = '';
           /* 使用dynamicSize+scale，可以解决小块间出现白线问题，dpr可以解决模糊问题 */
-          const dpr = uni.getSystemInfoSync().pixelRatio;
+          const dpr = uni.getWindowInfo().pixelRatio;
           canvas.width = qr.dynamicSize * dpr;
           canvas.height = qr.dynamicSize * dpr;
           canvasContext.scale(dpr, dpr);
@@ -796,7 +796,7 @@
         }
         // #endif
         // #ifdef APP-NVUE
-        const dpr = uni.getSystemInfoSync().pixelRatio;
+        const dpr = uni.getWindowInfo().pixelRatio;
         this.canvasContext.toTempFilePath(
           0,
           0,

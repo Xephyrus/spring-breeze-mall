@@ -120,7 +120,10 @@
 | 31 | 扫码进入（`tpl.ts` 的 `scan()`） | 能拉起相机扫码 | [ ] |
 | 32 | 客服消息 / IM | **连 `ws://127.0.0.1:8885`**，可收发（开发构建已切本地） | [ ] |
 | 32b | 控制台 | **不再出现 `wx.getSystemInfoSync is deprecated`**（本轮已全部换成 `getDeviceInfo` / `getWindowInfo`） | [ ] |
-| 32c | 控制台 | 鸿蒙兼容性提示最多剩 2 条，且都在 `js_sdk/`、`uni_modules/`（第三方，不改） | [ ] |
+| 32c | 控制台 | 无鸿蒙兼容性提示（第三方 2 条已在 `patch-vendor-harmony.js` 里修掉） | [ ] |
+| 32d | 控制台 | 无 `Some selectors are not allowed in component wxss`（`page{}` / 属性选择器已处理） | [ ] |
+| 32e | 商品图 / 头像 / 店铺 logo | 地址是 `http://127.0.0.1:8888/files/...`（绝对地址），图片能显示 | [ ] |
+| 32f | 后台传一张图后刷新小程序 | 新上传的图正常显示（相对路径 `/files/...` 已被后端补成绝对地址） | [ ] |
 
 ## 八、📲 App（HTML5+ 原生能力）
 
@@ -344,3 +347,37 @@ config/config.js
 |---|---|---|
 | H5 | `cli.exe launch web --project <项目> --compile true` | ✅ 编译成功 |
 | 微信小程序 | `cli.exe launch mp-weixin --project <项目> --compile true` | ✅ 编译成功；鸿蒙提示 2 条（均为第三方） |
+---
+
+## 附录 C：本地后端启动方式（决定图片能不能显示）
+
+`lili.local-file.path` 是**相对启动工作目录**的，四个服务必须在同一目录启动，否则
+`/files/**` 指向不同目录，小程序端图片 404。
+
+推荐统一在 `backend/` 下用 jar 启动：
+
+```bash
+cd backend
+# 一次打包（改了 framework 或某个服务都要重打）
+mvnw.cmd -pl buyer-api,manager-api,im-api -am -DskipTests package
+
+# 三个服务
+java -jar buyer-api/target/buyer-api-5.0.2.jar   --spring.profiles.active=dev
+java -jar manager-api/target/manager-api-5.0.2.jar --spring.profiles.active=dev
+java -jar im-api/target/im-api-5.0.2.jar         --spring.profiles.active=dev
+```
+
+自检：
+
+```powershell
+# 图片静态资源（8887 / 8888 都应 200）
+Invoke-WebRequest 'http://127.0.0.1:8888/files/MANAGER/default/<某个真实文件名>.jpg' -UseBasicParsing
+# 接口里的图片地址应是绝对地址
+(Invoke-WebRequest 'http://127.0.0.1:8888/buyer/goods/1' -UseBasicParsing).Content -match 'http://127.0.0.1:8888/files/'
+```
+
+> 若用 `mvnw spring-boot:run -pl buyer-api` 调试，工作目录是 `backend/buyer-api/`，
+> 必须把 `lili.local-file.path` 配成绝对路径或 `../data/uploads`，否则图片必 404。
+>
+> 真机调试：`LILI_FILE_PUBLIC_BASE_URL=http://<电脑局域网IP>:8888`，
+> 同时把小程序/App 的 `DEV_HOST` 改成同一 IP。

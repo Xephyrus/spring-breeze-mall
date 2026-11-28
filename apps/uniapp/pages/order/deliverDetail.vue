@@ -174,9 +174,11 @@ async function loadData(sn: string) {
 </script>
 
 <style>
+/* #ifdef H5 */
 page {
 	background: #f1f1f1;
 }
+/* #endif */
 </style>
 
 <style lang="scss" scoped>

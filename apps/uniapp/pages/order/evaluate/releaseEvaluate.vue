@@ -155,12 +155,14 @@ function onUploadAfterRead(event: any) {
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page,
 .content {
   background: $page-color-base;
   height: 100%;
   margin-bottom: 100rpx;
 }
+/* #endif */
 .onSubmit {
   width: 80%;
   margin: 0 auto;

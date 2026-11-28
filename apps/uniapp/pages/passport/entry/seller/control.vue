@@ -73,9 +73,11 @@ function finished() {
 </script>
 
 <style lang="scss">
+/* #ifdef H5 */
 page {
   background: #f7f7f7;
 }
+/* #endif */
 </style>
 
 <style lang="scss" scoped>

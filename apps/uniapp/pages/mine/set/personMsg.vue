@@ -278,9 +278,11 @@ onShow(() => {
 </script>
 
 <style lang="scss">
+/* #ifdef H5 */
 page {
   background: #f5f5f5;
 }
+/* #endif */
 </style>
 <style lang="scss" scoped>
 .person-msg {

@@ -42,7 +42,8 @@
 </template>
 
 <script>
-	let sysInfo = uni.getSystemInfoSync();
+	// getSystemInfoSync 已废弃（微信基础库会告警），窗口信息用 getWindowInfo
+	let sysInfo = uni.getWindowInfo();
 	let SCREEN_WIDTH = sysInfo.screenWidth
 	let PAGE_X, // 手按下的x位置
 		PAGE_Y, // 手按下y的位置 

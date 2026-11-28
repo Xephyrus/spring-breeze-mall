@@ -207,7 +207,8 @@ lili:
     path: data/uploads
     # 静态文件访问的 URL 前缀
     url-prefix: /files
-
+    # 对外绝对地址：小程序端必须绝对地址，否则图片按项目内相对文件加载会 500/404
+    public-base-url: "${LILI_FILE_PUBLIC_BASE_URL:http://127.0.0.1:8887}"
   # 演示站及脱敏规则配置
   system:
     # 是否演示站点（开启后部分写操作将被拦截阻止）

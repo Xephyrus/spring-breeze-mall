@@ -138,9 +138,11 @@ async function init() {
 }
 </script>
 <style lang="scss">
+/* #ifdef H5 */
 page {
   background: #fff;
 }
+/* #endif */
 </style>
 <style lang="scss" scoped>
 .wrapper {

@@ -176,9 +176,11 @@ function getPhoneNumber(e: any) {
 </script>
 <style lang="scss" scoped>
 	/*微信授权*/
+	/* #ifdef H5 */
 	page {
 		background-color: #ffffff;
 	}
+	/* #endif */
 
 	.wx-auth-container {
 		width: 100%;

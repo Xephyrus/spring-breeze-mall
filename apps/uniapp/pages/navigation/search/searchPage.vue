@@ -794,10 +794,13 @@ function saveKeyword(saveKey: string) {
 </style>
 <style lang="scss">
 /* #ifdef H5 || APP-PLUS */
+/* 小程序端组件级 wxss 不允许页面标签选择器（会告警且不生效），这里只在 H5 生效 */
+/* #ifdef H5 */
 page {
   height: auto;
   min-height: 100vh;
   overflow-y: auto;
 }
+/* #endif */
 /* #endif */
 </style>

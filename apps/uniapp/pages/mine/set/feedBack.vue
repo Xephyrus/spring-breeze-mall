@@ -118,9 +118,11 @@ function submitFeedback() {
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page {
   background: #f8f8f8;
 }
+/* #endif */
 
 .submit {
   text-align: center;

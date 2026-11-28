@@ -70,3 +70,6 @@ replay_pid*.log
 
 # Runtime uploads / generated assets per service
 backend/*/data/
+# patch 生成/应用过程中的临时文件
+patches/.tmp-*.patch
+apps/uniapp/patches/.tmp-*.patch

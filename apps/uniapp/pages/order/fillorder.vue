@@ -961,9 +961,11 @@ function getOrderList() {
 }
 </script>
 <style scoped>
+/* #ifdef H5 */
 page {
   background: #f7f7f7;
 }
+/* #endif */
 </style>
 <style scoped lang="scss">
 .appointment-card {

@@ -224,9 +224,11 @@ function onDetail(comment: any) {
 }
 </script>
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page {
   height: 100%;
 }
+/* #endif */
 .tips {
   text-align: right;
   font-size: 24rpx;

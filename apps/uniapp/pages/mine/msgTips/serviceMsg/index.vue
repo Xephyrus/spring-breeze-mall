@@ -38,9 +38,11 @@
 .msgTime {
   font-size: 13px;
 }
+/* #ifdef H5 */
 page {
   background: $page-color-base;
 }
+/* #endif */
 .list_img {
   width: 100%;
   height: 100%;

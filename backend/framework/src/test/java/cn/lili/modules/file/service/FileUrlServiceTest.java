@@ -1,5 +1,6 @@
 package cn.lili.modules.file.service;
 
+import cn.lili.common.properties.LocalFileProperties;
 import cn.lili.modules.file.entity.enums.OssEnum;
 import cn.lili.modules.system.entity.dto.OssSetting;
 import org.junit.jupiter.api.Test;
@@ -86,5 +87,42 @@ class FileUrlServiceTest {
                 fileUrlService.rewriteText("<p><img src=\"/files/article/a.png\"></p>", setting));
         assertEquals("{\"image\":\"https://cdn.example.com/files/page/a.png\"}",
                 fileUrlService.rewriteText("{\"image\":\"/files/page/a.png\"}", setting));
+    }
+
+    /**
+     * 未开启 CDN 但配置了 local-file.public-base-url 时，本地文件地址应补成绝对地址。
+     *
+     * 场景：小程序端 image src 为 `/files/xxx` 会被当成项目内相对文件加载（500/404），
+     * 只有绝对地址才能渲染 —— 这正是「本地上传图片显示不出来」的根因。
+     */
+    @Test
+    void toPublicUrlShouldAbsolutizeLocalFileWhenBaseUrlConfigured() {
+        OssSetting setting = new OssSetting();
+        setting.setType(OssEnum.LOCAL.name());
+        setting.setLocalFileUrlPrefix("/files");
+        setting.setCdnEnabled(false);
+
+        FileUrlService service = new FileUrlService();
+        LocalFileProperties properties = new LocalFileProperties();
+        properties.setPublicBaseUrl("http://127.0.0.1:8888");
+        setField(service, "localFileProperties", properties);
+
+        assertEquals("http://127.0.0.1:8888/files/MANAGER/a.png",
+                service.toPublicUrl("/files/MANAGER/a.png", setting));
+        // 已带域名的地址不重复拼接
+        assertEquals("https://cdn.example.com/files/a.png",
+                service.toPublicUrl("https://cdn.example.com/files/a.png", setting));
+        // 非本地前缀的普通路径不动
+        assertEquals("goods/a.png", service.toPublicUrl("goods/a.png", setting));
+    }
+
+    private static void setField(Object target, String name, Object value) {
+        try {
+            java.lang.reflect.Field field = target.getClass().getDeclaredField(name);
+            field.setAccessible(true);
+            field.set(target, value);
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

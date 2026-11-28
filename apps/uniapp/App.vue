@@ -201,6 +201,11 @@ function checkArguments() {
 <style lang="scss">
 @import "uview-plus/index.scss";
 @import "@/styles/uview-form-fix.scss";
+/* 全局工具样式：cuIcon 字体 + 动画 keyframes。
+ * 放在 App.vue（app.wxss）而不是组件里 —— 组件级 wxss 不允许属性选择器
+ * （[class*="cuIcon-"] / [class*=animation-]），小程序端会直接忽略并告警。 */
+@import "@/components/verification/icon.css";
+@import "@/components/verification/animation.css";
 
 // -------适配底部安全区  苹果x系列刘海屏
 

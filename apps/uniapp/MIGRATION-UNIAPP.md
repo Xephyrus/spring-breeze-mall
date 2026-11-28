@@ -1012,3 +1012,133 @@ vendored 代码的告警不该一律「接受」：
 - 先判断**改动是否改变行为**（本例：只补判断、不改分支 → 零风险）
 - 再判断**是否会因升级丢失**（会 → 用幂等补丁脚本，挂在 postinstall）
 - 两者都满足时，直接改比长期忍受告警更好 —— 告警会淹没真正的问题
+
+---
+
+## 十六、小程序控制台告警清理 + 本地上传图片（2026-11-28）
+
+这一轮来自微信开发者工具控制台的四条信息，逐个对应：
+
+| 控制台现象 | 根因 | 处理 |
+|---|---|---|
+| `wx.getSystemInfoSync is deprecated`（`uni.api.esm.js:942`） | 还有组件在用 `uni.getSystemInfoSync()`：`u-qrcode`/`uqrcode`（pixelRatio）、`okingtz-cropper` | 全部换 `uni.getWindowInfo()` |
+| `Some selectors are not allowed in component wxss`（category 页） | 页面 `<style>` 里的 `page {}` + 组件里 import 的 `[class*=cuIcon-]`、`[class*=animation-]` 属性选择器 | 见 16.2 |
+| `图片链接 http://cdn.uviewui.com/... 不再支持 HTTP` | 空状态图写死 http | 改 https |
+| `Failed to load local image resource /files/MANAGER/... 500` | 两处：① 接口返回相对路径 `/files/...`，小程序当项目内文件加载；② buyer-api 的工作目录与 manager 不同，静态映射指向了另一个 `data/uploads` | 见 16.3 / 十七节 |
+
+### 16.1 弃用 API（组件级）
+
+`uni_modules/Sansnn-uQRCode/components/u-qrcode|uqrcode` 里 `uni.getSystemInfoSync().pixelRatio`
+→ `uni.getWindowInfo().pixelRatio`；`okingtz-cropper` 顶层 `let sysInfo = uni.getSystemInfoSync()`
+→ `getWindowInfo()`。
+
+这些是 vendored 代码，已并入 `scripts/patch-vendor-harmony.js`（幂等，postinstall 自动执行），
+并由 `scripts/check-vendor-patches.mjs` 在 CI 里校验「补丁是否还在位」。
+
+### 16.2 组件 wxss 不允许的选择器
+
+微信把**页面**也当组件，所以「组件级 wxss」实际覆盖页面样式。三类选择器会被拒绝并告警：
+标签选择器（`page`/`image`/`span`…）、ID 选择器、属性选择器。
+
+| 位置 | 原写法 | 改法 |
+|---|---|---|
+| 43 个页面 | `page { height: 100% }` 等 | 包成 `/* #ifdef H5 */ ... /* #endif */`：H5 行为不变，小程序端本来也不生效（不告警、不丢东西） |
+| `pages/tabbar/category/category.vue` | `page { height: 100%; background: #fff }` | 直接删掉 —— 根节点 `.category-wrap` 已有同样的声明 |
+| `components/verification/verification.vue` | `@import "./animation.css"` + `"./icon.css"`（含 `[class*=animation-]`、`[class*="cuIcon-"]`） | 移到 `App.vue` 全局引入（app.wxss 允许属性选择器） |
+| `uview-plus` 5 个 `theme-vars.scss` | `:root, page, body {}` + `[data-up-theme]` | 清空成注释（主题变量由 App.vue 全局 `uview-plus/index.scss` 提供） |
+| `uview-plus/components/u-goods-sku` | `&__image { image { ... } }` | 给 `<image>` 加 class，选择器改 `.u-goods-sku__image-el` |
+
+验证：产物里除 `app.wxss` 外已无 `page/body` 选择器；uview 组件 wxss 无标签/属性选择器。
+
+### 16.3 本地上传图片显示不出来（前端侧）
+
+小程序端 `<image src="/files/xxx.jpg">` 会被当成**小程序项目内的相对文件**去加载，
+开发者工具直接报 500。H5 因为同源相对路径能通，问题被掩盖。
+
+彻底修法是让接口返回**绝对地址**（见十七节后端改动）。前端侧同时做了一件事：
+把空状态图从 `http://cdn.uviewui.com` 改成 `https://`（微信已不支持 http 图片）。
+
+### 16.4 postinstall 修好了一个隐藏故障
+
+原来 `postinstall` 是 `patch-package && ...`，但 pnpm 工程没有 `package-lock.json`，
+`patch-package` 必然报错退出 —— **后面的 vendor 补丁脚本根本不会执行**。
+
+现在：
+
+```json
+"postinstall": "node scripts/apply-uview-patch.js && node scripts/patch-mqtt-abort.js && node scripts/patch-vendor-harmony.js"
+```
+
+`apply-uview-patch.js` 解决 pnpm 下的第二个坑：`apps/uniapp/node_modules/uview-plus` 是符号链接，
+`git apply` 不会跟随符链写入 —— 脚本把补丁路径改写成 `node_modules/.pnpm/uview-plus@3.8.42/...`
+的真实路径再应用，并用「反向 `--check` 能否通过」判断是否已打过（幂等）。
+
+---
+
+## 十七、本地上传图片的后端修复（2026-11-28）
+
+### 17.1 两个独立的问题
+
+**问题一：接口返回相对路径。**
+
+`li_file.url` 存的是 `/files/MANAGER/default/xxx.jpg`。`FileUrlService` 只在**开启 CDN** 时
+才重写地址；本地环境 `OSS_SETTING` 是 `{"type":"LOCAL", ...}`、没有 CDN →
+原样返回相对路径 → 小程序端当项目内文件加载，500。
+
+改法：新增 `lili.local-file.public-base-url`，未开 CDN 时把 `/files/...` 补成绝对地址。
+
+```java
+// FileUrlService.toPublicUrl(url, setting)
+if (!cdnEnabled(setting)) {
+    String absolute = absolutizeLocalFile(trimmedUrl, getLocalRequestPrefix(setting));
+    return CharSequenceUtil.equals(absolute, trimmedUrl) ? url : preserveOuterWhitespace(url, absolute);
+}
+```
+
+配置（`backend/config/application.yml`、`buyer-api`、`manager-api`）：
+
+```yaml
+lili:
+  local-file:
+    path: data/uploads
+    url-prefix: /files
+    # 小程序端必须绝对地址；真机调试改成局域网 IP
+    public-base-url: ${LILI_FILE_PUBLIC_BASE_URL:http://127.0.0.1:8888}
+```
+
+单测：`FileUrlServiceTest#toPublicUrlShouldAbsolutizeLocalFileWhenBaseUrlConfigured`
+（绝对化、已绝对地址不重复拼、非 `/files` 前缀不动）。
+
+**问题二：buyer-api 根本没把 `/files/**` 指到同一个目录。**
+
+实测：
+
+| 服务 | 启动方式 | `/files/MANAGER/default/d61d….jpg` |
+|---|---|---|
+| manager-api（8887） | `java -jar`，工作目录 `backend/` | **200** image/jpeg |
+| buyer-api（8888） | `mvnw spring-boot:run -pl buyer-api`，工作目录 `backend/buyer-api/` | **404** |
+
+`local-file.path: data/uploads` 是相对路径，`spring-boot:run` 的工作目录是**模块目录**，
+于是 buyer-api 去 `backend/buyer-api/data/uploads` 找文件（不存在）。
+
+改法：buyer-api 也按 jar 方式、从 `backend/` 启动，和其它服务工作目录一致：
+
+```bash
+cd backend
+mvnw.cmd -pl buyer-api -am -DskipTests package
+java -jar buyer-api/target/buyer-api-5.0.2.jar --spring.profiles.active=dev
+```
+
+验证：`GET http://127.0.0.1:8888/files/MANAGER/default/d61d9fe0….jpg` → **200 image/jpeg**。
+
+> 如果坚持用 `mvnw spring-boot:run` 调试 buyer-api，就把 `lili.local-file.path` 配成绝对路径
+> （或 `../data/uploads`），否则图片一定 404。
+
+### 17.2 新增配置项说明
+
+| 配置 | 默认 | 用途 |
+|---|---|---|
+| `lili.local-file.path` | `data/uploads` | 上传文件落盘目录（相对启动工作目录） |
+| `lili.local-file.url-prefix` | `/files` | 对外访问前缀 |
+| `lili.local-file.public-base-url` | 空 | 未开 CDN 时补全绝对地址；**小程序必需** |
+| 环境变量 `LILI_FILE_PUBLIC_BASE_URL` | `http://127.0.0.1:8888` | 真机调试改成局域网 IP |

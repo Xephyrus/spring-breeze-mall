@@ -188,10 +188,9 @@ function navigateToList(sid: any, tid: any) {
 </script>
 
 <style lang="scss">
-page {
-  height: 100%;
-  background-color: #ffffff;
-}
+/* 原来这里是 page 标签选择器：微信小程序把页面当组件，组件级 wxss 里
+ * 标签选择器/ID/属性选择器都会被拒绝（控制台报 Some selectors are not allowed
+ * in component wxss）。这些声明与下方 .category-wrap 完全重复，直接由根节点承担。 */
 </style>
 
 <style lang="scss" scoped>

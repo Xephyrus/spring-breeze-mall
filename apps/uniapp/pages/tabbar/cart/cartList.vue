@@ -577,9 +577,11 @@ function getCardData() {
 </script>
 
 <style lang="scss">
+/* #ifdef H5 */
 page {
   background: #f2f2f2;
 }
+/* #endif */
 </style>
 <style scoped lang="scss">
 // #ifdef MP-WEIXIN

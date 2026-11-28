@@ -82,11 +82,13 @@ onLoad((options) => {
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page,
 .content {
   background: $page-color-base;
   height: 100%;
 }
+/* #endif */
 
 .u-order-time {
   font-size: 24rpx;

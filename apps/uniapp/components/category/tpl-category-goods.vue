@@ -46,7 +46,7 @@
             <u-empty
               :text="failed ? '加载失败，请重试' : '暂无相关商品'"
               mode="data"
-              icon="http://cdn.uviewui.com/uview/empty/data.png"
+              icon="https://cdn.uviewui.com/uview/empty/data.png"
               margin-top="100"
             >
               <view v-if="failed" class="retry" @click="loadGoods(true)">重试</view>

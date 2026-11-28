@@ -50,14 +50,23 @@ public class FileUrlService {
     }
 
     public String toPublicUrl(String url, OssSetting setting) {
-        if (CharSequenceUtil.isBlank(url) || !cdnEnabled(setting)) {
+        if (CharSequenceUtil.isBlank(url)) {
             return url;
         }
-        String normalizedCdn = normalizeCdnPrefix(setting.getCdnUrlPrefix());
         String trimmedUrl = url.trim();
         if (skipUrl(trimmedUrl)) {
             return url;
         }
+
+        // 未开启 CDN 时：本地文件地址补成绝对地址。
+        // 小程序端拿到 `/files/xxx` 会当成项目内相对文件去加载（500/404），
+        // 只有绝对地址（http://host:port/files/xxx）才能正常渲染。
+        if (!cdnEnabled(setting)) {
+            String absolute = absolutizeLocalFile(trimmedUrl, getLocalRequestPrefix(setting));
+            return CharSequenceUtil.equals(absolute, trimmedUrl) ? url : preserveOuterWhitespace(url, absolute);
+        }
+
+        String normalizedCdn = normalizeCdnPrefix(setting.getCdnUrlPrefix());
 
         String localRequestPrefix = getLocalRequestPrefix(setting);
         String pathRewritten = rewriteLocalPath(trimmedUrl, localRequestPrefix, normalizedCdn);
@@ -290,6 +299,33 @@ public class FileUrlService {
             }
         }
         return false;
+    }
+
+    /**
+     * 本地文件地址补全为绝对地址（仅当配置了 {@code lili.local-file.public-base-url}）。
+     *
+     * 只处理 `/files/...` 这类以本地访问前缀开头的地址；已经是 http(s) 的不动。
+     */
+    private String absolutizeLocalFile(String url, String localRequestPrefix) {
+        if (localFileProperties == null) {
+            return url;
+        }
+        String base = CharSequenceUtil.blankToDefault(localFileProperties.getPublicBaseUrl(), "").trim();
+        if (CharSequenceUtil.isBlank(base)) {
+            return url;
+        }
+        String lower = url.toLowerCase();
+        if (lower.startsWith("http://") || lower.startsWith("https://") || lower.startsWith("//")) {
+            return url;
+        }
+        String normalizedLocal = normalizeRequestPath(localRequestPrefix);
+        boolean matches = url.equals(normalizedLocal)
+                || url.startsWith(normalizedLocal + "/")
+                || url.startsWith(normalizedLocal + "?");
+        if (!matches) {
+            return url;
+        }
+        return CharSequenceUtil.removeSuffix(base, "/") + url;
     }
 
     private String rewriteBySourcePrefix(String url, String sourcePrefix, String cdnPrefix) {

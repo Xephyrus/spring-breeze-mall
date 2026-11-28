@@ -128,11 +128,13 @@ function preview(urls: string[] | string | false, index: number | string) {
   font-size: 24rpx;
   color: $u-tips-color;
 }
+/* #ifdef H5 */
 page,
 .content {
   background: $page-color-base;
   height: 100%;
 }
+/* #endif */
 
 .exaluate-member-view {
   background-color: #fff;

@@ -29,9 +29,11 @@ onLoad((val) => {
 })
 </script>
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page {
   background: #fff;
 }
+/* #endif */
 .container {
   padding: 32rpx;
   /* #ifdef H5 */

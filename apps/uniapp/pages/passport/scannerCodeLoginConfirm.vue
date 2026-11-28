@@ -109,9 +109,11 @@ function submitLoginConfirm(code: number) {
 }
 </script>
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page {
   background: #fff;
 }
+/* #endif */
 </style>
 <style lang="scss" scoped>
 .container {

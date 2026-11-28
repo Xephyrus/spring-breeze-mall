@@ -216,9 +216,11 @@ function onCodeCountdownStart() {
 	font-weight: bold;
 }
 
+/* #ifdef H5 */
 page {
 	background: #fff;
 }
+/* #endif */
 
 .box {
 	padding: 80rpx 0;

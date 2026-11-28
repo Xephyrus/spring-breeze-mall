@@ -351,10 +351,12 @@ function fetchStoreList() {
 </script>
 
 <style lang="scss">
+/* #ifdef H5 */
 page {
 	background: #f8f8f8;
 	height: 100%;
 }
+/* #endif */
 </style>
 
 <style lang="scss" scoped>

@@ -368,9 +368,11 @@ function onProgress() {
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page {
   background: $page-color-base;
 }
+/* #endif */
 
 .after-sales-goods-detail-view {
   background-color: #fff;

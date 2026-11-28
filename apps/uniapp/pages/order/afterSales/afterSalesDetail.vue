@@ -410,10 +410,12 @@ function validateFormParams() {
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page {
   background: $page-color-base;
   height: 100%;
 }
+/* #endif */
 
 .page-wrap {
   display: flex;

@@ -249,9 +249,11 @@ function handleClickHome() {
 </script>
 
 <style lang="scss" scoped>
+/* #ifdef H5 */
 page {
   background: #fff;
 }
+/* #endif */
 .over {
   margin: 10% 0;
 }
