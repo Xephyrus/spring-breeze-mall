@@ -18,14 +18,15 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getAppVersionList } from '@/api/message'
+import { getPlatform } from '@/utils/platform'
 
 const versionList = ref<any[]>([])
 const appType = ref('')
 const params = { pageNumber: 1, pageSize: 10 }
 
 onLoad(() => {
-  const platform = uni.getSystemInfoSync().platform
-  appType.value = platform === 'android' ? 'ANDROID' : 'IOS'
+  // 只有 iOS 查 IOS 线；android / 鸿蒙 / 其它端都查 ANDROID 线
+  appType.value = getPlatform() === 'ios' ? 'IOS' : 'ANDROID'
   fetchVersionList()
 })
 

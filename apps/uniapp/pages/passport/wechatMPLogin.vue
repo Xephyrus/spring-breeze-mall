@@ -6,7 +6,7 @@
 			<div class="tips">
 				为了更好地用户体验，需要您授权手机号
 			</div>
-			<button class="register" v-bind="{ type: 'primary' as any }" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
+			<button class="register" :type="buttonType" open-type="getPhoneNumber" @getphonenumber="getPhoneNumber">
 				去授权
 			</button>
 		</u-modal>
@@ -20,7 +20,7 @@
 					<view>您的公开信息（昵称、头像）</view>
 				</view>
 				<view class="btns">
-					<button v-bind="{ type: 'primary' as any }" :disabled="logingFlag" bindtap="getUserProfile" @click="getUserProfile()"
+					<button :type="buttonType" :disabled="logingFlag" bindtap="getUserProfile" @click="getUserProfile()"
 						class="btn-auth">登录</button>
 					<div @click="goMobileLogin" class="btn-callback">手机号登录</div>
 				</view>
@@ -47,6 +47,10 @@
 </template>
 
 <script setup lang="ts">
+// uni 的 <button type="primary"> 是 uni 自有属性，而 Volar 按 DOM 的 button type 校验；
+// 另外 uni 的模板编译器**不支持** v-bind 对象字面量（会报 v-bind="" is not supported），
+// 所以这里用一个 any 变量做单属性绑定：运行时仍是字符串 'primary'，两边类型都成立。
+const buttonType: any = 'primary'
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { mpAutoLogin } from '@/api/connect'

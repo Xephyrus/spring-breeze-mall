@@ -46,6 +46,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import APPUpdate from '@/plugins/app-update'
 import config from '@/config/config'
 import { getAppVersion } from '@/api/message'
+import { getPlatform } from '@/utils/platform'
 
 const showIosRating = ref(false)
 const versionData = ref<Record<string, any>>({})
@@ -54,12 +55,13 @@ const params = ref<Record<string, any>>({ pageNumber: 1, pageSize: 5 })
 
 onLoad(() => {
   // #ifdef APP-PLUS
-  const platform = uni.getSystemInfoSync().platform
-  if (platform === 'android') {
-    params.value.type = 0
-  } else {
+  // 只有 iOS 走 App Store 评分线；android / 鸿蒙 / 其它端都按 android 处理
+  const platform = getPlatform()
+  if (platform === 'ios') {
     showIosRating.value = true
     params.value.type = 1
+  } else {
+    params.value.type = 0
   }
   fetchRemoteVersion(platform)
 
@@ -82,7 +84,8 @@ onLoad(() => {
 })
 
 async function fetchRemoteVersion(platform: string) {
-  const type = platform === 'android' ? 'ANDROID' : 'IOS'
+  // 鸿蒙用 Android 包（华为应用市场走 android 线），与原「非 iOS 即 ANDROID」一致
+  const type = platform === 'ios' ? 'IOS' : 'ANDROID'
   const res = await getAppVersion(type)
   if (res.data.success) {
     versionData.value = res.data.result

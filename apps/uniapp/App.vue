@@ -17,6 +17,7 @@ import {
 } from '@/utils/category-page-setting'
 import { onLaunch, onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
+import { isIos } from '@/utils/platform'
 import { handleAppLaunchScene } from '@/utils/distribution-bind'
 
 const store = useStore()
@@ -57,7 +58,8 @@ onShow(() => {
 
   // #ifdef APP-PLUS
   if (storage.getShow()) {
-    if (uni.getSystemInfoSync().platform == 'ios') {
+    // 只有 iOS 需要进全屏引导（Android/鸿蒙走各自的原生机制）
+    if (isIos()) {
       uni.navigateTo({ url: '/pages/tabbar/screen/fullScreen' })
     }
   }

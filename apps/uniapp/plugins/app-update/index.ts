@@ -1,4 +1,5 @@
 // @ts-nocheck
+import { getPlatform } from '@/utils/platform';
 /**
  * DCloud 官方「App 版本更新」插件（ext.dcloud.net.cn/plugin?id=822）的集成版，916 行。
  *
@@ -18,7 +19,9 @@
 // 请求配置说明：https://ext.dcloud.net.cn/plugin?id=822
 import { getAppVersion } from "@/api/message";
 
-const platform = uni.getSystemInfoSync().platform;
+// 平台判断收口到 utils/platform：只有 iOS 归为 "ios"，android / 鸿蒙 / 其它端都按 "android"
+// 处理（保持原来 `platform == "android" ? ANDROID : IOS` 的语义，同时不再裸读 UA）
+const platform = getPlatform() === "ios" ? "ios" : "android";
 
 // 版本号比较函数
 function compareVersion(version1, version2) {

@@ -771,3 +771,76 @@ const data = res?.data || err?.data                       // → undefined
 | node 测试 | ✅ 6 个脚本全绿 |
 | 业务 `.js` | 仅剩 4 个入口/配置（`main.js` 刻意保留：HBuilderX 以 `main.js` 为入口） |
 | 统计 | `.vue` 214 / `.ts` 112 / `.js` 31（其中 27 个是 `js_sdk` 第三方 + 2 个 scripts） |
+---
+
+## 十三、修 HBuilderX 编译告警（2026-11-28）
+
+### 13.1 `[plugin:vite:vue] v-bind="" is not supported`（真错误，页面编译失败）
+
+**位置**：`pages/passport/wechatMPLogin.vue:9 / 23`
+
+早前为了消掉「uni 的 `<button type="primary">` 与 DOM button type 冲突」的 Volar 报错，
+我把它改成了对象字面量绑定：
+
+```html
+<button v-bind="{ type: 'primary' as any }" ...>
+```
+
+**uni-app 的模板编译器不支持对象形式的 `v-bind`**，直接报 `v-bind="" is not supported`。
+也就是说：类型检查过了，但 H5/小程序编译挂了 —— 这是「用类型手段解决类型问题」用错地方的典型。
+
+**改法**：用单个属性绑定 + 一个 `any` 变量，运行时仍是字符串 `'primary'`：
+
+```ts
+// uni 的 <button type> 支持 primary/default/warn，Volar 却按 DOM 的 button type 校验
+const buttonType: any = 'primary'
+```
+
+```html
+<button class="register" :type="buttonType" open-type="getPhoneNumber" ...>
+```
+
+> 教训：**界面属性的类型冲突，不要用模板里的类型断言去绕** ——
+> 模板表达式同时受 Volar 与 uni 编译器两套解析器约束，能用「运行时值不变、类型放宽」
+> 的普通绑定解决，就不要引入编译器不认识的语法。
+
+### 13.2 鸿蒙兼容性告警（`platform/UA检测逻辑可能未适配鸿蒙系统`）
+
+原始 10 条，分布：
+
+| 位置 | 性质 |
+|---|---|
+| `pages/mine/address/add.vue`（3 条）、`pages/passport/entry/seller/step3.vue`（3 条） | 自己的代码：用 `sysRes.platform == 'ios'/'android'` 决定怎么跳系统设置 |
+| `pages/mine/set/editionIntro.vue`、`pages/mine/set/versionFunctionList.vue` | 自己的代码：`platform === 'android' ? A : B`，鸿蒙会被错判成 iOS |
+| `js_sdk/u-draw-poster/utils/global.js`、`uni_modules/Sansnn-uQRCode/**/bridge-weex.js` | **第三方 vendored**，不改 |
+
+**处理**：新增 `utils/platform.ts` 收口平台判断：
+
+```ts
+export type PlatformName = 'ios' | 'android' | 'harmonyos' | 'other'
+export function getPlatform(): PlatformName   // 优先 getDeviceInfo()，兜底 getSystemInfoSync()
+export function isIos(): boolean
+export function isAndroidLike(): boolean
+```
+
+替换了 6 处调用：
+
+- `add.vue` / `step3.vue`：跳系统设置改成 `switch (platform)`，鸿蒙走
+  `uni.openAppAuthorizeSetting()`（鸿蒙没有 `plus.android`），失败提示「请在系统设置中开启权限」
+- `editionIntro.vue` / `versionFunctionList.vue`：语义从「非 android 即 iOS」改成「**只有 iOS 走
+  iOS 线，其余（含鸿蒙）走 ANDROID 线**」——这与华为应用市场按 Android 包分发的实际情况一致
+- `App.vue`、`pages/mine/im/index.vue`：`platform == 'ios'` → `isIos()`
+- `plugins/app-update/index.ts`：`uni.getSystemInfoSync().platform` →
+  `getPlatform() === 'ios' ? 'ios' : 'android'`（保持原有 `== "android"` 分支语义）
+
+**剩余**：`js_sdk/` 与 `uni_modules/` 里第三方的 2 条无法改（vendored），
+其余 `platform === 'devtools'` 是**开发工具判断**，与鸿蒙无关，保留。
+
+### 13.3 验证
+
+| 检查 | 结果 |
+|---|---|
+| 我方代码裸 platform 判断 | 只剩 2 处 `devtools`（开发工具判断） |
+| `typecheck` / `lint` / `test` | 0 错误 / 256 warning / 6 个脚本全绿 |
+| 条件编译配平 | 全树配平（本次改了 `add.vue`、`step3.vue` 的 `#ifndef` 区块） |
+| HBuilderX 完整编译 | **编译成功**，无 `v-bind` 报错、无鸿蒙告警 |

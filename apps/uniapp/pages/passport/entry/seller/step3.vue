@@ -127,6 +127,7 @@ import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { applyThird } from '@/api/entry'
 import { getCategoryList } from '@/api/goods'
+import { getPlatform } from '@/utils/platform'
 import MCity from '@/components/m-city/m-city.vue'
 import uniMap from '@/components/uniMap.vue'
 import permision from '@/js_sdk/wa-permission/permission.js'
@@ -237,18 +238,18 @@ function refuseMap() {
     success(res) {
       if (res.confirm) {
         // #ifndef MP-WEIXIN
-        uni.getSystemInfo({
-          success(sysRes) {
-            if (sysRes.platform == 'ios') {
-              plus.runtime.openURL('app-settings://')
-            } else if (sysRes.platform == 'android') {
-              const main = plus.android.runtimeMainActivity()
-              const Intent = plus.android.importClass('android.content.Intent')
-              const mIntent = new (Intent as any)('android.settings.ACTION_SETTINGS')
-              main.startActivity(mIntent)
-            }
-          },
-        })
+        // 平台判断统一走 utils/platform（鸿蒙会单独归类，避免被误判成 iOS）
+        const platform = getPlatform()
+        if (platform === 'ios') {
+          plus.runtime.openURL('app-settings://')
+        } else if (platform === 'android') {
+          const main = plus.android.runtimeMainActivity()
+          const Intent = plus.android.importClass('android.content.Intent')
+          const mIntent = new (Intent as any)('android.settings.ACTION_SETTINGS')
+          main.startActivity(mIntent)
+        } else if (platform === 'harmonyos' && typeof uni.openAppAuthorizeSetting === 'function') {
+          uni.openAppAuthorizeSetting({ fail: () => uni.showToast({ title: '请在系统设置中开启权限', icon: 'none' }) })
+        }
         // #endif
       }
     },

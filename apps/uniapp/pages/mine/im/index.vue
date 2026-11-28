@@ -190,6 +190,7 @@ import {
 } from '@/api/im'
 import SocketService from '@/utils/socket-service'
 import storage from '@/utils/storage'
+import { isIos } from '@/utils/platform'
 import { beautifyTime, unitPrice } from '@/utils/filters'
 import config from '@/config/config'
 import { textReplaceEmoji, emojistwo } from '@/utils/emojis'
@@ -338,7 +339,7 @@ function eventHandle() {
 function inputBindFocus(e: any) {
   if (e.detail.height) {
     // #ifdef APP-PLUS
-    if (uni.getSystemInfoSync().platform == 'ios') {
+    if (isIos()) {
       inputHeight.value = e.detail.height - 40
     } else {
       inputHeight.value = e.detail.height
