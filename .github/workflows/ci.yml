@@ -51,8 +51,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      # 把结果写进 ::error::，即使拿不到日志，Summary 页的 Annotations 也能看到具体文件
       - name: Case-sensitivity check
-        run: node scripts/check-case-sensitivity.mjs
+        run: node scripts/check-case-sensitivity.mjs 2>&1 | tee precheck.log; exit ${PIPESTATUS[0]}
+
+      - name: Annotate failures
+        if: failure()
+        run: |
+          echo "::error::precheck 失败，明细如下（节选）"
+          sed -n '1,40p' precheck.log | sed 's/^/::error::/'
   manager:
     name: manager · typecheck / lint / build
     runs-on: ubuntu-latest
