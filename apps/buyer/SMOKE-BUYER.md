@@ -123,7 +123,7 @@
 ## 快速回归脚本（复制到 PowerShell）
 
 ```powershell
-cd F:\yibase\mall\spring-breeze-mall
+cd <repo-root>
 
 # 1) 静态门禁
 corepack pnpm --filter @spring-breeze/buyer typecheck

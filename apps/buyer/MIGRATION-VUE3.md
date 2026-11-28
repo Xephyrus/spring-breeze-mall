@@ -43,7 +43,7 @@ yarn build
 
 ## 批量脚本
 
-- `scripts/migrate-iview-to-element.js` — iView → Element 模板替换
+- 迁移期用过的 iView → Element 模板替换脚本已在收尾时清理，见提交记录
 - `scripts/fix-filters.js` — Vue 2 过滤器语法修复
 - `scripts/replace-page.js` — `<Page>` → `el-pagination`
 - `scripts/replace-icon.js` — 静态 `<Icon type>` → `el-icon`

@@ -30,11 +30,21 @@
 
 | 端 | 说明 | 状态 |
 |---|---|---|
-| **manager** 平台运营端 | 商品、订单、会员、营销、分销、直播、装修、统计、系统设置 | ✅ Vue 3 + TS 全量 |
-| **seller** 商家端 | 商家入驻、商品、订单、结算 | ✅ Vite 8 + TypeScript |
-| **buyer** PC 买家端 | 商城前台 | Vue CLI（待迁移） |
-| **im** 客服端 | 在线客服、实时会话 | ✅ Vite 8（TS 迁移中） |
-| **uniapp** 移动端 | 小程序 / H5 | uni-app |
+| **manager** 平台运营端 | 商品、订单、会员、营销、分销、直播、装修、统计、系统设置 | ✅ Vue 3.5 + TS + Vite 8（kebab 改名部分完成） |
+| **seller** 商家端 | 商家入驻、商品、订单、结算 | ✅ Vue 3 + TS + Vite 8 |
+| **buyer** PC 买家端 | 商城前台 | ✅ Vue 3 + TS + Vite 8 |
+| **im** 客服端 | 在线客服、实时会话 | ✅ Vue 3 + TS + Vite 8 |
+| **uniapp** 移动端 | H5 / 小程序 / App | ✅ TS 全量（214 个 SFC + 112 个 `.ts`），构建仍走 HBuilderX |
+
+### 质量门（CI 全绿）
+
+| 端 | `typecheck` | `lint` | 测试 |
+|---|---|---|---|
+| manager | 0 错误 | 0 error / 67 warning（ratchet） | — |
+| seller | 0 错误 | 0 error / 0 warning | — |
+| im | 0 错误 | 0 error / 0 warning | — |
+| buyer | 0 错误 | 0 error / 0 warning | — |
+| uniapp | **0 错误**（原 274） | 0 error / 256 warning（ratchet） | 6 个 node 脚本 |
 
 ---
 
@@ -42,14 +52,14 @@
 
 | 层 | 选型 |
 |---|---|
-| 后端 | JDK 25 · Spring Boot · MyBatis-Plus · Maven（`backend/mvnw`） |
-| 前端（manager） | Vue 3.5 · TypeScript 5.9 · Vite 8 · Element Plus 2.14 · SCSS |
-| 前端（其余） | Vue CLI · Less（计划逐步迁移到 Vite + TS） |
+| 后端 | JDK 25 · Spring Boot 4.0.5 · MyBatis-Plus · Maven（`backend/mvnw`） |
+| 前端（五个端） | Vue 3.5 · TypeScript 5.9 · Vite 8 · SCSS（manager 另用 Element Plus 2.14） |
+| 移动端 | uni-app 4.5 · uview-plus（**构建走 HBuilderX**，仓库不引 `@dcloudio/vite-plugin-uni`） |
 | 包管理 | pnpm 12（workspace + catalog 统一版本） |
 | 中间件 | MySQL 9.7 · Redis 8 · Elasticsearch（可选，IK 分词） |
 | 富文本 | TinyMCE 6.4.2（**MIT**） |
 
-> manager 前端的关键指标：`vue-tsc` 0 错误、`eslint` 告警数有 **ratchet 上限（67）**，只减不增。
+> 五个前端的 `vue-tsc` 均为 **0 错误**；`eslint` 有 ratchet 上限（manager 67 / uniapp 256），只减不增。
 
 ---
 
@@ -194,13 +204,29 @@ mysql -u root -p lilishop < backend/DB/test-data-order.sql
 
 ## 开发命令
 
+各端质量门（与 CI 一致）：
+
 ```bash
-# manager 质量门（提交前建议全跑）
-cd apps/manager
-pnpm exec vue-tsc --noEmit -p tsconfig.app.json
-pnpm exec eslint src --max-warnings 67
-pnpm build
+# manager（vue-tsc + eslint + 构建）
+corepack pnpm --filter @spring-breeze/manager typecheck
+corepack pnpm --filter @spring-breeze/manager lint
+corepack pnpm --filter @spring-breeze/manager build
+
+# seller / im / buyer：把 manager 换成对应名字即可（同样三条）
+corepack pnpm --filter @spring-breeze/seller typecheck
+corepack pnpm --filter @spring-breeze/im lint
+corepack pnpm --filter @spring-breeze/buyer build
+
+# uniapp：类型检查 + lint + 6 个 node 脚本测试（构建需 HBuilderX）
+corepack pnpm --filter @spring-breeze/uniapp typecheck
+corepack pnpm --filter @spring-breeze/uniapp lint
+corepack pnpm --filter @spring-breeze/uniapp test
 ```
+
+> uniapp 的 H5 / 小程序 / App 产物**只能由 HBuilderX 生成**：仓库刻意不装
+> `@dcloudio/vite-plugin-uni`（会与 HBuilderX 内置 Vue 运行时冲突），
+> 所以 CI 里只跑上面三条静态门禁。三端人工冒烟见
+> [`apps/uniapp/SMOKE-UNIAPP.md`](apps/uniapp/SMOKE-UNIAPP.md)。
 
 > 构建大项目时如果遇到 `Zone Allocation failed`（内存不足），用
 > `node --max-old-space-size=3072 node_modules/vite/bin/vite.js build`。
@@ -247,7 +273,12 @@ cd backend
 | [`apps/seller/MIGRATION-BASELINE.md`](apps/seller/MIGRATION-BASELINE.md) | seller 迁移前基线（规模/重复面/风险） |
 | [`apps/seller/SMOKE-SELLER.md`](apps/seller/SMOKE-SELLER.md) | seller 冒烟清单（72 条可勾选） |
 | [`apps/im/MIGRATION-BASELINE.md`](apps/im/MIGRATION-BASELINE.md) | im 迁移基线与计划（含「保留 Less」的决策依据） |
-| [`apps/im/MIGRATION-IM.md`](apps/im/MIGRATION-IM.md) | im 迁移记录（M1 完成，含 WebSocket 验证边界） |
+| [`apps/im/MIGRATION-IM.md`](apps/im/MIGRATION-IM.md) | im 迁移记录（含 WebSocket 验证边界） |
+| [`apps/im/SMOKE-IM.md`](apps/im/SMOKE-IM.md) | im 冒烟清单 |
+| [`apps/buyer/MIGRATION-BUYER.md`](apps/buyer/MIGRATION-BUYER.md) | buyer 迁移记录（Vite 8 + TS + kebab） |
+| [`apps/buyer/SMOKE-BUYER.md`](apps/buyer/SMOKE-BUYER.md) | buyer 冒烟清单 |
+| [`apps/uniapp/MIGRATION-UNIAPP.md`](apps/uniapp/MIGRATION-UNIAPP.md) | uniapp 迁移全过程（typecheck 274→0、命名、告警修复） |
+| [`apps/uniapp/SMOKE-UNIAPP.md`](apps/uniapp/SMOKE-UNIAPP.md) | uniapp 三端冒烟清单（44 条可勾选 + 快速回归脚本） |
 | [`backend/SETTING-NPE-AUDIT.md`](backend/SETTING-NPE-AUDIT.md) | 设置读取空指针审计与修复 |
 | [`backend/DB/TEST-DATA.md`](backend/DB/TEST-DATA.md) | 测试数据说明与清理 |
 
@@ -259,9 +290,16 @@ cd backend
 - 数据库密码等敏感信息请放在 `backend/local-secrets.yml`，格式见 `backend/config/README.md`
 - `application*.yml` 里的 `password: lilishop` 是上游默认示例值，本地请覆盖
 - `docker/init/mysql/lilishop.sql` 里的第三方密钥字段均为空/占位符，可安全提交
+- **JWT 密钥**：`application*.yml` 里是 `${LILI_JWT_SECRET:<上游默认值>}`，生产环境**必须**通过
+  环境变量覆盖，否则任何人都能用公开的默认值签发 token
+- **MQTT 演示凭据**：`apps/uniapp/pages/promotion/live/mqtt/mqtt.ts` 里的 `admin/hivemq`
+  是连接演示 broker 用的，私有 broker 请在部署时替换
 - **地图 Key 已从源码外置**：高德 / 腾讯位置服务的 Key 改由各端 `public/config.js` 的
   `BASE.MAP` 运行时注入（`manager` / `seller` / `buyer`），源码里不再出现。
   部署时按需填写，留空只会影响地图相关功能。
+- **uniapp 的本机联调配置**：`apps/uniapp/config/api.ts` 的 dev 段指向
+  `http://127.0.0.1:8888`（buyer-api）/ `8887`（manager-api）/ `8885`（im-api）。
+  换机器或换端口时改这一段即可；小程序与 App 打包走 `prod` 段，不受影响。
   历史上这些 Key 曾硬编码在 `src/config` 中，**请自行到高德/腾讯控制台吊销并重新申请**
   （仓库历史里仍能看到旧值，修改源码不能撤回已公开的记录）。
 

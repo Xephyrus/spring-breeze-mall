@@ -80,7 +80,7 @@ jobs:
           NODE_OPTIONS: --max-old-space-size=3072
 
   seller:
-    name: seller · typecheck / lint / build
+    name: seller · typecheck / lint / test / build
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -110,6 +110,10 @@ jobs:
       # Lint 门：ratchet 值写在 seller 的 package.json lint 脚本里（当前 58）
       - name: Lint (ratchet)
         run: pnpm --filter @spring-breeze/seller lint
+
+      # 导航回归（Node 内置测试运行器）：权限裁剪、详情页归属、跨分组检索
+      - name: Test (navigation)
+        run: pnpm --filter @spring-breeze/seller test
 
       - name: Build
         run: pnpm --filter @spring-breeze/seller build

@@ -67,3 +67,6 @@ replay_pid*.log
 *.pem
 *.p12
 *.jks
+
+# Runtime uploads / generated assets per service
+backend/*/data/

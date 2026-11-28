@@ -5,7 +5,11 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { flattenNavigation, findNavigationItem, searchNavigation } from '../src/libs/seller-navigation.js';
+// 被测模块已转 TS（src/libs/seller-navigation.ts），Node 直接跑 .ts 需要显式说明符 +
+// 解析钩子处理文件内部的「无扩展名相对导入」。钩子见 apps/uniapp/scripts/ts-resolve-hook.mjs。
+import { register } from 'node:module';
+register(new URL('../../uniapp/scripts/ts-resolve-hook.mjs', import.meta.url).href);
+const { flattenNavigation, findNavigationItem, searchNavigation } = await import('../src/libs/seller-navigation.ts');
 
 const component = () => {};
 const menus = [
@@ -14,7 +18,7 @@ const menus = [
     { name: 'disabled', title: '不可用页面', component: null },
   ] }] },
   { name: 'order', title: '订单', children: [{ title: '订单管理', children: [
-    { name: 'orderList', title: '商品订单', component },
+    { name: 'order-list', title: '商品订单', component },
   ] }] },
 ];
 const items = flattenNavigation(menus);
@@ -25,7 +29,7 @@ test('搜索不补出未授权入口，也不展示无法加载的菜单', () =>
 });
 test('详情页刷新可定位已授权业务入口', () => {
   assert.equal(findNavigationItem(items, 'goods-operation-edit')?.topName, 'goods');
-  assert.equal(findNavigationItem(items, 'order-detail')?.name, 'orderList');
+  assert.equal(findNavigationItem(items, 'order-detail')?.name, 'order-list');
 });
 test('详情页对应入口被撤权后不能沿用旧账号菜单', () => {
   const restricted = flattenNavigation(menus.slice(0, 1));
@@ -37,7 +41,7 @@ test('详情本身是授权菜单时优先使用精确入口', () => {
   assert.equal(findNavigationItem([...items, exact], 'order-detail'), exact);
 });
 test('关键词同时匹配栏目及名称，避免同名商品功能混淆', () => {
-  assert.deepEqual(searchNavigation(items, '  订单  商品 ').map(item => item.name), ['orderList']);
+  assert.deepEqual(searchNavigation(items, '  订单  商品 ').map(item => item.name), ['order-list']);
   assert.deepEqual(searchNavigation(items, '商品 列表').map(item => item.name), ['goods']);
 });
 test('搜索清空与空权限账号正确处理', () => {

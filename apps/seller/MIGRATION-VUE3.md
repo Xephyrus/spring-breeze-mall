@@ -58,8 +58,7 @@ Node **16+**，包管理统一 **yarn**。商家后台默认端口见 `src/confi
 
 ## 迁移脚本
 
-- `scripts/migrate-iview-to-element.js` — 从 manager 复制装修模板 + 批量替换
-- `scripts/copy-manager-migrations.js` — 从 manager 复制已迁移业务页
+- 迁移期用过的两个一次性脚本（从 manager 复制装修模板 / 已迁移业务页）已在收尾时清理，见提交记录
 
 ## 上线前检查
 

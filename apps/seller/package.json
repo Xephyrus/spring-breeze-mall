@@ -15,7 +15,8 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.app.json --pretty false",
     "preview": "vite preview",
     "lint": "eslint src --max-warnings 0",
-    "lint:fix": "eslint src --fix"
+    "lint:fix": "eslint src --fix",
+    "test": "node scripts/test-seller-navigation.mjs"
   },
   "dependencies": {
     "@amap/amap-jsapi-loader": "0.0.7",
