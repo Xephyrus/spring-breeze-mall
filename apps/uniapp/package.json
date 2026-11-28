@@ -17,7 +17,8 @@
     "test:lottery-wheel": "node scripts/test-lottery-wheel.mjs",
     "test:payment-success": "node scripts/test-payment-success.mjs",
     "test:goods-sku": "node scripts/test-goods-sku.mjs",
-    "test:order-evaluation": "node scripts/test-order-evaluation.mjs"
+    "test:order-evaluation": "node scripts/test-order-evaluation.mjs",
+    "probe:h5": "node scripts/probe-h5-pages.mjs"
   },
   "repository": {
     "type": "git",

@@ -110,10 +110,11 @@
 | # | 命令 | 预期 | ✅ |
 |---|---|---|:--:|
 | 40 | `corepack pnpm --filter @spring-breeze/uniapp typecheck` | **0 错误** | [ ] |
-| 41 | `corepack pnpm --filter @spring-breeze/uniapp lint` | 0 error，warning ≤ 261 | [ ] |
-| 42 | `corepack pnpm --filter @spring-breeze/uniapp test` | 5 个 node 脚本全绿 | [ ] |
+| 41 | `corepack pnpm --filter @spring-breeze/uniapp lint` | 0 error，warning ≤ 256 | [ ] |
+| 42 | `corepack pnpm --filter @spring-breeze/uniapp test` | 6 个 node 脚本全绿 | [ ] |
 | 43 | 条件编译配平检查 | 每个文件 `#ifdef/#ifndef` 数量 == `#endif` 数量 | [ ] |
 | 44 | `git diff` 里 `pages.json` | **零改动**（本轮不碰页面路径） | [ ] |
+| 45 | （H5 dev 起着时）`corepack pnpm --filter @spring-breeze/uniapp probe:h5` | **128/128 页面编译通过**（详见附录 A） | [ ] |
 
 ## 十、已知限制（不算失败）
 
@@ -167,3 +168,53 @@ foreach ($f in $files) {
 }
 if ($bad) { $bad } else { 'ifdef/endif 全部配平' }
 ```
+
+---
+
+## 附录 A：H5 全页编译探测（2026-11-28 实测）
+
+### A.1 为什么要单独做这一步
+
+| 门禁 | 覆盖 | 不覆盖 |
+|---|---|---|
+| `typecheck`（vue-tsc） | `.ts` / SFC 脚本块的类型 | 模板表达式、SCSS、easycom 组件解析、资源路径 |
+| `lint` | 语法与风格 | 同上 |
+| node 测试（6 个） | 少数纯逻辑模块 | 页面级编译 |
+| **H5 全页编译探测** | **每个页面模块（连同其 import 的组件与 `.ts`）** | 运行时行为、真实渲染、小程序/App 端 |
+
+HBuilderX 的 H5 dev server 是**按需编译**：请求哪个页面，才编译哪个页面。
+所以把 `pages.json` 里的每个页面都请求一遍，等于把整个应用编译一遍 —— 这一步能在
+手动冒烟之前，先把「改名/转 TS 造成的编译级断裂」全部暴露出来。
+
+### A.2 做法（可复用脚本）
+
+```bash
+# 1) HBuilderX 里「运行 → 运行到浏览器」，或命令行：
+cd F:\HBuilderX && cli.exe launch web --project <repo>/apps/uniapp
+
+# 2) 探测全部页面
+corepack pnpm --filter @spring-breeze/uniapp probe:h5
+# 等价于 node scripts/probe-h5-pages.mjs [http://localhost:5173]
+```
+
+脚本会从 `pages.json`（JSONC，已做去注释处理）收集主包 + 8 个分包的页面，
+逐个 `fetch` 页面模块：HTTP 200 = 编译通过；500 = 编译失败（打印 Vite 报错摘要）。
+
+### A.3 结果
+
+| 项 | 结果 |
+|---|---|
+| 页面总数 | **128**（主包 9 + 分包 119） |
+| 编译通过 | **128 / 128** |
+| dev server 日志报错 | 0 条 |
+| 额外抽查 | `verification.vue`、`poster-panel.vue`、`mqtt.ts`、`live-chat.ts`、`tpl.ts`、`popup.ts`、商家端 3 个页面 —— 全部 200 |
+| 产物内容抽查 | `cartList.vue` 含 `themeStyle`、`login.vue` 含 `MicroMessenger`、`lottery/index.vue` 含 `wheelLandingRotation`、`loading.ts` 含 `pending`、`store-request.ts` 含 `refreshTokenApi` |
+
+> 说明：编译通过只证明「能构建、import 都能解析」，
+> **不证明**渲染正确、交互正确、接口数据正确 —— 下面的手工清单仍需执行。
+
+### A.4 这次探测抓到/排除了什么
+
+- 排除了「25 个文件改名 + 71 个基础设施 `.ts` 转换」造成的 import 断裂（128 个页面全过）
+- 排除了上一轮那个 **git 索引大小写漂移**（`App.vue` vs `app.vue`）在 H5 端的影响
+- 未覆盖：小程序端条件编译分支（`#ifdef MP-WEIXIN`）、App 端原生能力、真实接口与渲染
