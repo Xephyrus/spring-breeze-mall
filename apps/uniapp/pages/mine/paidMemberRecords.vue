@@ -11,7 +11,7 @@
     <view v-if="error" class="load-more" @click="load(retryReset)">点击重新加载</view><view v-else-if="rows.length" class="load-more" @click="load(false)">{{ loading ? '加载中…' : more ? '上拉或点击加载更多' : '已显示全部记录' }}</view>
   </view>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { onShow, onReachBottom, onPullDownRefresh, onUnload } from '@dcloudio/uni-app'
 import { getPaidMemberOrders, cancelPaidMemberOrder } from '@/api/paid-member'

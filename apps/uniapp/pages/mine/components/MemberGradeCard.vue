@@ -12,7 +12,7 @@
     </view>
   </view>
 </template>
-<script setup>
+<script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 const props = defineProps({ grade: { type: Object, required: true }, benefitCount: { type: Number, default: 0 }, isCurrent: { type: Boolean, default: false } })
 const backgroundLoaded = ref(false), backgroundFailed = ref(false), iconFailed = ref(false)

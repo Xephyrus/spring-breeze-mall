@@ -73,7 +73,7 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { onShow, onPullDownRefresh, onUnload } from '@dcloudio/uni-app'
 import { getCurrentMemberBenefits, getMemberGradeBenefits } from '@/api/members'
@@ -81,8 +81,8 @@ import { isLogin, navigateToLogin } from '@/utils/filters'
 import MemberGradeCard from './components/MemberGradeCard.vue'
 
 const loading = ref(false), loaded = ref(false), error = ref(false)
-const current = ref({}), grades = ref([]), selectedId = ref(''), detail = ref(null)
-const failedBenefitIcons = ref({})
+const current = ref<Record<string, any>>({}), grades = ref<any[]>([]), selectedId = ref(''), detail = ref<any>(null)
+const failedBenefitIcons = ref<Record<string, boolean>>({})
 let requestId = 0, ownerId = ''
 const sameId = (a, b) => a != null && b != null && String(a) === String(b)
 const selected = computed(() => grades.value.find(item => sameId(item.grade.id, selectedId.value)) || {})

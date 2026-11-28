@@ -113,6 +113,9 @@ export default tseslint.config(
       "vue/require-default-prop": "off",
       // 富文本与商品描述大量使用 v-html
       "vue/no-v-html": "off",
+      // 所有 SFC 必须用 TS：214 个 .vue 已全部 lang="ts"，
+      // 用 lint 兜住回归（否则新页面很容易又写成纯 JS，typecheck 也管不到它的语义）
+      "vue/block-lang": ["error", { script: { lang: "ts" } }],
     },
   },
   {

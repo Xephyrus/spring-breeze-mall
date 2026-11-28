@@ -183,7 +183,7 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import storage from '@/utils/storage'
 import {
@@ -196,7 +196,7 @@ import {
 } from '../../api/order.js'
 import { storeLogout } from '../../api/passport.js'
 
-const storeInfo = ref({})
+const storeInfo = ref<Record<string, any>>({})
 
 const operatorName = computed(() => {
   const u = storeInfo.value?.user

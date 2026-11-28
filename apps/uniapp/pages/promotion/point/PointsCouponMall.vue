@@ -35,7 +35,7 @@
   </scroll-view>
   <!-- #endif -->
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import storage from '@/utils/storage';
@@ -99,10 +99,10 @@ async function exchange(item) {
   busy.value = item.id;
   const key = `points-coupon:${user}:${item.id}`;
   try {
-    const confirmation = await new Promise(resolve => uni.showModal({ title: '积分兑券', content: `确认消耗${item.points}积分兑换“${item.couponName}”一张？兑换成功后不支持主动退兑。`, success: resolve, fail: () => resolve({ confirm: false }) }));
+    const confirmation: any = await new Promise(resolve => uni.showModal({ title: '积分兑券', content: `确认消耗${item.points}积分兑换“${item.couponName}”一张？兑换成功后不支持主动退兑。`, success: resolve, fail: () => resolve({ confirm: false }) }));
     if (!confirmation.confirm || user !== account()) return;
     let pending = uni.getStorageSync(key);
-    if (!pending) { pending = { requestId: uuid.v4(), points: item.points }; uni.setStorageSync(key, pending); }
+    if (!pending) { pending = { requestId: (uuid as any).v4(), points: item.points }; uni.setStorageSync(key, pending); }
     const res = await exchangePointsCoupon(item.id, pending);
     if (!alive || user !== account()) return;
     if (res.data?.success) {

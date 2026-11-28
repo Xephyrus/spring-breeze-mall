@@ -151,7 +151,7 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
 import { getStoreEvaluationList, replyStoreEvaluation } from '../../api/evaluation.js'
@@ -199,7 +199,7 @@ const fetchEvaluations = async (reset = false) => {
   }
 
   loading.value = true
-  const params = {
+  const params: Record<string, any> = {
     pageNumber: pageNumber.value,
     pageSize: pageSize.value,
   }

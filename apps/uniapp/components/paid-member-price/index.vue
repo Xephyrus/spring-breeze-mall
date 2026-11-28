@@ -1,5 +1,5 @@
 <template><view v-if="quote" class="paid-price" @click.stop="open"><image v-if="quote.label" :src="quote.label" mode="aspectFit" /><text>会员价 ¥{{ Number(quote.price).toFixed(2) }}</text><text v-if="!quote.eligible" class="open">开通享 ›</text></view></template>
-<script setup>
+<script setup lang="ts">
 defineProps({quote:{type:Object,default:null}})
 function open(){uni.navigateTo({url:'/pages/mine/paidMember'})}
 </script>

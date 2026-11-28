@@ -104,7 +104,7 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
 import { getStoreGoodsList, upGoods, downGoods } from '../../api/goods.js'
@@ -150,7 +150,7 @@ const fetchGoods = async (reset = false) => {
   }
 
   loading.value = true
-  const params = {
+  const params: Record<string, any> = {
     pageNumber: pageNumber.value,
     pageSize: pageSize.value,
   }

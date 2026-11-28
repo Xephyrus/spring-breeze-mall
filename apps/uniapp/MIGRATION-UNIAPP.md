@@ -495,3 +495,80 @@ cmd /c "ren Foundation.ts foundation.tmp && ren foundation.tmp foundation.ts"
 | `pages.json` | 零改动（git 校验） |
 | 旧文件名残留引用 | 0 处 |
 | 安全范围内非 kebab 文件 | 0 个（`store/index.d.ts` 属声明文件，`index` 本身即单词名） |
+---
+
+## 十、U2 收尾：214 个 SFC 全部 `lang="ts"`
+
+### 10.1 本轮补的 15 个
+
+| 文件 | 行数 | 修的问题 |
+|---|---:|---|
+| `pages/mine/paidMember.vue` | 79 | `ref({})` 推成 `{}` → 35 个属性错误；改 `ref<Record<string, any>>({})` |
+| `pages/mine/memberBenefits.vue` | 230 | `current`/`failedBenefitIcons` 同上；`grades` 补 `any[]` |
+| `pages/cart/gift-card/pickupCard.vue` | 118 | `detail` 补 `Record<string, any>`；`selected`/`addresses` 补 `any[]` |
+| `pages/promotion/lottery/index.vue` | 152 | `chances` 补 `Record<string, any>`、`rotations` 补 `Record<string, number>` |
+| `pages-sub/merchant/pages/index/index.vue` | 812 | `storeInfo` 补 `Record<string, any>` |
+| `pages-sub/merchant/pages/evaluation/list.vue` | 650 | `params` 是「分页 + 动态筛选」，补 `Record<string, any>` |
+| `pages-sub/merchant/pages/goods/list.vue` | 472 | 同上 |
+| `pages/order/components/verificationCodes.vue` | 44 | `defineProps` 改类型版（见 10.2） |
+| `pages/promotion/lottery/PrizeWheel.vue` | 70 | `boundingClientRect` 回参是 `NodeInfo \| NodeInfo[]` → 显式 `rect: any` |
+| `pages/promotion/point/PointsCouponMall.vue` | 160 | `showModal` 的 `resolve` 给 `any`；`uuid.v4()` 走 `(uuid as any)` |
+| 其余 5 个（`paid-member-price`、`coupon-pack`、`experience`、`paidMemberRecords`、`MemberGradeCard`） | — | 加 `lang="ts"` 后本身无错 |
+
+**结果：214 个 `.vue` 全部 `lang="ts"`，typecheck 仍为 0。**
+
+### 10.2 一处必须等价改写的地方（`defineProps`）
+
+原来是运行时声明：
+
+```js
+defineProps({ items: { type: Array, default: () => [] } })
+```
+
+改成类型版后 **`default` 会丢失** —— 而父组件 `orderDetail.vue` 有一处 `<verification-codes v-else-if="..." :items="..." />`
+（总是传），但模板里还有 `v-if="items.length"`，一旦哪天不传就会 `Cannot read properties of undefined`。
+
+所以用 `withDefaults` 保留运行时默认值：
+
+```ts
+withDefaults(
+  defineProps<{ items?: { key?: string | number; code?: string; struck?: boolean }[] }>(),
+  { items: () => [] }
+)
+```
+
+> 类型版 `defineProps` 不支持 `default`，这是 Vue 3 的既定行为，不是本项目特例。
+
+### 10.3 加了防回归的门禁
+
+`eslint.config.js` 新增：
+
+```js
+"vue/block-lang": ["error", { script: { lang: "ts" } }],
+```
+
+反向验证过：故意写一个纯 JS 的 SFC，lint 立刻报
+
+```
+5:1  error  The 'lang' attribute of '<script>' is missing  vue/block-lang
+```
+
+这样后面新增页面不会再悄悄退回纯 JS（typecheck 对纯 JS 的 SFC 是"能过但不检查语义"的）。
+
+### 10.4 剩余 20 个 `.js`（页面局部模块）
+
+`main.js`、`vite.config.js`、`vue.config.js`、`eslint.config.js`（配置/入口，保留），
+以及可继续转 TS 的页面局部模块：
+
+```
+components/m-buy/popup.js            pages/mine/im/socket.js
+pages/product/product/popup/popup.js  pages/product/product/promotion/promotion_type.js
+pages/promotion/live/mqtt/mqtt.js     pages/promotion/live/utils/liveChat.js
+pages/promotion/live/utils/liveMqtt.js  pages/promotion/live/utils/liveRecommend.js
+pages/promotion/live/utils/liveSetting.js  pages/promotion/lottery/wheel.js
+pages/tabbar/home/template/tpl.js     pages-sub/merchant/utils/storeRequest.js
+pages-sub/merchant/api/{evaluation,goods,order,passport}.js
+```
+
+它们目前通过 `allowJs` 被 TS 引用（类型为 `any`），页面侧的 `lang="ts"` 已经有了，
+下一轮把这些转成 `.ts` 才算真正收口。

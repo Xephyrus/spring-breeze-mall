@@ -29,14 +29,14 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
 import { onLoad, onShow, onUnload } from '@dcloudio/uni-app'
 import { getAddressList } from '@/api/address'
 import { getPickupCard, previewPickupCard, redeemPickupCard } from '@/api/pickup-card'
 import storage from '@/utils/storage'
 
-const detail = ref({}), selected = ref([]), addresses = ref([]), addressIndex = ref(0)
+const detail = ref<Record<string, any>>({}), selected = ref<any[]>([]), addresses = ref<any[]>([]), addressIndex = ref(0)
 const loading = ref(false), busy = ref(false), error = ref(''), completed = ref(false)
 let cardId = '', active = true, version = 0, owner = ''
 const canSubmit = computed(() => selected.value.length === detail.value.pickupCount && !!addresses.value[addressIndex.value] && !detail.value.goods?.some(g => selected.value.includes(g.id) && !g.available))

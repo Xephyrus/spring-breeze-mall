@@ -4,7 +4,7 @@
     <canvas :id="canvasId" :canvas-id="canvasId" class="wheel-canvas" :style="{ height: `${canvasSize}px` }" />
   </view>
 </template>
-<script setup>
+<script setup lang="ts">
 import { computed, getCurrentInstance, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { onResize } from '@dcloudio/uni-app';
 import { createWheelSegments, layoutRadialLabel } from './wheel';
@@ -17,7 +17,7 @@ const labelCache = new Map();
 /** 读取组件实际宽度，统一H5、小程序与App的画布坐标，窗口变化时重新适配。 */
 function measure() {
   if (!alive) return;
-  uni.createSelectorQuery().in(instance.proxy).select('.wheel-canvas').boundingClientRect(async rect => {
+  uni.createSelectorQuery().in(instance.proxy).select('.wheel-canvas').boundingClientRect(async (rect: any) => {
     if (!alive || !rect?.width) return;
     canvasSize.value = Math.floor(rect.width);
     await nextTick();

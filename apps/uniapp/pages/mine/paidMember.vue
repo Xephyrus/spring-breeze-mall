@@ -21,12 +21,12 @@
     <view v-if="detail || showAgreement" class="overlay"><view class="mask" @click="closeDetail" @touchmove.stop.prevent /><view class="sheet"><text class="sheet-title">{{ detail?.benefitName || '付费会员协议' }}</text><scroll-view scroll-y class="sheet-scroll"><rich-text :nodes="detail ? detail.benefitDesc || '暂无说明' : data.config?.agreement || '请联系平台查看会员协议'" /></scroll-view><button class="close-button" @click="closeDetail">关闭</button></view></view>
   </view>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue'
 import { onLoad, onShow, onHide, onUnload, onPullDownRefresh } from '@dcloudio/uni-app'
 import { getPaidMember, createPaidMemberOrder, getPaidMemberOrder, getPaidMemberQuotes } from '@/api/paid-member'
 import { isLogin, navigateToLogin } from '@/utils/filters'
-const data=ref({}), quotes=ref({}), loading=ref(false), error=ref(false), agreed=ref(false), buying=ref(false), detail=ref(null), showAgreement=ref(false), pollMessage=ref('')
+const data=ref<Record<string, any>>({}), quotes=ref<Record<string, any>>({}), loading=ref(false), error=ref(false), agreed=ref(false), buying=ref(false), detail=ref(null), showAgreement=ref(false), pollMessage=ref('')
 let request=0, owner='', purchaseRequest='', paymentSn='', timer=null, pollId=0, pollCount=0
 const money=value=>(Number(value)||0).toFixed(2)
 const cardStyle=computed(()=>({backgroundColor:data.value.config?.backgroundColor || '#51443b',color:data.value.config?.fontColor || '#fff1d8'}))

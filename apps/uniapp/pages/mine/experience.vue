@@ -36,7 +36,7 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad, onShow, onReachBottom, onPullDownRefresh, onUnload } from '@dcloudio/uni-app'
 import { getExperienceTasks, getExperienceRecords } from '@/api/members'

@@ -7,13 +7,15 @@
   </view>
 </template>
 
-<script setup>
-defineProps({
-  items: {
-    type: Array,
-    default: () => [],
-  },
-})
+<script setup lang="ts">
+// 等价改写自 defineProps({ items: { type: Array, default: () => [] } })：
+// 类型版 props 不支持 default，用 withDefaults 保住「父组件不传时为空数组」的运行时行为
+withDefaults(
+  defineProps<{
+    items?: { key?: string | number; code?: string; struck?: boolean }[]
+  }>(),
+  { items: () => [] }
+)
 </script>
 
 <style lang="scss" scoped>

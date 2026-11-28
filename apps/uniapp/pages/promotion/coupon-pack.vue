@@ -112,7 +112,7 @@
   </view>
 </template>
 
-<script>
+<script lang="ts">
 /**
  * 优惠券礼包落地页交互逻辑
  *

@@ -33,7 +33,7 @@
     </u-popup>
   </view>
 </template>
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { onShow, onHide } from '@dcloudio/uni-app';
 import storage from '@/utils/storage';
@@ -42,7 +42,7 @@ import { listLottery, lotteryChances, drawLottery, lotteryRecords } from '@/api/
 import PrizeWheel from './PrizeWheel.vue';
 import { createWheelSegments, wheelLandingRotation } from './wheel';
 const mode = ref('activities'), rows = ref([]), total = ref(0), pageNumber = ref(1), loading = ref(false), failed = ref(false);
-const chances = ref({}), busy = ref(''), pending = ref(null), rotations = ref({});
+const chances = ref<Record<string, any>>({}), busy = ref(''), pending = ref<any>(null), rotations = ref<Record<string, number>>({});
 const prizeDetailsVisible = ref(false), detailPrizes = ref([]);
 let version = 0, drawVersion = 0, alive = true, visible = true, timer, owner = '';
 /** 当前身份用于隔离本地待确认请求及所有异步结果。 */
@@ -114,7 +114,7 @@ async function draw(item) {
   let request = uni.getStorageSync(pendingKey(user));
   if (!request) {
     if (!item) return;
-    request = { activityId: item.id, requestId: uuid.v4() }; uni.setStorageSync(pendingKey(user), request);
+    request = { activityId: item.id, requestId: (uuid as any).v4() }; uni.setStorageSync(pendingKey(user), request);
   }
   pending.value = request; busy.value = request.activityId;
   try {
