@@ -6,8 +6,14 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
-import { paymentSuccessUrl, paymentPromotionUrl, paymentReturnUrl, navigatePaymentPromotion } from '../utils/payment-success.js';
-import { resolveDecorateLink, navigateDecorateLink } from '../utils/decorate-link.js';
+// 被测模块是 .ts（由 HBuilderX/Vite 打包），Node 侧用类型擦除 + 解析钩子加载
+import { register } from 'node:module';
+import { pathToFileURL } from 'node:url';
+
+register('./ts-resolve-hook.mjs', pathToFileURL('./scripts/'));
+const { paymentSuccessUrl, paymentPromotionUrl, paymentReturnUrl, navigatePaymentPromotion } =
+  await import('../utils/payment-success.ts');
+const { resolveDecorateLink, navigateDecorateLink } = await import('../utils/decorate-link.ts');
 
 const url=paymentSuccessUrl({sn:'SN&injected=1',orderType:'ORDER',paymentMethod:'WECHAT',orderPromotionType:'PINTUAN'});
 assert.ok(url.includes('sn=SN%26injected%3D1'));

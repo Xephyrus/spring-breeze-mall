@@ -32,7 +32,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed } from 'vue'
 import { modifyPass } from '@/api/login'
-import { md5 } from '@/utils/md5.js'
+import { md5 } from '@/utils/md5'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

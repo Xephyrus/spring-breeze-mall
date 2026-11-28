@@ -116,7 +116,7 @@ function shouldClearPendingOnFailure(res) {
 /**
  * 尝试绑定分销员：已登录直接请求；未登录写入 pending
  */
-export async function tryBindDistribution(distributionId, options = {}) {
+export async function tryBindDistribution(distributionId: any, options: { force?: boolean } = {}) {
   const id = String(distributionId || '').trim()
   if (!id) return
 

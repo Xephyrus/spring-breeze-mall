@@ -1,5 +1,5 @@
 import store from '@/store/index'
-import config from '@/config/config.js'
+import config from '@/config/config'
 import storage from './storage';
 export default class SocketService {
   /**

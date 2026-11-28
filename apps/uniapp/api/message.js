@@ -2,10 +2,10 @@
  * 站内消息相关API
  */
 
-import {http,Method} from '@/utils/request.js';
+import {http,Method} from '@/utils/request';
 const request = http.request
 
-import api from '@/config/api.js';
+import api from '@/config/api';
 
 /**
  * 获取微信消息订阅

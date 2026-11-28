@@ -1,3 +1,14 @@
+// @ts-nocheck
+/**
+ * 第三方 uuid 实现的定制版（vendored），保留原样以便与上游 diff。
+ *
+ * 不逐行补类型的理由：这是 247 行的库代码，内部用函数挂属性（`uuid.v1 = v1`）、
+ * `var` 声明、浏览器/Node 双 RNG 分支，逐行补类型等于重写一遍，
+ * 后续升级上游时反而无法比较。文件级 @ts-nocheck 只关闭类型检查，
+ * **ESLint 仍然生效**（语法、未使用变量、条件编译等照样检查）。
+ *
+ * 对外只暴露 `v1()`，调用方（request / verification）用起来是 `uuid.v1()`。
+ */
 //     uuid.js
 //
 //     Copyright (c) 2010-2012 Robert Kieffer

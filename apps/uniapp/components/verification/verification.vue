@@ -90,9 +90,9 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue'
 import { useStore } from '@/store'
-import api from '@/config/api.js'
+import api from '@/config/api'
 import storage from '@/utils/storage'
-import uuid from '@/utils/uuid.modified.js'
+import uuid from '@/utils/uuid.modified'
 
 const emit = defineEmits(['send'])
 const props = withDefaults(defineProps<{

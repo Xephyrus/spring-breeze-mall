@@ -1,5 +1,5 @@
 export default {
-  onLoad() {
+  onLoad(this: any) {
     if (!uni.$u) {
       uni.$u = {}
     }
@@ -10,7 +10,7 @@ export default {
     }
     this.$u.mpShare = uni.$u.mpShare
   },
-  onShareAppMessage() {
+  onShareAppMessage(this: any) {
     return this.$u.mpShare || uni.$u.mpShare
   }
 }

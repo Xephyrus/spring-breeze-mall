@@ -1,8 +1,8 @@
 /**
  * 公共 API（由 buyer-api 提供）
  */
-import { http, Method } from "@/utils/request.js";
-import api from "@/config/api.js";
+import { http, Method } from "@/utils/request";
+import api from "@/config/api";
 
 /**
  * 获取地区数据

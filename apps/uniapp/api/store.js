@@ -2,7 +2,7 @@
  * 店铺相关API
  */
 
-import {http, Method} from '@/utils/request.js';
+import {http, Method} from '@/utils/request';
 
 
 

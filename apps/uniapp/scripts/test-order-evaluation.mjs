@@ -6,7 +6,12 @@
 import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import vm from 'node:vm'
-import { canEvaluateOrder } from '../utils/orderEvaluation.js'
+// 被测模块是 .ts，Node 侧用类型擦除 + 解析钩子加载
+import { register } from 'node:module'
+import { pathToFileURL } from 'node:url'
+
+register('./ts-resolve-hook.mjs', pathToFileURL('./scripts/'))
+const { canEvaluateOrder } = await import('../utils/orderEvaluation.ts')
 
 // 覆盖核销券、虚拟商品与实物商品，完成状态和商品评价状态必须同时满足。
 for (const orderType of ['E_COUPON', 'VIRTUAL', 'NORMAL']) {

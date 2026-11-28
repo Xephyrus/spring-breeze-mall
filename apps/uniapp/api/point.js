@@ -1,5 +1,5 @@
 
-import {http, Method} from '@/utils/request.js';
+import {http, Method} from '@/utils/request';
 
 /**
  * 签到

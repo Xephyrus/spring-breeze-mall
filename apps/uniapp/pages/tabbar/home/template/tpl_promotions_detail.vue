@@ -511,7 +511,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from "vue";
 import * as API_Promotions from "@/api/promotions";
-import Foundation from "@/utils/Foundation.js";
+import Foundation from "@/utils/Foundation";
 import { modelNavigateTo } from "./tpl";
 
 const props = defineProps<{ res: any }>();

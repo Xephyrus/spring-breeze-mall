@@ -2,7 +2,7 @@
  * 商品相关API
  */
 
-import { http, Method } from "@/utils/request.js";
+import { http, Method } from "@/utils/request";
 
 /**
  * 从ES中获取相关商品品牌名称，分类名称及属性

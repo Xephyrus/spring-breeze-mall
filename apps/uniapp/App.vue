@@ -17,7 +17,7 @@ import {
 } from '@/utils/categoryPageSetting'
 import { onLaunch, onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { handleAppLaunchScene } from '@/utils/distributionBind.js'
+import { handleAppLaunchScene } from '@/utils/distributionBind'
 
 const store = useStore()
 

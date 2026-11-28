@@ -121,7 +121,7 @@ import {
 	getECouponMaxBuyNum,
 	getAppointmentStock,
 	getAppointmentMaxBuyNum,
-} from '@/utils/goodsType.js'
+} from '@/utils/goodsType'
 
 const props = withDefaults(defineProps<{
 	buyMask?: boolean

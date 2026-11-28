@@ -2,8 +2,8 @@
  * 文章相关API
  */
 
-import {http,Method} from '@/utils/request.js';
-import api from '@/config/api.js';
+import {http,Method} from '@/utils/request';
+import api from '@/config/api';
 
 /**
  * 获取某个分类的文章列表

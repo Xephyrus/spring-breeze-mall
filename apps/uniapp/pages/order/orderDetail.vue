@@ -299,7 +299,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
-import { canEvaluateOrder } from '@/utils/orderEvaluation.js'
+import { canEvaluateOrder } from '@/utils/orderEvaluation'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import { getExpress, getPackage } from '@/api/trade.js'
@@ -318,7 +318,7 @@ import {
 	shouldLoadDelivery,
 	getDeliveryEntryText,
 	getOrderAllowOperation,
-} from '@/utils/orderDelivery.js'
+} from '@/utils/orderDelivery'
 import {
 	isECouponOrder as checkECouponOrder,
 	isAppointmentOrder as checkAppointmentOrder,
@@ -327,7 +327,7 @@ import {
 	collectCardKeyFulfillLines,
 	resolveCardKeyFulfillMessage,
 	CARD_KEY_FULFILL_STATUS,
-} from '@/utils/goodsType.js'
+} from '@/utils/goodsType'
 import { getAppointmentOrderDetail } from '@/api/appointment.js'
 import VerificationCodes from './components/verificationCodes.vue'
 import {
@@ -337,7 +337,7 @@ import {
 	formatDate,
 	parseFormAnswerGroups,
 	formatFormAnswerValue,
-} from '@/utils/appointmentGoods.js'
+} from '@/utils/appointmentGoods'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))

@@ -58,12 +58,12 @@ export function checkBankno(bankno) {
   }
   //计算总和
   sumTotal =
-    parseInt(sumJiShu) +
-    parseInt(sumOuShu) +
-    parseInt(sumJiShuChild1) +
-    parseInt(sumJiShuChild2);
+    parseInt(String(sumJiShu), 10) +
+    parseInt(String(sumOuShu), 10) +
+    parseInt(String(sumJiShuChild1), 10) +
+    parseInt(String(sumJiShuChild2), 10);
   //计算Luhm值
-  var k = parseInt(sumTotal) % 10 == 0 ? 10 : parseInt(sumTotal) % 10;
+  var k = parseInt(String(sumTotal), 10) % 10 == 0 ? 10 : parseInt(String(sumTotal), 10) % 10;
   var luhm = 10 - k;
   if (lastNum == luhm) {
     return true;
@@ -154,7 +154,7 @@ export function dateToUnix(date) {
       arr[5] || 0
     )
   );
-  return parseInt(datum.getTime() / 1000);
+  return parseInt(String(datum.getTime() / 1000), 10);
 }
 
 /**
@@ -209,10 +209,10 @@ export function countTimeDown(seconds) {
     return time + "";
   };
   return {
-    day: leftTime(parseInt(seconds / 60 / 60 / 24, 10)),
-    hours: leftTime(parseInt((seconds / 60 / 60) % 24, 10)),
-    minutes: leftTime(parseInt((seconds / 60) % 60, 10)),
-    seconds: leftTime(parseInt(seconds % 60, 10)),
+    day: leftTime(parseInt(String(seconds / 60 / 60 / 24), 10)),
+    hours: leftTime(parseInt(String((seconds / 60 / 60) % 24), 10)),
+    minutes: leftTime(parseInt(String((seconds / 60) % 60), 10)),
+    seconds: leftTime(parseInt(String(seconds % 60), 10)),
   };
 }
 
@@ -276,7 +276,7 @@ export function theNextDayTime() {
       0,
       0
     ).getTime() - nowDate.getTime();
-  return parseInt(time / 1000);
+  return parseInt(String(time / 1000), 10);
 }
 export default {
   unixToDate,

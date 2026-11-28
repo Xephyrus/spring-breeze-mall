@@ -1,6 +1,6 @@
-import { http,Method } from "@/utils/request.js";
+import { http,Method } from "@/utils/request";
 
-import api from "@/config/api.js";
+import api from "@/config/api";
 
 /**
  * 获取聊天详情接口

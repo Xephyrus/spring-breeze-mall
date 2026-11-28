@@ -146,7 +146,7 @@ import { ref, reactive, computed, watch, getCurrentInstance } from 'vue'
 import { onLoad, onShow, onPullDownRefresh, onBackPress } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
-import { canEvaluateOrder } from '@/utils/orderEvaluation.js'
+import { canEvaluateOrder } from '@/utils/orderEvaluation'
 import uniLoadMore from '@/components/uni-load-more/uni-load-more.vue'
 import { getOrderList, cancelOrder, confirmReceipt } from '@/api/order.js'
 import { getClearReason, getAfterSaleList, cancelAfterSale } from '@/api/after-sale.js'
@@ -159,8 +159,8 @@ import {
 	orderStatusList,
 } from '@/utils/filters'
 // E_COUPON 订单不展示确认收货、退款/售后（FR-B-04）
-import { isECouponOrder, isAppointmentOrder } from '@/utils/goodsType.js'
-import { appointmentOrderStatusText, getAppointmentAllowOperation } from '@/utils/appointmentGoods.js'
+import { isECouponOrder, isAppointmentOrder } from '@/utils/goodsType'
+import { appointmentOrderStatusText, getAppointmentAllowOperation } from '@/utils/appointmentGoods'
 
 const store = useStore()
 const { proxy } = getCurrentInstance()!

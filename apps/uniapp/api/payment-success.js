@@ -3,7 +3,7 @@
  * @author Bulbasaur
  * @since 2026-11-19
  */
-import { http, Method } from '@/utils/request.js';
+import { http, Method } from '@/utils/request';
 
 /** 查询当前账号支付结果、推荐商品与推广，不提交客户端金额。 */
 export function getPaymentSuccessPage(params) {

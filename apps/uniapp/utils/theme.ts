@@ -9,7 +9,7 @@ export const DEFAULT_THEME = {
 const STORAGE_KEY = "theme_setting";
 const EXPIRATION_KEY = "theme_setting_expiration_time";
 
-export function normalizeTheme(data = {}) {
+export function normalizeTheme(data: any = {}) {
   return {
     mainColor: data.themeColor || DEFAULT_THEME.mainColor,
     lightColor: data.lightColor || DEFAULT_THEME.lightColor,
@@ -17,7 +17,7 @@ export function normalizeTheme(data = {}) {
   };
 }
 
-export function cacheTheme(theme) {
+export function cacheTheme(theme: any) {
   const expirationTime = new Date().setHours(new Date().getHours() + 1);
   uni.setStorageSync(EXPIRATION_KEY, expirationTime);
   uni.setStorageSync(STORAGE_KEY, theme);
@@ -52,13 +52,13 @@ function currentRoute() {
   return (page && page.route) || "";
 }
 
-export function isTabBarRoute(route) {
+export function isTabBarRoute(route?: string) {
   return TAB_BAR_ROUTES.includes(normalizeRoute(route || currentRoute()));
 }
 
-export function applyTabBarStyle(mainColor, route) {
+export function applyTabBarStyle(mainColor: string, route?: string) {
   if (!mainColor || !isTabBarRoute(route)) return;
-  const task = uni.setTabBarStyle({
+  const task: any = uni.setTabBarStyle({
     selectedColor: mainColor,
     fail() {},
   });
@@ -84,7 +84,7 @@ function hexToRgba(hex, alpha) {
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
-export function getThemeStyle(theme = DEFAULT_THEME) {
+export function getThemeStyle(theme: any = DEFAULT_THEME) {
   const safeTheme = theme || DEFAULT_THEME;
   const primary = safeTheme.mainColor || DEFAULT_THEME.mainColor;
   const light = safeTheme.lightColor || DEFAULT_THEME.lightColor;

@@ -23,7 +23,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { whetherNavigate } from '@/utils/Foundation'
 import config from '@/config/config'
-import api from '@/config/api.js'
+import api from '@/config/api'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

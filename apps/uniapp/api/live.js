@@ -1,7 +1,7 @@
 /**
  * 直播流相关 API
  */
-import { http, Method } from "@/utils/request.js";
+import { http, Method } from "@/utils/request";
 
 /**
  * 通过 id 获取直播间详情

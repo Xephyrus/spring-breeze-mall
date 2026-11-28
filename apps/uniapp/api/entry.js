@@ -2,7 +2,7 @@
  * 入驻类相关api
  */
 
-import { http, Method } from "@/utils/request.js";
+import { http, Method } from "@/utils/request";
 
 // 获取当前用户的代理入驻详情
 export function getCompanyDetail(params) {

@@ -2,9 +2,9 @@
  * 收货地址相关API
  */
 
-import { http, Method } from "@/utils/request.js";
+import { http, Method } from "@/utils/request";
 
-import api from "@/config/api.js";
+import api from "@/config/api";
 
 /**
  * 获取收货地址列表

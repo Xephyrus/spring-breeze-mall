@@ -1,9 +1,9 @@
-import api from "@/config/api.js";
+import api from "@/config/api";
 import Request from "@/lib/request/index.js";
-import Foundation from "@/utils/Foundation.js";
-import { md5 } from "@/utils/md5.js";
+import Foundation from "@/utils/Foundation";
+import { md5 } from "@/utils/md5";
 import storage from "@/utils/storage";
-import uuid from "@/utils/uuid.modified.js";
+import uuid from "@/utils/uuid.modified";
 
 let isStoreNavigateTo = false;
 

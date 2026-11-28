@@ -1,6 +1,6 @@
-import { http } from "@/utils/request.js";
+import { http } from "@/utils/request";
 
-import api from "@/config/api.js";
+import api from "@/config/api";
 
 /**
  * 通过短信重置密码

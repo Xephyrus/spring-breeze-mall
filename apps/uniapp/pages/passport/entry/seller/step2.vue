@@ -52,7 +52,7 @@ import { ref, reactive, computed, watch, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { applySecond } from '@/api/entry'
 import { getThemeStyle } from '@/utils/theme'
-import { fieldInputStyle } from '@/utils/form-style.js'
+import { fieldInputStyle } from '@/utils/form-style'
 
 const props = defineProps<{ companyData?: any }>()
 const emit = defineEmits<{ callback: [] }>()

@@ -279,7 +279,7 @@ import { ref, reactive, computed, watch, nextTick, getCurrentInstance } from 'vu
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { getGoods, getGoodsList, getMpScene } from '@/api/goods.js'
 import { recordDistributionGoodsVisit } from '@/api/distribution.js'
-import { tryBindDistribution } from '@/utils/distributionBind.js'
+import { tryBindDistribution } from '@/utils/distributionBind'
 import * as API_trade from '@/api/trade.js'
 import * as API_Members from '@/api/members.js'
 import * as API_store from '@/api/store.js'
@@ -290,7 +290,7 @@ import storage from '@/utils/storage'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import { unitPrice, goodsFormatPrice, goodsDisplayPrice, isLogin, parseGoodsImageUrl, clearStrComma, talkIm } from '@/utils/filters'
-import { isNonPhysicalGoods, isAppointmentGoods } from '@/utils/goodsType.js'
+import { isNonPhysicalGoods, isAppointmentGoods } from '@/utils/goodsType'
 
 /************组件***************/
 import PromotionLayout from './product/promotion/-promotion.vue'

@@ -188,11 +188,11 @@ import {
   jumpObtain,
   uploadImImage,
 } from '@/api/im.js'
-import SocketService from '@/utils/socket_service.js'
+import SocketService from '@/utils/socket_service'
 import storage from '@/utils/storage'
 import { beautifyTime, unitPrice } from '@/utils/filters'
-import config from '@/config/config.js'
-import { textReplaceEmoji, emojistwo } from '@/utils/emojis.js'
+import config from '@/config/config'
+import { textReplaceEmoji, emojistwo } from '@/utils/emojis'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

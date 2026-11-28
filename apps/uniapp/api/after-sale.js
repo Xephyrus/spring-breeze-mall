@@ -2,7 +2,7 @@
  * 申请售后相关API
  */
 
-import { http, Method } from "@/utils/request.js";
+import { http, Method } from "@/utils/request";
 
 /**
  * 获取售后列表

@@ -160,7 +160,7 @@
 import { ref, reactive, computed, onMounted } from 'vue'
 import { onShow, onPullDownRefresh } from '@dcloudio/uni-app'
 import * as API_Trade from '@/api/trade'
-import { debounce } from '@/utils/tools.js'
+import { debounce } from '@/utils/tools'
 import uniNumberBox from '@/components/uni-number-box.vue'
 import config from '@/config/config'
 import { useStore } from '@/store'
@@ -355,7 +355,7 @@ function navigateToGoods(val: any) {
 /**
  * 点击步进器回调
  */
-const numChange = debounce(function (val: any) {
+const numChange = debounce(function (val: any, _item?: any) {
   updateSkuNumFun(val.goodsSku.id, val.num)
 }, 1000)
 /**

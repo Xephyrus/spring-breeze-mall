@@ -114,7 +114,7 @@ import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getPackage, getExpress } from '@/api/trade.js'
 import { getOrderDetail } from '@/api/order.js'
-import { isNoDelivery, getPackageTitle } from '@/utils/orderDelivery.js'
+import { isNoDelivery, getPackageTitle } from '@/utils/orderDelivery'
 
 const packageList = ref<any[]>([])
 const legacyTraces = ref<any>(null)

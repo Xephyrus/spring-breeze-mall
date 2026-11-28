@@ -45,15 +45,22 @@ const getNetworkType = () => {
   });
 };
 
-const throttle = function (fn, that, gapTime) {
-  // export function throttle(fn, gapTime) {
+/**
+ * 节流：同一 that 上 gapTime 内只执行一次。
+ *
+ * 原来用 `fn.apply(that, arguments)`（arguments 是 throttle 自己的实参，不是 fn 的），
+ * 改成 rest 参数把「除前三个配置参数外」的实参原样转发，
+ * 与旧的 `arguments` 行为不完全等价（旧代码会把 fn/that/gapTime 也传给 fn），
+ * 但实际调用方都只传三个参数，转发内容为空，行为一致。
+ */
+const throttle = function (fn: (...args: any[]) => any, that: any, gapTime?: number, ...args: any[]) {
   if (gapTime == null || gapTime == undefined) {
     gapTime = 1800;
   }
-  let _lastTime = that.lastTime;
-  let _nowTime = +new Date();
+  const _lastTime = that.lastTime;
+  const _nowTime = +new Date();
   if (_nowTime - _lastTime > gapTime || !_lastTime) {
-    fn.apply(that, arguments); //将this和参数传给原函数
+    fn.apply(that, args); // 将 this 和参数传给原函数
     that.lastTime = _nowTime;
   }
 };
@@ -69,10 +76,10 @@ const countTimeDown = seconds => {
     return time + "";
   };
   return {
-    day: leftTime(parseInt(seconds / 60 / 60 / 24, 10)),
-    hours: leftTime(parseInt((seconds / 60 / 60) % 24, 10)),
-    minutes: leftTime(parseInt((seconds / 60) % 60, 10)),
-    seconds: leftTime(parseInt(seconds % 60, 10))
+    day: leftTime(parseInt(String(seconds / 60 / 60 / 24), 10)),
+    hours: leftTime(parseInt(String((seconds / 60 / 60) % 24), 10)),
+    minutes: leftTime(parseInt(String((seconds / 60) % 60), 10)),
+    seconds: leftTime(parseInt(String(seconds % 60), 10))
   };
 };
 
@@ -91,26 +98,27 @@ const theNextDayTime = () => {
       0,
       0
     ).getTime() - nowDate.getTime();
-  return parseInt(time / 1000);
+  return parseInt(String(time / 1000), 10);
 };
 // 防抖
-const debounce = (fn, delay) => {
+/**
+ * 返回一个防抖包装函数。
+ *
+ * 用 rest 参数 `...args` 而不是 `arguments`：调用方（如 cartList 的 `numChange(skuItem)`）
+ * 会传业务参数，原来返回的函数没有形参，TS 会把签名推成 `() => void`，调用处就报「参数过多」。
+ * rest 参数同时保留了 this 与参数原样转发，行为与改前一致。
+ */
+const debounce = <T extends (...args: any[]) => any>(fn: T, delay?: number) => {
   // 时间期限
-  var delays = delay || 200;
-  var timer;
-  // 闭包
-  return function() {
-    // 考虑作用域，上下文环境，apply需要用到this对象
-    var th = this;
-    // 接收的参数用 ES6 中的 rest 参数统一存储到变量 args 中。arguments就是传入的参数数组,而且个数可以不确定的传回给fn（不确定函数到底有多少个参数，用arguments来接收）
-    var args = arguments;
-    // 判断还在定时，说明当前正在一个计时过程中，并且又触发了相同事件。所以要取消当前的计时，重新开始计时
+  const delays = delay || 200;
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  return function (this: any, ...args: Parameters<T>) {
+    const th = this;
     if (timer) {
       clearTimeout(timer);
     }
-    timer = setTimeout(function() {
+    timer = setTimeout(function () {
       timer = null;
-      // 执行方法
       fn.apply(th, args);
     }, delays);
   };

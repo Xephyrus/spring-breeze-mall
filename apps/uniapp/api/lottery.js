@@ -1,5 +1,5 @@
 /** 每日免费抽奖活动、次数与记录。@author Bulbasaur @since 2026-11-14 */
-import { http, Method } from '@/utils/request.js';
+import { http, Method } from '@/utils/request';
 const base = '/promotion/lottery';
 /** 查询有效活动和公开奖池。 */
 export const listLottery = params => http.request({ url: base, method: Method.GET, needToken: true, params });

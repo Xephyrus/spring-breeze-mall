@@ -1,4 +1,4 @@
-import { http, Method } from "@/utils/request.js";
+import { http, Method } from "@/utils/request";
 
  export function toSpecial(data) {
   return http.request({

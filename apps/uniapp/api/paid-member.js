@@ -1,4 +1,4 @@
-import { http, Method } from '@/utils/request.js'
+import { http, Method } from '@/utils/request'
 export const getPaidMember = () => http.request({ url: '/member/paid/current', method: Method.GET, needToken: true })
 export const createPaidMemberOrder = data => http.request({ url: '/member/paid/orders', method: Method.POST, data, needToken: true, header: { 'Content-Type': 'application/json' } })
 export const getPaidMemberOrders = params => http.request({ url: '/member/paid/orders', method: Method.GET, params, needToken: true })

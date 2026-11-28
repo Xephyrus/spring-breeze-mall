@@ -5,7 +5,7 @@
 import {
 	http,
 	Method
-} from '@/utils/request.js';
+} from '@/utils/request';
 const request = http.request;
 
 

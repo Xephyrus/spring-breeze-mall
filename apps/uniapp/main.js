@@ -6,7 +6,7 @@ import config from '@/config/config'
 // #ifdef H5
 import airBtn from '@/components/m-airbtn/index.vue'
 // #endif
-import mpShare from '@/utils/mpShare.js'
+import mpShare from '@/utils/mpShare'
 import * as filterUtils from './utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 

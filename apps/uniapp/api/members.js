@@ -1,5 +1,5 @@
 import storage from "@/utils/storage";
-import { http, Method } from "@/utils/request.js";
+import { http, Method } from "@/utils/request";
 
 /**
  * 意见反馈

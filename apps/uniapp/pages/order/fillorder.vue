@@ -438,8 +438,8 @@ import {
   secrecyMobile,
   isLogin,
 } from '@/utils/filters'
-import { hasECouponInCheckout, hasAppointmentInCheckout } from '@/utils/goodsType.js'
-import { SERVICE_MODE_LABEL, formatDate } from '@/utils/appointmentGoods.js'
+import { hasECouponInCheckout, hasAppointmentInCheckout } from '@/utils/goodsType'
+import { SERVICE_MODE_LABEL, formatDate } from '@/utils/appointmentGoods'
 import { bindCheckout } from '@/api/appointment.js'
 
 const store = useStore()

@@ -194,10 +194,10 @@ import { ref, reactive, computed, watch, getCurrentInstance, onMounted } from 'v
 import { useStore } from '@/store'
 import { applyFirst } from '@/api/entry'
 import MCity from '@/components/m-city/m-city.vue'
-import { handleUploadAfterRead, getUploadedUrls } from '@/utils/uploadHelper.js'
-import * as RegExp from '@/utils/RegExp.js'
+import { handleUploadAfterRead, getUploadedUrls } from '@/utils/uploadHelper'
+import * as RegExp from '@/utils/RegExp'
 import { getThemeStyle } from '@/utils/theme'
-import { fieldInputStyle } from '@/utils/form-style.js'
+import { fieldInputStyle } from '@/utils/form-style'
 
 const props = defineProps<{ companyData?: any }>()
 const emit = defineEmits<{ callback: [] }>()

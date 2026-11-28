@@ -1,16 +1,16 @@
 import {
 	refreshTokenFn
 } from "@/api/login.js";
-import api from "@/config/api.js";
+import api from "@/config/api";
 import Request from "@/lib/request/index.js";
-import Foundation from "@/utils/Foundation.js";
+import Foundation from "@/utils/Foundation";
 import {
 	md5
-} from "@/utils/md5.js";
+} from "@/utils/md5";
 import storage from "@/utils/storage";
 
 import jwt from '@/js_sdk/t-jwt/jwt.js';
-import uuid from "@/utils/uuid.modified.js";
+import uuid from "@/utils/uuid.modified";
 import store from "../store";
 
 
@@ -58,7 +58,7 @@ let http = new Request();
  */
 const createUuid = () => {
 	if (!storage.getUuid()) {
-		storage.setUuid(uuid.v1());
+		storage.setUuid((uuid as any).v1());
 		console.log("uuid", storage.getUuid());
 	}
 }
@@ -99,7 +99,7 @@ http.interceptors.request.use(
 
 
 			const nonce = Foundation.randomString(6);
-			const timestamp = parseInt(new Date().getTime() / 1000);
+			const timestamp = parseInt(String(new Date().getTime() / 1000), 10);
 			const sign = md5(nonce + timestamp + accessToken);
 			const _params = {
 				nonce,

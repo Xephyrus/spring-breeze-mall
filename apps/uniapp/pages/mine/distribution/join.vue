@@ -184,7 +184,7 @@ import { getThemeStyle } from '@/utils/theme'
 import storage from '@/utils/storage'
 import config from '@/config/config'
 import { parseGoodsImageUrl, tipsToLogin } from '@/utils/filters'
-import { resolveRecruitDistributionIdFromScene } from '@/utils/distributionBind.js'
+import { resolveRecruitDistributionIdFromScene } from '@/utils/distributionBind'
 import { getRecruitPage, getRecruitProgress, getRecruitInviter, submitRecruitApplication, savePendingRecruitToken } from '@/api/distribution'
 import {
   DISTRIBUTION_APPLY_MESSAGE,

@@ -3,7 +3,7 @@
  * @author Bulbasaur
  * @since 2026-11-19
  */
-import { resolveDecorateLink, navigateDecorateLink } from './decorate-link.js';
+import { resolveDecorateLink, navigateDecorateLink } from './decorate-link';
 
 /** 构造成功页地址，只携带支付编号及业务类型，不将客户端金额作为支付依据。 */
 export function paymentSuccessUrl({ sn, orderType, paymentMethod, orderPromotionType = '' }) {

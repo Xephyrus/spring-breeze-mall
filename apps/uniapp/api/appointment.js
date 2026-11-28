@@ -1,7 +1,7 @@
 /**
  * 预约服务买家端 API
  */
-import { http, Method } from '@/utils/request.js'
+import { http, Method } from '@/utils/request'
 
 /** 查询可预约时段 */
 export function listSlots(skuId, slotDate) {

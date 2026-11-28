@@ -127,6 +127,14 @@ declare global {
   const requirePlugin: any
 
   /**
+   * uni 对象上被 uview-plus 挂载的 `$u`（`utils/mpShare.ts` 里会读写它做分享配置）。
+   */
+  interface Uni {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    $u: any
+  }
+
+  /**
    * HTML5+ 的 plus.ios 命名空间补充：`plus.ios.import(...)` 用于导入 iOS 原生类
    * （`pages/tabbar/screen/fullScreen.vue` 退出全屏时使用）。
    */

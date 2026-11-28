@@ -2,9 +2,9 @@
  * 安全相关API
  */
 
-import {http,Method} from '@/utils/request.js';
+import {http,Method} from '@/utils/request';
 import storage from "@/utils/storage"
-import { md5 } from '@/utils/md5.js'
+import { md5 } from '@/utils/md5'
 
 /**
  * 发送绑定手机验证码

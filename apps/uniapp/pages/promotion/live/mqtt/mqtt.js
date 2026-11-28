@@ -1,5 +1,5 @@
 // #ifndef MP-WEIXIN
-import api from "@/config/api.js";
+import api from "@/config/api";
 import mqtt from "mqtt";
 
 const mqttEndpoint = api.mqtt;

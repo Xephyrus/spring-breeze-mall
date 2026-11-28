@@ -2,7 +2,7 @@
  * 分销员相关 API
  */
 
-import { http, Method } from '@/utils/request.js'
+import { http, Method } from '@/utils/request'
 
 /**
  * 绑定分销员

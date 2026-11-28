@@ -3,7 +3,7 @@
  * @author Bulbasaur
  * @since 2026-11-05
  */
-import { http, Method } from '@/utils/request.js'
+import { http, Method } from '@/utils/request'
 
 /**
  * 沿用普通下单的平台编译条件，按真实运行端记录订单来源。

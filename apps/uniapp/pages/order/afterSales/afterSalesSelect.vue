@@ -64,7 +64,7 @@ import { unitPrice, parseGoodsImageUrl } from '@/utils/filters'
 import { getAfterSaleInfo } from '@/api/after-sale'
 import storage from '@/utils/storage'
 // 深链进入时拦截 E_COUPON，后端 apply/save 亦会拒绝
-import { isECouponOrder } from '@/utils/goodsType.js'
+import { isECouponOrder } from '@/utils/goodsType'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

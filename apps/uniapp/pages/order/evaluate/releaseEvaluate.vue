@@ -91,7 +91,7 @@ import { ref, reactive, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { commentsMemberOrder } from '@/api/members.js'
-import { handleUploadAfterRead } from '@/utils/uploadHelper.js'
+import { handleUploadAfterRead } from '@/utils/uploadHelper'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()
