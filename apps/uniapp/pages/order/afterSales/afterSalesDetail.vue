@@ -174,6 +174,7 @@ import { computePartialRefundPrice } from '@/utils/appointment-goods'
 import { handleUploadAfterRead } from '@/utils/upload-helper'
 import storage from '@/utils/storage'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -253,7 +254,7 @@ onLoad((options) => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function getGoodsName(item: any) {
@@ -273,7 +274,7 @@ function gotoGoodsDetail(goodsId: string) {
 }
 
 async function fetchReasonActions(serviceType: string) {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   await getAfterSaleReason(serviceType).then((res) => {
     if (res.data.success) {
       reasonList.value = res.data.result.map((item: any) => ({
@@ -350,7 +351,7 @@ function showToast(message: string, type = 'error') {
 function onSubmit() {
   if (!validateFormParams()) return
 
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   form.accountType = applyInfo.value.accountType
   form.refundWay = applyInfo.value.refundWay
   form.applyRefundPrice = isAppointmentAfterSale.value

@@ -124,6 +124,7 @@ import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getStoreOrderDetail, storeOrderTake } from '../../api/order.js'
 import { parseGoodsImageUrl } from '@/utils/filters'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const orderSn = ref('')
 const orderDetail = ref<any>(null)
@@ -140,17 +141,17 @@ onLoad((options: any) => {
 })
 
 const fetchDetail = async () => {
-  uni.showLoading({ title: '加载中...' })
+  showLoading({ title: '加载中...' })
   try {
     const res: any = await getStoreOrderDetail(orderSn.value)
-    uni.hideLoading()
+    hideLoading()
     if (res?.data && res.data.success && res.data.result) {
       orderDetail.value = res.data.result
     } else {
       uni.showToast({ title: '获取订单详情失败', icon: 'none' })
     }
   } catch (e) {
-    uni.hideLoading()
+    hideLoading()
     uni.showToast({ title: '网络连接异常', icon: 'none' })
   }
 }
@@ -300,10 +301,10 @@ const handleDirectVerify = async () => {
     content: `确认核销此单？核销码：${code}`,
     success: async (res) => {
       if (res.confirm) {
-        uni.showLoading({ title: '正在核销...' })
+        showLoading({ title: '正在核销...' })
         try {
           const takeRes: any = await storeOrderTake(orderSn.value, code)
-          uni.hideLoading()
+          hideLoading()
           if (takeRes?.data && takeRes.data.success) {
             uni.showToast({ title: '核销成功', icon: 'success' })
             fetchDetail()
@@ -314,7 +315,7 @@ const handleDirectVerify = async () => {
             })
           }
         } catch (e) {
-          uni.hideLoading()
+          hideLoading()
           uni.showToast({ title: '核销异常，请稍后重试', icon: 'none' })
         }
       }

@@ -87,6 +87,7 @@ import { useStore } from '@/store'
 import { getOrderList } from '@/api/order'
 import { getComments } from '@/api/members'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -164,9 +165,9 @@ function changeSwiper(e: any) {
 }
 
 function loadData() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   getOrderList(params).then((res) => {
-    if (store.state.isShowToast) uni.hideLoading()
+    if (store.state.isShowToast) hideLoading()
     const records = res.data.result.records
     if (records.length < 10) {
       params.loadStatus = 'noMore'
@@ -185,9 +186,9 @@ function talkCommont(sku: any) {
 }
 
 function loadComments() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   getComments(params).then((res) => {
-    if (store.state.isShowToast) uni.hideLoading()
+    if (store.state.isShowToast) hideLoading()
     const records = res.data.result.records
     if (records.length < 10) {
       params.loadStatus = 'noMore'

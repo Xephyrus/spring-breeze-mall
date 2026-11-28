@@ -82,6 +82,7 @@ import { getLogistics } from '@/api/address'
 import { fillShipInfo } from '@/api/after-sale'
 import storage from '@/utils/storage'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -108,7 +109,7 @@ onLoad((options) => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function companySelectConfirm(e: any[]) {
@@ -150,7 +151,7 @@ function onSubmit() {
     return
   }
 
-  uni.showLoading({ title: '加载中', mask: true })
+  showLoading({ title: '加载中', mask: true })
   fillShipInfo(serviceDetail.sn, submitForm).then((res) => {
     hideLoadingIfNeeded()
     if (res.statusCode === 200) {

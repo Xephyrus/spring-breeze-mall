@@ -82,6 +82,7 @@
 <script setup lang="ts">
 import { ref, getCurrentInstance } from 'vue'
 import { getRegionsById } from "@/api/common"
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const instance = getCurrentInstance()
 
@@ -176,13 +177,13 @@ const changCity = async (index: number, item: any) => {
       tabbars.value.splice(index + 1, tabbars.value.length - index - 1)
     }
     if (tabbars.value.length < Number(pickersize.value)) {
-      uni.showLoading({
+      showLoading({
         title: "加载中",
         mask: true
       })
       try {
         let data = await getRegionsById(item.id)
-        uni.hideLoading()
+        hideLoading()
         // 当前选项级为最后一级时回调，将选中的数据返回
         if (data.data.result.length == 0) {
           emit("funcValue", tabbars.value)
@@ -201,7 +202,7 @@ const changCity = async (index: number, item: any) => {
           scrollTop.value = 0
         }
       } catch (error) {
-        uni.hideLoading()
+        hideLoading()
       }
     } else {
       emit("funcValue", tabbars.value)

@@ -37,6 +37,7 @@ import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { getGoodsList } from '@/api/goods'
 import { useStore } from '@/store'
 import { unitPrice } from '@/utils/filters'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 
@@ -51,11 +52,11 @@ const goodsList = ref<any[]>([])
 const nomsg = ref(false)
 
 function getList() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   params.keyword = goods.value.goodsName
   getGoodsList(params).then((res) => {
     if (store.state.isShowToast) {
-      uni.hideLoading()
+      hideLoading()
     }
     if (res.statusCode == 200) {
       const data = res.data

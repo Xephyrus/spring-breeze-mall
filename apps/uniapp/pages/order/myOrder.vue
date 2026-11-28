@@ -161,6 +161,7 @@ import {
 // E_COUPON 订单不展示确认收货、退款/售后（FR-B-04）
 import { isECouponOrder, isAppointmentOrder } from '@/utils/goods-type'
 import { appointmentOrderStatusText, getAppointmentAllowOperation } from '@/utils/appointment-goods'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const { proxy } = getCurrentInstance()!
@@ -213,7 +214,7 @@ const cancelAfterSaleShow = ref(false)
 const pendingAfterSaleSn = ref('')
 
 function hideLoadingIfNeeded() {
-	if (store.state.isShowToast) uni.hideLoading()
+	if (store.state.isShowToast) hideLoading()
 }
 
 onBackPress((e) => {
@@ -308,7 +309,7 @@ function onCancel(sn: string) {
 	cancelIsPickup.value = !!navList.flatMap(tab => tab.orderList).find(order => order.sn === sn)?.pickupCardId
 	orderSn.value = sn
 	cancelShow.value = true
-	uni.showLoading({ title: '加载中' })
+	showLoading({ title: '加载中' })
 	getClearReason().then((res) => {
 		if (res.data.result.length >= 1) {
 			cancelList.value = res.data.result
@@ -438,7 +439,7 @@ function onCancelAfterSale(order: any) {
 
 async function confirmCancelAfterSale() {
 	if (!pendingAfterSaleSn.value) return
-	uni.showLoading({ title: '加载中' })
+	showLoading({ title: '加载中' })
 	const res = await cancelAfterSale(pendingAfterSaleSn.value)
 	hideLoadingIfNeeded()
 	if (res?.data?.success) {
@@ -473,7 +474,7 @@ function tabClick(index: number | string) {
 }
 
 function deleteOrder(index: number | string) {
-	uni.showLoading({ title: '请稍后' })
+	showLoading({ title: '请稍后' })
 	setTimeout(() => {
 		navList[tabCurrentIndex.value].orderList.splice(Number(index), 1)
 		hideLoadingIfNeeded()
@@ -481,7 +482,7 @@ function deleteOrder(index: number | string) {
 }
 
 function cancelOrderLocal(item: any) {
-	uni.showLoading({ title: '请稍后' })
+	showLoading({ title: '请稍后' })
 	setTimeout(() => {
 		const { stateTip, stateTipColor } = orderStateExp(9)
 		Object.assign(item, {

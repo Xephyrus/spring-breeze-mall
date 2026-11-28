@@ -57,6 +57,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { getComplainDetail, communication } from '@/api/after-sale'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -124,7 +125,7 @@ function handleSubmit() {
 }
 
 function init(id: string) {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   getComplainDetail(id).then((res) => {
     if (res.data.success) {
       complainDetail.value = res.data.result
@@ -135,7 +136,7 @@ function init(id: string) {
         icon: 'none',
       })
     }
-    if (store.state.isShowToast) uni.hideLoading()
+    if (store.state.isShowToast) hideLoading()
   })
 }
 </script>

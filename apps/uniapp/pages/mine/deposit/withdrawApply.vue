@@ -91,6 +91,7 @@ import { getWithdrawApplyPage, getWithdrawApplyWechatTransferInfo } from '@/api/
 import { unitPrice } from '@/utils/filters'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 import {
   prefetchMpMessageTemplates,
   subscribeMpMessageByScenes,
@@ -215,7 +216,7 @@ function confirmWechatReceive(item: any) {
     return
   }
 
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   getWithdrawApplyWechatTransferInfo(id)
     .then((res) => {
       if (!res.data || !res.data.success) return
@@ -291,7 +292,7 @@ function confirmWechatReceive(item: any) {
       uni.showToast({ title: '请在微信内打开确认收款', duration: 2000, icon: 'none' })
     })
     .finally(() => {
-      uni.hideLoading()
+      hideLoading()
     })
 }
 </script>

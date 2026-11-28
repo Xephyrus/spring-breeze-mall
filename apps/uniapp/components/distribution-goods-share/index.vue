@@ -77,6 +77,7 @@ import { unitPrice, parseGoodsImageUrl } from '@/utils/filters'
 import PosterPanel from './poster-panel.vue'
 // #ifdef H5
 import { h5Copy } from '@/js_sdk/h5-copy/h5-copy.js'
+import { showLoading, hideLoading } from '@/utils/loading'
 // #endif
 
 const props = defineProps<{
@@ -252,14 +253,14 @@ function continueAfterCopy() {
     uni.showToast({ title: '内容已复制', icon: 'none' })
     return
   }
-  uni.showLoading({ title: '保存中', mask: true })
+  showLoading({ title: '保存中', mask: true })
   saveImages(imageUrls)
     .then(() => {
-      uni.hideLoading()
+      hideLoading()
       uni.showToast({ title: '内容已复制', icon: 'none' })
     })
     .catch((error) => {
-      uni.hideLoading()
+      hideLoading()
       uni.showToast({ title: '图片保存失败', icon: 'none' })
       console.error('save images failed', error)
     })

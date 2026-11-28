@@ -195,6 +195,7 @@ import {
   getEnabledServiceStaff,
 } from '../../api/order.js'
 import { storeLogout } from '../../api/passport.js'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const storeInfo = ref<Record<string, any>>({})
 
@@ -291,7 +292,7 @@ const handleManualVerify = () => {
 // 预检核销码并展示弹窗
 const queryAndShowVerify = async (code) => {
   currentCode.value = code
-  uni.showLoading({ title: '正在查询订单...' })
+  showLoading({ title: '正在查询订单...' })
 
   try {
     let isAppoint = false
@@ -312,7 +313,7 @@ const queryAndShowVerify = async (code) => {
       }
     }
 
-    uni.hideLoading()
+    hideLoading()
 
     if (orderData) {
       verifyingOrder.value = orderData
@@ -324,7 +325,7 @@ const queryAndShowVerify = async (code) => {
       showModal.value = true
     }
   } catch (err) {
-    uni.hideLoading()
+    hideLoading()
     verifyingOrder.value = { sn: '以提交核销为准' }
     isAppointmentOrder.value = false
     showModal.value = true
@@ -345,7 +346,7 @@ const closeModal = () => {
 const submitConfirmVerification = async () => {
   if (confirming.value) return
   confirming.value = true
-  uni.showLoading({ title: '核销中...' })
+  showLoading({ title: '核销中...' })
 
   try {
     let success = false
@@ -374,7 +375,7 @@ const submitConfirmVerification = async () => {
       }
     }
 
-    uni.hideLoading()
+    hideLoading()
     confirming.value = false
 
     if (success) {
@@ -390,7 +391,7 @@ const submitConfirmVerification = async () => {
       })
     }
   } catch (e) {
-    uni.hideLoading()
+    hideLoading()
     confirming.value = false
     uni.showToast({ title: '请求失败，请稍后重试', icon: 'none' })
   }

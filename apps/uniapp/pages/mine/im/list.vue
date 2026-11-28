@@ -73,6 +73,7 @@ import { useStore } from '@/store'
 import { getTalkList, clearmeaager } from '@/api/im'
 import storage from '@/utils/storage'
 import { beautifyTime } from '@/utils/filters'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 
@@ -96,7 +97,7 @@ onReachBottom(() => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function onclickToTalkInfo(val: any) {
@@ -110,7 +111,7 @@ function fetchTalkList() {
   const params = {
     userName: userName.value,
   }
-  uni.showLoading({
+  showLoading({
     title: '加载中',
   })
   getTalkList(params).then((res) => {

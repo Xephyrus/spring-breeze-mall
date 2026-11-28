@@ -47,6 +47,7 @@ import { useStore } from '@/store'
 import { unitPrice } from '@/utils/filters'
 import { getComplain, clearComplain } from '@/api/after-sale'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -116,11 +117,11 @@ function handleInfo(val: any) {
 }
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function init() {
-  uni.showLoading({
+  showLoading({
     title: '加载中',
   })
   getComplain(params.value).then((res) => {

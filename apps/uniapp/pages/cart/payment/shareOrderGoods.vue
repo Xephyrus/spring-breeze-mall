@@ -97,6 +97,7 @@ import storage from '@/utils/storage'
 import popupGoods from '@/components/m-buy/goods.vue'
 import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -146,7 +147,7 @@ onMounted(() => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function closeShare() {
@@ -225,7 +226,7 @@ async function init(sn: string, sku: string) {
 
 function getGoodsDetail(val: { id: string; goodsId: string }) {
   const { id, goodsId } = val
-  uni.showLoading({ title: '加载中', mask: true })
+  showLoading({ title: '加载中', mask: true })
   getGoods(id, goodsId).then((response) => {
     goodsDetail.value = response.data.result.data
     selectedGoods.value = response.data.result.data

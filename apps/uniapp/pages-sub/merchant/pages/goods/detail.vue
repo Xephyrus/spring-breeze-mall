@@ -162,6 +162,7 @@ import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getStoreGoodsDetail, getStoreGoodsSkuList, upGoods, downGoods } from '../../api/goods.js'
 import { parseGoodsImageUrl } from '@/utils/filters'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const getSkuThumb = (sku: any) => {
   const img = sku.thumbnail || sku.original
@@ -200,10 +201,10 @@ const galleryImages = computed(() => {
 })
 
 const fetchGoodsDetail = async () => {
-  uni.showLoading({ title: '加载中...' })
+  showLoading({ title: '加载中...' })
   try {
     const res: any = await getStoreGoodsDetail(goodsId.value)
-    uni.hideLoading()
+    hideLoading()
     if (res?.data && res.data.success && res.data.result) {
       goodsDetail.value = res.data.result
       skuList.value = res.data.result.skuList || []
@@ -214,7 +215,7 @@ const fetchGoodsDetail = async () => {
       uni.showToast({ title: '获取商品详情失败', icon: 'none' })
     }
   } catch (e) {
-    uni.hideLoading()
+    hideLoading()
     uni.showToast({ title: '网络连接异常', icon: 'none' })
   }
 }
@@ -347,11 +348,11 @@ const handleToggleMarket = (targetStatus: string) => {
     content: `确定要${actionText}当前商品？`,
     success: async (res) => {
       if (res.confirm) {
-        uni.showLoading({ title: `正在${actionText}...` })
+        showLoading({ title: `正在${actionText}...` })
         try {
           const apiCall = isUp ? upGoods(goodsId.value) : downGoods(goodsId.value)
           const resp: any = await apiCall
-          uni.hideLoading()
+          hideLoading()
           if (resp?.data && resp.data.success) {
             uni.showToast({ title: `${actionText}成功`, icon: 'success' })
             fetchGoodsDetail()
@@ -362,7 +363,7 @@ const handleToggleMarket = (targetStatus: string) => {
             })
           }
         } catch (e) {
-          uni.hideLoading()
+          hideLoading()
           uni.showToast({ title: '网络异常，请稍后重试', icon: 'none' })
         }
       }

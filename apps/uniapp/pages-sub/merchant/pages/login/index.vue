@@ -132,6 +132,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import storage from '@/utils/storage'
 import { md5 } from '@/utils/md5'
 import myVerification from '@/components/verification/verification.vue'
+import { showLoading, hideLoading } from '@/utils/loading'
 import {
   userLogin,
   smsLogin,
@@ -254,7 +255,7 @@ const handleVerificationSuccess = () => {
 // 执行账号密码登录（密码需先做 MD5 摘要以匹配后端 BCrypt(md5(明文)) 校验口径）
 const doAccountLogin = async () => {
   submitting.value = true
-  uni.showLoading({ title: '正在登录...' })
+  showLoading({ title: '正在登录...' })
 
   try {
     const res: any = await userLogin({
@@ -262,7 +263,7 @@ const doAccountLogin = async () => {
       password: md5(accountForm.password),
     })
 
-    uni.hideLoading()
+    hideLoading()
     submitting.value = false
 
     if (res?.data && res.data.success && res.data.result) {
@@ -305,7 +306,7 @@ const doAccountLogin = async () => {
       verificationRef.value?.getCode()
     }
   } catch (err: any) {
-    uni.hideLoading()
+    hideLoading()
     submitting.value = false
     verificationRef.value?.getCode()
     uni.showToast({
@@ -318,9 +319,9 @@ const doAccountLogin = async () => {
 // 执行发送短信验证码
 const doSendSms = async () => {
   try {
-    uni.showLoading({ title: '发送中...' })
+    showLoading({ title: '发送中...' })
     const res = await sendStoreSms(smsForm.mobile, 'LOGIN')
-    uni.hideLoading()
+    hideLoading()
     if (res?.data && res.data.success) {
       codeFlag.value = false
       uni.showToast({ title: '验证码已发送', icon: 'success' })
@@ -340,7 +341,7 @@ const doSendSms = async () => {
       })
     }
   } catch (e: any) {
-    uni.hideLoading()
+    hideLoading()
     verificationRef.value?.getCode()
     uni.showToast({ title: e?.data?.message || '网络异常，发送失败', icon: 'none' })
   }
@@ -349,7 +350,7 @@ const doSendSms = async () => {
 // 执行短信登录
 const doSmsLogin = async () => {
   submitting.value = true
-  uni.showLoading({ title: '正在登录...' })
+  showLoading({ title: '正在登录...' })
 
   try {
     const res: any = await smsLogin({
@@ -357,7 +358,7 @@ const doSmsLogin = async () => {
       code: smsForm.code.trim(),
     })
 
-    uni.hideLoading()
+    hideLoading()
     submitting.value = false
 
     if (res?.data && res.data.success && res.data.result) {
@@ -397,7 +398,7 @@ const doSmsLogin = async () => {
       })
     }
   } catch (err: any) {
-    uni.hideLoading()
+    hideLoading()
     submitting.value = false
     uni.showToast({ title: err?.data?.message || '网络连接异常', icon: 'none' })
   }

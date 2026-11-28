@@ -63,6 +63,7 @@ import { sendMobile, resetByMobile, resetPassword } from '@/api/login'
 import { md5 } from '@/utils/md5'
 import MyVerification from '@/components/verification/verification.vue'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -114,9 +115,9 @@ watch(verificationPassed, (val) => {
 		proxy.$u.toast('请倒计时结束后再发送')
 		return
 	}
-	uni.showLoading({ title: '正在获取验证码' })
+	showLoading({ title: '正在获取验证码' })
 	sendMobile(codeForm.mobile, 'FIND_USER').then((res) => {
-		if (store.state.isShowToast) uni.hideLoading()
+		if (store.state.isShowToast) hideLoading()
 		if (res.data.success) {
 			uCodeRef.value?.start()
 		} else {

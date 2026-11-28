@@ -108,6 +108,7 @@
 import { ref } from 'vue'
 import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
 import { getStoreGoodsList, upGoods, downGoods } from '../../api/goods.js'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const keywords = ref('')
 const currentTab = ref('ALL')
@@ -216,11 +217,11 @@ const toggleMarket = (goods, targetStatus) => {
     content: `确定要${actionText}商品「${goods.goodsName}」吗？`,
     success: async (res) => {
       if (res.confirm) {
-        uni.showLoading({ title: `正在${actionText}...` })
+        showLoading({ title: `正在${actionText}...` })
         try {
           const apiCall = isUp ? upGoods(goods.id) : downGoods(goods.id)
           const resp = await apiCall
-          uni.hideLoading()
+          hideLoading()
           if (resp.data && resp.data.success) {
             uni.showToast({ title: `${actionText}成功`, icon: 'success' })
             fetchGoods(true)
@@ -231,7 +232,7 @@ const toggleMarket = (goods, targetStatus) => {
             })
           }
         } catch (e) {
-          uni.hideLoading()
+          hideLoading()
           uni.showToast({ title: '网络连接异常', icon: 'none' })
         }
       }

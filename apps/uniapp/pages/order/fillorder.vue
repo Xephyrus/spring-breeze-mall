@@ -423,6 +423,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import { showLoading, hideLoading } from '@/utils/loading'
 import { ref, computed, watch, getCurrentInstance } from 'vue'
 import { onLoad, onShow, onBackPress } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
@@ -595,7 +596,7 @@ onBackPress((e) => {
 })
 
 onShow(async () => {
-  uni.showLoading({
+  showLoading({
     mask: true,
   })
   try {
@@ -613,7 +614,7 @@ onShow(async () => {
       pintuanWay()
     }
   } finally {
-    uni.hideLoading()
+    hideLoading()
   }
 })
 

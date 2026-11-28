@@ -66,6 +66,7 @@ import { getComplainReason, addComplain } from '@/api/after-sale'
 import { handleUploadAfterRead } from '@/utils/upload-helper'
 import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -153,12 +154,12 @@ function getReasion() {
 }
 
 function loadData(orderSn: string) {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   getOrderDetail(orderSn).then((res) => {
     const result = res.data.result
     order.value = result.order
     orderGoodsList.value = result.orderItems
-    if (store.state.isShowToast) uni.hideLoading()
+    if (store.state.isShowToast) hideLoading()
     if (result?.order?.orderStatus === 'CANCELLED') {
       uni.showToast({ title: '订单已取消，无法发起投诉', icon: 'none' })
       setTimeout(() => { uni.navigateBack() }, 1500)

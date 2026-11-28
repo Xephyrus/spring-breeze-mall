@@ -134,6 +134,7 @@ import { onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 import {
 	getGoodsCollection,
 	getStoreCollection,
@@ -184,7 +185,7 @@ onShow(() => {
 })
 
 function hideLoadingIfNeeded() {
-	if (store.state.isShowToast) uni.hideLoading()
+	if (store.state.isShowToast) hideLoading()
 }
 
 function onTabChange(e: any) {
@@ -285,7 +286,7 @@ function goStoreMainPage(id: string) {
 function fetchGoodsList() {
 	if (goodsLoading.value) return
 	goodsLoading.value = true
-	uni.showLoading({ title: '加载中' })
+	showLoading({ title: '加载中' })
 	getGoodsCollection(goodsParams.value, 'GOODS')
 		.then((res) => {
 			goodsLoading.value = false
@@ -318,7 +319,7 @@ function fetchGoodsList() {
 function fetchStoreList() {
 	if (storeLoading.value) return
 	storeLoading.value = true
-	uni.showLoading({ title: '加载中' })
+	showLoading({ title: '加载中' })
 	getStoreCollection(storeParams.value, 'STORE')
 		.then((res) => {
 			storeLoading.value = false

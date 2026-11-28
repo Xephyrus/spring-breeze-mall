@@ -60,6 +60,7 @@ import { cashLog, getDistributionOrders } from '@/api/distribution'
 import { unitPrice } from '@/utils/filters'
 import { assertActiveDistributor } from '@/utils/distribution-status'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -102,11 +103,11 @@ onReachBottom(() => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function fetchAchievementList() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   getDistributionOrders(achievementParams.value).then((res) => {
     const records = res.data.success ? res.data.result?.records || [] : []
     if (records.length) {
@@ -123,7 +124,7 @@ function fetchAchievementList() {
 }
 
 function fetchWithdrawLog() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   cashLog(withdrawParams.value).then((res) => {
     if (res.data.success && res.data.result.records.length >= 1) {
       withdrawLogList.value.push(...res.data.result.records)

@@ -49,6 +49,7 @@ import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { getPointsData, getMemberPointSum } from '@/api/members'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 import {
   prefetchMpMessageTemplates,
   subscribeMpMessageByScenes,
@@ -92,11 +93,11 @@ onReachBottom(() => {
 })
 
 function hideLoadingIfNeeded() {
-	if (store.state.isShowToast) uni.hideLoading()
+	if (store.state.isShowToast) hideLoading()
 }
 
 function fetchPointLogList() {
-	uni.showLoading({ title: '加载中' })
+	showLoading({ title: '加载中' })
 	getPointsData(params.value).then((res) => {
 		hideLoadingIfNeeded()
 		if (res.data.success) {

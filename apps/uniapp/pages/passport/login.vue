@@ -144,6 +144,7 @@ import wechatH5Login from './wechatH5Login.vue'
 import { md5 } from '@/utils/md5'
 import { secrecyMobile } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 interface LoginListItem {
 	icon: string
@@ -322,7 +323,7 @@ watch(flage, async (val) => {
 			return
 		}
 
-		uni.showLoading({})
+		showLoading({})
 		try {
 			const res = await sendMobile(mobile.value)
 			if (res.data.success) {
@@ -339,7 +340,7 @@ watch(flage, async (val) => {
 				verification.value?.getCode()
 			}
 		} finally {
-			uni.hideLoading()
+			hideLoading()
 		}
 	} else {
 		verification.value?.hide()

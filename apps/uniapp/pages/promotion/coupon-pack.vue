@@ -122,6 +122,7 @@
 import { getCouponPackageDetail, receiveCouponPackage } from "@/api/promotions";
 import storage from "@/utils/storage";
 import { getMpScene } from "@/api/goods";
+import { showLoading, hideLoading } from '@/utils/loading'
 
 export default {
   data() {
@@ -210,10 +211,10 @@ export default {
       }
       if (this.loading) return;
       this.loading = true;
-      uni.showLoading({ title: "领取中..." });
+      showLoading({ title: "领取中..." });
       try {
         const res = await receiveCouponPackage(this.packId);
-        uni.hideLoading();
+        hideLoading();
         this.loading = false;
         if (res.data.success) {
           uni.showModal({
@@ -235,7 +236,7 @@ export default {
           });
         }
       } catch (err) {
-        uni.hideLoading();
+        hideLoading();
         this.loading = false;
         console.error("一键领券异常", err);
       }

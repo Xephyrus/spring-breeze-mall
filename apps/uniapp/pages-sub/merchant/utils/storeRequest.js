@@ -4,6 +4,7 @@ import Foundation from "@/utils/foundation";
 import { md5 } from "@/utils/md5";
 import storage from "@/utils/storage";
 import uuid from "@/utils/uuid-modified";
+import { hideLoading } from '@/utils/loading'
 
 let isStoreNavigateTo = false;
 
@@ -83,7 +84,7 @@ storeHttp.interceptors.response.use(
   async (response) => {
     isStoreNavigateTo = false;
     try {
-      uni.hideLoading();
+      hideLoading();
     } catch (e) {}
 
     const token = storage.getStoreAccessToken();

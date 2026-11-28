@@ -108,6 +108,7 @@ import permision from '@/js_sdk/wa-permission/permission.js'
 import { getThemeStyle } from '@/utils/theme'
 import { getRegionsById } from '@/api/common'
 import { resolveWechatRegion, getWechatAddressErrorType } from '@/utils/wechat-address'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -128,7 +129,7 @@ function importWechatAddress() {
   importing.value = true
   uni.chooseAddress({
     success: async (address: any) => {
-      uni.showLoading({ title: '正在匹配地区', mask: true })
+      showLoading({ title: '正在匹配地区', mask: true })
       // Clear the old region and coordinates, including when editing an existing address.
       Object.assign(form, {
         name: address.userName || '',
@@ -161,7 +162,7 @@ function importWechatAddress() {
         showImportedRegionHint(address)
       } finally {
         importing.value = false
-        uni.hideLoading()
+        hideLoading()
         uForm.value?.clearValidate()
       }
     },
@@ -275,7 +276,7 @@ onLoad(async (option) => {
   routerVal.value = option || {}
   uni.setNavigationBarTitle({ title: option?.id ? '编辑收货地址' : '新增收货地址' })
   if (!option?.id) return
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   try {
     const res = await getAddressDetail(option.id)
     const params = res.data?.result
@@ -287,7 +288,7 @@ onLoad(async (option) => {
   } catch {
     uni.showToast({ title: '地址加载失败，请重试', icon: 'none' })
   } finally {
-    uni.hideLoading()
+    hideLoading()
   }
 })
 
@@ -335,7 +336,7 @@ async function requestAndroidPermission(permisionID: string) {
 }
 
 function callBackAddress(val: any) {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   if (val.regeocode && val) {
     const address = val.regeocode
     form.detail = address.formatted_address
@@ -344,7 +345,7 @@ function callBackAddress(val: any) {
     form.consigneeAddressPath = val.data.result.name
     form.lat = val.latitude
     form.lon = val.longitude
-    uni.hideLoading()
+    hideLoading()
   }
   mapFlag.value = !mapFlag.value
 }

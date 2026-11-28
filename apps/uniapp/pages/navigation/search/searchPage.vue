@@ -241,6 +241,7 @@
 </template>
 
 <script setup lang="ts">
+import { showLoading, hideLoading } from '@/utils/loading'
 import {
 	ref,
 	reactive,
@@ -601,7 +602,7 @@ function tabClick(index: number | string, type?: string) {
 		scrollTop: 0,
 	})
 	loadData('refresh', 1)
-	uni.showLoading({
+	showLoading({
 		title: '正在加载',
 	})
 }
@@ -685,7 +686,7 @@ async function loadData(type?: string, _loading?: number) {
 
 	initSortGoods()
 	if (store.state.isShowToast) {
-		uni.hideLoading()
+		hideLoading()
 	}
 }
 

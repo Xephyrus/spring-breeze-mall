@@ -62,6 +62,7 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import popupGoods from '@/components/m-buy/goods.vue'
 import { getPointsGoodsDetail } from '@/api/promotions'
 import { unitPrice } from '@/utils/filters'
+import { showLoading } from '@/utils/loading'
 
 const style = ref({
   img: 'display:block',
@@ -84,7 +85,7 @@ onShow(() => {
 })
 
 function getGoodsDetail() {
-  uni.showLoading({
+  showLoading({
     title: '加载中',
     mask: true,
   })

@@ -85,6 +85,7 @@ import { useStore } from '@/store'
 import { unitPrice } from '@/utils/filters'
 import { onShow } from '@dcloudio/uni-app'
 import { computed, ref, watch } from 'vue'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 
@@ -140,7 +141,7 @@ watch(tabCurrentIndex, (val) => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function handleTabClick(index: number) {
@@ -148,7 +149,7 @@ function handleTabClick(index: number) {
 }
 
 function getData() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   const index = tabCurrentIndex.value
   getMemberCoupons(navList.value[index].params).then((res) => {
     uni.stopPullDownRefresh()

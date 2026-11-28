@@ -75,6 +75,7 @@ import { payCallback } from '@/api/members'
 import { paymentSuccessUrl, paymentReturnUrl } from '@/utils/payment-success'
 import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -127,7 +128,7 @@ onMounted(() => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 /** 支付客户端返回只传递上下文，成功页查询服务端确认结果和金额。 */
@@ -235,7 +236,7 @@ async function pay(payment: string) {
   const paymentMethod = payment
   const client = paymentClient.value
 
-  uni.showLoading({ title: '正在唤起支付...', mask: true })
+  showLoading({ title: '正在唤起支付...', mask: true })
 
   // #ifdef APP-PLUS
   await API_Trade.initiatePay(paymentMethod, client, params).then((signXml) => {

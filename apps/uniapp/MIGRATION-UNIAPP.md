@@ -572,3 +572,102 @@ pages-sub/merchant/api/{evaluation,goods,order,passport}.js
 
 它们目前通过 `allowJs` 被 TS 引用（类型为 `any`），页面侧的 `lang="ts"` 已经有了，
 下一轮把这些转成 `.ts` 才算真正收口。
+---
+
+## 十一、修 H5 控制台告警（2026-11-28）
+
+图片 404（`cdn.uviewui.com/uview/empty/data.png`、`favicon.ico`）按要求先不动，这里处理三条**告警**。
+
+### 11.1 `Failed to decode downloaded font` + `OTS parsing error: glyf`
+
+**定位**：`components/verification/icon.css:37` 与 `pages/mine/im/index-app.scss:463` 各内嵌了一份
+ColorUI 的 `cuIcon` 字体（`data:application/x-font-woff;base64,...`，56,016 字符）。
+登录页用到 `<verification>` 组件 → 该 CSS 被引入 → 浏览器解析字体失败。
+
+**诊断过程**：
+
+| 检查 | 结果 |
+|---|---|
+| base64 是否合法 / 长度是否 4 的倍数 | ✅ 合法，解码得 42,012 字节 |
+| 文件魔数 | ✅ `wOFF` |
+| woff 头声明的总长 vs 实际字节数 | ✅ 都是 42,012 |
+| **woff 里 `glyf` 表的 zlib 流能否解压** | ❌ `The archive entry was compressed using an unsupported compression method` |
+| 与上游 `at.alicdn.com/t/font_533566_yfq2d9wdij.woff` 对比 | 长度相同（42,012），**但 base64 有 3 个字符不同** |
+
+结论：内嵌的 base64 在历史上被改坏过 3 个字符（长度不变，所以肉眼和长度检查都发现不了），
+导致 `glyf` 压缩流损坏 → 浏览器 OTS 拒绝整份字体。
+
+**修复**：用上游 woff 重新 base64 编码，替换两个文件里的整段。
+校验：替换后 sha256 与上游一致（`EB49AC57…`），`glyf` 解压后长度 67,860 = 表头声明值。
+
+> 教训：**「长度没变、魔数正确」不能证明二进制没坏** —— 必须校验内部结构
+> （这里是最小复现：解压 `glyf` 表并比对 declared length）。
+
+### 11.2 `请注意 showLoading 与 hideLoading 必须配对使用`
+
+**根因**：`utils/request.ts` 的响应拦截器**对每个响应**都调 `uni.hideLoading()`。
+只要页面自己 show 了一次，拦截器先 hide、页面 `finally` 再 hide → 第二次就触发告警。
+（`login.vue:325/342` 就是最典型的一对。）
+
+**为什么不能直接删拦截器里的 hide**：`pages/promotion/bargain/detail.vue`、
+`pages/promotion/point/detail.vue` 只 `showLoading`、**全文件没有 hide**，靠拦截器兜底收遮罩。
+
+**修复**：新增 `utils/loading.ts`，用计数 + 可见状态保证对 uni 的调用严格 1:1：
+
+```ts
+let pending = 0
+let visible = false
+
+export function showLoading(options = { title: '加载中' }) {
+  pending++
+  if (visible) return
+  visible = true
+  uni.showLoading({ mask: true, ...options })
+}
+
+export function hideLoading() {
+  if (pending > 0) pending--
+  if (pending > 0 || !visible) return
+  visible = false
+  uni.hideLoading()
+}
+```
+
+- 多出来的 `hide` 变 no-op → 告警消失；
+- 重复 `show` 不叠加遮罩；
+- 依赖拦截器兜底的页面行为不变（计数被消费掉，遮罩照旧收起）。
+
+**迁移范围**：49 个文件，`uni.showLoading(` → `showLoading(`、`uni.hideLoading(` → `hideLoading(`，
+只导入实际用到的名字（5 个文件只用一个）。全仓已无裸调用（仅剩 `plugins/app-update/index.ts` 里一行注释）。
+
+### 11.3 迁移脚本把 helper 自己改成了自递归（已修）
+
+批量替换时 `utils/loading.ts` 也在扫描范围内 → 它内部的
+`uni.showLoading(...)` 被替换成 `showLoading(...)`，**函数自己调自己**。
+
+发现方式：复核「全仓是否还有裸 `uni.showLoading`」时，helper 里一条都没有 —— 反证被替换了。
+
+已改回 `uni.showLoading` / `uni.hideLoading`，并新增 `scripts/test-loading.mjs` 锁死行为：
+
+| 断言 | 覆盖点 |
+|---|---|
+| 一次 show ↔ 一次 hide | 基本配对 |
+| 无 show 时 hide 为 no-op | **消除告警的核心** |
+| 两次 show 只显示一次、计数归零才隐藏 | 并发 |
+| `resetLoading` 强制收起、之后再 hide 不再调用 | 兜底路径 |
+| 默认 title 兜底 | 参数 |
+| **helper 内恰好调用一次 `uni.showLoading`** | 自递归回归 |
+
+### 11.4 顺手清掉的调试日志
+
+`utils/foundation.ts:86` 的 `console.log(navigation, getCurrentPages())` 每次 `whetherNavigate`
+都会打印两个 Proxy 对象（就是控制台里那行 `(2) [Proxy, Proxy]`），已删除。
+
+### 11.5 结果
+
+| 项 | 结果 |
+|---|---|
+| 字体解码告警 | ✅ 消除（base64 与上游一致，glyf 可解压） |
+| loading 配对告警 | ✅ 消除（全仓走计数封装） |
+| 控制台 Proxy 日志 | ✅ 消除 |
+| typecheck / lint / test | ✅ 0 错误 / 253 warning / 6 个脚本全绿 |

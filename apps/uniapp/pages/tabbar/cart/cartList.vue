@@ -165,6 +165,7 @@ import uniNumberBox from '@/components/uni-number-box.vue'
 import config from '@/config/config'
 import { useStore } from '@/store'
 import { unitPrice, goodsFormatPrice, isLogin, forceLogin } from '@/utils/filters'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 
@@ -530,7 +531,7 @@ function formatNumber(val: any): string {
  */
 function getCardData() {
   if (isLogin("auth")) {
-    uni.showLoading({
+    showLoading({
       title: "加载中",
     })
     API_Trade.getCarts()
@@ -568,9 +569,9 @@ function getCardData() {
         }
       })
       .catch(() => { loading.value = false })
-     if (store.state.isShowToast){ uni.hideLoading() }
+     if (store.state.isShowToast){ hideLoading() }
   } else {
-     if (store.state.isShowToast){ uni.hideLoading() }
+     if (store.state.isShowToast){ hideLoading() }
   }
 }
 </script>

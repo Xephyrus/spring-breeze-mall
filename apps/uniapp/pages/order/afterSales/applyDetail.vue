@@ -188,6 +188,7 @@
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
+import { showLoading, hideLoading } from '@/utils/loading'
 import {
   unitPrice,
   parseGoodsImageUrl,
@@ -230,7 +231,7 @@ onLoad((options) => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function statusFilter(val: string) {
@@ -321,7 +322,7 @@ function fetchReasonList(serviceType: string) {
 }
 
 function loadDetail() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   getServiceDetail(sn.value).then((res) => {
     hideLoadingIfNeeded()
     serviceDetail.value = res.data.result

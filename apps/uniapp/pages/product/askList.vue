@@ -42,6 +42,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import * as API_GOODS from '../../api/goods'
 import * as API_MEM from '../../api/members'
 import { useStore } from '@/store'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 
@@ -62,14 +63,14 @@ function getGoodsData() {
 }
 
 function getAskMessage() {
-  uni.showLoading()
+  showLoading()
   if (params.askValue == '') {
     uni.showToast({
       title: '请填写内容!',
       icon: 'none',
     })
     if (store.state.isShowToast) {
-      uni.hideLoading()
+      hideLoading()
     }
     return false
   }
@@ -87,12 +88,12 @@ function getAskMessage() {
         params.askValue = ''
       }
       if (store.state.isShowToast) {
-        uni.hideLoading()
+        hideLoading()
       }
     })
     .catch(() => {
       if (store.state.isShowToast) {
-        uni.hideLoading()
+        hideLoading()
       }
     })
 }

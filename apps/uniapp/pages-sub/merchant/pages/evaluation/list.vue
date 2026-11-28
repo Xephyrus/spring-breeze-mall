@@ -155,6 +155,7 @@
 import { ref } from 'vue'
 import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
 import { getStoreEvaluationList, replyStoreEvaluation } from '../../api/evaluation.js'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const currentTab = ref('ALL')
 const loading = ref(false)
@@ -289,11 +290,11 @@ const submitReply = async () => {
   if (submittingReply.value) return
 
   submittingReply.value = true
-  uni.showLoading({ title: '提交中...' })
+  showLoading({ title: '提交中...' })
 
   try {
     const res = await replyStoreEvaluation(currentEval.value.id, replyText.value.trim())
-    uni.hideLoading()
+    hideLoading()
     submittingReply.value = false
 
     if (res.data && res.data.success) {
@@ -307,7 +308,7 @@ const submitReply = async () => {
       })
     }
   } catch (e) {
-    uni.hideLoading()
+    hideLoading()
     submittingReply.value = false
     uni.showToast({ title: '网络异常，请重试', icon: 'none' })
   }

@@ -63,6 +63,7 @@ import { unitPrice } from '@/utils/filters'
 import { myTrackList, deleteHistoryListId } from '@/api/members'
 import { getStoreBaseInfo } from '@/api/store'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -156,10 +157,10 @@ function navigateToDetail(item: any) {
 }
 
 function fetchTrackList() {
-	uni.showLoading({ title: '加载中' })
+	showLoading({ title: '加载中' })
 	myTrackList(params.value).then(async (res) => {
 		uni.stopPullDownRefresh()
-		uni.hideLoading()
+		hideLoading()
 		if (res.statusCode === 200) {
 			const records = res.data.result.records || []
 			records.forEach((item: any) => {

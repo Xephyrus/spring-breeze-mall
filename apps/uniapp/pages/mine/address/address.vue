@@ -48,6 +48,7 @@ import { onLoad, onShow, onPullDownRefresh } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import * as API_Trade from '@/api/trade'
 import * as API_Address from '@/api/address'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 
@@ -70,7 +71,7 @@ onShow(() => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 async function selectAddressData(val: any) {
@@ -79,7 +80,7 @@ async function selectAddressData(val: any) {
 }
 
 function getAddressList() {
-  uni.showLoading()
+  showLoading()
   API_Address.getAddressList(params.pageNumber, params.pageSize).then((res) => {
     res.data.result.records.forEach((item: any) => {
       item.consigneeAddressPath = item.consigneeAddressPath.split(',')

@@ -93,6 +93,7 @@ import { useStore } from '@/store'
 import { commentsMemberOrder } from '@/api/members'
 import { handleUploadAfterRead } from '@/utils/upload-helper'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
@@ -128,9 +129,9 @@ function onGrade(grade: string) {
 }
 
 function onSubmit() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   commentsMemberOrder(form).then((res) => {
-    if (store.state.isShowToast) uni.hideLoading()
+    if (store.state.isShowToast) hideLoading()
     if (res.data.success) {
       uni.showToast({
         title: '发布评价成功',

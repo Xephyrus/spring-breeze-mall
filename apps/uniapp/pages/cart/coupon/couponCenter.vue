@@ -35,6 +35,7 @@ import {
 	onReachBottom,
 } from '@dcloudio/uni-app'
 import { getCurrentInstance, ref } from 'vue'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const { proxy } = getCurrentInstance()!
@@ -71,11 +72,11 @@ onNavigationBarButtonTap(() => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function getCoupon() {
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   const submitData = storeId.value
     ? { ...params.value, storeId: storeId.value }
     : { ...params.value }

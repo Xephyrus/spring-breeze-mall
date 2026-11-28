@@ -162,6 +162,7 @@ import shares from '@/components/m-share/index.vue'
 import config from '@/config/config'
 import { unitPrice, noPassByName, isLogin } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading } from '@/utils/loading'
 
 const store = useStore()
 
@@ -295,7 +296,7 @@ function shareBargain() {
 }
 
 function getGoodsDetail() {
-  uni.showLoading({
+  showLoading({
     title: '加载中',
     mask: true,
   })

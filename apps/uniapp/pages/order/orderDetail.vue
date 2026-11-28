@@ -297,6 +297,7 @@
 </template>
 
 <script setup lang="ts">
+import { showLoading, hideLoading } from '@/utils/loading'
 import { ref, computed } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
 import { canEvaluateOrder } from '@/utils/order-evaluation'
@@ -496,7 +497,7 @@ const deliveryEntryText = computed(() =>
 )
 
 function hideLoadingIfNeeded() {
-	if (store.state.isShowToast) uni.hideLoading()
+	if (store.state.isShowToast) hideLoading()
 }
 
 onLoad((options) => {
@@ -616,7 +617,7 @@ async function loadAppointmentDetail(orderSnParam: string) {
 }
 
 function loadData(orderSnParam: string) {
-	uni.showLoading({ title: '加载中' })
+	showLoading({ title: '加载中' })
 	getOrderDetail(orderSnParam).then(async (res) => {
 		const result = res.data.result
 		order.value = result.order
@@ -705,7 +706,7 @@ function toPay(val: any) {
 
 function onCancel(orderSnText: string) {
 	orderSn.value = orderSnText
-	uni.showLoading({ title: '加载中' })
+	showLoading({ title: '加载中' })
 	getClearReason().then((res) => {
 		if (res.data.result.length >= 1) {
 			cancelList.value = res.data.result

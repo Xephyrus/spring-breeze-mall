@@ -113,6 +113,7 @@ import * as API_trade from '@/api/trade'
 import setup from './popup.js'
 import uniNumberBox from '@/components/uni-number-box.vue'
 import { goodsFormatPrice } from '@/utils/filters'
+import { hideLoading } from '@/utils/loading'
 import {
 	isECoupon,
 	isVirtualGoods,
@@ -267,7 +268,7 @@ const handleClickSpec = (val: any, index: number, specValue: any) => {
  * 活动页/父组件直接调用购买（POINTS / KANJIA 等显式 cartType）
  */
 const buy = (data: any) => {
-	uni.hideLoading()
+	hideLoading()
 	API_trade.addToCart(data).then((res) => {
 		if (res.data.success) {
 			const way = data.cartType || 'BUY_NOW'
@@ -281,7 +282,7 @@ const buy = (data: any) => {
 			})
 		}
 	}).finally(() => {
-		uni.hideLoading()
+		hideLoading()
 	})
 }
 

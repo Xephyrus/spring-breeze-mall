@@ -36,6 +36,7 @@ import { ref, getCurrentInstance } from 'vue'
 import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import * as API_Message from '@/api/message'
+import { showLoading, hideLoading } from '@/utils/loading'
 
 const store = useStore()
 const { proxy } = getCurrentInstance()!
@@ -55,7 +56,7 @@ onReachBottom(() => {
 })
 
 function hideLoadingIfNeeded() {
-  if (store.state.isShowToast) uni.hideLoading()
+  if (store.state.isShowToast) hideLoading()
 }
 
 function formatSendTime(time: number) {
@@ -81,7 +82,7 @@ function fetchLogisticsList(reset: boolean) {
     messageList.value = []
     loadStatus.value = 'more'
   }
-  uni.showLoading({ title: '加载中' })
+  showLoading({ title: '加载中' })
   API_Message.getLogisticsMessages(queryParams.value).then((response) => {
     hideLoadingIfNeeded()
     const records = extractRecords(response.data)

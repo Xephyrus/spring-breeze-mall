@@ -14,6 +14,7 @@ import storage from "@/utils/storage";
 import jwt from '@/js_sdk/t-jwt/jwt.js';
 import uuid from "@/utils/uuid-modified";
 import store from "../store";
+import { hideLoading } from '@/utils/loading'
 
 
 let isNavigateTo = false
@@ -35,7 +36,7 @@ function cleanStorage() {
 		duration: 1500,
 	});
 	try {
-		uni.hideLoading();
+		hideLoading();
 	} catch (e) { }
 
 	storage.setHasLogin(false);
@@ -158,7 +159,7 @@ http.interceptors.response.use(
 		//   isRefreshing = false;
 		// }
 		try {
-			uni.hideLoading();
+			hideLoading();
 		} catch (e) { }
 		let token = storage.getAccessToken();
 		if (

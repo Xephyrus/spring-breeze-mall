@@ -83,7 +83,6 @@ export function checkBankno(bankno) {
 export function whetherNavigate(type = "default") {
   let navigation = getCurrentPages()[getCurrentPages().length - (getCurrentPages().length ) ];
   if (getCurrentPages().length > 1) {
-    console.log(navigation, getCurrentPages());
     if (navigation.route == "pages/passport/login") {
       navigationToBack(type);
     } else {

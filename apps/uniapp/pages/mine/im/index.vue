@@ -195,6 +195,7 @@ import config from '@/config/config'
 import { textReplaceEmoji, emojistwo } from '@/utils/emojis'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
+import { showLoading, hideLoading } from '@/utils/loading'
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))
 
@@ -419,7 +420,7 @@ function chooseAndSendImage() {
         return
       }
       uploadingImage.value = true
-      uni.showLoading({ title: '上传中...', mask: true })
+      showLoading({ title: '上传中...', mask: true })
       try {
         const uploadRes: any = await uploadImImage(params.value.talkId, tempFilePath)
         const data = typeof uploadRes?.data === 'string' ? JSON.parse(uploadRes.data) : uploadRes?.data
@@ -460,7 +461,7 @@ function chooseAndSendImage() {
       } catch (e) {
         uni.showToast({ title: '图片上传失败，请重试', icon: 'none' })
       } finally {
-        uni.hideLoading()
+        hideLoading()
         uploadingImage.value = false
       }
     },
