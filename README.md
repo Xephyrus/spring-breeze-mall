@@ -251,8 +251,81 @@ cd backend
 | 类型 | 严格模式；api 返回类型见 `apps/manager/VO-CONTRACTS.md` |
 | Lint | 告警数只减不增（`package.json` 里的 `--max-warnings`） |
 
-命名改造的完整记录与例外（`*.d.ts`、语言包、第三方压缩库）见
-[`apps/manager/NAMING-CONVENTIONS.md`](apps/manager/NAMING-CONVENTIONS.md)。
+### Windows 文件系统大小写不敏感 —— 三个必知的坑
+
+本项目在 Windows 上开发、在 Linux 上跑 CI。这个差异踩过两次，每次都表现为「本地全绿、CI 全红」：
+
+#### 坑 1：只改大小写的重命名，git 可能压根不知道
+
+```powershell
+# 看似成功：工作区变成 app.vue
+Rename-Item App.vue app.vue
+```
+
+但 `git status` 是干净的 —— **索引里仍然是 `App.vue`**。提交后 Linux 上 checkout 出来是 `App.vue`，
+而代码里的 `import App from './app.vue'` 就解析失败了。
+
+正确做法（二选一）：
+
+```powershell
+# A. 用 git mv（git 会感知改名）
+git mv -f App.vue app.vue
+
+# B. 两步改名，让 git 先看到删除再看到新增
+cmd /c "ren App.vue app.tmp.vue"
+cmd /c "ren app.tmp.vue app.vue"
+git add -A
+```
+
+> 注意：`Rename-Item App.vue app.vue`（直接改大小写）在 PowerShell 里会报
+> “无法重命名，因为它代表的是路径或设备名称”，而 `Rename-Item` 的中间名也可能被
+> 大小写不敏感地解析到原文件。**用 `cmd /c ren` 两步改名最稳**。
+
+如果已经改坏了（工作区是新名、索引还是旧名）：
+
+```powershell
+git update-index --force-remove App.vue   # 旧名
+git add app.vue                           # 新名
+```
+
+验证方式**不要用 `Test-Path`**（Windows 上大小写不敏感，永远返回 true），要看索引：
+
+```powershell
+git ls-files apps/seller/src | Select-String -Pattern '^apps/seller/src/(app|App)\.vue$'
+# 期望输出 app.vue
+```
+
+#### 坑 2：本地 typecheck / build 通过 ≠ CI 通过
+
+Windows 上 `./app.vue` 能解析到 `App.vue`，`vue-tsc` 和 Vite 都不报错；
+Linux 上同一个 import 直接 `Could not resolve`。
+
+所以**改完文件名不要只跑本地门禁就收工**，至少跑一次：
+
+```powershell
+corepack pnpm ci:precheck      # 或 node scripts/check-case-sensitivity.mjs
+```
+
+#### 坑 3：诊断 CI 时日志可能拿不到
+
+公开仓库的 Actions 日志接口也要鉴权（匿名取 403）。本仓库的做法是把失败明细写成
+`::error::` 注解 —— 在 Summary 页的 **Annotations** 区域**无需登录即可看到**，
+`ci.yml` 的 `precheck` job 就是这么做的。
+
+#### 现有的自动防线
+
+`ci.yml` 的 `precheck` job（每个 push / PR 都跑）会检查两类问题：
+
+| 检查 | 抓的是什么 |
+|---|---|
+| import 大小写一致性 | 代码里 `./app.vue` vs 磁盘 `App.vue`；实现上**逐段 readdir + 精确名比对**（不能用 `fs.existsSync`，它在 Windows 上大小写不敏感） |
+| git 索引漂移 | 索引里 `App.vue`、工作区里 `app.vue` 这种「改名没进 git」的情况 |
+
+任一条命中就 `exit 1`，并在 Annotations 里列出「哪个文件第几行、期望什么、实际是什么」。
+
+> 这类问题在改文件名（尤其 kebab 化）后最容易出现，历史上两次「本地全绿、CI 全红」都是它。
+> 命名改造的完整记录与例外（`*.d.ts`、语言包、第三方压缩库）见
+> [`apps/manager/NAMING-CONVENTIONS.md`](apps/manager/NAMING-CONVENTIONS.md)。
 
 ---
 
