@@ -122,7 +122,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getStoreOrderDetail, storeOrderTake } from '../../api/order.js'
+import { getStoreOrderDetail, storeOrderTake } from '../../api/order'
 import { parseGoodsImageUrl } from '@/utils/filters'
 import { showLoading, hideLoading } from '@/utils/loading'
 

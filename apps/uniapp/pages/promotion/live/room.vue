@@ -492,9 +492,9 @@ import { isLogin, navigateToLogin, unitPrice } from '@/utils/filters'
 // 条件编译：非 App 端用真实实现；App 端下面另有同名 class 兜底（两者运行时互斥）。
 // TS 看不到编译期裁剪，会把 import 与 class 当成重复声明 → 按行抑制。
 // @ts-expect-error 条件编译：与 #ifdef APP-PLUS 分支里的同名 class 互斥
-import { LiveChatService } from './utils/liveChat.js'
+import { LiveChatService } from './utils/live-chat'
 // @ts-expect-error 条件编译：与 #ifdef APP-PLUS 分支里的同名 class 互斥
-import { LiveMqttService } from './utils/liveMqtt.js'
+import { LiveMqttService } from './utils/live-mqtt'
 // #endif
 // #ifdef APP-PLUS
 class LiveChatService {
@@ -520,8 +520,8 @@ class LiveMqttService {
   }
 }
 // #endif
-import { findRecommendPayload, parseRecommendMessageArray } from './utils/liveRecommend.js'
-import { seedLiveSetting } from './utils/liveSetting.js'
+import { findRecommendPayload, parseRecommendMessageArray } from './utils/live-recommend'
+import { seedLiveSetting } from './utils/live-setting'
 // #ifdef H5
 import Hls from 'hls.js'
 // #endif

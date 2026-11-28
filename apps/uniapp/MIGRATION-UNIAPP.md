@@ -671,3 +671,103 @@ export function hideLoading() {
 | loading 配对告警 | ✅ 消除（全仓走计数封装） |
 | 控制台 Proxy 日志 | ✅ 消除 |
 | typecheck / lint / test | ✅ 0 错误 / 253 warning / 6 个脚本全绿 |
+---
+
+## 十二、U1 收尾：页面局部 `.js` 全部转 `.ts`
+
+### 12.1 转换清单（16 个文件，含 kebab 改名）
+
+| 文件 | 行数 | 备注 |
+|---|---:|---|
+| `pages/promotion/live/mqtt/mqtt.ts` | 319 | MQTT 客户端（`#ifndef`/`#ifdef MP-WEIXIN` 双实现） |
+| `pages/promotion/live/utils/live-chat.ts` | 334 | 腾讯 IM 封装（双实现） |
+| `pages/promotion/live/utils/live-mqtt.ts` | 240 | 直播 MQTT（双实现） |
+| `pages/mine/im/socket.ts` | 166 | IM WebSocket |
+| `pages-sub/merchant/utils/store-request.ts` | 156 | 商家端请求封装 |
+| `pages/tabbar/home/template/tpl.ts` | 149 | 楼层模板工具 |
+| `pages/promotion/lottery/wheel.ts` | 55 | 转盘几何计算 |
+| `pages/product/product/promotion/promotion-type.ts` | 42 | 促销类型映射 |
+| `pages/promotion/live/utils/live-setting.ts` | 41 | 直播配置 |
+| `pages/promotion/live/utils/live-recommend.ts` | 27 | 推荐位 |
+| `pages-sub/merchant/api/{evaluation,goods,order,passport}.ts` | 26/70/104/94 | 商家端 api |
+| `components/m-buy/popup.ts`、`pages/product/product/popup/popup.ts` | 8/8 | 弹窗开关 |
+
+同期另把 `liveChat→live-chat`、`liveMqtt→live-mqtt`、`liveRecommend→live-recommend`、
+`liveSetting→live-setting`、`promotion_type→promotion-type`、`storeRequest→store-request` 改成 kebab。
+
+**结果：业务代码只剩 4 个 `.js`（`main.js` / `vite.config.js` / `vue.config.js` / `eslint.config.js`），
+其余 `.js` 全在 `js_sdk/`（第三方）与 `scripts/`。**
+
+### 12.2 主要错误与处理
+
+一次性 import 后 typecheck 从 0 涨到 **352**，集中在 4 个"类字段在构造函数里动态挂载"的文件：
+
+| 文件 | 错误 | 处理 |
+|---|---:|---|
+| `mqtt.ts` | 108 | 补 22 个字段声明 + `@ts-nocheck`（见 12.3） |
+| `live-chat.ts` | 102 | 补 29 个字段声明 + `@ts-nocheck` |
+| `live-mqtt.ts` | 86 | 补 20 个字段声明 + `@ts-nocheck` |
+| `socket.ts` | 49 | 补 13 个字段声明（保留类型检查） |
+| `store-request.ts` | 5 | 见 12.4 |
+| `tpl.ts` | 2 | `permision` 补进 `types/global-augment.d.ts` |
+
+**补字段声明**：`class X { constructor() { this.a = 1 } }` 在 TS 里 `this.a` 是"属性不存在"，
+按字段声明补 `a: any` 即可，运行时零变化。用脚本扫描 `this.xxx` 自动生成，
+但第一版正则 `this\.(\w+)(?!\s*\()` 会**回溯截断**（`this.connectSocketInit(` 被截成 `connectSocketIni`），
+产生了 29 条错误声明（无害但误导），已用"字段名是某个方法名前缀即删除"的规则清理。
+
+### 12.3 三个"双实现"文件为什么 `@ts-nocheck`
+
+`mqtt.ts` / `live-mqtt.ts` / `live-chat.ts` 的组织方式是：
+
+```ts
+// #ifndef MP-WEIXIN
+class MqttClient { ...300 行... }
+export function createMqttClient() { ... }
+// #endif
+// #ifdef MP-WEIXIN
+class MqttClient { ...20 行精简版... }
+export function createMqttClient() { ... }
+// #endif
+```
+
+TS 看不到编译期裁剪 → `TS2300 重复标识符` / `TS2393 重复函数实现`。这些错误**在真机上不存在**。
+逐行 `@ts-expect-error` 能压住，但重复的是整个类，压制点会随平台分支改动漂移，故整文件 `@ts-nocheck`；
+对外入口（`createMqttClient()` 等）在调用侧仍是类型化的，ESLint 照常生效。
+
+### 12.4 `store-request.ts`：顺手修掉一个静默失效的刷新流程
+
+```ts
+// 原代码
+function refreshTokenApi(refreshToken) {
+  return uni.request({ url: ... , method: "GET" })   // 类型是 RequestTask，不是 Promise
+}
+const [err, res] = await refreshTokenApi(refreshToken)   // 解构出来永远是 undefined
+const data = res?.data || err?.data                       // → undefined
+```
+
+`uni.request` 在类型上返回 `RequestTask`；`await` 一个非 Promise 值再按数组解构，两个变量都是 `undefined`
+——**商家端 token 过期后的自动刷新其实从未生效**。
+
+改成显式 Promise（`success/fail` 包装），调用处改为 `const res = await ...`，
+与买家端 `utils/request.ts` 的 `refreshTokenFn` 流程对齐。
+
+> 这条**未经真实商家账号验证**（本地没有可登录的商家账号），已在文档标注：
+> 若后续联调发现刷新接口路径不同，需要按后端实际路由调整 URL。
+
+### 12.5 被改名连累的两个测试（已修）
+
+| 测试 | 问题 | 处理 |
+|---|---|---|
+| `test-lottery-wheel.mjs` | 原来"读 `wheel.js` 源码 + `data:` URI eval"（为了绕开 Node 不认 `.ts`） | 改为用 `ts-resolve-hook` 直接 `import('../pages/promotion/lottery/wheel.ts')` —— 跑真实模块而不是源码文本副本 |
+| `test-payment-success.mjs` | 读 `tpl.js` 源码并在 VM 里模拟 `#ifdef H5` 裁剪 | 路径改为 `tpl.ts`（该文件仍是纯 JS 语法，VM 可直接跑） |
+
+### 12.6 结果
+
+| 项 | 结果 |
+|---|---|
+| `typecheck` | ✅ 0 错误（352 → 0） |
+| `lint` | ✅ 0 error / **256** warning（3 条新增是三个 `@ts-nocheck` 文件触发的 `ban-ts-comment`，属有意为之） |
+| node 测试 | ✅ 6 个脚本全绿 |
+| 业务 `.js` | 仅剩 4 个入口/配置（`main.js` 刻意保留：HBuilderX 以 `main.js` 为入口） |
+| 统计 | `.vue` 214 / `.ts` 112 / `.js` 31（其中 27 个是 `js_sdk` 第三方 + 2 个 scripts） |

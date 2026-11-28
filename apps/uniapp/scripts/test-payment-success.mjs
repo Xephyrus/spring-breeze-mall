@@ -66,7 +66,7 @@ assert.equal(navigatePaymentPromotion({targetType:'EXTERNAL',targetId:'https://e
 assert.equal(actions.length,0);
 
 // 执行楼层原调用入口，确认公共内部导航、旧营销链接及自定义链接行为仍可用。
-let floorSource=readFileSync(new URL('../pages/tabbar/home/template/tpl.js',import.meta.url),'utf8').split('import config from')[0]
+let floorSource=readFileSync(new URL('../pages/tabbar/home/template/tpl.ts',import.meta.url),'utf8').split('import config from')[0]
   .replace(/^import .*\r?\n/,'').replace('export function modelNavigateTo','function modelNavigateTo');
 const platform=[true];floorSource=floorSource.split('\n').filter(line=>{const match=line.match(/\/\/\s*#(ifdef|ifndef)\s+([\w-]+)/);if(match){platform.push(platform.at(-1)&&(match[1]==='ifdef'?match[2]==='H5':match[2]!=='H5'));return false;}if(/\/\/\s*#endif/.test(line)){platform.pop();return false;}return platform.at(-1);}).join('\n');
 const fakeWindow={location:{href:''}};

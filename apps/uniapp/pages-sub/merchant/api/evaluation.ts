@@ -1,4 +1,4 @@
-import { storeHttp } from "../utils/storeRequest.js";
+import { storeHttp } from "../utils/store-request";
 
 /**
  * 分页获取客户评价列表

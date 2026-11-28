@@ -28,11 +28,13 @@ function cleanStoreAuth() {
   }
 }
 
-const storeHttp = new Request();
+const storeHttp = new Request() as unknown as InstanceType<typeof Request> & {
+  interceptors: { request: { use: (a?: any, b?: any) => void }; response: { use: (a?: any, b?: any) => void } };
+};
 
 const ensureUuid = () => {
   if (!storage.getUuid()) {
-    storage.setUuid(uuid.v1());
+    storage.setUuid((uuid as any).v1());
   }
 };
 
@@ -52,7 +54,7 @@ storeHttp.interceptors.request.use(
     const token = storage.getStoreAccessToken();
     if (token) {
       const nonce = Foundation.randomString(6);
-      const timestamp = parseInt(new Date().getTime() / 1000);
+      const timestamp = parseInt(String(new Date().getTime() / 1000), 10);
       const sign = md5(nonce + timestamp + token);
       const _params = { nonce, timestamp, sign };
       config.params = { ...(config.params || {}), ..._params };
@@ -71,12 +73,18 @@ let isStoreRefreshing = false;
 let storeRequests = [];
 
 function refreshTokenApi(refreshToken) {
-  return uni.request({
-    url: `${api.store}/passport/login/refresh/${refreshToken}`,
-    method: "GET",
-    header: {
-      uuid: storage.getUuid(),
-    },
+  // uni.request 在类型上返回 RequestTask；这里显式包成 Promise，
+  // 否则调用处的 `const [err, res] = await ...` 解构出来是 undefined（刷新流程静默失效）
+  return new Promise<any>((resolve, reject) => {
+    uni.request({
+      url: `${api.store}/passport/login/refresh/${refreshToken}`,
+      method: "GET",
+      header: {
+        uuid: storage.getUuid(),
+      },
+      success: (res) => resolve(res),
+      fail: (err) => reject(err),
+    });
   });
 }
 
@@ -100,8 +108,8 @@ storeHttp.interceptors.response.use(
         isStoreRefreshing = true;
         storage.removeStoreAccessToken();
         try {
-          const [err, res] = await refreshTokenApi(refreshToken);
-          const data = res?.data || err?.data;
+          const res = await refreshTokenApi(refreshToken);
+          const data = res?.data;
           if (data && data.success && data.result) {
             const { accessToken: newAccessToken, refreshToken: newRefreshToken } = data.result;
             storage.setStoreAccessToken(newAccessToken);

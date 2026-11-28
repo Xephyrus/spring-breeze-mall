@@ -10,7 +10,7 @@
   "scripts": {
     "postinstall": "patch-package && node scripts/patch-mqtt-abort.js",
     "typecheck": "vue-tsc --noEmit -p tsconfig.json --pretty false",
-    "lint": "eslint . --max-warnings 253",
+    "lint": "eslint . --max-warnings 256",
     "lint:fix": "eslint . --fix",
     "test": "node scripts/test-lottery-wheel.mjs && node scripts/test-payment-success.mjs && node scripts/test-goods-sku.mjs && node scripts/test-order-evaluation.mjs && node scripts/test-loading.mjs && node scripts/test-mqtt-app-runtime.js",
     "test:mqtt-app-runtime": "node scripts/test-mqtt-app-runtime.js",

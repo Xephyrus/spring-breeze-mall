@@ -193,8 +193,8 @@ import {
   getAppointmentOrderByCode,
   verifyAppointmentCode,
   getEnabledServiceStaff,
-} from '../../api/order.js'
-import { storeLogout } from '../../api/passport.js'
+} from '../../api/order'
+import { storeLogout } from '../../api/passport'
 import { showLoading, hideLoading } from '@/utils/loading'
 
 const storeInfo = ref<Record<string, any>>({})

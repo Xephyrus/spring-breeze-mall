@@ -1,9 +1,11 @@
 /** 转盘占比与后端结果停靠回归测试，不调用抽奖接口。@author Bulbasaur @since 2026-11-15 */
-import { readFile } from 'node:fs/promises';
 import test from 'node:test';
 import assert from 'node:assert/strict';
-const source = await readFile(new URL('../pages/promotion/lottery/wheel.js', import.meta.url), 'utf8');
-const { createWheelSegments, wheelLandingRotation, layoutRadialLabel } = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+import { register } from 'node:module';
+// 被测模块已从 wheel.js 改为 wheel.ts。原来「读源码 + data: URI eval」的写法是为了绕开
+// Node 不认 .ts；现在用解析钩子直接 import，跑到的是**真实模块**而不是源码文本副本。
+register('./ts-resolve-hook.mjs', import.meta.url);
+const { createWheelSegments, wheelLandingRotation, layoutRadialLabel } = await import('../pages/promotion/lottery/wheel.ts');
 /** 构建指定万分点的独立奖池。 */
 function pool(weights) { return weights.map((weight, index) => ({ id: `p${index}`, name: `奖品${index}`, weight })); }
 /** 比较浮点角度，避免把小数精度误差当作绘制偏移。 */

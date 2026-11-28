@@ -1,6 +1,18 @@
 import config from '@/config/config'
 import storage from '@/utils/storage';
 class socketIO {
+  // 以下字段在构造函数里动态挂载（原 JS 写法），这里补声明以通过类型检查
+  url: any;
+  data: any;
+  accountStateIndex: any;
+  connectNum: any;
+  followFlake: any;
+  heartbeatInterval: any;
+  is_open_socket: any;
+  reconnectTimeOut: any;
+  socketTask: any;
+  timeout: any;
+  traderDetailIndex: any;
   constructor(data, time, url) {
     this.socketTask = null
     this.is_open_socket = false //避免重复连接

@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import promotion from './promotion_type'
+import promotion from './promotion-type'
 
 const props = defineProps<{
   res?: any

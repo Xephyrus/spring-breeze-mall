@@ -107,7 +107,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
-import { getStoreGoodsList, upGoods, downGoods } from '../../api/goods.js'
+import { getStoreGoodsList, upGoods, downGoods } from '../../api/goods'
 import { showLoading, hideLoading } from '@/utils/loading'
 
 const keywords = ref('')

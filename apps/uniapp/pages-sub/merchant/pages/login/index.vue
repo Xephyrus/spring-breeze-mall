@@ -140,7 +140,7 @@ import {
   getStoreSettings,
   getStoreUserInfo,
   getStoreDetail,
-} from '../../api/passport.js'
+} from '../../api/passport'
 
 const loginType = ref<'account' | 'sms'>('account')
 const submitting = ref(false)

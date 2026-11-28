@@ -1,3 +1,18 @@
+// @ts-nocheck
+/**
+ * 条件编译「双实现」文件：`#ifndef MP-WEIXIN` 是完整实现，`#ifdef MP-WEIXIN` 是精简实现，
+ * 两段各自定义了同名 class / 导出函数（mqtt 客户端、腾讯 IM、直播 MQTT）。
+ *
+ * 为什么整文件 @ts-nocheck：
+ * - TS 看不到 uni 的编译期裁剪，会认为同名 class 重复声明（TS2300/TS2393/TS2323），
+ *   而这些错误**在真机上根本不存在**（每个平台只会保留一段）；
+ * - 逐行 `@ts-expect-error` 能压住，但这里重复的是**整个类**（200+ 行），
+ *   压制点会随平台分支改动不断漂移，维护成本高于收益；
+ * - 本文件对外只暴露 `createMqttClient()` / `LiveMqttService` / `LiveChatService`
+ *   这几个入口，调用侧（直播页、room.vue）是类型化的，接口形状在调用处已被约束。
+ *
+ * 仍然保留 ESLint（语法、未使用变量、条件编译结构都会检查）。
+ */
 // #ifndef MP-WEIXIN
 import api from "@/config/api";
 import mqtt from "mqtt";
@@ -5,6 +20,23 @@ import mqtt from "mqtt";
 const mqttEndpoint = api.mqtt;
 
 class MqttClient {
+  // 以下字段在构造函数里动态挂载（原 JS 写法），这里补声明以通过类型检查
+  MAX_CONNECT_RETRIES: any;
+  client: any;
+  connectCount: any;
+  connected: any;
+  connecting: any;
+  error: any;
+  manualDisconnect: any;
+  onCloseCallback: any;
+  onConnectCallback: any;
+  onErrorCallback: any;
+  onMessageCallback: any;
+  onOfflineCallback: any;
+  onReconnectCallback: any;
+  options: any;
+  reconnecting: any;
+  topics: any;
   constructor(options = {}) {
     const defaultOptions = {
       endpoint: mqttEndpoint,

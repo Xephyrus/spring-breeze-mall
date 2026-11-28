@@ -1,4 +1,4 @@
-import { storeHttp } from "../utils/storeRequest.js";
+import { storeHttp } from "../utils/store-request";
 
 /**
  * 获取商家商品列表

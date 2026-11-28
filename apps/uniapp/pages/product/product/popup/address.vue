@@ -27,7 +27,7 @@
 </template>
 <script setup lang="ts">
 import * as API_Address from '@/api/address';
-import setup from '@/components/m-buy/popup.js';
+import setup from '@/components/m-buy/popup';
 import { clearStrComma, isLogin } from '@/utils/filters';
 import { onMounted, ref } from 'vue';
 

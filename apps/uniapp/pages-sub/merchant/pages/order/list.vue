@@ -129,7 +129,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
-import { getStoreOrderList } from '../../api/order.js'
+import { getStoreOrderList } from '../../api/order'
 
 const keywords = ref('')
 const currentTab = ref('ALL')

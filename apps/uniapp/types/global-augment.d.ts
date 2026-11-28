@@ -121,6 +121,13 @@ declare global {
   const WeixinJSBridge: any
 
   /**
+   * uni 的安卓权限查询对象（`permision` 是 uni 运行时注入的全局，非标准 API 名）。
+   * 使用处：`pages/tabbar/home/template/tpl.ts`（判断是否已授予定位权限）。
+   */
+   
+  const permision: any
+
+  /**
    * 微信小程序插件加载器（仅在 #ifdef MP-WEIXIN 分支里使用），基础库提供。
    */
    

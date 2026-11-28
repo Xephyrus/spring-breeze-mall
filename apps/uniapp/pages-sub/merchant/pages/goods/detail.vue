@@ -160,7 +160,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import { getStoreGoodsDetail, getStoreGoodsSkuList, upGoods, downGoods } from '../../api/goods.js'
+import { getStoreGoodsDetail, getStoreGoodsSkuList, upGoods, downGoods } from '../../api/goods'
 import { parseGoodsImageUrl } from '@/utils/filters'
 import { showLoading, hideLoading } from '@/utils/loading'
 

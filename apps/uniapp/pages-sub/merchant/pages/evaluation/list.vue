@@ -154,7 +154,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
-import { getStoreEvaluationList, replyStoreEvaluation } from '../../api/evaluation.js'
+import { getStoreEvaluationList, replyStoreEvaluation } from '../../api/evaluation'
 import { showLoading, hideLoading } from '@/utils/loading'
 
 const currentTab = ref('ALL')

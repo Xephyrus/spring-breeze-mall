@@ -1,4 +1,4 @@
-import { storeHttp } from "../utils/storeRequest.js";
+import { storeHttp } from "../utils/store-request";
 
 /**
  * 账号密码登录（支持店主与店员账号）
