@@ -371,11 +371,12 @@ corepack pnpm ci:precheck      # 或 node scripts/check-case-sensitivity.mjs
 - **地图 Key 已从源码外置**：高德 / 腾讯位置服务的 Key 改由各端 `public/config.js` 的
   `BASE.MAP` 运行时注入（`manager` / `seller` / `buyer`），源码里不再出现。
   部署时按需填写，留空只会影响地图相关功能。
-- **uniapp 的本机联调配置**：`apps/uniapp/config/api.ts` 的 dev 段指向
-  `http://127.0.0.1:8888`（buyer-api）/ `8887`（manager-api）/ `8885`（im-api）。
-  换机器或换端口时改这一段即可；小程序与 App 打包走 `prod` 段，不受影响。
   历史上这些 Key 曾硬编码在 `src/config` 中，**请自行到高德/腾讯控制台吊销并重新申请**
   （仓库历史里仍能看到旧值，修改源码不能撤回已公开的记录）。
+- **uniapp 的后端地址**：只在 `apps/uniapp/config/api.ts` 的 `DEV_HOST` 一处改（默认 `127.0.0.1`，
+  对应 buyer-api `8888` / manager-api `8887` / im-api `8885`）。
+  开发构建（HBuilderX 的「运行」）一律连 `DEV_HOST`；**App 真机调试**要把它改成电脑的局域网 IP。
+  `prod` 段当前是**占位**（上游示例域名）—— 项目还没部署生产环境，上线时整段替换即可。
 
 ---
 
