@@ -354,6 +354,7 @@ corepack pnpm ci:precheck      # 或 node scripts/check-case-sensitivity.mjs
 | [`apps/uniapp/SMOKE-UNIAPP.md`](apps/uniapp/SMOKE-UNIAPP.md) | uniapp 三端冒烟清单（44 条可勾选 + 快速回归脚本） |
 | [`backend/SETTING-NPE-AUDIT.md`](backend/SETTING-NPE-AUDIT.md) | 设置读取空指针审计与修复 |
 | [`backend/DB/TEST-DATA.md`](backend/DB/TEST-DATA.md) | 测试数据说明与清理 |
+| [`.github/REPO-SETUP.md`](.github/REPO-SETUP.md) | 仓库设置清单（About / 分支保护 / Actions / 合并策略 / 必选检查名） |
 
 ---
 
