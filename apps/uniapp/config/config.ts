@@ -1,25 +1,25 @@
 const name = "lilishop"; //全局商城name
 const schemeName = "lilishop"; //唤醒app需要的schemeName
 
+import { DEV_HOST } from "./api";
+
 /**
- * IM 地址：**开发构建**（H5 与微信小程序）走本地，其余（App / 发行构建）走生产。
+ * IM 地址：**开发构建**走本地，发行构建走生产。
  *
- * 为什么不用 `#ifdef H5` 写两份常量：条件编译在**构建期**才裁剪，而 ESLint / 编辑器看到的是
+ * 为什么不用 `#ifdef` 写两份常量：条件编译在**构建期**才裁剪，而 ESLint / 编辑器看到的是
  * 两份重复声明，会被 `no-useless-assignment` 判成「赋值了但没用到」。
  *
- * 判断依据：
- * - `NODE_ENV`：`运行` 是 development、`发行` 是 production —— 发行包一律走生产；
- * - `UNI_PLATFORM`：HBuilderX 编译期注入（h5 / mp-weixin / app-plus 等）。
- *   App 真机上 `127.0.0.1` 指向手机自身，开发期也走生产；
- *   微信开发者工具与后端同机，`127.0.0.1` 可达，所以小程序开发构建走本地。
- *   取不到平台时按 h5 处理，仍有 NODE_ENV 兜底。
+ * 判断依据只有 `NODE_ENV`：
+ * - `运行` → development → 本地（`DEV_HOST` 在 config/api.ts 里一处可改，App 真机改局域网 IP）
+ * - `发行` → production → prod 段（当前是占位，生产环境搭好后再填）
+ *
+ * 不再按平台区分：项目还没有生产环境，App 真机开发期也走本地。
  */
-const PLATFORM = process.env.UNI_PLATFORM || "h5";
-const IS_DEV_LOCAL = process.env.NODE_ENV === "development" && PLATFORM !== "app-plus";
+const IS_DEV_LOCAL = process.env.NODE_ENV === "development";
 
-const imWebSrc = IS_DEV_LOCAL ? "http://localhost:8000" : "https://im.pickmall.cn";
+const imWebSrc = IS_DEV_LOCAL ? `http://${DEV_HOST}:8000` : "https://im.pickmall.cn";
 const baseWsUrl = IS_DEV_LOCAL
-  ? "ws://127.0.0.1:8885/lili/webSocket"
+  ? `ws://${DEV_HOST}:8885/lili/webSocket`
   : "wss://im-api.pickmall.cn/lili/webSocket";
 
 export default {
