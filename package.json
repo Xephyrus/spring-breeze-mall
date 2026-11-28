@@ -20,6 +20,7 @@
     "build:buyer": "pnpm --filter @spring-breeze/buyer build",
     "build:im": "pnpm --filter @spring-breeze/im build",
     "backend:compile": "cd backend && .\\mvnw.cmd -DskipTests compile",
-    "backend:package": "cd backend && .\\mvnw.cmd -DskipTests package"
+    "backend:package": "cd backend && .\\mvnw.cmd -DskipTests package",
+    "ci:precheck": "node scripts/check-case-sensitivity.mjs"
   }
 }

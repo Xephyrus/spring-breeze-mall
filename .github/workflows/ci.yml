@@ -40,6 +40,19 @@ permissions:
   contents: read
 
 jobs:
+  # 大小写敏感性预检：Windows 上 typecheck 能过、Linux 会挂的典型原因
+  # （改名只改大小写、import 大小写与磁盘不一致）
+  precheck:
+    name: precheck · import 大小写一致性
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Case-sensitivity check
+        run: node scripts/check-case-sensitivity.mjs
   manager:
     name: manager · typecheck / lint / build
     runs-on: ubuntu-latest
