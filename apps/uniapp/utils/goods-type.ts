@@ -21,7 +21,7 @@ import {
   hasAppointmentInCheckout,
   getAppointmentStock,
   getAppointmentMaxBuyNum,
-} from './appointmentGoods'
+} from './appointment-goods'
 
 export {
   APPOINTMENT_GOODS_TYPE,

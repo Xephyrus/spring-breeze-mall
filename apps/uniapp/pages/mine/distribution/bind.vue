@@ -7,7 +7,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import {
   resolveDistributionIdFromScene,
   tryBindDistribution,
-} from '@/utils/distributionBind'
+} from '@/utils/distribution-bind'
 
 onLoad(async (options) => {
   let distributionId = (options?.distributionId as string) || ''

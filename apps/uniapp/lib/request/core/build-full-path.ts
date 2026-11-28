@@ -17,8 +17,8 @@
  */
 'use strict'
 
-import isAbsoluteURL from '../helpers/isAbsoluteURL'
-import combineURLs from '../helpers/combineURLs'
+import isAbsoluteURL from '../helpers/is-absolute-url'
+import combineURLs from '../helpers/combine-urls'
 
 /**
  * Creates a new URL by combining the baseURL with the requestedURL,

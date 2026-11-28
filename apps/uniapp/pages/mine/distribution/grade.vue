@@ -120,7 +120,7 @@ import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import config from '@/config/config'
 import { getDistributionGrades } from '@/api/distribution'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 import { getUserInfo } from '@/api/members'
 
 const store = useStore()

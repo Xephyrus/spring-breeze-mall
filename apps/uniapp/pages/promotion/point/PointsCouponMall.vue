@@ -39,8 +39,8 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import storage from '@/utils/storage';
-import uuid from '@/utils/uuid.modified';
-import { listPointsCoupons, exchangePointsCoupon } from '@/api/pointsCoupon';
+import uuid from '@/utils/uuid-modified';
+import { listPointsCoupons, exchangePointsCoupon } from '@/api/points-coupon';
 
 const emit = defineEmits(['redeemed']);
 const rows = ref([]), pageNumber = ref(1), loadStatus = ref('more'), failed = ref(false), busy = ref('');

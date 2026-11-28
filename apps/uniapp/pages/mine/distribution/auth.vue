@@ -17,7 +17,7 @@ import {
   checkSelfRecruitEntry,
   DISTRIBUTION_CLOSE_MESSAGE,
   DISTRIBUTION_ONLINE_ENTRY_CLOSED_MESSAGE,
-} from '@/utils/distributionStatus'
+} from '@/utils/distribution-status'
 
 const store = useStore()
 const lightColor = computed(() => store.getters.lightColor)

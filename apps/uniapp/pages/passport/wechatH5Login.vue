@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { whetherNavigate } from '@/utils/Foundation'
+import { whetherNavigate } from '@/utils/foundation'
 import config from '@/config/config'
 import api from '@/config/api'
 import { useStore } from '@/store'

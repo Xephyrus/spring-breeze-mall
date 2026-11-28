@@ -29,9 +29,9 @@
  */
 
 
-import dispatchRequest from './dispatchRequest'
-import InterceptorManager from './InterceptorManager'
-import mergeConfig from './mergeConfig'
+import dispatchRequest from './dispatch-request'
+import InterceptorManager from './interceptor-manager'
+import mergeConfig from './merge-config'
 import defaults from './defaults'
 import { isPlainObject } from '../utils'
 

@@ -44,12 +44,12 @@
 
     <view class="canvas-hide">
       <!-- #ifdef MP-WEIXIN -->
-      <canvas id="distributionPosterCanvas" type="2d" style="width: 600px; height: 840px" />
+      <canvas id="distribution-poster-canvas" type="2d" style="width: 600px; height: 840px" />
       <!-- #endif -->
       <!-- #ifndef MP-WEIXIN -->
       <canvas
-        canvas-id="distributionPosterCanvas"
-        id="distributionPosterCanvas"
+        canvas-id="distribution-poster-canvas"
+        id="distribution-poster-canvas"
         style="width: 600px; height: 840px"
       />
       <!-- #endif -->
@@ -63,7 +63,7 @@ import DrawPoster from '@/js_sdk/u-draw-poster'
 import { getDistributionGoodsPosterContext } from '@/api/distribution'
 import { unitPrice } from '@/utils/filters'
 
-const CANVAS_SELECTOR = 'distributionPosterCanvas'
+const CANVAS_SELECTOR = 'distribution-poster-canvas'
 const POSTER_WIDTH = 600
 const IMAGE_HEIGHT = POSTER_WIDTH
 const BOTTOM_HEIGHT = 240

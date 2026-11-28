@@ -224,7 +224,7 @@ import {
   getDistributionPerformance,
 } from '@/api/distribution'
 import { getUserInfo } from '@/api/members'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))

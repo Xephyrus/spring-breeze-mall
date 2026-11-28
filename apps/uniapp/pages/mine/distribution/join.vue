@@ -184,7 +184,7 @@ import { getThemeStyle } from '@/utils/theme'
 import storage from '@/utils/storage'
 import config from '@/config/config'
 import { parseGoodsImageUrl, tipsToLogin } from '@/utils/filters'
-import { resolveRecruitDistributionIdFromScene } from '@/utils/distributionBind'
+import { resolveRecruitDistributionIdFromScene } from '@/utils/distribution-bind'
 import { getRecruitPage, getRecruitProgress, getRecruitInviter, submitRecruitApplication, savePendingRecruitToken } from '@/api/distribution'
 import {
   DISTRIBUTION_APPLY_MESSAGE,
@@ -192,7 +192,7 @@ import {
   DISTRIBUTION_ONLINE_ENTRY_CLOSED_MESSAGE,
   DISTRIBUTION_RETREAT_MESSAGE,
   DISTRIBUTION_STATUS,
-} from '@/utils/distributionStatus'
+} from '@/utils/distribution-status'
 
 const defaultAvatar = config.defaultUserPhoto
 

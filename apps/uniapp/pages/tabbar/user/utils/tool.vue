@@ -136,7 +136,7 @@ import {
   DISTRIBUTION_ONLINE_ENTRY_CLOSED_MESSAGE,
   DISTRIBUTION_RETREAT_MESSAGE,
   DISTRIBUTION_STATUS,
-} from '@/utils/distributionStatus'
+} from '@/utils/distribution-status'
 
 const props = withDefaults(
   defineProps<{

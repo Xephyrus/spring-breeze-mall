@@ -2,7 +2,7 @@ import { logout, logoffConfirm } from "@/api/login";
 import { getUserInfo } from "@/api/members";
 import storage from "@/utils/storage";
 import config from "@/config/config";
-import Foundation from "./Foundation";
+import Foundation from "./foundation";
 import store from "@/store";
 import { h5Copy } from "@/js_sdk/h5-copy/h5-copy.js";
 

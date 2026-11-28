@@ -5,7 +5,7 @@ import { DEFAULT_THEME, loadCachedTheme } from '@/utils/theme'
 import {
   DEFAULT_CATEGORY_PAGE_SETTING,
   loadCachedCategoryPageSetting,
-} from '@/utils/categoryPageSetting'
+} from '@/utils/category-page-setting'
 
 const cachedTheme = loadCachedTheme()
 const cachedCategoryPageSetting = loadCachedCategoryPageSetting()

@@ -50,7 +50,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useStore } from '@/store'
 import { mpAutoLogin } from '@/api/connect'
-import { whetherNavigate } from '@/utils/Foundation'
+import { whetherNavigate } from '@/utils/foundation'
 import { getUserInfo } from '@/api/members'
 import storage from '@/utils/storage'
 import config from '@/config/config'

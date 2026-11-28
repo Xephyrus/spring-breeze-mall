@@ -50,14 +50,14 @@ import { onLoad, onReady, onShareAppMessage } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import { getPromotionPoster } from '@/api/distribution'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 import { getMpCode } from '@/api/goods'
 import { parseGoodsImageUrl } from '@/utils/filters'
 import {
   POSTER_WIDTH,
   POSTER_HEIGHT,
   composeDistributionPoster,
-} from '@/utils/distributionPosterCanvas'
+} from '@/utils/distribution-poster-canvas'
 
 const DEFAULT_HOME_PAGE = 'pages/tabbar/home/index'
 const QR_CANVAS_SIZE = 280

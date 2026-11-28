@@ -76,7 +76,7 @@ import { ref, computed } from 'vue'
 import { onLoad, onReady } from '@dcloudio/uni-app'
 import { getCategoryList } from '@/api/goods'
 import { getThemeStyle } from '@/utils/theme'
-import { DEFAULT_CATEGORY_PAGE_SETTING } from '@/utils/categoryPageSetting'
+import { DEFAULT_CATEGORY_PAGE_SETTING } from '@/utils/category-page-setting'
 import { useStore } from '@/store'
 import TplCategoryGoods from '@/components/category/tpl-category-goods.vue'
 

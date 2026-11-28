@@ -97,7 +97,7 @@ import {
   GIFT_CARD_USE_NOTICE,
   giftCardActionLabel,
   resolveMemberCardId,
-} from '@/utils/giftCard'
+} from '@/utils/gift-card'
 import { useStore } from '@/store'
 import { onShow } from '@dcloudio/uni-app'
 import { computed, ref, watch } from 'vue'

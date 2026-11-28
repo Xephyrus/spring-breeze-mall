@@ -37,7 +37,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { onShow, onHide } from '@dcloudio/uni-app';
 import storage from '@/utils/storage';
-import uuid from '@/utils/uuid.modified';
+import uuid from '@/utils/uuid-modified';
 import { listLottery, lotteryChances, drawLottery, lotteryRecords } from '@/api/lottery';
 import PrizeWheel from './PrizeWheel.vue';
 import { createWheelSegments, wheelLandingRotation } from './wheel';

@@ -284,7 +284,7 @@ import * as API_trade from '@/api/trade'
 import { listSlots, bindCheckout, getGoodsExt } from '@/api/appointment'
 import uniNumberBox from '@/components/uni-number-box.vue'
 import { goodsFormatPrice, parseGoodsImageUrl } from '@/utils/filters'
-import { getAppointmentMaxBuyNum } from '@/utils/goodsType'
+import { getAppointmentMaxBuyNum } from '@/utils/goods-type'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import {
@@ -315,7 +315,7 @@ import {
   isSlotStartAfterNow,
   getSlotAvailableQty,
   slotStatusText,
-} from '@/utils/appointmentGoods'
+} from '@/utils/appointment-goods'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))

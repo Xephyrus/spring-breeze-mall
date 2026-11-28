@@ -16,7 +16,7 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import DistributionGoodsShare from '@/components/distribution-goods-share/index.vue'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 
 const query = ref<Record<string, string>>({})
 const pageReady = ref(false)

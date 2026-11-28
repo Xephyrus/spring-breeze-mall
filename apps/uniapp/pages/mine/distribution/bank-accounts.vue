@@ -102,7 +102,7 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import { getBankCards, addBankCard, deleteBankCard, setDefaultBankCard } from '@/api/distribution'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))

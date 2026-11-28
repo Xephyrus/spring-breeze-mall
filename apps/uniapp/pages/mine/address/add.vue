@@ -107,7 +107,7 @@ import uniMap from '@/components/uniMap.vue'
 import permision from '@/js_sdk/wa-permission/permission.js'
 import { getThemeStyle } from '@/utils/theme'
 import { getRegionsById } from '@/api/common'
-import { resolveWechatRegion, getWechatAddressErrorType } from '@/utils/wechatAddress'
+import { resolveWechatRegion, getWechatAddressErrorType } from '@/utils/wechat-address'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))

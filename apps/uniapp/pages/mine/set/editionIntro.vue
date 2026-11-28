@@ -43,7 +43,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
-import APPUpdate from '@/plugins/APPUpdate'
+import APPUpdate from '@/plugins/app-update'
 import config from '@/config/config'
 import { getAppVersion } from '@/api/message'
 

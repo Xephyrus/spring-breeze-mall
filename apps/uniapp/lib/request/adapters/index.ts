@@ -15,8 +15,8 @@
  *
  * 若后续确实要给内核补类型，建议单独排期、配一套请求级回归（超时/重试/取消/上传）再动。
  */
-import buildURL from '../helpers/buildURL'
-import buildFullPath from '../core/buildFullPath'
+import buildURL from '../helpers/build-url'
+import buildFullPath from '../core/build-full-path'
 import settle from '../core/settle'
 
 /**

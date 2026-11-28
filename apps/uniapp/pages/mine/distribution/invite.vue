@@ -58,7 +58,7 @@ import { onLoad, onReady, onShareAppMessage } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import { getInviteCard } from '@/api/distribution'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 import { getMpCode } from '@/api/goods'
 import { parseGoodsImageUrl } from '@/utils/filters'
 import {
@@ -66,7 +66,7 @@ import {
   POSTER_HEIGHT,
   composeDistributionPoster,
   savePosterToAlbum,
-} from '@/utils/distributionPosterCanvas'
+} from '@/utils/distribution-poster-canvas'
 
 const DEFAULT_JOIN_PAGE = 'pages/mine/distribution/join'
 const QR_CANVAS_SIZE = 280

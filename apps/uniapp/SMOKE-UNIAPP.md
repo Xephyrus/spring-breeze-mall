@@ -101,7 +101,7 @@
 | 34 | 设置页 → 清理缓存（`setUp.vue` 的 `plus.cache`） | 返回缓存大小并能清理（本轮补了 `Plus.cache` 声明） | [ ] |
 | 35 | 权限设置跳转（`add.vue` / `step3.vue` 的 `plus.android.importClass`） | 能跳到系统设置页（本轮把 `new Intent` 改成 `new (Intent as any)`） | [ ] |
 | 36 | 退出全屏（`fullScreen.vue` 的 `plus.ios.import`） | iOS 上能退出 | [ ] |
-| 37 | 版本更新（`plugins/APPUpdate`） | 能检测到新版本并下载安装 | [ ] |
+| 37 | 版本更新（`plugins/app-update`） | 能检测到新版本并下载安装 | [ ] |
 | 38 | 分享海报（`poster.vue` / `invite.vue`，canvas 2d） | 能生成海报并保存/分享（本轮改了 `fields`/`canvasToTempFilePath` 的调用形状） | [ ] |
 | 39 | 直播页（`room.vue`，本轮合并了 `hlsInstance` 声明） | 能播放 HLS 流；App 端用 fallback 实现 | [ ] |
 

@@ -82,7 +82,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, watch } from 'vue'
 import { onLoad, onShow } from '@dcloudio/uni-app'
-import { canEvaluateOrder } from '@/utils/orderEvaluation'
+import { canEvaluateOrder } from '@/utils/order-evaluation'
 import { useStore } from '@/store'
 import { getOrderList } from '@/api/order'
 import { getComments } from '@/api/members'

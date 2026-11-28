@@ -11,7 +11,7 @@ import { register } from 'node:module'
 import { pathToFileURL } from 'node:url'
 
 register('./ts-resolve-hook.mjs', pathToFileURL('./scripts/'))
-const { canEvaluateOrder } = await import('../utils/orderEvaluation.ts')
+const { canEvaluateOrder } = await import('../utils/order-evaluation.ts')
 
 // 覆盖核销券、虚拟商品与实物商品，完成状态和商品评价状态必须同时满足。
 for (const orderType of ['E_COUPON', 'VIRTUAL', 'NORMAL']) {

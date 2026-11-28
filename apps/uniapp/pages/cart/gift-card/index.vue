@@ -40,7 +40,7 @@ import { onLoad, onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { selectGiftCard } from '@/api/trade'
 import { unitPrice } from '@/utils/filters'
-import { decorateGiftCard, GIFT_CARD_PAY_NOTICE } from '@/utils/giftCard'
+import { decorateGiftCard, GIFT_CARD_PAY_NOTICE } from '@/utils/gift-card'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

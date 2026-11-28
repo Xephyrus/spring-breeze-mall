@@ -58,7 +58,7 @@ import { onLoad, onReachBottom } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { cashLog, getDistributionOrders } from '@/api/distribution'
 import { unitPrice } from '@/utils/filters'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 import { getThemeStyle } from '@/utils/theme'
 
 const store = useStore()

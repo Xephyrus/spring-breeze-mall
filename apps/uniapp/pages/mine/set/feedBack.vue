@@ -56,7 +56,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, getCurrentInstance } from 'vue'
 import { feedBack as submitFeedBackApi } from '@/api/members'
-import { handleUploadAfterRead } from '@/utils/uploadHelper'
+import { handleUploadAfterRead } from '@/utils/upload-helper'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 

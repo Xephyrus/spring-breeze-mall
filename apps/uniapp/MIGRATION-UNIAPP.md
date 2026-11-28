@@ -363,3 +363,135 @@ const { paymentSuccessUrl } = await import('../utils/payment-success.ts')
 | `api/` | 27 个 `.js` | 转 `.ts` |
 | `lib/request/` | 13 个 `.js` | 转 `.ts` |
 | `plugins/APPUpdate/` | 1 个 929 行 `.js` | 转 `.ts` 或 `@ts-nocheck` |
+---
+
+## 八、U1 完成：`api/` 与 `lib/` `plugins/` 全部转 TS
+
+| 目录 | 结果 | 处理方式 |
+|---|---|---|
+| `api/` | **27/27 `.ts`** | 全部类型化；`article.ts` 删掉一个死函数 |
+| `lib/request/` | 13/13 `.ts` | 文件级 `@ts-nocheck`（vendored 请求内核） |
+| `plugins/APPUpdate/` | 1/1 `.ts` | 文件级 `@ts-nocheck`（DCloud 官方插件，整文件被 `#ifdef APP-PLUS` 包裹） |
+
+**基础设施总计 71 个 `.ts` / 0 个 `.js`：`utils 26 + api 27 + config 2 + store 2 + lib 13 + plugins 1`。**
+
+### 8.1 `api/article.ts` 的死代码
+
+```js
+export function getArticleCategory(category_type) {
+  return http.request({ url: `${api.base}/pages/article-categories`, ... })
+}
+```
+
+- `api.base` **不存在**（`config/api` 只导出 `buyer/store/im/mqtt + buyerHost/storeHost`）→ 运行时 URL 会是 `undefined/pages/article-categories`；
+- 全仓库 **无调用方**（grep 只有定义处）；
+- 后端真实接口是 `GET /buyer/other/article/articleCategory/list`，与同文件其它函数（`/other/article/...`）风格一致。
+
+处理：**删除该函数**（连同只为它引入的 `import api from '@/config/api'`）。
+没有"顺手改成新 URL"——那等于凭空实现一个没人调用的功能，行为无从验证。
+
+### 8.2 请求内核为什么整体 `@ts-nocheck`
+
+`lib/request` 是 axios 风格的 `uni.request` 封装（13 文件 728 行），错误集中在：
+
+- `Request` 在构造函数里动态挂 `this.config` / `this.interceptors`，类体没有字段声明；
+- `mergeConfig` 靠 `{...defaults, ...arg}` 拼装，形参默认 `{}` 导致属性访问全报错；
+- 拦截器链用 `chain.shift()` 动态调度。
+
+逐行补类型 = 重写这一层。而它是**请求路径的唯一出口**，改错一个字段就是全站请求挂掉。
+
+采取的策略：**把类型收在边界上**
+
+| 层 | 类型状态 |
+|---|---|
+| `lib/request/**` | `@ts-nocheck`（仅关闭类型检查，ESLint 仍跑） |
+| `utils/request.ts`（门面） | ✅ 已类型化，并用 `TypedRequest` 别名补上 `interceptors` 的类型 |
+| `api/**` | ✅ 已类型化，页面拿到的是有类型的 `http.request()` |
+
+`utils/request.ts` 里那段值得记一笔：做模块增强（`declare module '@/lib/request/index'`）对**路径别名**不生效，
+最后用
+
+```ts
+type TypedRequest = InstanceType<typeof Request> & { interceptors: { request: { use: ... }; response: { use: ... } } };
+let http = new Request() as unknown as TypedRequest;
+```
+
+直接断言实例类型，既不改运行时，也一眼能看出为什么。
+
+### 8.3 顺带修的 lint 错误
+
+- `deepMerge` 用 `arguments` → 改 rest 参数 `(...sources: any[])`；
+- 用 `eslint . --fix --fix-type directive` 清掉 20 条"未使用的 eslint-disable"（只改注释、不动代码 ——
+  **绝不用 `--fix` 全量修**，否则会把 `var` 改成 `let/const`，改变作用域语义）。
+- lint ratchet 收紧：**261 → 253**。
+---
+
+## 九、U3：安全范围内的命名 kebab 化
+
+### 9.1 改了什么
+
+| 目录 | 改名数 | 例子 |
+|---|---:|---|
+| `utils/` | 16 | `Foundation` → `foundation`、`RegExp` → `regexp`、`uuid.modified` → `uuid-modified`、`socket_service` → `socket-service`、`mpShare` → `mp-share`、`orderEvaluation` → `order-evaluation` |
+| `api/` | 2 | `pickupCard` → `pickup-card`、`pointsCoupon` → `points-coupon` |
+| `lib/request/` | 8 | `Request` → `request`、`InterceptorManager` → `interceptor-manager`、`mergeConfig` → `merge-config`、`buildURL` → `build-url`、`isAbsoluteURL` → `is-absolute-url` |
+| `plugins/` | 1 | 目录 `APPUpdate/` → `app-update/` |
+
+**总计 25 个文件 / 1 个目录**，同步更新 **69 个文件**里的引用。
+
+### 9.2 刻意不动的部分（决策）
+
+| 范围 | 原因 |
+|---|---|
+| `pages/`、`pages-sub/` 的文件名 | 它们是 `pages.json` 里的运行时路由，改名 = 线上落地页 404（方案决策 B） |
+| `pages.json` | 同上；本轮 `git diff` 校验**零改动** |
+| `components/` 下 easycom 组件 | easycom 靠 `components/目录名/目录名.vue` 或 `index.vue` 自动注册标签，改文件名可能让 `<m-goods-list>` 直接失效 |
+
+页面文件本轮只有 **import 语句**变化（引用了改名后的 utils/api），文件本身没动。
+
+### 9.3 两个 Windows / 机械替换的坑
+
+**① 只改大小写的重命名在 Windows 上会"失败但不报错"**
+
+`Foundation.ts → foundation.ts`：文件系统大小写不敏感，`fs.renameSync` 认为源和目标同一个文件，
+脚本里 `if (exists(to)) skip` 直接跳过 —— 但 import 已经改成 `@/utils/foundation`，
+于是 typecheck 报：
+
+```
+TS1149: File name 'utils/regexp.ts' differs from already included file name ... only in casing
+TS1261: Already included file name ... differs from file name ... only in casing
+```
+
+解法：借道临时名。
+
+```powershell
+cmd /c "ren Foundation.ts foundation.tmp && ren foundation.tmp foundation.ts"
+```
+
+**② "替换所有引号里的字符串"会误伤模板绑定**
+
+第一版脚本按「引号 + 路径末段匹配」做替换，结果把
+
+```html
+:setting="categoryPageSetting"      <!-- 组件 prop 绑定 -->
+```
+
+改成了 `:setting="category-page-setting"`（因为属性值也是个引号字符串）。这会让
+`tpl-category-goods` 收到一个未定义变量 —— 类型检查立刻报 `Property 'category' does not exist`。
+
+改成只替换 **`from '...'` / `import(...)` 的说明符**，不再扫任意字符串。已恢复该绑定。
+
+> 另外一处是**自洽**的机械替换，保留了：`poster-panel.vue` 的 canvas id
+> `distributionPosterCanvas` → `distribution-poster-canvas`（模板 id、`canvas-id`、
+> `CANVAS_SELECTOR` 常量 4 处一起改，全仓库无其它引用，符合命名规则）。
+
+### 9.4 验证
+
+| 检查 | 结果 |
+|---|---|
+| `typecheck` | **0 错误**（改名后所有 import 仍能解析） |
+| `lint` | 0 error / 253 warning（ratchet 253） |
+| node 测试 | 5 个全绿（含把测试脚本里的 `../utils/orderEvaluation.ts` 同步改名为 `order-evaluation.ts`） |
+| `pages.json` | 零改动（git 校验） |
+| 旧文件名残留引用 | 0 处 |
+| 安全范围内非 kebab 文件 | 0 个（`store/index.d.ts` 属声明文件，`index` 本身即单词名） |

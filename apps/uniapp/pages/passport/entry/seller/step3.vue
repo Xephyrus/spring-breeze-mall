@@ -130,7 +130,7 @@ import { getCategoryList } from '@/api/goods'
 import MCity from '@/components/m-city/m-city.vue'
 import uniMap from '@/components/uniMap.vue'
 import permision from '@/js_sdk/wa-permission/permission.js'
-import { handleUploadAfterRead } from '@/utils/uploadHelper'
+import { handleUploadAfterRead } from '@/utils/upload-helper'
 import { getThemeStyle } from '@/utils/theme'
 import { fieldInputStyle } from '@/utils/form-style'
 

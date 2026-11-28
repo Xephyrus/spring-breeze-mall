@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import config from '@/config/config'
 import { getClipboardData } from '@/js_sdk/h5-copy/h5-copy.js'
-import APPUpdate from '@/plugins/APPUpdate'
+import APPUpdate from '@/plugins/app-update'
 import storage from '@/utils/storage'
 import { getThemeSetting, getCategoryPageSetting } from '@/api/common'
 import {
@@ -14,10 +14,10 @@ import {
   cacheCategoryPageSetting,
   loadCachedCategoryPageSetting,
   normalizeCategoryPageSetting,
-} from '@/utils/categoryPageSetting'
+} from '@/utils/category-page-setting'
 import { onLaunch, onShow } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
-import { handleAppLaunchScene } from '@/utils/distributionBind'
+import { handleAppLaunchScene } from '@/utils/distribution-bind'
 
 const store = useStore()
 

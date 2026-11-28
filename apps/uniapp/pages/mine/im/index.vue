@@ -188,7 +188,7 @@ import {
   jumpObtain,
   uploadImImage,
 } from '@/api/im'
-import SocketService from '@/utils/socket_service'
+import SocketService from '@/utils/socket-service'
 import storage from '@/utils/storage'
 import { beautifyTime, unitPrice } from '@/utils/filters'
 import config from '@/config/config'

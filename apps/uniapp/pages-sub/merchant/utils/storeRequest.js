@@ -1,9 +1,9 @@
 import api from "@/config/api";
 import Request from "@/lib/request/index";
-import Foundation from "@/utils/Foundation";
+import Foundation from "@/utils/foundation";
 import { md5 } from "@/utils/md5";
 import storage from "@/utils/storage";
-import uuid from "@/utils/uuid.modified";
+import uuid from "@/utils/uuid-modified";
 
 let isStoreNavigateTo = false;
 

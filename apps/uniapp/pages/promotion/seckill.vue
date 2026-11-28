@@ -42,7 +42,7 @@
 import { ref, computed } from 'vue'
 import { onShow, onUnload } from '@dcloudio/uni-app'
 import { getSeckillTimeLine, getSeckillTimeGoods } from '@/api/promotions'
-import Foundation from '@/utils/Foundation'
+import Foundation from '@/utils/foundation'
 import goodsTemplate from '@/components/m-goods-list/promotion.vue'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'

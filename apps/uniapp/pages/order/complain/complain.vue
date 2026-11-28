@@ -63,7 +63,7 @@ import { onLoad } from '@dcloudio/uni-app'
 import { useStore } from '@/store'
 import { getOrderDetail } from '@/api/order'
 import { getComplainReason, addComplain } from '@/api/after-sale'
-import { handleUploadAfterRead } from '@/utils/uploadHelper'
+import { handleUploadAfterRead } from '@/utils/upload-helper'
 import { unitPrice } from '@/utils/filters'
 import { getThemeStyle } from '@/utils/theme'
 

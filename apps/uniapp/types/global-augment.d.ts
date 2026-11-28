@@ -127,7 +127,7 @@ declare global {
   const requirePlugin: any
 
   /**
-   * uni 对象上被 uview-plus 挂载的 `$u`（`utils/mpShare.ts` 里会读写它做分享配置）。
+   * uni 对象上被 uview-plus 挂载的 `$u`（`utils/mp-share.ts` 里会读写它做分享配置）。
    */
   interface Uni {
      

@@ -194,8 +194,8 @@ import { ref, reactive, computed, watch, getCurrentInstance, onMounted } from 'v
 import { useStore } from '@/store'
 import { applyFirst } from '@/api/entry'
 import MCity from '@/components/m-city/m-city.vue'
-import { handleUploadAfterRead, getUploadedUrls } from '@/utils/uploadHelper'
-import * as RegExp from '@/utils/RegExp'
+import { handleUploadAfterRead, getUploadedUrls } from '@/utils/upload-helper'
+import * as RegExp from '@/utils/regexp'
 import { getThemeStyle } from '@/utils/theme'
 import { fieldInputStyle } from '@/utils/form-style'
 

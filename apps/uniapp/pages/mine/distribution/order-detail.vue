@@ -109,7 +109,7 @@ import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 import { getDistributionOrderDetail } from '@/api/distribution'
 import { parseGoodsImageUrl, formatGoodsSpecs } from '@/utils/filters'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 
 const store = useStore()
 const themeStyle = computed(() => getThemeStyle(store.state.theme))

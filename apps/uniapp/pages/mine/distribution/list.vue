@@ -93,7 +93,7 @@
 import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { distributionGoods, getDistributionGoodsSetting } from '@/api/distribution'
-import { assertActiveDistributor } from '@/utils/distributionStatus'
+import { assertActiveDistributor } from '@/utils/distribution-status'
 
 const DEFAULT_SORT_MAP: Record<string, { field: string; order: string }> = {
   HIGHEST_COMMISSION: { field: 'COMMISSION', order: 'DESC' },

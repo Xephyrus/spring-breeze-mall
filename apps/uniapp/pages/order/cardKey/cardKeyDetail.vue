@@ -63,7 +63,7 @@ import {
   flattenOrderCardKeys,
   resolveCardKeyFulfillMessage,
   CARD_KEY_FULFILL_STATUS,
-} from '@/utils/goodsType'
+} from '@/utils/goods-type'
 import { useStore } from '@/store'
 import { getThemeStyle } from '@/utils/theme'
 const store = useStore()

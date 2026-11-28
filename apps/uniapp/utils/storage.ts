@@ -93,7 +93,7 @@ export default {
     uni.setStorageSync(HAS_LOGIN, val);
     if (val) {
       try {
-        const { flushPendingBind } = require("@/utils/distributionBind");
+        const { flushPendingBind } = require("@/utils/distribution-bind");
         flushPendingBind();
       } catch (e) {
         // ignore
